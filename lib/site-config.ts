@@ -6,7 +6,7 @@ export const siteConfig = {
   // Contact & Social Links - Update these in one place
   email: "pjay99909@gmail.com",
   github: "https://github.com/jaypatel364",
-  linkedin: "hthttps://www.linkedin.com/in/jaypatel7014",
+  linkedin: "https://www.linkedin.com/in/jaypatel7014",
   
   // Location
   location: "Ahmedabad, India",
