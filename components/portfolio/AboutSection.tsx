@@ -1,8 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Server, Database, Zap } from "lucide-react";
+import { Code2, Server, Database, Zap, Hammer, ArrowUpRight, BookOpen } from "lucide-react";
 import { SectionHeading } from "./SectionHeading";
+import { siteConfig } from "@/lib/site-config";
+import { getExperienceLabel } from "@/lib/utils";
 
 const HIGHLIGHTS = [
   { icon: Code2, title: "Frontend", desc: "React, Next.js, TypeScript" },
@@ -12,6 +14,10 @@ const HIGHLIGHTS = [
 ];
 
 export function AboutSection() {
+  const expLabel = getExperienceLabel(siteConfig.careerStartDate);
+  const building = siteConfig.currentlyBuilding;
+  const learning = siteConfig.currentlyLearning;
+
   return (
     <section id="about" className="px-6 py-14 md:py-28">
       <div className="mx-auto max-w-6xl">
@@ -26,8 +32,8 @@ export function AboutSection() {
             className="space-y-5"
           >
             <p className="text-lg leading-relaxed text-muted-foreground">
-              I'm a passionate full-stack developer with over 3 years of experience building modern
-              web applications. I specialize in the{" "}
+              I&apos;m a passionate full-stack developer with over {expLabel} years of experience
+              building modern web applications. I specialize in the{" "}
               <span className="font-semibold text-foreground">MERN stack</span> and love turning
               complex business requirements into clean, performant code.
             </p>
@@ -40,6 +46,62 @@ export function AboutSection() {
               Beyond development, I enjoy exploring new technologies, building side projects,
               mentoring teammates, and continuously learning to grow as an engineer.
             </p>
+
+            {/* Currently building badge */}
+            {building && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                {building.url ? (
+                  <a
+                    href={building.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3 transition-all hover:border-primary/40 hover:bg-primary/10"
+                  >
+                    <CurrentlyBuildingContent building={building} />
+                  </a>
+                ) : (
+                  <div className="inline-flex items-center gap-3 rounded-2xl border border-primary/20 bg-primary/5 px-4 py-3">
+                    <CurrentlyBuildingContent building={building} />
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {/* What I'm learning badge */}
+            {learning.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="inline-flex items-start gap-3 rounded-2xl border border-border bg-card px-4 py-3"
+              >
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-muted text-primary">
+                  <BookOpen className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Currently learning
+                  </p>
+                  <div className="mt-1.5 flex flex-wrap gap-2">
+                    {learning.map((item) => (
+                      <span
+                        key={item.name}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted px-2.5 py-1 text-xs font-medium text-foreground"
+                      >
+                        <span aria-hidden="true">{item.icon}</span>
+                        {item.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </motion.div>
 
           <motion.div
@@ -66,5 +128,34 @@ export function AboutSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+// ── internal sub-component ──────────────────────────────────────────────────
+
+interface BuildingInfo {
+  name: string;
+  description: string;
+  url: string | null;
+}
+
+function CurrentlyBuildingContent({ building }: { building: BuildingInfo }) {
+  return (
+    <>
+      {/* Animated hammer icon */}
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <Hammer className="h-4 w-4 animate-[wave_2s_ease-in-out_infinite]" />
+      </span>
+      <div className="min-w-0">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+          Currently building
+        </p>
+        <p className="text-sm font-semibold text-foreground">{building.name}</p>
+        <p className="text-xs text-muted-foreground">{building.description}</p>
+      </div>
+      {building.url && (
+        <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:opacity-100 group-hover:text-primary" />
+      )}
+    </>
   );
 }

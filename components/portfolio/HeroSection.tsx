@@ -1,8 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowDown, Mail, Download } from "lucide-react";
+import { Mail, Download, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
+import { useTypewriter } from "@/hooks/use-typewriter";
+import { getExperienceLabel } from "@/lib/utils";
+
+const ROLES = [
+  "Full Stack Developer",
+  "MERN Stack Engineer",
+  "React Specialist",
+  "Node.js Developer",
+  "UI/UX Enthusiast",
+];
 
 // Custom SVG icons for brand consistency
 const GithubIcon = ({ className }: { className?: string }) => (
@@ -18,6 +28,9 @@ const LinkedinIcon = ({ className }: { className?: string }) => (
 );
 
 export function HeroSection() {
+  const { displayText, isTyping } = useTypewriter({ words: ROLES });
+  const expLabel = getExperienceLabel(siteConfig.careerStartDate);
+
   const socialLinks = [
     { icon: GithubIcon, href: siteConfig.github, label: "GitHub" },
     { icon: LinkedinIcon, href: siteConfig.linkedin, label: "LinkedIn" },
@@ -38,10 +51,17 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary">
+          <a
+            href={siteConfig.bookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-all duration-200 hover:border-primary/40 hover:bg-primary/10"
+            aria-label="Book a meeting — opens Calendly in a new tab"
+          >
             <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
             Available for opportunities
-          </div>
+            <ArrowUpRight className="h-3.5 w-3.5 opacity-0 -translate-y-0.5 translate-x-0 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-1" />
+          </a>
         </motion.div>
 
         <motion.p
@@ -64,14 +84,36 @@ export function HeroSection() {
           things for the web.
         </motion.h1>
 
-        <motion.p
+        {/* Typewriter role rotator */}
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground"
+          className="mx-auto mt-6 flex items-center justify-center gap-2"
+          aria-label={`Role: ${displayText}`}
         >
-          Full Stack MERN Developer with 3+ years of experience building scalable, high-performance
-          web applications and production-ready solutions using modern JavaScript technologies.
+          <span className="text-lg font-semibold text-muted-foreground">I&apos;m a&nbsp;</span>
+          <span className="relative inline-flex min-w-[12ch] items-center">
+            <span className="text-lg font-bold gradient-text">{displayText}</span>
+            {/* blinking cursor */}
+            <span
+              aria-hidden="true"
+              className="ml-0.5 inline-block h-[1.2em] w-[2px] translate-y-[1px] rounded-sm bg-primary"
+              style={{
+                animation: isTyping ? "none" : "blink 1s step-end infinite",
+              }}
+            />
+          </span>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mx-auto mt-4 max-w-xl text-base text-muted-foreground"
+        >
+          {expLabel} years of experience building scalable, high-performance web applications and
+          production-ready solutions using modern JavaScript technologies.
         </motion.p>
 
         <motion.div
@@ -89,11 +131,11 @@ export function HeroSection() {
             <Download className="h-4 w-4" />
             Download My CV
           </a>
-         <button
-  onClick={() =>
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
-  }
-  className="
+          <button
+            onClick={() =>
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="
     rounded-xl border border-border
     bg-card px-7 py-3.5
     text-sm font-semibold text-foreground
@@ -104,9 +146,9 @@ export function HeroSection() {
 
     active:scale-95
   "
->
-  Get In Touch
-</button>
+          >
+            Get In Touch
+          </button>
         </motion.div>
 
         <motion.div

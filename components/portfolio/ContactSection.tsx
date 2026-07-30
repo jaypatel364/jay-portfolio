@@ -3,14 +3,18 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Send, Mail, MapPin, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 import { SectionHeading } from "./SectionHeading";
 import { siteConfig } from "@/lib/site-config";
+import { ConfettiCanvas } from "./ConfettiCanvas";
+import { CopyEmail } from "./CopyEmail";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
 export function ContactSection() {
   const [state, setState] = useState<FormState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [confettiBurst, setConfettiBurst] = useState(0); // increment to retrigger
   const honeypotRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,15 +44,27 @@ export function ContactSection() {
       }
 
       setState("success");
+      setConfettiBurst((n) => n + 1);
+      toast.success("Message sent!", {
+        description: "Thanks for reaching out — I'll get back to you soon.",
+        duration: 5000,
+      });
       form.reset();
-    } catch (err: any) {
-      setErrorMsg(err.message || "Failed to send message.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to send message.";
+      setErrorMsg(message);
       setState("error");
+      toast.error("Failed to send", {
+        description: message,
+        duration: 6000,
+      });
     }
   };
 
   return (
     <section id="contact" className="px-6 py-14 md:py-28">
+      {/* Confetti burst on successful submission */}
+      <ConfettiCanvas trigger={confettiBurst > 0} key={confettiBurst} />
       <div className="mx-auto max-w-4xl">
         <SectionHeading label="Contact" title="Get In Touch" />
 
@@ -61,14 +77,15 @@ export function ContactSection() {
             className="space-y-8 lg:col-span-2"
           >
             <p className="text-muted-foreground">
-              Have a project in mind or want to collaborate? I&apos;d love to hear from you. Drop me a message and I&apos;ll get back to you as soon as possible.
+              Have a project in mind or want to collaborate? I&apos;d love to hear from you. Drop me
+              a message and I&apos;ll get back to you as soon as possible.
             </p>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-primary/10 p-2.5 text-primary">
                   <Mail className="h-4 w-4" />
                 </div>
-                <span className="text-sm">{siteConfig.email}</span>
+                <CopyEmail email={siteConfig.email} className="text-muted-foreground" />
               </div>
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-primary/10 p-2.5 text-primary">

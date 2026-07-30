@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { SectionHeading } from "./SectionHeading";
 import {
@@ -26,6 +26,10 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { siteConfig } from "@/lib/site-config";
+import { getExperienceLabel } from "@/lib/utils";
+import { useCountUp } from "@/hooks/use-count-up";
+import { cn } from "@/lib/utils";
 
 interface Skill {
   name: string;
@@ -161,8 +165,47 @@ function CategoryCard({ group, index }: { group: SkillGroup; index: number }) {
   );
 }
 
+type FilterKey = "all" | "Frontend" | "Backend" | "Tools & DevOps";
+
+const FILTERS: { label: string; value: FilterKey }[] = [
+  { label: "All", value: "all" },
+  { label: "Frontend", value: "Frontend" },
+  { label: "Backend", value: "Backend" },
+  { label: "Tools", value: "Tools & DevOps" },
+];
+
 export function SkillsSection() {
   const totalSkills = SKILL_GROUPS.reduce((acc, g) => acc + g.skills.length, 0);
+  const expLabel = getExperienceLabel(siteConfig.careerStartDate);
+  const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+
+  // Parse the numeric part of the exp label (e.g. "3.5+" → 3.5, "< 1" → 0)
+  const expNumeric = expLabel.startsWith("<") ? 0 : parseFloat(expLabel);
+  // Count up in half-year units so 3.5 → count 7 halves → display as (n/2)
+  const expHalves = Math.round(expNumeric * 2);
+
+  const { count: skillCount, ref: skillRef } = useCountUp({ target: totalSkills, duration: 1400 });
+  const { count: expHalfCount, ref: expRef } = useCountUp({
+    target: expHalves,
+    duration: 1400,
+    delay: 100,
+  });
+  const { count: projCount, ref: projRef } = useCountUp({
+    target: siteConfig.projectCount,
+    duration: 1400,
+    delay: 200,
+  });
+
+  // Format the animated experience value back to "X+" or "X.5+"
+  const animatedExp =
+    expHalfCount === 0
+      ? "< 1"
+      : expHalfCount % 2 === 0
+        ? `${expHalfCount / 2}+`
+        : `${(expHalfCount / 2).toFixed(1)}+`;
+
+  const visibleGroups =
+    activeFilter === "all" ? SKILL_GROUPS : SKILL_GROUPS.filter((g) => g.category === activeFilter);
 
   return (
     <section id="skills" className="relative overflow-hidden px-6 py-14 md:py-28">
@@ -183,26 +226,90 @@ export function SkillsSection() {
           className="mx-auto mt-8 flex max-w-md items-center justify-center gap-8 text-center"
         >
           <div>
-            <span className="text-2xl font-bold gradient-text">{totalSkills}+</span>
+            <span
+              ref={skillRef as React.RefObject<HTMLSpanElement>}
+              className="text-2xl font-bold gradient-text tabular-nums"
+            >
+              {skillCount}+
+            </span>
             <p className="text-xs text-muted-foreground">Tools & Technologies</p>
           </div>
           <div className="h-8 w-px bg-border" />
           <div>
-            <span className="text-2xl font-bold gradient-text">3+</span>
+            <span
+              ref={expRef as React.RefObject<HTMLSpanElement>}
+              className="text-2xl font-bold gradient-text tabular-nums"
+            >
+              {animatedExp}
+            </span>
             <p className="text-xs text-muted-foreground">Years Experience</p>
           </div>
           <div className="h-8 w-px bg-border" />
           <div>
-            <span className="text-2xl font-bold gradient-text">10+</span>
+            <span
+              ref={projRef as React.RefObject<HTMLSpanElement>}
+              className="text-2xl font-bold gradient-text tabular-nums"
+            >
+              {projCount}+
+            </span>
             <p className="text-xs text-muted-foreground">Production Projects</p>
           </div>
         </motion.div>
 
-        {/* Category cards */}
-        <div className="mt-16 grid gap-12 lg:grid-cols-3">
-          {SKILL_GROUPS.map((group, i) => (
-            <CategoryCard key={group.category} group={group} index={i} />
+        {/* Filter tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          className="mt-10 flex items-center justify-center gap-2 flex-wrap"
+          role="tablist"
+          aria-label="Filter skills by category"
+        >
+          {FILTERS.map((f) => (
+            <button
+              key={f.value}
+              role="tab"
+              aria-selected={activeFilter === f.value}
+              onClick={() => setActiveFilter(f.value)}
+              className={cn(
+                "relative rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                activeFilter === f.value
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {activeFilter === f.value && (
+                <motion.div
+                  layoutId="skill-filter-active"
+                  className="absolute inset-0 rounded-lg bg-primary/10"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              <span className="relative z-10">{f.label}</span>
+            </button>
           ))}
+        </motion.div>
+
+        {/* Category cards — animate on filter change */}
+        <div className="mt-12">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeFilter}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className={cn(
+                "grid gap-12",
+                visibleGroups.length === 1 ? "max-w-sm mx-auto" : "lg:grid-cols-3",
+              )}
+            >
+              {visibleGroups.map((group, i) => (
+                <CategoryCard key={group.category} group={group} index={i} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Sparkle badge */}

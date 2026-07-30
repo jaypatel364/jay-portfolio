@@ -141,7 +141,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-heading);
     letter-spacing: -0.02em;
   }
@@ -174,8 +177,9 @@
     box-shadow: 0 0 30px -5px color-mix(in oklch, var(--glow) 25%, transparent);
   }
   .shadow-premium {
-    box-shadow: 0 20px 60px -15px color-mix(in oklch, var(--foreground) 10%, transparent),
-                0 0 40px -10px color-mix(in oklch, var(--glow) 15%, transparent);
+    box-shadow:
+      0 20px 60px -15px color-mix(in oklch, var(--foreground) 10%, transparent),
+      0 0 40px -10px color-mix(in oklch, var(--glow) 15%, transparent);
   }
   .text-balance {
     text-wrap: balance;
@@ -183,16 +187,34 @@
 }
 
 @keyframes wave {
-  0%, 60%, 100% { transform: rotate(0deg); }
-  10%, 30% { transform: rotate(14deg); }
-  20% { transform: rotate(-8deg); }
-  40% { transform: rotate(-4deg); }
-  50% { transform: rotate(10deg); }
+  0%,
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
 }
 
 @keyframes float-slow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 .animate-float {
@@ -209,24 +231,58 @@
 }
 
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Aurora mesh background */
 @keyframes aurora-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(8%, -6%) scale(1.1); }
-  66% { transform: translate(-6%, 8%) scale(0.95); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(8%, -6%) scale(1.1);
+  }
+  66% {
+    transform: translate(-6%, 8%) scale(0.95);
+  }
 }
 @keyframes aurora-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-10%, 5%) scale(1.05); }
-  66% { transform: translate(7%, -7%) scale(1.1); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-10%, 5%) scale(1.05);
+  }
+  66% {
+    transform: translate(7%, -7%) scale(1.1);
+  }
 }
 @keyframes aurora-3 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(5%, 5%) scale(1.15); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(5%, 5%) scale(1.15);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .aurora-blob {
@@ -236,13 +292,23 @@
   opacity: 0.18;
   will-change: transform;
 }
-.dark .aurora-blob { opacity: 0.22; }
+.dark .aurora-blob {
+  opacity: 0.22;
+}
 
 /* Animated grid */
 .bg-grid {
   background-image:
-    linear-gradient(to right, color-mix(in oklch, var(--foreground) 6%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklch, var(--foreground) 6%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      to right,
+      color-mix(in oklch, var(--foreground) 6%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklch, var(--foreground) 6%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 80%);
 }
@@ -257,9 +323,16 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, transparent 30%, color-mix(in oklch, white 50%, transparent) 50%, transparent 70%);
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    color-mix(in oklch, white 50%, transparent) 50%,
+    transparent 70%
+  );
   transform: translateX(-100%);
   transition: transform 0.7s ease;
   pointer-events: none;
 }
-.btn-shine:hover::before { transform: translateX(100%); }
+.btn-shine:hover::before {
+  transform: translateX(100%);
+}
