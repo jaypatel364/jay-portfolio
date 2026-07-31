@@ -78,17 +78,8 @@ export function CommandPalette({
     [onOpenChange],
   );
 
-  // ⌘K / Ctrl+K global listener
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen(true);
-      }
-    };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, [setOpen]);
+  // ⌘K / Ctrl+K is handled by Navbar's global listener to coordinate
+  // with the shortcuts overlay. No listener needed here.
 
   const scrollTo = (id: string) => {
     setOpen(false);

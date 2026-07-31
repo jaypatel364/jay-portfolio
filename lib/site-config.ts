@@ -1,5 +1,22 @@
+// ── Explicit types for optional callout fields ────────────────────────────────
+
+export interface BuildingItem {
+  name: string;
+  description: string;
+  /** Set a URL to make the badge a clickable link. null = non-clickable. */
+  url: string | null;
+}
+
+export interface LearningItem {
+  name: string;
+  icon: string;
+}
+
+// ── Site config ───────────────────────────────────────────────────────────────
+
 export const siteConfig = {
   name: "Jay",
+  fullName: "Jay Patel",
   title: "Jay.dev",
   description:
     "Full Stack Developer crafting performant, scalable web applications with the MERN stack.",
@@ -18,27 +35,34 @@ export const siteConfig = {
   // Booking — replace with your actual Calendly / Cal.com link
   bookingUrl: "https://calendly.com/jaypatel-dev",
 
-  // Career start date — used to auto-calculate experience label everywhere
-  // Format: "YYYY-MM" (month when you started your first professional role)
+  // Career start date — drives the auto-calculated experience label everywhere.
+  // Format: "YYYY-MM"
   careerStartDate: "2022-12",
 
-  // Stats shown on the Skills section and Hero
+  // Stats shown on the Skills section
   projectCount: 10,
 
-  // "Currently building" callout in About section.
-  // Set to null to hide the badge entirely.
-  currentlyBuilding: {
-    name: "Jay.dev Portfolio",
-    description: "Personal portfolio with modern animations & features",
-    url: null as string | null, // set a URL to make it a link
-  },
+  // Words that cycle inside the headline: "Jay — I build [word] for the web."
+  // Keep them short — 1-3 words max looks best.
+  headlineWords: ["clean UIs", "scalable apps", "robust APIs", "real products", "great UX"],
+  // "Currently building" badge in About section.
+  // Set to null to hide it entirely.
+  currentlyBuilding: null as BuildingItem | null,
+  // Example:
+  // currentlyBuilding: {
+  //   name: "Jay.dev Portfolio",
+  //   description: "Personal portfolio with modern animations & features",
+  //   url: null,
+  // },
 
-  // "What I'm learning" callout in About section.
-  // List 1-3 items. Set to empty array [] to hide the badge.
-  currentlyLearning: [
-    { name: "Rust", icon: "🦀" },
-    { name: "System Design", icon: "🏗️" },
-  ],
-} as const;
+  // "What I'm learning" badge in About section.
+  // Set to [] to hide it entirely.
+  currentlyLearning: [] as LearningItem[],
+  // Example:
+  // currentlyLearning: [
+  //   { name: "Rust",          icon: "🦀" },
+  //   { name: "System Design", icon: "🏗️" },
+  // ],
+};
 
 export type SiteConfig = typeof siteConfig;

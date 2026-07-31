@@ -48,7 +48,7 @@ export function AboutSection() {
             </p>
 
             {/* Currently building badge */}
-            {building && (
+            {/* {building && (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -70,10 +70,10 @@ export function AboutSection() {
                   </div>
                 )}
               </motion.div>
-            )}
+            )} */}
 
             {/* What I'm learning badge */}
-            {learning.length > 0 && (
+            {/* {learning.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -91,7 +91,7 @@ export function AboutSection() {
                   <div className="mt-1.5 flex flex-wrap gap-2">
                     {learning.map((item) => (
                       <span
-                        key={item.name}
+                        key={item?.name}
                         className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted px-2.5 py-1 text-xs font-medium text-foreground"
                       >
                         <span aria-hidden="true">{item.icon}</span>
@@ -101,7 +101,7 @@ export function AboutSection() {
                   </div>
                 </div>
               </motion.div>
-            )}
+            )} */}
           </motion.div>
 
           <motion.div

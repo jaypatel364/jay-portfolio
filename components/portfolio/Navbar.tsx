@@ -59,7 +59,15 @@ export function Navbar() {
 
       const key = e.key.toLowerCase();
 
-      // ? → shortcuts overlay
+      // ⌘K / Ctrl+K — open command palette, close shortcuts overlay first
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setShortcutsOpen(false);
+        setPaletteOpen(true);
+        return;
+      }
+
+      // ? → shortcuts overlay (only when palette is closed)
       if (e.key === "?" && !e.metaKey && !e.ctrlKey) {
         e.preventDefault();
         setShortcutsOpen((v) => !v);
