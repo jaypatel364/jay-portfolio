@@ -133,7 +133,7 @@ export function AboutSection() {
         <TechMarquee />
 
         {/* ── GitHub activity graph — driven by siteConfig.githubUsername ── */}
-        <GitHubGraph />
+        {/* <GitHubGraph /> */}
       </div>
     </section>
   );
