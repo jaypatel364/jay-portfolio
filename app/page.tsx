@@ -11,7 +11,7 @@ import { AboutSection } from "@/components/portfolio/AboutSection";
 import { SkillsSection } from "@/components/portfolio/SkillsSection";
 import { ExperienceSection } from "@/components/portfolio/ExperienceSection";
 import { EducationSection } from "@/components/portfolio/EducationSection";
-// import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
+import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
 // import { TestimonialsSection } from "@/components/portfolio/TestimonialsSection";
 import { ContactSection } from "@/components/portfolio/ContactSection";
 import { Footer } from "@/components/portfolio/Footer";
@@ -47,8 +47,13 @@ export default function Home() {
               <SectionErrorBoundary section="Education">
                 <EducationSection />
               </SectionErrorBoundary>
-              {/* <ProjectsSection /> */}
-              {/* <TestimonialsSection /> */}
+              <SectionErrorBoundary section="Projects">
+                <ProjectsSection />
+              </SectionErrorBoundary>
+              {/* <SectionErrorBoundary section="Testimonials">
+                <TestimonialsSection />
+              </SectionErrorBoundary> */}
+
               <SectionErrorBoundary section="Contact">
                 <ContactSection />
               </SectionErrorBoundary>

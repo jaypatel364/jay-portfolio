@@ -24,6 +24,7 @@ export const siteConfig = {
   // Contact & Social Links
   email: "pjay99909@gmail.com",
   github: "https://github.com/jaypatel364",
+  githubUsername: "jaypatel364",
   linkedin: "https://www.linkedin.com/in/jaypatelfullstack",
 
   // Location
@@ -45,6 +46,30 @@ export const siteConfig = {
   // Words that cycle inside the headline: "Jay — I build [word] for the web."
   // Keep them short — 1-3 words max looks best.
   headlineWords: ["clean UIs", "scalable apps", "robust APIs", "real products", "great UX"],
+
+  // ── Terminal hero block ───────────────────────────────────────────────────
+  // Set to true to show a $ whoami terminal card below the headline in the
+  // Hero section. Set to false (or comment the line out and it defaults false)
+  // to keep the standard layout.
+  showTerminalHero: true,
+
+  // ── Daily stack marquee ───────────────────────────────────────────────────
+  // Scrolling strip of tech icons shown at the bottom of the About section.
+  // Comment out the entire dailyStack array to hide the marquee completely.
+  dailyStack: [
+    { name: "React", icon: "⚛️" },
+    { name: "Next.js", icon: "▲" },
+    { name: "TypeScript", icon: "🔷" },
+    { name: "Node.js", icon: "🟢" },
+    { name: "Express", icon: "🚂" },
+    { name: "MongoDB", icon: "🍃" },
+    { name: "PostgreSQL", icon: "🐘" },
+    { name: "Redis", icon: "🔴" },
+    { name: "Docker", icon: "🐳" },
+    { name: "AWS", icon: "☁️" },
+    { name: "Tailwind", icon: "🌊" },
+    { name: "Git", icon: "🌿" },
+  ] as { name: string; icon: string }[],
   // "Currently building" badge in About section.
   // Set to null to hide it entirely.
   currentlyBuilding: null as BuildingItem | null,

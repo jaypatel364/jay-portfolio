@@ -1,16 +1,102 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Search } from "lucide-react";
+import { Menu, X, Sun, Moon, Search, Palette, Check } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { useScrollProgress } from "@/hooks/use-scroll-progress";
+import { useAccent } from "@/hooks/use-accent";
+import { ACCENT_PRESETS } from "@/lib/accent-colors";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 import { CommandPalette } from "./CommandPalette";
 import { ShortcutsOverlay, ShortcutsTrigger } from "./ShortcutsOverlay";
 import { AccentPicker } from "./AccentPicker";
+
+/** Inline accent picker for the mobile menu — shows swatches in a row */
+function MobileAccentPicker() {
+  const { resolvedTheme } = useTheme();
+  const { accentId, setAccent } = useAccent(resolvedTheme);
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    window.addEventListener("mousedown", onClickOutside);
+    return () => window.removeEventListener("mousedown", onClickOutside);
+  }, [open]);
+
+  const currentPreset = ACCENT_PRESETS.find((p) => p.id === accentId)!;
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-label={`Accent color: ${currentPreset.label}. Tap to change.`}
+        aria-expanded={open}
+        className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      >
+        <Palette className="h-4 w-4" />
+        <span
+          className="absolute bottom-1 right-1 h-2 w-2 rounded-full ring-1 ring-card"
+          style={{ background: currentPreset.swatch }}
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92, y: 4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.92, y: 4 }}
+            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+            className="absolute bottom-full right-0 mb-2 z-50 min-w-[160px] rounded-xl border border-border bg-card p-2.5 shadow-premium"
+            role="listbox"
+            aria-label="Choose accent color"
+          >
+            <p className="mb-2 px-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Accent color
+            </p>
+            <div className="flex flex-col gap-0.5">
+              {ACCENT_PRESETS.map((preset) => (
+                <button
+                  key={preset.id}
+                  role="option"
+                  aria-selected={preset.id === accentId}
+                  onClick={() => {
+                    setAccent(preset.id);
+                    setOpen(false);
+                  }}
+                  className={cn(
+                    "flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors",
+                    preset.id === accentId
+                      ? "bg-primary/10 text-primary font-medium"
+                      : "text-foreground hover:bg-accent",
+                  )}
+                >
+                  <span
+                    className="h-4 w-4 shrink-0 rounded-full ring-1 ring-border"
+                    style={{ background: preset.swatch }}
+                  />
+                  <span className="flex-1">{preset.label}</span>
+                  {preset.id === accentId && (
+                    <Check className="h-3.5 w-3.5 text-primary shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
@@ -18,7 +104,7 @@ const NAV_ITEMS = [
   { id: "skills", label: "Skills" },
   { id: "experience", label: "Experience" },
   { id: "education", label: "Education" },
-  // { id: "projects", label: "Projects" },
+  { id: "projects", label: "Projects" },
   // { id: "testimonials", label: "Testimonials" },
   { id: "contact", label: "Contact" },
 ];
@@ -48,6 +134,8 @@ export function Navbar() {
       a: "about",
       s: "skills",
       e: "experience",
+      p: "projects",
+      o: "projects",
       c: "contact",
     };
 
@@ -130,7 +218,7 @@ export function Navbar() {
           <span className="text-muted-foreground font-normal">.dev</span>
         </button>
 
-        <div className="hidden items-center gap-1 md:flex">
+        <div className="hidden items-center gap-1 lg:flex">
           {NAV_ITEMS.map((item) => (
             <button
               key={item.id}
@@ -161,7 +249,7 @@ export function Navbar() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.85 }}
               transition={{ type: "spring", stiffness: 380, damping: 28 }}
-              className="hidden items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm md:flex"
+              className="hidden items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm lg:flex"
               aria-label={`Reading ${active} — ${percent}% through page`}
             >
               {/* Mini arc progress ring */}
@@ -206,7 +294,7 @@ export function Navbar() {
           {/* ⌘K search trigger — visible on md+ as a pill, icon-only on mobile */}
           <button
             onClick={() => setPaletteOpen(true)}
-            className="hidden items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:flex"
+            className="hidden items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:flex"
             aria-label="Open command palette"
           >
             <Search className="h-3.5 w-3.5" />
@@ -217,7 +305,7 @@ export function Navbar() {
           </button>
           <button
             onClick={() => setPaletteOpen(true)}
-            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:hidden"
+            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:hidden"
             aria-label="Open command palette"
           >
             <Search className="h-5 w-5" />
@@ -239,7 +327,7 @@ export function Navbar() {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent md:hidden"
+            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent lg:hidden"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -250,10 +338,11 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="glass-strong mx-4 mt-2 overflow-hidden rounded-xl md:hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            className="glass-strong mx-4 mt-2 rounded-xl lg:hidden"
           >
             <div className="flex flex-col gap-1 p-4">
               {NAV_ITEMS.map((item) => (
@@ -263,20 +352,37 @@ export function Navbar() {
                   className={cn(
                     "relative rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors",
                     active === item.id
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground",
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-accent hover:text-foreground",
                   )}
                 >
-                  {active === item.id && (
-                    <motion.div
-                      layoutId="mobile-nav-active"
-                      className="absolute inset-0 rounded-lg bg-primary/10"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
                   <span className="relative z-10">{item.label}</span>
                 </button>
               ))}
+
+              {/* Divider */}
+              <div className="my-2 border-t border-border" />
+
+              {/* Theme & Accent row */}
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs font-medium text-muted-foreground">Appearance</span>
+                <div className="flex items-center gap-1">
+                  {/* Accent color swatches */}
+                  <MobileAccentPicker />
+                  {/* Light / Dark toggle */}
+                  <button
+                    onClick={toggleTheme}
+                    className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                    aria-label="Toggle theme"
+                  >
+                    {resolvedTheme === "dark" ? (
+                      <Sun className="h-4 w-4" />
+                    ) : (
+                      <Moon className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

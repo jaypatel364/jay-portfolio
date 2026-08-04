@@ -14,7 +14,7 @@ const EXPERIENCES = [
     company: "Krishang Technolab",
     companyUrl: "https://www.krishangtechnolab.com",
     location: "Ahmedabad, India",
-    period: "2023 – Present",
+    period: "December 2022 – Present",
     startYear: "2023",
     endYear: "Present",
     description:
@@ -31,7 +31,7 @@ const EXPERIENCES = [
     company: "Krishang Technolab",
     companyUrl: "https://www.krishangtechnolab.com",
     location: "Ahmedabad, India",
-    period: "August 2022 – December 2022",
+    period: "August 2022 – November 2022",
     startYear: "2022",
     endYear: "2022",
     description:
@@ -257,7 +257,7 @@ function TimelineView() {
         >
           <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-xs text-muted-foreground">
             <span className="h-2 w-2 rounded-full bg-primary/40" />
-            Career started · Dec 2022
+            Career started · Aug 2022
           </div>
         </motion.div>
       </div>
