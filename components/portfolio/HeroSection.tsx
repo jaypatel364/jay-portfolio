@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Download, ArrowUpRight } from "lucide-react";
+import { Mail, Download, ArrowUpRight, Terminal } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
+import { cn } from "@/lib/utils";
+import React from "react";
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -20,10 +22,472 @@ const LinkedinIcon = ({ className }: { className?: string }) => (
 
 const SWAP_INTERVAL = 2800;
 
+// ── Interactive terminal ──────────────────────────────────────────────────────
+
+const BOOT_LINES = [
+  {
+    text: `Last login: ${new Date().toDateString()} on ttys001`,
+    color: "text-muted-foreground/50",
+  },
+  { text: `Portfolio OS v2.0 — ${siteConfig.fullName}`, color: "text-foreground/70" },
+  { text: 'Type "help" for available commands.', color: "text-primary/70" },
+];
+
+type OutputLine =
+  | { type: "input"; text: string }
+  | { type: "output"; nodes: React.ReactNode[] }
+  | { type: "error"; text: string };
+
+function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void): OutputLine[] {
+  const c = cmd.trim().toLowerCase();
+
+  if (c === "help")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="h" className="block text-primary font-semibold mb-1">
+            Available commands
+          </span>,
+          ...[
+            ["whoami", "Who is this developer?"],
+            ["skills", "Tech stack"],
+            ["experience", "Work history"],
+            ["projects", "Portfolio projects"],
+            ["contact", "Get in touch"],
+            ["status", "Availability"],
+            ["clear", "Clear terminal"],
+            ["help", "Show this list"],
+          ].map(([n, d]) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => onRun(n!)}
+              className="flex w-full items-baseline gap-1 rounded px-1 -mx-1 text-left transition-colors hover:bg-primary/5 group"
+            >
+              <span className="min-w-[6.5rem] shrink-0 text-primary/80 group-hover:text-primary transition-colors">
+                {n}
+              </span>
+              <span className="text-muted-foreground/60 text-xs">{d}</span>
+            </button>
+          )),
+        ],
+      },
+    ];
+
+  if (c === "whoami")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="n" className="block">
+            <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">
+              name
+            </span>
+            {siteConfig.fullName}
+          </span>,
+          <span key="r" className="block">
+            <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">
+              role
+            </span>
+            Full Stack Developer
+          </span>,
+          <span key="l" className="block">
+            <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">
+              based
+            </span>
+            {siteConfig.location}
+          </span>,
+          <span key="x" className="block">
+            <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">exp</span>
+            {expLabel}+ years
+          </span>,
+          <span key="g" className="block">
+            <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">
+              github
+            </span>
+            <a
+              href={siteConfig.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline underline-offset-2"
+            >
+              @{siteConfig.githubUsername}
+            </a>
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "skills")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="t" className="block text-primary font-semibold mb-1">
+            Tech stack
+          </span>,
+          <span key="fe" className="block">
+            <span className="text-yellow-400/80 min-w-[6rem] shrink-0 inline-block">frontend</span>
+            React · Next.js · TypeScript · Tailwind
+          </span>,
+          <span key="be" className="block">
+            <span className="text-green-400/80 min-w-[6rem] shrink-0 inline-block">backend</span>
+            Node.js · Express · REST · GraphQL
+          </span>,
+          <span key="db" className="block">
+            <span className="text-blue-400/80 min-w-[6rem] shrink-0 inline-block">database</span>
+            MongoDB · PostgreSQL · Redis
+          </span>,
+          <span key="dv" className="block">
+            <span className="text-purple-400/80 min-w-[6rem] shrink-0 inline-block">devops</span>
+            Docker · AWS · CI/CD · Git
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "experience")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="t" className="block text-primary font-semibold mb-1">
+            Work history
+          </span>,
+          <span key="e1" className="block font-medium">
+            Full Stack Developer — Krishang Technolab
+          </span>,
+          <span key="e1p" className="block text-muted-foreground/60 text-xs">
+            Dec 2022 – Present · Ahmedabad, India
+          </span>,
+          <span key="e1d" className="block text-muted-foreground/80 mt-0.5">
+            MERN stack · led team of 5 · 100+ form configs
+          </span>,
+          <span key="sp" className="block h-2" />,
+          <span key="e2" className="block font-medium">
+            Web Developer Intern — Krishang Technolab
+          </span>,
+          <span key="e2p" className="block text-muted-foreground/60 text-xs">
+            Aug – Nov 2022
+          </span>,
+          <span key="e2d" className="block text-muted-foreground/80 mt-0.5">
+            HR tool · attendance · +20% perf improvement
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "projects")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="t" className="block text-primary font-semibold mb-1">
+            {siteConfig.projectCount}+ production projects
+          </span>,
+          <span key="p1" className="block">
+            → ShopFlow{" "}
+            <span className="text-muted-foreground/50 text-xs ml-1">E-Commerce · fullstack</span>
+          </span>,
+          <span key="p2" className="block">
+            → CollabBoard{" "}
+            <span className="text-muted-foreground/50 text-xs ml-1">Real-time · fullstack</span>
+          </span>,
+          <span key="p3" className="block">
+            → DevMetrics{" "}
+            <span className="text-muted-foreground/50 text-xs ml-1">Analytics · frontend</span>
+          </span>,
+          <span key="p4" className="block">
+            → CloudAPI Gateway{" "}
+            <span className="text-muted-foreground/50 text-xs ml-1">Microservices · backend</span>
+          </span>,
+          <span key="h" className="block text-muted-foreground/40 text-xs mt-1">
+            ↓ scroll to Projects section for full list
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "contact")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="t" className="block text-primary font-semibold mb-1">
+            Get in touch
+          </span>,
+          <span key="em" className="block">
+            <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">
+              email
+            </span>
+            <a
+              href={`mailto:${siteConfig.email}`}
+              className="text-primary hover:underline underline-offset-2"
+            >
+              {siteConfig.email}
+            </a>
+          </span>,
+          <span key="li" className="block">
+            <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">
+              linkedin
+            </span>
+            <a
+              href={siteConfig.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline underline-offset-2"
+            >
+              jaypatelfullstack
+            </a>
+          </span>,
+          <span key="ca" className="block">
+            <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">
+              book call
+            </span>
+            <a
+              href={siteConfig.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline underline-offset-2"
+            >
+              calendly.com/jaypatel-dev
+            </a>
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "status")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="s" className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+            </span>
+            <span className="text-green-400 font-semibold">OPEN TO WORK</span>
+          </span>,
+          <span key="d" className="block text-muted-foreground/60 text-xs mt-1">
+            Remote · Contract · Full-time · {siteConfig.location}
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "") return [];
+  return [{ type: "error", text: `zsh: command not found: ${cmd}  (try "help")` }];
+}
+
+// ── TerminalBlock ─────────────────────────────────────────────────────────────
+
+function TerminalBlock() {
+  const expLabel = getExperienceLabel(siteConfig.careerStartDate);
+  const [bootStep, setBootStep] = useState(0);
+  const [booted, setBooted] = useState(false);
+  const [history, setHistory] = useState<OutputLine[]>([]);
+  const [input, setInput] = useState("");
+  const [cmdHistory, setCmdHistory] = useState<string[]>([]);
+  const [historyIdx, setHistoryIdx] = useState(-1);
+  const [cursorOn, setCursorOn] = useState(true);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  // Boot: one line per 300 ms
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setBootStep(BOOT_LINES.length);
+      setBooted(true);
+      return;
+    }
+    if (bootStep < BOOT_LINES.length) {
+      const t = setTimeout(() => setBootStep((s) => s + 1), 300);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setBooted(true), 200);
+    return () => clearTimeout(t);
+  }, [bootStep]);
+
+  useEffect(() => {
+    const id = setInterval(() => setCursorOn((v) => !v), 530);
+    return () => clearInterval(id);
+  }, []);
+
+  // Scroll terminal body to bottom — scoped, never affects page
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    // rAF ensures DOM has painted before we measure scrollHeight
+    const id = requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight;
+    });
+    return () => cancelAnimationFrame(id);
+  }, [history, bootStep, booted]);
+
+  const runCommand = (raw: string) => {
+    const cmd = raw.trim();
+    if (cmd.toLowerCase() === "clear") {
+      setHistory([]);
+      setInput("");
+      return;
+    }
+    const out = buildOutput(cmd, expLabel, runCommand);
+    setHistory((h) => [...h, { type: "input", text: cmd }, ...out]);
+    if (cmd) setCmdHistory((h) => [cmd, ...h]);
+    setHistoryIdx(-1);
+    setInput("");
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      runCommand(input);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const next = Math.min(historyIdx + 1, cmdHistory.length - 1);
+      setHistoryIdx(next);
+      setInput(cmdHistory[next] ?? "");
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const next = historyIdx - 1;
+      if (next < 0) {
+        setHistoryIdx(-1);
+        setInput("");
+      } else {
+        setHistoryIdx(next);
+        setInput(cmdHistory[next] ?? "");
+      }
+    } else if (e.ctrlKey && e.key === "c") {
+      setInput("");
+      setHistory((h) => [...h, { type: "input", text: `${input}^C` }]);
+    } else if (e.ctrlKey && e.key === "l") {
+      e.preventDefault();
+      setHistory([]);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 24 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full overflow-hidden rounded-2xl border border-border bg-card shadow-premium cursor-text"
+      onClick={() => inputRef.current?.focus({ preventScroll: true })}
+    >
+      {/* Title bar */}
+      <div className="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2.5">
+        <div className="flex items-center gap-1.5">
+          <span className="h-3 w-3 rounded-full bg-red-400/80" />
+          <span className="h-3 w-3 rounded-full bg-yellow-400/80" />
+          <span className="h-3 w-3 rounded-full bg-green-400/80" />
+        </div>
+        <span className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+          <Terminal className="h-3 w-3" />
+          jay@portfolio ~ zsh
+        </span>
+        <span className="w-14" />
+      </div>
+
+      {/* Body */}
+      <div
+        ref={bodyRef}
+        className="h-64 lg:h-80 overflow-y-auto p-4 font-mono text-sm"
+        style={{ scrollbarWidth: "none" }}
+        onWheel={(e) => {
+          // Stop wheel events from bubbling to the page
+          const el = bodyRef.current;
+          if (!el) return;
+          const atTop = el.scrollTop === 0 && e.deltaY < 0;
+          const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight && e.deltaY > 0;
+          if (!atTop && !atBottom) e.stopPropagation();
+        }}
+      >
+        {BOOT_LINES.slice(0, bootStep).map((l, i) => (
+          <motion.div
+            key={`b${i}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15 }}
+            className={cn("leading-relaxed", l.color)}
+          >
+            {l.text}
+          </motion.div>
+        ))}
+        {booted && <div className="h-2" />}
+        {booted &&
+          history.map((line, i) => {
+            if (line.type === "input")
+              return (
+                <div key={i} className="flex items-start gap-2 leading-relaxed">
+                  <span className="select-none text-primary/50 shrink-0">❯</span>
+                  <span className="text-foreground break-all">{line.text}</span>
+                </div>
+              );
+            if (line.type === "output")
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.15 }}
+                  className="ml-5 mt-0.5 mb-3 space-y-0.5 leading-relaxed text-foreground/80"
+                >
+                  {line.nodes}
+                </motion.div>
+              );
+            if (line.type === "error")
+              return (
+                <div key={i} className="ml-5 mt-0.5 mb-2 text-red-400/80 leading-relaxed">
+                  {line.text}
+                </div>
+              );
+            return null;
+          })}
+        {booted && (
+          <div className="flex items-center gap-2 leading-relaxed mt-1">
+            <span className="select-none text-primary/50 shrink-0">❯</span>
+            <span className="relative flex-1 flex items-center min-w-0">
+              <span className="text-foreground whitespace-pre">{input}</span>
+              <span
+                className={cn(
+                  "inline-block h-[1.05em] w-[0.5em] rounded-[2px] bg-primary ml-px shrink-0 transition-opacity duration-75",
+                  cursorOn ? "opacity-100" : "opacity-0",
+                )}
+              />
+            </span>
+            <input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onKeyDown}
+              className="fixed top-[-9999px] left-[-9999px] opacity-0 w-0 h-0 pointer-events-none"
+              autoComplete="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              aria-label="Terminal input"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      {booted && (
+        <div className="border-t border-border/40 px-4 py-2 font-mono text-[10px] text-muted-foreground/35 text-center select-none">
+          click · type a command · ↑↓ history · ctrl+l clear
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+// ── HeroSection ───────────────────────────────────────────────────────────────
+
 export function HeroSection() {
   const words = siteConfig.headlineWords;
   const [index, setIndex] = useState(0);
   const expLabel = getExperienceLabel(siteConfig.careerStartDate);
+  const withTerminal = siteConfig.showTerminalHero;
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -43,141 +507,173 @@ export function HeroSection() {
       className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20 sm:pt-16 md:pt-8"
     >
       <div className="pointer-events-none absolute inset-0 bg-grid" />
-
-      <div className="relative z-10 mx-auto max-w-4xl text-center">
-        {/* ── Availability badge ───────────────────────────────────── */}
+      <div className={cn("relative z-10 mx-auto w-full", withTerminal ? "max-w-6xl" : "max-w-4xl")}>
+        {/* Availability badge */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          className={cn(
+            "mb-10 flex",
+            withTerminal ? "justify-center lg:justify-start" : "justify-center",
+          )}
         >
           <a
             href={siteConfig.bookingUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group mb-10 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-all duration-200 hover:border-primary/40 hover:bg-primary/10"
+            className="group inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary transition-all duration-200 hover:border-primary/40 hover:bg-primary/10"
             aria-label="Book a meeting"
           >
             <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
             Available for opportunities
-            <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
           </a>
         </motion.div>
 
-        {/* ── Name — the visual anchor ─────────────────────────────── */}
-        <motion.h1
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-heading text-6xl font-bold tracking-tight sm:text-7xl lg:text-8xl"
+        {/* Layout */}
+        <div
+          className={cn(
+            withTerminal
+              ? "text-center grid items-center gap-12 lg:text-left lg:grid-cols-2 lg:gap-16"
+              : "text-center",
+          )}
         >
-          <span className="gradient-text-animated">{siteConfig.fullName}</span>
-        </motion.h1>
-
-        {/* ── Role label ───────────────────────────────────────────── */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.22 }}
-          className="mt-3 text-base font-medium uppercase tracking-[0.2em] text-muted-foreground"
-        >
-          Full Stack Developer
-        </motion.p>
-
-        {/* ── Tagline with inline word swap ────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.32 }}
-          className="mt-8 flex flex-col items-center justify-center gap-0 text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
-          aria-label={`Building ${words[index]} people actually use.`}
-        >
-          <span>Building</span>
-
-          {/* Swapping word */}
-          <span
-            className="relative mt-1 inline-flex h-[1.2em] items-center justify-center overflow-hidden px-3"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            {/* Faint underline accent */}
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute bottom-1 left-3 right-3 h-[3px] rounded-full bg-primary/30"
-            />
-            <AnimatePresence mode="popLayout" initial={false}>
-              <motion.span
-                key={words[index]}
-                initial={{ y: "110%", opacity: 0 }}
-                animate={{ y: "0%", opacity: 1 }}
-                exit={{ y: "-110%", opacity: 0 }}
-                transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
-                className="relative gradient-text"
-              >
-                {words[index]}
-              </motion.span>
-            </AnimatePresence>
-          </span>
-
-          <span>people actually use.</span>
-        </motion.div>
-
-        {/* ── Description ──────────────────────────────────────────── */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.42 }}
-          className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-muted-foreground"
-        >
-          {expLabel} years building scalable web applications and production-ready solutions with
-          the MERN stack.
-        </motion.p>
-
-        {/* ── CTA buttons ──────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-4"
-        >
-          <a
-            href={siteConfig.resumeUrl}
-            target="_blank"
-            className="btn-shine inline-flex items-center gap-2 gradient-primary rounded-xl px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105 active:scale-95"
-          >
-            <Download className="h-4 w-4" />
-            Download My CV
-          </a>
-          <button
-            onClick={() =>
-              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
-            }
-            className="rounded-xl border border-border bg-card px-7 py-3.5 text-sm font-semibold text-foreground transition-all duration-200 hover:border-primary/30 hover:bg-muted/50 active:scale-95"
-          >
-            Get In Touch
-          </button>
-        </motion.div>
-
-        {/* ── Social links ─────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.65 }}
-          className="mt-10 flex items-center justify-center gap-5"
-        >
-          {socialLinks.map(({ icon: Icon, href, label }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg p-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-              aria-label={label}
+          {/* Left / centre */}
+          <div className={cn(withTerminal ? "lg:text-left" : "")}>
+            <motion.h1
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="font-heading text-6xl font-bold tracking-tight sm:text-7xl lg:text-8xl"
             >
-              <Icon className="h-5 w-5" />
-            </a>
-          ))}
-        </motion.div>
+              <span className="gradient-text-animated">{siteConfig.fullName}</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.22 }}
+              className="mt-3 text-base font-medium uppercase tracking-[0.2em] text-muted-foreground"
+            >
+              Full Stack Developer
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.32 }}
+              className={cn(
+                "mt-8 flex flex-col gap-0 text-3xl font-bold tracking-tight text-foreground sm:text-4xl",
+                withTerminal
+                  ? "items-center justify-center lg:items-start"
+                  : "items-center justify-center",
+              )}
+              aria-label={`Building ${words[index]} people actually use.`}
+            >
+              <span>Building</span>
+              <span
+                className="relative mt-1 inline-flex h-[1.2em] items-center overflow-hidden px-3 lg:px-0"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute bottom-1 left-0 right-0 h-[3px] rounded-full bg-primary/30"
+                />
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.span
+                    key={words[index]}
+                    initial={{ y: "110%", opacity: 0 }}
+                    animate={{ y: "0%", opacity: 1 }}
+                    exit={{ y: "-110%", opacity: 0 }}
+                    transition={{ duration: 0.4, ease: [0.33, 1, 0.68, 1] }}
+                    className="relative gradient-text"
+                  >
+                    {words[index]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+              <span>people actually use.</span>
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.42 }}
+              className={cn(
+                "mt-6 text-base leading-relaxed text-muted-foreground",
+                withTerminal ? "mx-auto max-w-lg lg:mx-0 lg:max-w-md" : "mx-auto max-w-lg",
+              )}
+            >
+              {expLabel} years building scalable web applications and production-ready solutions
+              with the MERN stack.
+            </motion.p>
+
+            {/* Mobile terminal */}
+            {withTerminal && (
+              <div className="mt-8 lg:hidden">
+                <TerminalBlock />
+              </div>
+            )}
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className={cn(
+                "mt-10 flex flex-wrap gap-4",
+                withTerminal ? "justify-center lg:justify-start" : "items-center justify-center",
+              )}
+            >
+              <a
+                href={siteConfig.resumeUrl}
+                target="_blank"
+                className="btn-shine inline-flex items-center gap-2 rounded-xl gradient-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105 active:scale-95"
+              >
+                <Download className="h-4 w-4" />
+                Download My CV
+              </a>
+              <button
+                onClick={() =>
+                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="rounded-xl border border-border bg-card px-7 py-3.5 text-sm font-semibold text-foreground transition-all duration-200 hover:border-primary/30 hover:bg-muted/50 active:scale-95"
+              >
+                Get In Touch
+              </button>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.65 }}
+              className={cn(
+                "mt-8 flex items-center gap-4",
+                withTerminal ? "justify-center lg:justify-start" : "justify-center",
+              )}
+            >
+              {socialLinks.map(({ icon: Icon, href, label }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg p-2.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                  aria-label={label}
+                >
+                  <Icon className="h-5 w-5" />
+                </a>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Desktop terminal (right col) */}
+          {withTerminal && (
+            <div className="hidden lg:flex lg:items-center lg:justify-end">
+              <div className="w-full max-w-[540px]">
+                <TerminalBlock />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

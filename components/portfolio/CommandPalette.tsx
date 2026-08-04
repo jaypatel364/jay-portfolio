@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -24,7 +24,6 @@ import {
   CalendarDays,
   Keyboard,
   FileText,
-  Palette,
 } from "lucide-react";
 import { ACCENT_PRESETS, ACCENT_STORAGE_KEY } from "@/lib/accent-colors";
 import { siteConfig } from "@/lib/site-config";
@@ -49,6 +48,7 @@ const NAV_ITEMS = [
   { id: "skills", label: "Skills", icon: Wrench },
   { id: "experience", label: "Experience", icon: Briefcase },
   { id: "education", label: "Education", icon: GraduationCap },
+  // { id: "projects", label: "Projects", icon: GraduationCap }, // hidden — re-enable when projects are ready
   { id: "contact", label: "Contact", icon: Mail },
 ];
 

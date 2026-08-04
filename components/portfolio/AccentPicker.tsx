@@ -30,12 +30,11 @@ export function AccentPicker() {
   // Close on Escape or outside click
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     const onClickOutside = (e: MouseEvent) => {
-      if (
-        triggerRef.current &&
-        !triggerRef.current.contains(e.target as Node)
-      ) {
+      if (triggerRef.current && !triggerRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     };
@@ -71,7 +70,10 @@ export function AccentPicker() {
                 key={preset.id}
                 role="option"
                 aria-selected={preset.id === accentId}
-                onClick={() => { setAccent(preset.id); setOpen(false); }}
+                onClick={() => {
+                  setAccent(preset.id);
+                  setOpen(false);
+                }}
                 className={cn(
                   "flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors",
                   preset.id === accentId
@@ -85,9 +87,7 @@ export function AccentPicker() {
                   style={{ background: preset.swatch }}
                 />
                 <span className="flex-1">{preset.label}</span>
-                {preset.id === accentId && (
-                  <Check className="h-3.5 w-3.5 text-primary shrink-0" />
-                )}
+                {preset.id === accentId && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
               </button>
             ))}
           </div>
@@ -103,7 +103,7 @@ export function AccentPicker() {
         onClick={() => setOpen((v) => !v)}
         aria-label={`Accent color: ${currentPreset.label}. Click to change.`}
         aria-expanded={open}
-        className="hidden rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:flex items-center justify-center relative"
+        className="hidden rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:flex items-center justify-center relative"
       >
         <Palette className="h-4.5 w-4.5" />
         {/* Live swatch dot */}
@@ -113,8 +113,7 @@ export function AccentPicker() {
         />
       </button>
 
-      {typeof document !== "undefined" &&
-        createPortal(popover, document.body)}
+      {typeof document !== "undefined" && createPortal(popover, document.body)}
     </>
   );
 }

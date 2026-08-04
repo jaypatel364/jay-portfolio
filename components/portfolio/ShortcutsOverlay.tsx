@@ -18,6 +18,7 @@ const SHORTCUTS: Shortcut[] = [
   { keys: ["G", "A"], description: "Go to About", category: "Navigation" },
   { keys: ["G", "S"], description: "Go to Skills", category: "Navigation" },
   { keys: ["G", "E"], description: "Go to Experience", category: "Navigation" },
+  // { keys: ["G", "P"], description: "Go to Projects (G+O also works)", category: "Navigation" }, // hidden
   { keys: ["G", "C"], description: "Go to Contact", category: "Navigation" },
   // Actions
   { keys: ["⌘", "K"], description: "Open command palette", category: "Actions" },
@@ -168,7 +169,7 @@ export function ShortcutsTrigger({
       aria-label="Show keyboard shortcuts (?)"
       title="Keyboard shortcuts"
       className={cn(
-        "hidden rounded-lg border border-border bg-muted/50 px-2 py-1.5 font-mono text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:inline-flex",
+        "hidden rounded-lg border border-border bg-muted/50 px-2 py-1.5 font-mono text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:inline-flex",
         className,
       )}
     >

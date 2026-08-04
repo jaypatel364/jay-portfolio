@@ -47,8 +47,13 @@ export default function Home() {
               <SectionErrorBoundary section="Education">
                 <EducationSection />
               </SectionErrorBoundary>
-              {/* <ProjectsSection /> */}
-              {/* <TestimonialsSection /> */}
+              {/* <SectionErrorBoundary section="Projects">
+                <ProjectsSection />
+              </SectionErrorBoundary> */}
+              {/* <SectionErrorBoundary section="Testimonials">
+                <TestimonialsSection />
+              </SectionErrorBoundary> */}
+
               <SectionErrorBoundary section="Contact">
                 <ContactSection />
               </SectionErrorBoundary>

@@ -5,6 +5,8 @@ import { Code2, Server, Database, Zap, Hammer, ArrowUpRight, BookOpen } from "lu
 import { SectionHeading } from "./SectionHeading";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
+import { TechMarquee } from "./TechMarquee";
+import { GitHubGraph } from "./GitHubGraph";
 
 const HIGHLIGHTS = [
   { icon: Code2, title: "Frontend", desc: "React, Next.js, TypeScript" },
@@ -126,6 +128,12 @@ export function AboutSection() {
             ))}
           </motion.div>
         </div>
+
+        {/* ── Tech marquee — comment out dailyStack in site-config to hide ── */}
+        <TechMarquee />
+
+        {/* ── GitHub activity graph — driven by siteConfig.githubUsername ── */}
+        {/* <GitHubGraph /> */}
       </div>
     </section>
   );
