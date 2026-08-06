@@ -41,7 +41,7 @@ export const siteConfig = {
   careerStartDate: "2022-12",
 
   // Stats shown on the Skills section
-  projectCount: 10,
+  projectCount: 5,
 
   // Words that cycle inside the headline: "Jay — I build [word] for the web."
   // Keep them short — 1-3 words max looks best.

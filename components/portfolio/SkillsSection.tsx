@@ -67,11 +67,10 @@ const SKILL_GROUPS: SkillGroup[] = [
       { name: "Next.js", icon: SiNextdotjs, lightColor: "#000000", darkColor: "#ffffff" },
       { name: "TypeScript", icon: SiTypescript, lightColor: "#3178C6", darkColor: "#3178C6" },
       { name: "JavaScript", icon: SiJavascript, lightColor: "#B8960C", darkColor: "#F7DF1E" },
-      { name: "Tailwind CSS", icon: SiTailwindcss, lightColor: "#0891B2", darkColor: "#06B6D4" },
+      { name: "Tailwind", icon: SiTailwindcss, lightColor: "#0891B2", darkColor: "#06B6D4" },
       { name: "Redux", icon: SiRedux, lightColor: "#6040A0", darkColor: "#764ABC" },
       { name: "HTML5", icon: SiHtml5, lightColor: "#D43B1A", darkColor: "#E34F26" },
       { name: "CSS3", icon: SiCss3, lightColor: "#1A5FA0", darkColor: "#1572B6" },
-      // { name: "Vite", icon: SiVite, lightColor: "#4C52CC", darkColor: "#646CFF" },
     ],
   },
   {
@@ -367,7 +366,7 @@ function SkillPill({ skill, delay, isDark }: { skill: Skill; delay: number; isDa
       <motion.div
         animate={hovered ? { y: -4, scale: 1.04 } : { y: 0, scale: 1 }}
         transition={{ type: "spring", stiffness: 500, damping: 22 }}
-        className="relative flex flex-col items-center gap-2 overflow-hidden rounded-2xl border border-border bg-card px-4 py-4 cursor-default w-[86px] transition-all duration-200"
+        className="relative flex flex-col items-center gap-2 overflow-hidden rounded-2xl border border-border bg-card px-4 py-4 cursor-default w-[79px] transition-all duration-200"
         style={{
           borderColor: hovered ? `${color}50` : undefined,
           boxShadow: hovered ? `0 8px 22px ${color}20` : undefined,
