@@ -104,7 +104,7 @@ const NAV_ITEMS = [
   { id: "skills", label: "Skills" },
   { id: "experience", label: "Experience" },
   { id: "education", label: "Education" },
-  // { id: "projects",   label: "Projects"  }, // hidden — re-enable when projects are ready
+  { id: "projects", label: "Projects" },
   // { id: "testimonials", label: "Testimonials" },
   { id: "contact", label: "Contact" },
 ];
@@ -134,8 +134,8 @@ export function Navbar() {
       a: "about",
       s: "skills",
       e: "experience",
-      // p: "projects",   // hidden — re-enable when projects are ready
-      // o: "projects",
+      p: "projects",
+      o: "projects",
       c: "contact",
     };
 

@@ -3,10 +3,10 @@
 /**
  * TechMarquee
  * -----------
- * Infinite two-row scrolling strip using react-icons Simple Icons (si).
- * Official brand colours, theme-aware for icons that are white on dark.
- *
- * To hide: comment out `dailyStack` in site-config.ts.
+ * Perfectly smooth infinite marquee using pure CSS animation.
+ * Two identical sets rendered side-by-side; the container translates by -50%
+ * (= exactly one set width) then resets — the browser loops it natively on the
+ * compositor thread with zero JS involvement, zero jerk, forever.
  */
 
 import { motion } from "framer-motion";
@@ -42,23 +42,15 @@ import {
 } from "react-icons/si";
 import type { IconType } from "react-icons";
 
-// ── Brand colours ────────────────────────────────────────────────────────────
-// `light` = colour used on a light background
-// `dark`  = colour used on a dark background
-// Icons that are naturally white/near-white get a dark alternative for light mode.
+// ── Brand colours ─────────────────────────────────────────────────────────────
 
-interface BrandColor {
-  light: string;
-  dark: string;
-}
-
-const BRAND_COLORS: Record<string, BrandColor> = {
+const BRAND_COLORS: Record<string, { light: string; dark: string }> = {
   React: { light: "#149ECA", dark: "#61DAFB" },
-  "Next.js": { light: "#000000", dark: "#ffffff" }, // black in light, white in dark
+  "Next.js": { light: "#000000", dark: "#ffffff" },
   TypeScript: { light: "#3178C6", dark: "#3178C6" },
-  JavaScript: { light: "#B8960C", dark: "#F7DF1E" }, // dark yellow for light bg
+  JavaScript: { light: "#B8960C", dark: "#F7DF1E" },
   "Node.js": { light: "#3D8B37", dark: "#5FA04E" },
-  Express: { light: "#363636", dark: "#d4d4d4" }, // dark grey / light grey
+  Express: { light: "#363636", dark: "#d4d4d4" },
   MongoDB: { light: "#2E7D32", dark: "#47A248" },
   PostgreSQL: { light: "#2F4FD6", dark: "#4169E1" },
   Redis: { light: "#D32E22", dark: "#FF4438" },
@@ -66,12 +58,12 @@ const BRAND_COLORS: Record<string, BrandColor> = {
   AWS: { light: "#CC7A00", dark: "#FF9900" },
   Tailwind: { light: "#0891B2", dark: "#06B6D4" },
   Git: { light: "#C0392B", dark: "#F05032" },
-  GitHub: { light: "#1a1a1a", dark: "#ffffff" }, // near-black / white
+  GitHub: { light: "#1a1a1a", dark: "#ffffff" },
   GraphQL: { light: "#B0006F", dark: "#E10098" },
   Prisma: { light: "#0c4a6e", dark: "#7dd3fc" },
   Firebase: { light: "#D4960A", dark: "#FFCA28" },
   Supabase: { light: "#1a8f5e", dark: "#3ECF8E" },
-  Vercel: { light: "#000000", dark: "#ffffff" }, // black / white
+  Vercel: { light: "#000000", dark: "#ffffff" },
   Figma: { light: "#D93B1C", dark: "#F24E1E" },
   Vite: { light: "#4C52CC", dark: "#646CFF" },
   Vitest: { light: "#4a7a10", dark: "#6E9F18" },
@@ -80,7 +72,7 @@ const BRAND_COLORS: Record<string, BrandColor> = {
   Nginx: { light: "#007A2D", dark: "#009639" },
 };
 
-// ── Icon map ─────────────────────────────────────────────────────────────────
+// ── Icon map ──────────────────────────────────────────────────────────────────
 
 const ICON_MAP: Record<string, IconType> = {
   React: SiReact,
@@ -110,15 +102,9 @@ const ICON_MAP: Record<string, IconType> = {
   Nginx: SiNginx,
 };
 
-// ── Pill component ────────────────────────────────────────────────────────────
+// ── Pill ──────────────────────────────────────────────────────────────────────
 
-interface PillProps {
-  item: { name: string; icon: string };
-  isDark: boolean;
-  index: number;
-}
-
-function TechPill({ item, isDark }: PillProps) {
+function TechPill({ item, isDark }: { item: { name: string; icon: string }; isDark: boolean }) {
   const [hovered, setHovered] = useState(false);
   const Icon = ICON_MAP[item.name];
   const colorSet = BRAND_COLORS[item.name];
@@ -128,33 +114,26 @@ function TechPill({ item, isDark }: PillProps) {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="group relative flex shrink-0 cursor-default items-center gap-2.5 overflow-hidden rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-medium transition-all duration-300"
-      style={{
-        borderColor: hovered ? `${color}50` : `${color}20`,
-      }}
+      className="group relative flex shrink-0 cursor-default items-center gap-2.5 overflow-hidden rounded-xl border bg-card px-4 py-2.5 text-sm font-medium transition-all duration-300"
+      style={{ borderColor: hovered ? `${color}55` : `${color}22` }}
     >
-      {/* Brand colour wash — faint at rest, full on hover */}
+      {/* Brand wash */}
       <span
         className="pointer-events-none absolute inset-0 rounded-xl transition-opacity duration-300"
-        style={{
-          background: `${color}12`,
-          opacity: hovered ? 1 : 0.4,
-        }}
+        style={{ background: `${color}10`, opacity: hovered ? 1 : 0.35 }}
         aria-hidden="true"
       />
-
       {/* Icon */}
       <span
         className="relative flex h-5 w-5 shrink-0 items-center justify-center"
         aria-hidden="true"
       >
         {Icon ? (
-          <Icon size={18} style={{ color }} className="transition-all duration-300" />
+          <Icon size={18} style={{ color }} />
         ) : (
           <span className="text-base leading-none">{item.icon}</span>
         )}
       </span>
-
       {/* Label */}
       <span
         className="relative transition-colors duration-300"
@@ -166,38 +145,59 @@ function TechPill({ item, isDark }: PillProps) {
   );
 }
 
+// ── CSS keyframe injector (once) ──────────────────────────────────────────────
+// We inject @keyframes once into <head> so Tailwind doesn't need to know about them.
+
+let injected = false;
+function injectKeyframes() {
+  if (injected || typeof document === "undefined") return;
+  injected = true;
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes marquee-left  { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+    @keyframes marquee-right { from { transform: translateX(-50%) } to { transform: translateX(0) } }
+  `;
+  document.head.appendChild(style);
+}
+
 // ── Marquee row ───────────────────────────────────────────────────────────────
 
-interface StackItem {
-  name: string;
-  icon: string;
-}
-
-interface MarqueeRowProps {
-  items: StackItem[];
+function MarqueeRow({
+  items,
+  direction = "left",
+  duration = 30,
+  isDark,
+}: {
+  items: { name: string; icon: string }[];
   direction?: "left" | "right";
-  speed?: number;
+  duration?: number; // seconds for one full cycle
   isDark: boolean;
-}
+}) {
+  // Inject keyframes on first render
+  if (typeof document !== "undefined") injectKeyframes();
 
-function MarqueeRow({ items, direction = "left", speed = 32, isDark }: MarqueeRowProps) {
-  const tripled = [...items, ...items, ...items];
-  const sign = direction === "left" ? "-" : "";
+  // Two identical copies — animation translates by -50% (= one copy width)
+  // so the seam is always invisible. CSS handles the loop natively.
+  const doubled = [...items, ...items];
 
   return (
     <div className="relative flex overflow-hidden">
+      {/* Fade masks */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-background to-transparent" />
       <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-background to-transparent" />
 
-      <motion.div
+      {/* The scrolling track — pure CSS, no JS loop */}
+      <div
         className="flex shrink-0 gap-3"
-        animate={{ x: [`${sign}0%`, `${sign}33.333%`] }}
-        transition={{ duration: speed, ease: "linear", repeat: Infinity, repeatType: "loop" }}
+        style={{
+          animation: `${direction === "left" ? "marquee-left" : "marquee-right"} ${duration}s linear infinite`,
+          willChange: "transform",
+        }}
       >
-        {tripled.map((item, i) => (
-          <TechPill key={`${item.name}-${i}`} item={item} isDark={isDark} index={i} />
+        {doubled.map((item, i) => (
+          <TechPill key={`${item.name}-${i}`} item={item} isDark={isDark} />
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -213,7 +213,13 @@ export function TechMarquee() {
 
   const mid = Math.ceil(stack.length / 2);
   const row1 = stack.slice(0, mid);
-  const row2 = stack.slice(mid);
+  const row2Raw = stack.slice(mid);
+
+  // Pad row2 if it has fewer items than row1 so both rows fill the viewport
+  const row2 =
+    row2Raw.length < row1.length
+      ? [...row2Raw, ...row1.slice(0, row1.length - row2Raw.length)]
+      : row2Raw;
 
   return (
     <motion.div
@@ -226,8 +232,10 @@ export function TechMarquee() {
       <p className="mb-5 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
         Stack I use daily
       </p>
-      <MarqueeRow items={row1} direction="left" speed={32} isDark={isDark} />
-      {row2.length > 0 && <MarqueeRow items={row2} direction="right" speed={26} isDark={isDark} />}
+      <MarqueeRow items={row1} direction="left" duration={32} isDark={isDark} />
+      {row2.length > 0 && (
+        <MarqueeRow items={row2} direction="right" duration={26} isDark={isDark} />
+      )}
     </motion.div>
   );
 }

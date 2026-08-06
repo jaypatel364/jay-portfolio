@@ -24,6 +24,7 @@ import {
   CalendarDays,
   Keyboard,
   FileText,
+  FolderKanban,
 } from "lucide-react";
 import { ACCENT_PRESETS, ACCENT_STORAGE_KEY } from "@/lib/accent-colors";
 import { siteConfig } from "@/lib/site-config";
@@ -48,7 +49,7 @@ const NAV_ITEMS = [
   { id: "skills", label: "Skills", icon: Wrench },
   { id: "experience", label: "Experience", icon: Briefcase },
   { id: "education", label: "Education", icon: GraduationCap },
-  // { id: "projects", label: "Projects", icon: GraduationCap }, // hidden — re-enable when projects are ready
+  { id: "projects", label: "Projects", icon: FolderKanban },
   { id: "contact", label: "Contact", icon: Mail },
 ];
 

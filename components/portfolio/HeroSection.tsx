@@ -35,7 +35,7 @@ const BOOT_LINES = [
 
 type OutputLine =
   | { type: "input"; text: string }
-  | { type: "output"; nodes: React.ReactNode[] }
+  | { type: "output"; nodes: React.ReactNode[]; _sideEffect?: "contact" }
   | { type: "error"; text: string };
 
 function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void): OutputLine[] {
@@ -53,11 +53,15 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             ["whoami", "Who is this developer?"],
             ["skills", "Tech stack"],
             ["experience", "Work history"],
-            ["projects", "Portfolio projects"],
             ["contact", "Get in touch"],
             ["status", "Availability"],
+            ["ls", "Browse all sections"],
+            ["cat about.md", "Read the bio"],
+            ["git log", "Portfolio commit history"],
+            ["curl -i portfolio", "HTTP headers (dev joke)"],
+            ["neofetch", "System info card"],
+            ["sudo hire-me", "The most important command"],
             ["clear", "Clear terminal"],
-            ["help", "Show this list"],
           ].map(([n, d]) => (
             <button
               key={n}
@@ -65,7 +69,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
               onClick={() => onRun(n!)}
               className="flex w-full items-baseline gap-1 rounded px-1 -mx-1 text-left transition-colors hover:bg-primary/5 group"
             >
-              <span className="min-w-[6.5rem] shrink-0 text-primary/80 group-hover:text-primary transition-colors">
+              <span className="min-w-[10rem] shrink-0 text-primary/80 group-hover:text-primary transition-colors">
                 {n}
               </span>
               <span className="text-muted-foreground/60 text-xs">{d}</span>
@@ -271,14 +275,360 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             <span className="text-green-400 font-semibold">OPEN TO WORK</span>
           </span>,
           <span key="d" className="block text-muted-foreground/60 text-xs mt-1">
-            Remote · Contract · Full-time · {siteConfig.location}
+            Remote · Full-time · {siteConfig.location}
+          </span>,
+        ],
+      },
+    ];
+
+  // ── Easter-egg / dev-loved commands ──────────────────────────────────────
+
+  if (c === "ls" || c === "ls -la")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="t" className="block text-primary/60 text-xs mb-1">
+            drwxr-xr-x jay@portfolio ~/
+          </span>,
+          ...[
+            ["home", "d", "The hero — start here"],
+            ["about", "d", "Who built this"],
+            ["skills", "d", "Tech stack with orbital UI"],
+            ["experience", "d", "Work history"],
+            ["education", "d", "Academic background"],
+            ["contact", "d", "Let's talk"],
+          ].map(([name, type, desc]) => (
+            <button
+              key={name}
+              type="button"
+              onClick={() => {
+                document.getElementById(name)?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="flex w-full items-baseline gap-2 text-left hover:bg-primary/5 rounded px-1 -mx-1 transition-colors group"
+            >
+              <span className="text-blue-400/70 w-3">{type === "d" ? "d" : "-"}</span>
+              <span className="text-primary/80 min-w-[7rem] group-hover:text-primary transition-colors">
+                {name}/
+              </span>
+              <span className="text-muted-foreground/50 text-xs">{desc}</span>
+            </button>
+          )),
+        ],
+      },
+    ];
+
+  if (c === "cat about.md")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="t" className="block text-primary/60 text-xs mb-2">
+            # about.md
+          </span>,
+          <span key="b1" className="block">
+            Hey 👋 I'm <span className="text-primary font-semibold">{siteConfig.fullName}</span>, a
+            Full Stack Developer
+          </span>,
+          <span key="b2" className="block text-muted-foreground/70 mt-1">
+            based in {siteConfig.location} with {expLabel} years of experience
+          </span>,
+          <span key="b3" className="block text-muted-foreground/70">
+            building production-grade MERN applications.
+          </span>,
+          <span key="b4" className="block mt-2">
+            I care deeply about clean code, great UX, and
+          </span>,
+          <span key="b5" className="block">
+            shipping things people actually use.
+          </span>,
+          <span key="b6" className="block text-muted-foreground/40 text-xs mt-2">
+            ~{siteConfig.fullName.split(" ")[0].toLowerCase()}/about.md [readonly]
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "curl -i portfolio" || c === "curl -I portfolio" || c === "curl portfolio")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="h0" className="block text-green-400/80 font-semibold">
+            HTTP/2 200 OK
+          </span>,
+          <span key="h1" className="block text-muted-foreground/60">
+            content-type: text/html; charset=utf-8
+          </span>,
+          <span key="h2" className="block text-muted-foreground/60">
+            x-powered-by: Next.js 15
+          </span>,
+          <span key="h3" className="block text-muted-foreground/60">
+            x-developer: {siteConfig.fullName}
+          </span>,
+          <span key="h4" className="block text-muted-foreground/60">
+            x-stack: React · Node.js · MongoDB
+          </span>,
+          <span key="h5" className="block text-muted-foreground/60">
+            x-available-for: remote-work · contracts · full-time
+          </span>,
+          <span key="h6" className="block text-muted-foreground/60">
+            cache-control: public, max-age=31536000
+          </span>,
+          <span key="h7" className="block text-muted-foreground/60">
+            x-frame-options: SAMEORIGIN
+          </span>,
+          <span key="h8" className="block text-muted-foreground/60 mt-1">
+            transfer-encoding: chunked
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "git log" || c === "git log --oneline")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="t" className="block text-primary/60 text-xs mb-1.5">
+            On branch main · {siteConfig.githubUsername}/portfolio
+          </span>,
+          ...[
+            ["a3f9c2e", "feat: add interactive terminal to hero section"],
+            ["b12d4f1", "feat: orbital skill visualization with live rotation"],
+            ["c8e7a3b", "feat: GitHub activity graph with brand accent colours"],
+            ["d4f2c9a", "feat: infinite tech marquee with real brand icons"],
+            ["e1b8d6c", "feat: NDA + WIP project flags in ProjectsSection"],
+            ["f7a3e2d", "feat: command palette with ⌘K shortcut"],
+            ["g9c1f4b", "feat: accent color picker with localStorage persist"],
+            ["h2e8a5c", "chore: initial commit — portfolio v2.0"],
+          ].map(([hash, msg]) => (
+            <span key={hash} className="flex gap-2.5 items-baseline">
+              <span className="text-yellow-400/70 font-mono text-xs shrink-0">{hash}</span>
+              <span className="text-muted-foreground/80 text-xs">{msg}</span>
+            </span>
+          )),
+        ],
+      },
+    ];
+
+  if (c === "neofetch")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <div key="nf" className="flex gap-4 items-start">
+            {/* ASCII art logo */}
+            <pre
+              key="art"
+              className="text-primary/80 text-[10px] leading-tight shrink-0 select-none"
+            >
+              {`     __
+    /\\ \\
+   /  \\ \\
+  / /\\ \\ \\
+ / / /\\ \\ \\
+/ / /  \\ \\_\\
+\\/_/    \\/_/`}
+            </pre>
+            <div key="info" className="space-y-0.5 text-xs">
+              <span className="block">
+                <span className="text-primary font-semibold">
+                  {siteConfig.fullName.toLowerCase().replace(" ", "@")}
+                </span>
+              </span>
+              <span className="block text-muted-foreground/40">{"─".repeat(22)}</span>
+              <span className="block">
+                <span className="text-primary/70 w-22 inline-block">OS</span>Portfolio OS v2.0
+              </span>
+              <span className="block">
+                <span className="text-primary/70 w-22 inline-block">Shell</span>zsh 5.9
+              </span>
+              <span className="block">
+                <span className="text-primary/70 w-22 inline-block">Framework</span>Next.js 15
+              </span>
+              <span className="block">
+                <span className="text-primary/70 w-22 inline-block">Language</span>TypeScript
+              </span>
+              <span className="block">
+                <span className="text-primary/70 w-22 inline-block">Runtime</span>Node.js
+              </span>
+              <span className="block">
+                <span className="text-primary/70 w-22 inline-block">Uptime</span>
+                {expLabel} years
+              </span>
+              <span className="block">
+                <span className="text-primary/70 w-22 inline-block">Location</span>
+                {siteConfig.location}
+              </span>
+              <span className="block mt-1 flex gap-1">
+                {[
+                  "#EF4444",
+                  "#F97316",
+                  "#EAB308",
+                  "#22C55E",
+                  "#3B82F6",
+                  "#8B5CF6",
+                  "#EC4899",
+                  "#6B7280",
+                ].map((c) => (
+                  <span
+                    key={c}
+                    className="inline-block h-3 w-3 rounded-sm"
+                    style={{ backgroundColor: c }}
+                  />
+                ))}
+              </span>
+            </div>
+          </div>,
+        ],
+      },
+    ];
+
+  if (c === "pwd")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="p" className="block text-foreground/80">
+            /home/{siteConfig.fullName.split(" ")[0].toLowerCase()}/portfolio
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "date")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="d" className="block text-foreground/80">
+            {new Date().toString()}
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "uname" || c === "uname -a")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="u" className="block text-foreground/80">
+            PortfolioOS 2.0.0 Next.js-15 React-19 x86_64 TypeScript
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "echo $path" || c === " $PATH")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="p" className="block text-foreground/80">
+            /usr/local/bin:/usr/bin:/bin:/skills:/experience:/projects
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "sudo hire-me")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="s" className="block text-green-400 font-semibold">
+            ✓ Request submitted!
+          </span>,
+          <span key="s2" className="block text-muted-foreground/70 text-xs mt-0.5">
+            Redirecting to contact form...
+          </span>,
+        ],
+        _sideEffect: "contact" as const,
+      },
+    ];
+
+  if (c === "ssh jay@work")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="a" className="block text-yellow-400/80">
+            ssh: connect to host work port 22: Permission denied
+          </span>,
+          <span key="b" className="block text-muted-foreground/50 text-xs mt-0.5">
+            hint: try "contact" instead 😄
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "rm -rf /")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="r" className="block text-red-400/80">
+            rm: dangerous operation blocked by portfolio-os
+          </span>,
+          <span key="r2" className="block text-muted-foreground/50 text-xs mt-0.5">
+            nice try though 👀
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "vim" || c === "nano" || c === "emacs")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="v" className="block text-muted-foreground/60">
+            {c}: editor opened... just kidding.
+          </span>,
+          <span key="v2" className="block text-muted-foreground/50 text-xs mt-0.5">
+            I use VS Code with Kiro AI 🤖
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "exit" || c === "logout")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="e" className="block text-muted-foreground/60">
+            logout: you can't leave — this portfolio is too good 😄
+          </span>,
+        ],
+      },
+    ];
+
+  if (c === "ping google.com")
+    return [
+      {
+        type: "output",
+        nodes: [
+          <span key="p1" className="block text-foreground/80">
+            PING google.com: 56 bytes of data
+          </span>,
+          <span key="p2" className="block text-foreground/80">
+            64 bytes from google.com: icmp_seq=0 ttl=117 time=12.4 ms
+          </span>,
+          <span key="p3" className="block text-foreground/80">
+            64 bytes from google.com: icmp_seq=1 ttl=117 time=11.8 ms
+          </span>,
+          <span key="p4" className="block text-muted-foreground/50 text-xs mt-1">
+            --- but why ping Google when you can hire a dev? ---
           </span>,
         ],
       },
     ];
 
   if (c === "") return [];
-  return [{ type: "error", text: `zsh: command not found: ${cmd}  (try "help")` }];
+  return [{ type: "error", text: `zsh: command not found: ${cmd}  (try "help" or "ls")` }];
 }
 
 // ── TerminalBlock ─────────────────────────────────────────────────────────────
@@ -338,6 +688,22 @@ function TerminalBlock() {
     if (cmd) setCmdHistory((h) => [cmd, ...h]);
     setHistoryIdx(-1);
     setInput("");
+    // Handle side effects (e.g. sudo hire-me scrolls to contact)
+    const sideEffect = out.find(
+      (l) =>
+        l.type === "output" &&
+        (l as { type: "output"; nodes: React.ReactNode[]; _sideEffect?: string })._sideEffect,
+    );
+    if (
+      sideEffect &&
+      (sideEffect as { type: "output"; nodes: React.ReactNode[]; _sideEffect?: string })
+        ._sideEffect === "contact"
+    ) {
+      setTimeout(
+        () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }),
+        800,
+      );
+    }
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -420,21 +786,18 @@ function TerminalBlock() {
             if (line.type === "input")
               return (
                 <div key={i} className="flex items-start gap-2 leading-relaxed">
-                  <span className="select-none text-primary/50 shrink-0">❯</span>
-                  <span className="text-foreground break-all">{line.text}</span>
+                  <span className="select-none text-primary/30 shrink-0 text-xs mt-0.5">$</span>
+                  <span className="text-foreground/70 break-all">{line.text}</span>
                 </div>
               );
             if (line.type === "output")
               return (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.15 }}
                   className="ml-5 mt-0.5 mb-3 space-y-0.5 leading-relaxed text-foreground/80"
                 >
                   {line.nodes}
-                </motion.div>
+                </div>
               );
             if (line.type === "error")
               return (
@@ -445,7 +808,13 @@ function TerminalBlock() {
             return null;
           })}
         {booted && (
-          <div className="flex items-center gap-2 leading-relaxed mt-1">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              runCommand(input);
+            }}
+            className="flex items-center gap-2 leading-relaxed mt-1"
+          >
             <span className="select-none text-primary/50 shrink-0">❯</span>
             <span className="relative flex-1 flex items-center min-w-0">
               <span className="text-foreground whitespace-pre">{input}</span>
@@ -461,20 +830,24 @@ function TerminalBlock() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
-              className="fixed top-[-9999px] left-[-9999px] opacity-0 w-0 h-0 pointer-events-none"
+              className="fixed top-[-9999px] left-[-9999px] h-px w-px border-0 bg-transparent p-0 text-transparent outline-none pointer-events-none opacity-0"
               autoComplete="off"
-              autoCapitalize="off"
+              autoCorrect="off"
+              autoCapitalize="none"
               spellCheck={false}
+              inputMode="text"
+              enterKeyHint="send"
               aria-label="Terminal input"
+              tabIndex={-1}
             />
-          </div>
+          </form>
         )}
       </div>
 
       {/* Footer */}
       {booted && (
-        <div className="border-t border-border/40 px-4 py-2 font-mono text-[10px] text-muted-foreground/35 text-center select-none">
-          click · type a command · ↑↓ history · ctrl+l clear
+        <div className="border-t border-border/40 px-4 py-2 font-mono text-[10px] text-muted-foreground/80 text-center select-none">
+          click · type a command · try "neofetch" or "sudo hire-me" · ↑↓ history
         </div>
       )}
     </motion.div>
