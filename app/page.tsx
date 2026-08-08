@@ -3,6 +3,7 @@ import { PageTransition, PageTransitionItem } from "@/components/portfolio/PageT
 import { Navbar } from "@/components/portfolio/Navbar";
 import { ScrollProgressBar } from "@/components/portfolio/ScrollProgressBar";
 import { BackToTop } from "@/components/portfolio/BackToTop";
+import { ChatBot } from "@/components/portfolio/ChatBot";
 import { CursorSpotlight } from "@/components/portfolio/CursorSpotlight";
 import { KonamiEasterEgg } from "@/components/portfolio/KonamiEasterEgg";
 import { SectionErrorBoundary } from "@/components/portfolio/SectionErrorBoundary";
@@ -12,61 +13,66 @@ import { SkillsSection } from "@/components/portfolio/SkillsSection";
 import { ExperienceSection } from "@/components/portfolio/ExperienceSection";
 import { EducationSection } from "@/components/portfolio/EducationSection";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
-// import { TestimonialsSection } from "@/components/portfolio/TestimonialsSection";
 import { ContactSection } from "@/components/portfolio/ContactSection";
 import { Footer } from "@/components/portfolio/Footer";
+import { LoadingScreenWrapper } from "@/components/portfolio/LoadingScreen";
 
 export default function Home() {
   return (
     <ThemeProvider>
-      <div className="relative min-h-screen bg-background text-foreground">
-        {/* Non-layout overlays — outside the stagger so they don't shift */}
-        <CursorSpotlight />
-        <ScrollProgressBar />
-        <KonamiEasterEgg />
+      {/*
+       * LoadingScreenWrapper:
+       *   - Controlled by siteConfig.showLoadingScreen
+       *   - Plays the boot sequence once per session (sessionStorage)
+       *   - Hides site content behind it, reveals via split-wipe on done
+       */}
+      <LoadingScreenWrapper>
+        <div className="relative min-h-screen bg-background text-foreground">
+          {/* Non-layout overlays */}
+          <CursorSpotlight />
+          <ScrollProgressBar />
+          <KonamiEasterEgg />
 
-        <PageTransition>
-          <PageTransitionItem>
-            <Navbar />
-          </PageTransitionItem>
+          <PageTransition>
+            <PageTransitionItem>
+              <Navbar />
+            </PageTransitionItem>
 
-          <PageTransitionItem>
-            <main>
-              <SectionErrorBoundary section="Hero">
-                <HeroSection />
-              </SectionErrorBoundary>
-              <SectionErrorBoundary section="About">
-                <AboutSection />
-              </SectionErrorBoundary>
-              <SectionErrorBoundary section="Skills">
-                <SkillsSection />
-              </SectionErrorBoundary>
-              <SectionErrorBoundary section="Experience">
-                <ExperienceSection />
-              </SectionErrorBoundary>
-              <SectionErrorBoundary section="Education">
-                <EducationSection />
-              </SectionErrorBoundary>
-              <SectionErrorBoundary section="Projects">
-                <ProjectsSection />
-              </SectionErrorBoundary>
-              {/* <SectionErrorBoundary section="Testimonials">
-                <TestimonialsSection />
-              </SectionErrorBoundary> */}
+            <PageTransitionItem>
+              <main>
+                <SectionErrorBoundary section="Hero">
+                  <HeroSection />
+                </SectionErrorBoundary>
+                <SectionErrorBoundary section="About">
+                  <AboutSection />
+                </SectionErrorBoundary>
+                <SectionErrorBoundary section="Skills">
+                  <SkillsSection />
+                </SectionErrorBoundary>
+                <SectionErrorBoundary section="Experience">
+                  <ExperienceSection />
+                </SectionErrorBoundary>
+                <SectionErrorBoundary section="Education">
+                  <EducationSection />
+                </SectionErrorBoundary>
+                <SectionErrorBoundary section="Projects">
+                  <ProjectsSection />
+                </SectionErrorBoundary>
+                <SectionErrorBoundary section="Contact">
+                  <ContactSection />
+                </SectionErrorBoundary>
+              </main>
+            </PageTransitionItem>
 
-              <SectionErrorBoundary section="Contact">
-                <ContactSection />
-              </SectionErrorBoundary>
-            </main>
-          </PageTransitionItem>
+            <PageTransitionItem>
+              <Footer />
+            </PageTransitionItem>
+          </PageTransition>
 
-          <PageTransitionItem>
-            <Footer />
-          </PageTransitionItem>
-        </PageTransition>
-
-        <BackToTop />
-      </div>
+          <BackToTop />
+          <ChatBot />
+        </div>
+      </LoadingScreenWrapper>
     </ThemeProvider>
   );
 }

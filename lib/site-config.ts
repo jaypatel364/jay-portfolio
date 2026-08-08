@@ -53,7 +53,26 @@ export const siteConfig = {
   // to keep the standard layout.
   showTerminalHero: true,
 
-  // ── Daily stack marquee ───────────────────────────────────────────────────
+  // ── Loading screen ────────────────────────────────────────────────────────
+  // Cinematic terminal boot sequence shown once per session before the site
+  // reveals. Set to false to disable entirely (visitors land directly on hero).
+  showLoadingScreen: true,
+
+  // ── Jay's Brain game ──────────────────────────────────────────────────────
+  // Interactive floating skill-node game in the Skills section.
+  // Click nodes to unlock fun facts; all unlocked = confetti 🎉
+  // Set to false to hide the game button and keep the normal skills layout.
+  showBrainGame: true,
+
+  // ── Skills section — "All" grid preview counts ───────────────────────────
+  // How many skills to show per category in the "All" grid view.
+  // The sphere (individual category view) always shows every skill.
+  // Increase any value to show more pills in the "All" tab.
+  skillPreviewCounts: {
+    Frontend: 8, // show first 8 of however many Frontend skills you add
+    Backend: 8,
+    "Tools & DevOps": 8,
+  } as Record<string, number>,
   // Scrolling strip of tech icons shown at the bottom of the About section.
   // Comment out the entire dailyStack array to hide the marquee completely.
   dailyStack: [

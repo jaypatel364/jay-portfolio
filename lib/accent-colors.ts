@@ -16,21 +16,6 @@ export interface AccentPreset {
 
 export const ACCENT_PRESETS: AccentPreset[] = [
   {
-    id: "amber",
-    label: "Amber",
-    swatch: "#f59e0b",
-    light: {
-      "--primary": "oklch(0.65 0.18 45)",
-      "--glow": "oklch(0.75 0.15 45)",
-      "--ring": "oklch(0.65 0.18 45)",
-    },
-    dark: {
-      "--primary": "oklch(0.72 0.17 45)",
-      "--glow": "oklch(0.72 0.17 45)",
-      "--ring": "oklch(0.72 0.17 45)",
-    },
-  },
-  {
     id: "violet",
     label: "Violet",
     swatch: "#7c3aed",
@@ -43,6 +28,21 @@ export const ACCENT_PRESETS: AccentPreset[] = [
       "--primary": "oklch(0.68 0.20 295)",
       "--glow": "oklch(0.68 0.20 295)",
       "--ring": "oklch(0.68 0.20 295)",
+    },
+  },
+  {
+    id: "amber",
+    label: "Amber",
+    swatch: "#f59e0b",
+    light: {
+      "--primary": "oklch(0.65 0.18 45)",
+      "--glow": "oklch(0.75 0.15 45)",
+      "--ring": "oklch(0.65 0.18 45)",
+    },
+    dark: {
+      "--primary": "oklch(0.72 0.17 45)",
+      "--glow": "oklch(0.72 0.17 45)",
+      "--ring": "oklch(0.72 0.17 45)",
     },
   },
   {

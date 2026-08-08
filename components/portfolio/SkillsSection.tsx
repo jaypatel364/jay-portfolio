@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "./SectionHeading";
 import { MonitorSmartphone, Server, Wrench, Sparkles } from "lucide-react";
@@ -38,6 +38,7 @@ import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
 import { useCountUp } from "@/hooks/use-count-up";
 import { cn } from "@/lib/utils";
+import { BrainGameTrigger } from "@/components/portfolio/BrainGame";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -53,6 +54,8 @@ interface SkillGroup {
   icon: LucideIcon;
   description: string;
   skills: Skill[];
+  /** Max shown in the "All" grid. Sphere always shows all. Pulled from site-config. */
+  previewCount: number;
 }
 
 // ── Skill data ─────────────────────────────────────────────────────────────────
@@ -62,6 +65,7 @@ const SKILL_GROUPS: SkillGroup[] = [
     category: "Frontend",
     icon: MonitorSmartphone,
     description: "Crafting pixel-perfect, responsive interfaces",
+    previewCount: siteConfig.skillPreviewCounts["Frontend"] ?? 8,
     skills: [
       { name: "React", icon: SiReact, lightColor: "#149ECA", darkColor: "#61DAFB" },
       { name: "Next.js", icon: SiNextdotjs, lightColor: "#000000", darkColor: "#ffffff" },
@@ -77,6 +81,7 @@ const SKILL_GROUPS: SkillGroup[] = [
     category: "Backend",
     icon: Server,
     description: "Building robust, scalable server-side systems",
+    previewCount: siteConfig.skillPreviewCounts["Backend"] ?? 8,
     skills: [
       { name: "Node.js", icon: SiNodedotjs, lightColor: "#2E7D32", darkColor: "#5FA04E" },
       { name: "Express.js", icon: SiExpress, lightColor: "#404040", darkColor: "#cccccc" },
@@ -92,6 +97,7 @@ const SKILL_GROUPS: SkillGroup[] = [
     category: "Tools & DevOps",
     icon: Wrench,
     description: "Streamlining workflows and deployments",
+    previewCount: siteConfig.skillPreviewCounts["Tools & DevOps"] ?? 8,
     skills: [
       { name: "Git", icon: SiGit, lightColor: "#C0392B", darkColor: "#F05032" },
       { name: "GitHub", icon: SiGithub, lightColor: "#1a1a1a", darkColor: "#ffffff" },
@@ -105,116 +111,359 @@ const SKILL_GROUPS: SkillGroup[] = [
   },
 ];
 
-// ── Orbital geometry ──────────────────────────────────────────────────────────
+// ── 3D Tag Sphere — premium globe with momentum + atmosphere ──────────────────
+//
+// • Fibonacci lattice for even point distribution
+// • Circular icon nodes sized by depth (quadratic curve = strong 3D feel)
+// • 3 rotating latitude lines that follow the sphere rotation (globe vibes)
+// • Radial atmosphere glow behind the sphere
+// • Drag to spin with momentum — releases keep spinning, friction slows them
+// • Hover tooltip floats above each node
+// • Mouse + touch unified via Pointer Events API
 
-const ORBITAL_MAX = 8; // hard cap — max skills on the ring
-const RING_RADIUS = 152; // px — single ring radius
-const RING_RADII = [RING_RADIUS, 256];
-const RING_CAPS = [ORBITAL_MAX, 16];
-
-function getOrbitalPositions(
-  count: number,
-): { x: number; y: number; ring: number; angle: number }[] {
-  const positions: { x: number; y: number; ring: number; angle: number }[] = [];
-  let remaining = count;
-  let ringIdx = 0;
-
-  while (remaining > 0 && ringIdx < RING_RADII.length) {
-    const cap = RING_CAPS[ringIdx];
-    const inRing = Math.min(remaining, cap);
-    const r = RING_RADII[ringIdx];
-    const offset = -Math.PI / 2;
-
-    for (let i = 0; i < inRing; i++) {
-      const angle = offset + (2 * Math.PI * i) / inRing;
-      positions.push({ x: Math.cos(angle) * r, y: Math.sin(angle) * r, ring: ringIdx, angle });
-    }
-    remaining -= inRing;
-    ringIdx++;
-  }
-  return positions;
+interface SpherePoint {
+  x: number;
+  y: number;
+  z: number;
+  scale: number;
+  opacity: number;
 }
 
-// ── Orbital skill node ────────────────────────────────────────────────────────
+/** Fibonacci sphere — most uniform distribution of N points on a unit sphere */
+function fibonacciSphere(n: number): { tx: number; ty: number; tz: number }[] {
+  const pts: { tx: number; ty: number; tz: number }[] = [];
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < n; i++) {
+    const y = 1 - (i / (n - 1)) * 2;
+    const r = Math.sqrt(Math.max(0, 1 - y * y));
+    const theta = golden * i;
+    pts.push({ tx: Math.cos(theta) * r, ty: y, tz: Math.sin(theta) * r });
+  }
+  return pts;
+}
 
-function OrbitalNode({
-  skill,
-  position,
-  delay,
-  isDark,
-  ringRotation,
-}: {
-  skill: Skill;
-  position: { x: number; y: number; angle: number };
-  delay: number;
-  isDark: boolean;
-  /** live rotation angle of this node's ring (deg) — node counter-rotates to stay upright */
-  ringRotation: number;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const Icon = skill.icon;
-  const color = isDark ? skill.darkColor : skill.lightColor;
+function rotate3D(
+  tx: number,
+  ty: number,
+  tz: number,
+  ax: number,
+  ay: number,
+): { rx: number; ry: number; rz: number } {
+  const cosY = Math.cos(ay),
+    sinY = Math.sin(ay);
+  const x1 = tx * cosY + tz * sinY;
+  const z1 = -tx * sinY + tz * cosY;
+  const cosX = Math.cos(ax),
+    sinX = Math.sin(ax);
+  const y2 = ty * cosX - z1 * sinX;
+  const z2 = ty * sinX + z1 * cosX;
+  return { rx: x1, ry: y2, rz: z2 };
+}
+
+/** Generate points for a latitude ring at a given tilt angle */
+function latRingPoints(tilt: number, segments = 64): { tx: number; ty: number; tz: number }[] {
+  const pts = [];
+  const cosT = Math.cos(tilt),
+    sinT = Math.sin(tilt);
+  for (let i = 0; i <= segments; i++) {
+    const theta = (i / segments) * 2 * Math.PI;
+    pts.push({ tx: Math.cos(theta) * cosT, ty: sinT, tz: Math.sin(theta) * cosT });
+  }
+  return pts;
+}
+
+function SkillSphere({ skills, isDark }: { skills: Skill[]; isDark: boolean }) {
+  const RADIUS = 185;
+  const NODE_R = 22; // px radius of each circular node at full scale
+
+  const [angleX, setAngleX] = useState(0.35);
+  const [angleY, setAngleY] = useState(0);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const basePoints = useRef(fibonacciSphere(skills.length));
+
+  // Physics refs — never cause re-render, updated in RAF
+  const angleRef = useRef({ x: 0.35, y: 0 });
+  const velRef = useRef({ x: 0, y: 0 });
+  const dragging = useRef(false);
+  const lastPtr = useRef({ x: 0, y: 0 });
+  const lastPtrTime = useRef(0);
+  const ptrDelta = useRef({ x: 0, y: 0 });
+  const rafRef = useRef<number>(0);
+  const frameTime = useRef<number>(0);
+
+  // Main RAF loop — auto-spin + momentum decay
+  useEffect(() => {
+    const AUTO_X = 0.00022; // rad/ms gentle tilt drift
+    const AUTO_Y = 0.00038; // rad/ms main spin
+    const FRICTION = 0.965; // momentum decay per frame
+    const MIN_VEL = 0.00004; // below this → resume auto-spin
+
+    const tick = (now: number) => {
+      const dt = frameTime.current ? Math.min(now - frameTime.current, 32) : 16;
+      frameTime.current = now;
+
+      if (!dragging.current) {
+        const speed = Math.sqrt(velRef.current.x ** 2 + velRef.current.y ** 2);
+        if (speed > MIN_VEL) {
+          // Coast with friction
+          velRef.current.x *= FRICTION;
+          velRef.current.y *= FRICTION;
+          angleRef.current.x += velRef.current.x * dt;
+          angleRef.current.y += velRef.current.y * dt;
+        } else {
+          // Auto-spin
+          velRef.current = { x: 0, y: 0 };
+          angleRef.current.x += AUTO_X * dt;
+          angleRef.current.y += AUTO_Y * dt;
+        }
+        setAngleX(angleRef.current.x);
+        setAngleY(angleRef.current.y);
+      }
+
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    dragging.current = true;
+    setIsDragging(true);
+    velRef.current = { x: 0, y: 0 };
+    lastPtr.current = { x: e.clientX, y: e.clientY };
+    lastPtrTime.current = e.timeStamp;
+    ptrDelta.current = { x: 0, y: 0 };
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!dragging.current) return;
+    const dx = e.clientX - lastPtr.current.x;
+    const dy = e.clientY - lastPtr.current.y;
+    const dt = Math.max(1, e.timeStamp - lastPtrTime.current);
+    ptrDelta.current = { x: dy * 0.007, y: dx * 0.007 };
+    velRef.current = { x: ((dy * 0.007) / dt) * 16, y: ((dx * 0.007) / dt) * 16 };
+    lastPtr.current = { x: e.clientX, y: e.clientY };
+    lastPtrTime.current = e.timeStamp;
+    angleRef.current.x += ptrDelta.current.x;
+    angleRef.current.y += ptrDelta.current.y;
+    setAngleX(angleRef.current.x);
+    setAngleY(angleRef.current.y);
+  };
+
+  const onPointerUp = () => {
+    dragging.current = false;
+    setIsDragging(false);
+  };
+
+  // ── Project skill nodes ────────────────────────────────────────────────────
+  const projected: (SpherePoint & { skill: Skill })[] = basePoints.current.map((p, i) => {
+    const { rx, ry, rz } = rotate3D(p.tx, p.ty, p.tz, angleX, angleY);
+    const depth = (rz + 1) / 2; // 0 = back, 1 = front
+    // Quadratic depth curve — makes back nodes clearly smaller/dimmer
+    const depthQ = depth * depth;
+    // Quadratic depth curve — back nodes clearly smaller/dimmer but still visible
+    // Light mode: floor 0.55 opacity so nothing disappears on white bg
+    // Dark mode: floor 0.65 opacity — needs higher floor to stay visible on dark bg
+    const opacityFloor = isDark ? 0.65 : 0.55;
+    const scaleFloor = 0.52;
+    return {
+      x: rx * RADIUS,
+      y: ry * RADIUS,
+      z: rz,
+      scale: scaleFloor + depthQ * (1 - scaleFloor),
+      opacity: opacityFloor + depthQ * (1 - opacityFloor),
+      skill: skills[i],
+    };
+  });
+  projected.sort((a, b) => a.z - b.z);
+
+  // ── Project latitude rings ─────────────────────────────────────────────────
+  const LAT_TILTS = [-0.52, 0, 0.52]; // ≈ -30°, 0°, +30° latitude
+  const ringPaths = LAT_TILTS.map((tilt) => {
+    const ringPts = latRingPoints(tilt);
+    const projected2d = ringPts.map((p) => {
+      const { rx, ry } = rotate3D(p.tx, p.ty, p.tz, angleX, angleY);
+      return { x: rx * RADIUS + RADIUS + 40, y: ry * RADIUS + RADIUS + 40 };
+    });
+    // Build SVG path from projected points
+    return (
+      projected2d
+        .map((pt, i) => `${i === 0 ? "M" : "L"} ${pt.x.toFixed(1)} ${pt.y.toFixed(1)}`)
+        .join(" ") + " Z"
+    );
+  });
+
+  const svgSize = (RADIUS + 40) * 2;
 
   return (
-    <motion.div
-      initial={{ x: 0, y: 0, scale: 0, opacity: 0 }}
-      animate={{ x: position.x, y: position.y, scale: 1, opacity: 1 }}
-      exit={{ x: 0, y: 0, scale: 0, opacity: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20, delay }}
-      className="absolute -translate-x-1/2 -translate-y-1/2"
-      style={{ left: "50%", top: "50%" }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <div
+      className="relative mx-auto select-none touch-none"
+      style={{
+        width: svgSize,
+        height: svgSize,
+        cursor: isDragging ? "grabbing" : "grab",
+      }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerLeave={onPointerUp}
     >
-      {/* Counter-rotate so node stays upright as ring spins */}
-      <div style={{ transform: `rotate(${-ringRotation}deg)`, transition: "none" }}>
-        <motion.div
-          animate={hovered ? { scale: 1.22 } : { scale: 1 }}
-          transition={{ type: "spring", stiffness: 600, damping: 20 }}
-          className="flex flex-col items-center gap-1.5 cursor-default"
-        >
-          {/* Pulse ring behind node on hover */}
-          {hovered && (
-            <motion.div
-              initial={{ scale: 0.6, opacity: 0.8 }}
-              animate={{ scale: 2.2, opacity: 0 }}
-              transition={{ duration: 0.55, ease: "easeOut" }}
-              className="absolute h-12 w-12 rounded-full"
-              style={{ backgroundColor: color }}
-            />
-          )}
+      {/* Atmosphere glow — behind everything */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          width: RADIUS * 2,
+          height: RADIUS * 2,
+          background:
+            "radial-gradient(circle, var(--tw-shadow-color, color-mix(in oklch, var(--primary) 10%, transparent)) 0%, transparent 72%)",
+          backgroundImage: `radial-gradient(circle, color-mix(in oklch, var(--primary) 10%, transparent) 0%, transparent 72%)`,
+        }}
+      />
 
-          {/* Node */}
+      {/* SVG layer — sphere outline + latitude rings */}
+      <svg
+        className="pointer-events-none absolute inset-0"
+        width={svgSize}
+        height={svgSize}
+        viewBox={`0 0 ${svgSize} ${svgSize}`}
+        overflow="visible"
+      >
+        {/* Outer sphere circle */}
+        <circle
+          cx={svgSize / 2}
+          cy={svgSize / 2}
+          r={RADIUS}
+          fill="none"
+          stroke="var(--primary)"
+          strokeOpacity={0.1}
+          strokeWidth={1}
+        />
+        {/* Latitude rings */}
+        {ringPaths.map((d, i) => (
+          <path
+            key={i}
+            d={d}
+            fill="none"
+            stroke="var(--primary)"
+            strokeOpacity={0.12}
+            strokeWidth={0.8}
+            strokeDasharray={i === 1 ? "none" : "4 6"}
+          />
+        ))}
+        {/* Longitude meridian hint — vertical */}
+        <ellipse
+          cx={svgSize / 2}
+          cy={svgSize / 2}
+          rx={Math.abs(Math.cos(angleY) * RADIUS)}
+          ry={RADIUS}
+          fill="none"
+          stroke="var(--primary)"
+          strokeOpacity={0.07}
+          strokeWidth={0.8}
+        />
+      </svg>
+
+      {/* Skill nodes */}
+      {projected.map(({ x, y, scale, opacity, skill }) => {
+        const color = isDark ? skill.darkColor : skill.lightColor;
+        const Icon = skill.icon;
+        const isHovered = hoveredId === skill.name;
+        const nodeSize = NODE_R * 2 * scale;
+
+        return (
           <div
-            className="relative flex h-12 w-12 items-center justify-center rounded-full border-2 transition-colors duration-200"
+            key={skill.name}
+            className="absolute"
             style={{
-              borderColor: hovered ? color : `${color}55`,
-              backgroundColor: hovered ? `${color}28` : `${color}14`,
-              boxShadow: hovered
-                ? `0 0 20px ${color}60, 0 0 40px ${color}25, inset 0 0 12px ${color}18`
-                : `0 0 8px ${color}20`,
+              left: "50%",
+              top: "50%",
+              transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+              zIndex: Math.round(opacity * 100),
+              // Don't mess with opacity on hover — instead we boost it via style
             }}
+            onMouseEnter={() => setHoveredId(skill.name)}
+            onMouseLeave={() => setHoveredId(null)}
           >
-            <Icon size={20} style={{ color }} />
-          </div>
+            {/* Hover tooltip above the node */}
+            {isHovered && (
+              <div
+                className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded-lg border border-border/60 bg-card/95 px-2.5 py-1 text-[11px] font-bold shadow-lg backdrop-blur-sm"
+                style={{ color, zIndex: 200 }}
+              >
+                {skill.name}
+                <div
+                  className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent"
+                  style={{ borderTopColor: "var(--border)" }}
+                />
+              </div>
+            )}
 
-          {/* Tooltip */}
-          <motion.span
-            initial={false}
-            animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 6, scale: hovered ? 1 : 0.85 }}
-            transition={{ duration: 0.12 }}
-            className="pointer-events-none absolute top-full mt-2 whitespace-nowrap rounded-lg border border-border bg-card/95 px-2.5 py-1 text-[11px] font-bold shadow-lg backdrop-blur-sm z-10"
-            style={{ color }}
-          >
-            {skill.name}
-          </motion.span>
-        </motion.div>
+            {/* Circular node */}
+            <div
+              className="flex items-center justify-center rounded-full transition-all duration-150"
+              style={{
+                width: nodeSize,
+                height: nodeSize,
+                opacity: isHovered ? 1 : opacity,
+                // Dark mode: stronger fill + border so nodes punch through the dark bg
+                backgroundColor: isDark
+                  ? isHovered
+                    ? `${color}40`
+                    : `${color}28`
+                  : isHovered
+                    ? `${color}22`
+                    : `${color}12`,
+                border: `${scale > 0.8 ? 1.5 : 1}px solid ${
+                  isDark
+                    ? isHovered
+                      ? `${color}cc`
+                      : `${color}10`
+                    : isHovered
+                      ? `${color}70`
+                      : `${color}35`
+                }`,
+                boxShadow: isDark
+                  ? isHovered
+                    ? `0 0 22px ${color}80, 0 0 44px ${color}40, inset 0 0 14px ${color}25`
+                    : `0 0 ${Math.round(scale * 14)}px ${color}55`
+                  : isHovered
+                    ? `0 0 20px ${color}55, 0 0 40px ${color}25, inset 0 0 12px ${color}15`
+                    : `0 0 ${Math.round(scale * 10)}px ${color}28`,
+                transform: `scale(${isHovered ? 1.22 : 1})`,
+              }}
+            >
+              <Icon
+                size={Math.max(10, Math.round(nodeSize * 0.45))}
+                style={{
+                  // Dark mode: full color always; light mode: 87% on idle
+                  color: isDark ? color : isHovered ? color : `${color}dd`,
+                  filter: isDark
+                    ? `drop-shadow(0 0 ${isHovered ? "6px" : "3px"} ${color}cc)`
+                    : isHovered
+                      ? `drop-shadow(0 0 5px ${color}aa)`
+                      : undefined,
+                }}
+              />
+            </div>
+          </div>
+        );
+      })}
+
+      {/* Drag hint */}
+      <div className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2">
+        <span className="text-[10px] text-muted-foreground/35 tracking-wide">
+          drag to rotate · hover to explore
+        </span>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// ── Overflow pill — compact badge for 9th/10th skill ─────────────────────────
+// ── Overflow pill — compact badge for extra skills ────────────────────────────
 
 function OverflowPill({ skill, isDark, delay }: { skill: Skill; isDark: boolean; delay: number }) {
   const [hovered, setHovered] = useState(false);
@@ -253,97 +502,28 @@ function OverflowPill({ skill, isDark, delay }: { skill: Skill; isDark: boolean;
   );
 }
 
-// ── Orbital canvas ─────────────────────────────────────────────────────────────
+// ── Category sphere view ──────────────────────────────────────────────────────
 
-function OrbitalCanvas({ group, isDark }: { group: SkillGroup; isDark: boolean }) {
-  const Icon = group.icon;
-
-  // Split: up to ORBITAL_MAX on the ring, rest as overflow pills
-  const ringSkills = group.skills.slice(0, ORBITAL_MAX);
-  const overflowSkills = group.skills.slice(ORBITAL_MAX); // 0, 1 or 2 extras
-  const positions = getOrbitalPositions(ringSkills.length);
-  const canvas = (RING_RADIUS + 90) * 2; // fixed size now
-
-  // Continuous ring rotation
-  const [rotation, setRotation] = React.useState(0);
-  const rafRef = React.useRef<number>(0);
-  const lastRef = React.useRef<number>(0);
-
-  React.useEffect(() => {
-    const SPEED = 0.018; // deg/ms
-    const tick = (now: number) => {
-      const dt = lastRef.current ? now - lastRef.current : 0;
-      lastRef.current = now;
-      setRotation((prev) => (prev + SPEED * dt) % 360);
-      rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, []);
-
+function CategorySphereView({ group, isDark }: { group: SkillGroup; isDark: boolean }) {
   return (
-    <div className="flex flex-col items-center gap-5">
-      {/* ── Orbital ring canvas ── */}
-      <div className="relative mx-auto select-none" style={{ width: canvas, height: canvas }}>
-        {/* Rotating ring track */}
-        <div
-          className="absolute left-1/2 top-1/2 rounded-full"
-          style={{
-            width: RING_RADIUS * 2,
-            height: RING_RADIUS * 2,
-            marginLeft: -RING_RADIUS,
-            marginTop: -RING_RADIUS,
-            transform: `rotate(${rotation}deg)`,
-            border: "1px dashed",
-            borderColor: "rgba(99,102,241,0.18)",
-          }}
-        />
-
-        {/* Center hub */}
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 300, damping: 22, delay: 0.04 }}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2.5 z-10"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.35, 1], opacity: [0.4, 0, 0.4] }}
-            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute h-16 w-16 rounded-full bg-primary/20 blur-sm"
-          />
-          <div className="relative flex h-16 w-16 items-center justify-center rounded-full gradient-primary shadow-glow">
-            <Icon className="h-7 w-7 text-primary-foreground" />
-          </div>
-          <span className="font-heading text-sm font-bold tracking-tight">{group.category}</span>
-        </motion.div>
-
-        {/* Ring skill nodes */}
-        {ringSkills.map((skill, i) => (
-          <OrbitalNode
-            key={skill.name}
-            skill={skill}
-            position={positions[i]}
-            delay={0.06 + i * 0.04}
-            isDark={isDark}
-            ringRotation={rotation}
-          />
-        ))}
+    <motion.div
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.3 }}
+      className="flex flex-col items-center gap-6"
+    >
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-primary shadow-glow">
+          {React.createElement(group.icon, { className: "h-5 w-5 text-primary-foreground" })}
+        </div>
+        <div>
+          <h3 className="font-heading text-lg font-bold">{group.category}</h3>
+          <p className="text-xs text-muted-foreground">{group.description}</p>
+        </div>
       </div>
-
-      {/* ── Overflow pills (9th, 10th skill) ── */}
-      {overflowSkills.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.06 + ringSkills.length * 0.04 + 0.1, duration: 0.3 }}
-          className="flex items-center justify-center gap-3"
-        >
-          {overflowSkills.map((skill, i) => (
-            <OverflowPill key={skill.name} skill={skill} isDark={isDark} delay={i * 0.06} />
-          ))}
-        </motion.div>
-      )}
-    </div>
+      <SkillSphere skills={group.skills} isDark={isDark} />
+    </motion.div>
   );
 }
 
@@ -403,6 +583,11 @@ function CategoryCard({
   isDark: boolean;
 }) {
   const Icon = group.icon;
+  // In the "All" view, only show up to previewCount skills
+  const visibleSkills = group.skills.slice(0, group.previewCount);
+  const showhiddenCount = false;
+  const hiddenCount = group.skills.length - visibleSkills.length;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 32 }}
@@ -421,7 +606,7 @@ function CategoryCard({
         </div>
       </div>
       <div className="flex flex-wrap gap-3">
-        {group.skills.map((skill, si) => (
+        {visibleSkills.map((skill, si) => (
           <SkillPill
             key={skill.name}
             skill={skill}
@@ -429,6 +614,26 @@ function CategoryCard({
             isDark={isDark}
           />
         ))}
+        {/* "+N more" badge — click a category filter to see all in the sphere */}
+        {showhiddenCount && hiddenCount > 0 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{
+              duration: 0.3,
+              delay: index * 0.08 + visibleSkills.length * 0.04,
+              ease: "backOut",
+            }}
+            className="flex items-center justify-center rounded-2xl border border-dashed border-primary/30 bg-primary/5 px-4 py-4 w-[79px] cursor-default"
+          >
+            <span className="text-center text-[11px] font-semibold leading-tight text-primary/70">
+              +{hiddenCount}
+              <br />
+              more
+            </span>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );
@@ -553,6 +758,19 @@ export function SkillsSection() {
           ))}
         </motion.div>
 
+        {/* Jay's Brain game trigger */}
+        {siteConfig.showBrainGame && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.45 }}
+            className="mt-6 flex justify-center"
+          >
+            <BrainGameTrigger />
+          </motion.div>
+        )}
+
         {/* Content */}
         <div className="mt-12">
           <AnimatePresence mode="wait">
@@ -581,9 +799,9 @@ export function SkillsSection() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                {/* Desktop orbital — hidden on mobile */}
+                {/* Desktop sphere — hidden on mobile */}
                 <div className="hidden md:flex justify-center">
-                  <OrbitalCanvas group={visibleGroups[0]} isDark={isDark} />
+                  <CategorySphereView group={visibleGroups[0]} isDark={isDark} />
                 </div>
 
                 {/* Mobile grid fallback */}

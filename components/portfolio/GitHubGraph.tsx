@@ -3,7 +3,9 @@
 /**
  * GitHubGraph — stunning 12-month contribution heatmap
  * ─────────────────────────────────────────────────────
- * • Shows exactly 52 weeks (Aug 2025 → Aug 2026) — no horizontal scroll ever
+ * • Shows exactly 52 weeks (Aug 2025 → Aug 2026) on desktop — no horizontal scroll ever
+ * • On mobile, shows a compact recent window (last ~16 weeks) — still no horizontal scroll
+ * • Mobile users can tap "View full year" to open the complete grid in a scrollable modal
  * • Cells auto-size to fill 100% of the container width
  * • Gradient cells that use the site accent colour
  * • Stats bar with animated counters
@@ -13,8 +15,17 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { motion, animate } from "framer-motion";
-import { GitCommitHorizontal, Flame, TrendingUp, Loader2, CalendarDays, Zap } from "lucide-react";
+import { motion, animate, AnimatePresence } from "framer-motion";
+import {
+  GitCommitHorizontal,
+  Flame,
+  TrendingUp,
+  Loader2,
+  CalendarDays,
+  Zap,
+  X,
+  Maximize2,
+} from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -34,7 +45,8 @@ interface Week {
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const SHOW_DAY_INDICES = [1, 3, 5]; // Mon, Wed, Fri
-const TOTAL_WEEKS = 53; // ~1 year
+const MOBILE_BREAKPOINT = 640; // px — matches Tailwind's `sm`
+const MOBILE_WEEKS = 16; // ~4 months shown by default on small screens
 
 // ── Fetch ─────────────────────────────────────────────────────────────────────
 
@@ -203,6 +215,21 @@ function AnimatedNumber({ value, className }: { value: number; className?: strin
   return <span className={className}>{display.toLocaleString()}</span>;
 }
 
+// ── Responsive helper ────────────────────────────────────────────────────────
+
+function useIsMobile(breakpoint = MOBILE_BREAKPOINT) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < breakpoint);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [breakpoint]);
+
+  return isMobile;
+}
+
 // ── Cell colour ───────────────────────────────────────────────────────────────
 
 // Uses Tailwind opacity variants on --primary so it respects the accent colour.
@@ -247,10 +274,201 @@ function Tooltip({ t }: { t: TooltipState }) {
   );
 }
 
+// ── Shared grid renderer (used by both inline view and full-year modal) ───────
+
+function ContributionGrid({
+  weeks,
+  cellSize,
+  inView,
+  onCellHover,
+  onCellLeave,
+  scrollable = false,
+}: {
+  weeks: Week[];
+  cellSize: number;
+  inView: boolean;
+  onCellHover: (e: React.MouseEvent, day: Day) => void;
+  onCellLeave: () => void;
+  scrollable?: boolean;
+}) {
+  const GAP = 3;
+  const STEP = cellSize + GAP;
+  const monthLabels = getMonthLabels(weeks);
+
+  return (
+    <div key={cellSize} className="w-full">
+      {/* Month labels row */}
+      <div
+        className={scrollable ? "relative mb-2 h-4" : "relative mb-2 h-4"}
+        style={{
+          marginLeft: 36,
+          width: scrollable ? weeks.length * STEP : undefined,
+        }}
+      >
+        {monthLabels.map(({ label, wi }) => (
+          <span
+            key={`${label}-${wi}`}
+            className="absolute select-none text-[10px] font-semibold tracking-wide text-muted-foreground/70"
+            style={{
+              left: scrollable ? wi * STEP : `${(wi / weeks.length) * 100}%`,
+            }}
+          >
+            {label}
+          </span>
+        ))}
+      </div>
+
+      {/* Day labels + cells */}
+      <div className={scrollable ? "flex w-full items-start pb-2" : "flex w-full items-start"}>
+        {/* Day-of-week labels */}
+        <div className="mr-2 shrink-0 left-0 bg-card" style={{ width: 28 }}>
+          {DAY_LABELS.map((d, i) => (
+            <div
+              key={i}
+              className="flex items-center text-[9px] font-medium text-muted-foreground/50"
+              style={{ height: STEP }}
+            >
+              {SHOW_DAY_INDICES.includes(i) ? d : ""}
+            </div>
+          ))}
+        </div>
+
+        {/* Grid */}
+        <div
+          className={
+            scrollable
+              ? "flex gap-[3px] py-1 shrink-0"
+              : "flex flex-1 gap-[3px] overflow-visible py-1"
+          }
+          style={scrollable ? { width: weeks.length * STEP - GAP } : undefined}
+        >
+          {weeks.map((week, wi) => (
+            <div
+              key={wi}
+              className={scrollable ? "flex flex-col gap-[3px]" : "flex flex-1 flex-col gap-[3px]"}
+              style={scrollable ? { width: cellSize } : undefined}
+            >
+              {week.days.map((day, di) => {
+                if (day === null) {
+                  return (
+                    <div
+                      key={di}
+                      style={{ height: cellSize, borderRadius: Math.max(2, cellSize * 0.22) }}
+                    />
+                  );
+                }
+
+                return (
+                  <motion.div
+                    key={di}
+                    initial={{ opacity: 0, scale: 0.3 }}
+                    animate={inView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{
+                      duration: 0.22,
+                      delay: inView ? wi * 0.009 + di * 0.003 : 0,
+                      ease: [0.34, 1.56, 0.64, 1],
+                    }}
+                    style={{
+                      height: cellSize,
+                      borderRadius: Math.max(2, cellSize * 0.22),
+                    }}
+                    className={[
+                      "w-full cursor-default transition-all duration-150",
+                      CELL_CLASS[day.level],
+                      CELL_HOVER[day.level],
+                      "hover:scale-[1.4] hover:z-10 hover:ring-2 hover:ring-primary/50",
+                    ].join(" ")}
+                    onMouseEnter={(e) => onCellHover(e, day)}
+                    onMouseLeave={onCellLeave}
+                    role="img"
+                    aria-label={`${day.count} contributions on ${day.date}`}
+                  />
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Legend */}
+      <div className="mt-4 flex items-center justify-end gap-2">
+        <span className="select-none text-[10px] font-medium text-muted-foreground/60">Less</span>
+        <div className="flex items-center gap-1.5">
+          {([0, 1, 2, 3, 4] as const).map((level) => (
+            <div key={level} className={`h-[10px] w-[10px] rounded-[2px] ${CELL_CLASS[level]}`} />
+          ))}
+        </div>
+        <span className="select-none text-[10px] font-medium text-muted-foreground/60">More</span>
+      </div>
+    </div>
+  );
+}
+
+// ── Full-year modal (mobile only) ──────────────────────────────────────────────
+
+function FullYearModal({
+  weeks,
+  onClose,
+  onCellHover,
+  onCellLeave,
+}: {
+  weeks: Week[];
+  onClose: () => void;
+  onCellHover: (e: React.MouseEvent, day: Day) => void;
+  onCellLeave: () => void;
+}) {
+  // Fixed cell size in the modal since it scrolls — no need to shrink to fit
+  const MODAL_CELL_SIZE = 11;
+
+  return createPortal(
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[9998] flex items-end bg-black/60 backdrop-blur-sm sm:items-center sm:justify-center"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 40, opacity: 0 }}
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+          className="max-h-[85vh] w-full overflow-hidden rounded-t-2xl border border-border/60 bg-card shadow-2xl sm:max-w-lg sm:rounded-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center justify-between border-b border-border/50 px-5 py-4">
+            <p className="text-sm font-bold text-foreground">Full year activity</p>
+            <button
+              onClick={onClose}
+              className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              aria-label="Close"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <div className="overflow-x-auto px-5 py-5">
+            <ContributionGrid
+              weeks={weeks}
+              cellSize={MODAL_CELL_SIZE}
+              inView={true}
+              onCellHover={onCellHover}
+              onCellLeave={onCellLeave}
+              scrollable
+            />
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>,
+    document.body,
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export function GitHubGraph() {
   const username = siteConfig.githubUsername;
+  const isMobile = useIsMobile();
 
   const [weeks, setWeeks] = useState<Week[]>([]);
   const [windowDays, setWindowDays] = useState<Day[]>([]);
@@ -258,6 +476,7 @@ export function GitHubGraph() {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const [inView, setInView] = useState(false);
   const [cellSize, setCellSize] = useState(13); // px — recalculated on mount/resize
+  const [showFullYear, setShowFullYear] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const graphAreaRef = useRef<HTMLDivElement>(null);
@@ -276,16 +495,19 @@ export function GitHubGraph() {
     return () => obs.disconnect();
   }, []);
 
+  // The grid actually rendered inline — sliced to a recent window on mobile
+  const visibleWeeks = isMobile ? weeks.slice(-MOBILE_WEEKS) : weeks;
+
   // ── Responsive cell size ─────────────────────────────────────────────────
   const recalcSize = useCallback(() => {
-    if (!graphAreaRef.current || !weeks.length) return;
+    if (!graphAreaRef.current || !visibleWeeks.length) return;
     const available = graphAreaRef.current.clientWidth - 36; // minus day-label col
-    const numWeeks = weeks.length;
+    const numWeeks = visibleWeeks.length;
     // cell + gap = step; gap = 3px always; fit as many as possible without overflow
     // available = numWeeks * (cell + 3) - 3
     const size = Math.floor((available + 3) / numWeeks) - 3;
     setCellSize(Math.max(9, Math.min(16, size)));
-  }, [weeks.length]);
+  }, [visibleWeeks.length]);
 
   useEffect(() => {
     recalcSize();
@@ -304,7 +526,7 @@ export function GitHubGraph() {
       .then((days) => {
         const { weeks: w, windowDays: wd } = buildWeeksGrid(days);
         setWeeks(w);
-        setWindowDays(wd);
+        setWindowDays(wd); // stats always computed over the FULL year, not the mobile slice
         setStatus("ok");
       })
       .catch(() => setStatus("error"));
@@ -312,20 +534,26 @@ export function GitHubGraph() {
 
   if (!username || status === "error") return null;
 
-  // ── Stats ────────────────────────────────────────────────────────────────
+  // ── Stats (always full-year, regardless of what's visible inline) ─────────
   const total = windowDays.reduce((s, d) => s + d.count, 0);
   const streak = longestStreak(windowDays);
   const curStreak = currentStreak(windowDays);
   const busiest = busiestDay(windowDays);
 
-  // ── Month labels ─────────────────────────────────────────────────────────
-  const GAP = 3;
-  const STEP = cellSize + GAP;
-  const monthLabels = getMonthLabels(weeks);
-
   // ── Rolling window label ─────────────────────────────────────────────────
   const { start, end } = getRollingWindow();
   const windowLabel = `${start.toLocaleDateString("en-US", { month: "short", year: "numeric" })} – ${end.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`;
+
+  const handleCellHover = (e: React.MouseEvent, day: Day) => {
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const { year, month, day: dayNum } = parseDateLocal(day.date);
+    const localDate = new Date(year, month, dayNum);
+    setTooltip({
+      text: `${day.count} contribution${day.count !== 1 ? "s" : ""} · ${localDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" })}`,
+      x: r.left + r.width / 2,
+      y: r.top,
+    });
+  };
 
   return (
     <motion.div
@@ -355,7 +583,9 @@ export function GitHubGraph() {
                 @{username}
               </a>
               <span className="text-[10px] text-muted-foreground/40">·</span>
-              <span className="text-[10px] text-muted-foreground/60">{windowLabel}</span>
+              <span className="text-[10px] text-muted-foreground/60">
+                {isMobile ? `Last ${MOBILE_WEEKS} weeks` : windowLabel}
+              </span>
             </div>
           </div>
         </div>
@@ -417,116 +647,42 @@ export function GitHubGraph() {
           </div>
         )}
 
-        {status === "ok" && weeks.length > 0 && (
-          /* Key on cellSize so layout re-renders when size recalculates */
-          <div key={cellSize} className="w-full">
-            {/* Month labels row — uses % positioning to match the flex-1 grid columns */}
-            <div className="relative mb-2 h-4" style={{ marginLeft: 36 }}>
-              {monthLabels.map(({ label, wi }) => (
-                <span
-                  key={`${label}-${wi}`}
-                  className="absolute select-none text-[10px] font-semibold tracking-wide text-muted-foreground/70"
-                  style={{ left: `${(wi / weeks.length) * 100}%` }}
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
+        {status === "ok" && visibleWeeks.length > 0 && (
+          <>
+            <ContributionGrid
+              weeks={visibleWeeks}
+              cellSize={cellSize}
+              inView={inView}
+              onCellHover={handleCellHover}
+              onCellLeave={() => setTooltip(null)}
+            />
 
-            {/* Day labels + cells */}
-            <div className="flex w-full items-start">
-              {/* Day-of-week labels */}
-              <div className="mr-2 shrink-0" style={{ width: 28 }}>
-                {DAY_LABELS.map((d, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center text-[9px] font-medium text-muted-foreground/50"
-                    style={{ height: STEP }}
-                  >
-                    {SHOW_DAY_INDICES.includes(i) ? d : ""}
-                  </div>
-                ))}
-              </div>
-
-              {/* Grid — no overflow, cells fill available width */}
-              <div className="flex flex-1 gap-[3px] overflow-visible py-1">
-                {weeks.map((week, wi) => (
-                  <div key={wi} className="flex flex-1 flex-col gap-[3px]">
-                    {week.days.map((day, di) => {
-                      if (day === null) {
-                        return (
-                          <div
-                            key={di}
-                            style={{ height: cellSize, borderRadius: Math.max(2, cellSize * 0.22) }}
-                          />
-                        );
-                      }
-
-                      return (
-                        <motion.div
-                          key={di}
-                          initial={{ opacity: 0, scale: 0.3 }}
-                          animate={inView ? { opacity: 1, scale: 1 } : {}}
-                          transition={{
-                            duration: 0.22,
-                            delay: inView ? wi * 0.009 + di * 0.003 : 0,
-                            ease: [0.34, 1.56, 0.64, 1],
-                          }}
-                          style={{
-                            height: cellSize,
-                            borderRadius: Math.max(2, cellSize * 0.22),
-                          }}
-                          className={[
-                            "w-full cursor-default transition-all duration-150",
-                            CELL_CLASS[day.level],
-                            CELL_HOVER[day.level],
-                            "hover:scale-[1.4] hover:z-10 hover:ring-2 hover:ring-primary/50",
-                          ].join(" ")}
-                          onMouseEnter={(e) => {
-                            const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                            // Parse date as local to avoid UTC off-by-one in tooltip
-                            const { year, month, day: dayNum } = parseDateLocal(day.date);
-                            const localDate = new Date(year, month, dayNum);
-                            setTooltip({
-                              text: `${day.count} contribution${day.count !== 1 ? "s" : ""} · ${localDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" })}`,
-                              x: r.left + r.width / 2,
-                              y: r.top,
-                            });
-                          }}
-                          onMouseLeave={() => setTooltip(null)}
-                          role="img"
-                          aria-label={`${day.count} contributions on ${day.date}`}
-                        />
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Legend */}
-            <div className="mt-4 flex items-center justify-end gap-2">
-              <span className="select-none text-[10px] font-medium text-muted-foreground/60">
-                Less
-              </span>
-              <div className="flex items-center gap-1.5">
-                {([0, 1, 2, 3, 4] as const).map((level) => (
-                  <div
-                    key={level}
-                    className={`h-[10px] w-[10px] rounded-[2px] ${CELL_CLASS[level]}`}
-                  />
-                ))}
-              </div>
-              <span className="select-none text-[10px] font-medium text-muted-foreground/60">
-                More
-              </span>
-            </div>
-          </div>
+            {/* Mobile-only: link to open the full year in a modal */}
+            {isMobile && (
+              <button
+                onClick={() => setShowFullYear(true)}
+                className="mt-4 flex items-center gap-1.5 text-xs font-medium text-primary transition-opacity hover:opacity-80"
+              >
+                <Maximize2 className="h-3 w-3" />
+                View full year
+              </button>
+            )}
+          </>
         )}
       </div>
 
       {/* Portal tooltip */}
       {tooltip && typeof document !== "undefined" && <Tooltip t={tooltip} />}
+
+      {/* Full-year modal (mobile only) */}
+      {showFullYear && (
+        <FullYearModal
+          weeks={weeks}
+          onClose={() => setShowFullYear(false)}
+          onCellHover={handleCellHover}
+          onCellLeave={() => setTooltip(null)}
+        />
+      )}
     </motion.div>
   );
 }

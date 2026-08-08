@@ -4,6 +4,7 @@ import { Mail, Zap, FileText } from "lucide-react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import { CopyEmail } from "./CopyEmail";
+import { Brand } from "../ui/Brand";
 
 // Custom SVG icons for brand consistency
 const GithubIcon = ({ className }: { className?: string }) => (
@@ -46,8 +47,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-3">
             <p className="font-heading text-xl font-bold">
-              <span className="gradient-text">{siteConfig.name}</span>
-              <span className="text-muted-foreground font-normal">.dev</span>
+              <Brand />
             </p>
             <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
               {siteConfig.description}
@@ -67,14 +67,14 @@ export function Footer() {
                   {link.label}
                 </button>
               ))}
-              <Link
+              {/* <Link
                 href="/resume"
                 target="_blank"
                 className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
               >
                 <FileText className="h-3.5 w-3.5" />
                 Resume
-              </Link>
+              </Link> */}
             </nav>
           </div>
 

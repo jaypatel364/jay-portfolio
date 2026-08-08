@@ -28,7 +28,7 @@ export function BackToTop() {
           transition={{ type: "spring", stiffness: 380, damping: 28 }}
           onClick={scrollToTop}
           aria-label="Back to top"
-          className="fixed bottom-8 right-6 z-50 flex h-11 w-11 items-center justify-center rounded-full gradient-primary shadow-glow transition-transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="fixed bottom-8 left-6 z-50 flex h-11 w-11 items-center justify-center rounded-full gradient-primary shadow-glow transition-transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           <ArrowUp className="h-5 w-5 text-primary-foreground" />
         </motion.button>

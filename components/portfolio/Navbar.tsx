@@ -13,6 +13,7 @@ import { siteConfig } from "@/lib/site-config";
 import { CommandPalette } from "./CommandPalette";
 import { ShortcutsOverlay, ShortcutsTrigger } from "./ShortcutsOverlay";
 import { AccentPicker } from "./AccentPicker";
+import { Brand } from "../ui/Brand";
 
 /** Inline accent picker for the mobile menu — shows swatches in a row */
 function MobileAccentPicker() {
@@ -214,8 +215,7 @@ export function Navbar() {
           onClick={() => scrollTo("home")}
           className="font-heading text-xl font-bold tracking-tight"
         >
-          <span className="gradient-text">{siteConfig.name}</span>
-          <span className="text-muted-foreground font-normal">.dev</span>
+          <Brand />
         </button>
 
         <div className="hidden items-center gap-1 lg:flex">
