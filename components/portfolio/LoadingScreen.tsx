@@ -170,6 +170,17 @@ export function LoadingScreen({ onDone }: { onDone: () => void }) {
     return () => clearTimeout(t);
   }, []);
 
+  // ESC key skips immediately — works from the very first render
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleSkip();
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+    // handleSkip is stable (no deps that change) so this is safe
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // ── Smooth progress timer ─────────────────────────────────────────────────
   // Drives progress independently from typing so it always looks alive.
   // Budget: reach ~90% in 5s, finishing line pushes to 100.
