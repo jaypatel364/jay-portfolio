@@ -106,7 +106,7 @@ const PROJECTS: Project[] = [
   // ── Professional / NDA projects ──────────────────────────────────────────
   // nda: true hides both Code and Demo automatically.
   {
-    title: "Enterprise HR Suite",
+    title: "PMS",
     tagline: "HR Management System",
     desc: "Built a full-cycle HR platform for a mid-sized enterprise covering attendance, leave, payroll processing, and role-based access control, integrated with an existing ERP system.",
     tags: ["React", "Node.js", "PostgreSQL", "REST API"],

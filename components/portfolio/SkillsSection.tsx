@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "./SectionHeading";
-import { MonitorSmartphone, Server, Wrench, Sparkles } from "lucide-react";
+import { MonitorSmartphone, Server, Wrench, Sparkles, Globe2, LayoutGrid } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import {
   SiReact,
@@ -197,11 +197,12 @@ function SkillSphere({ skills, isDark }: { skills: Skill[]; isDark: boolean }) {
   useEffect(() => {
     const AUTO_X = 0.00022; // rad/ms gentle tilt drift
     const AUTO_Y = 0.00038; // rad/ms main spin
-    const FRICTION = 0.965; // momentum decay per frame
+    const FRICTION = 0.92; // stronger friction — decelerates noticeably each frame
     const MIN_VEL = 0.00004; // below this → resume auto-spin
+    const MAX_VEL = 0.012; // hard cap so a fast flick never goes wild
 
     const tick = (now: number) => {
-      const dt = frameTime.current ? Math.min(now - frameTime.current, 32) : 16;
+      const dt = frameTime.current ? Math.min(now - frameTime.current, 24) : 16; // clamp dt spike
       frameTime.current = now;
 
       if (!dragging.current) {
@@ -210,6 +211,9 @@ function SkillSphere({ skills, isDark }: { skills: Skill[]; isDark: boolean }) {
           // Coast with friction
           velRef.current.x *= FRICTION;
           velRef.current.y *= FRICTION;
+          // Clamp so any remaining spike can't run away
+          velRef.current.x = Math.max(-MAX_VEL, Math.min(MAX_VEL, velRef.current.x));
+          velRef.current.y = Math.max(-MAX_VEL, Math.min(MAX_VEL, velRef.current.y));
           angleRef.current.x += velRef.current.x * dt;
           angleRef.current.y += velRef.current.y * dt;
         } else {
@@ -244,8 +248,15 @@ function SkillSphere({ skills, isDark }: { skills: Skill[]; isDark: boolean }) {
     const dx = e.clientX - lastPtr.current.x;
     const dy = e.clientY - lastPtr.current.y;
     const dt = Math.max(1, e.timeStamp - lastPtrTime.current);
+    // Clamp instantaneous velocity so a fast flick stays within reasonable bounds
+    const MAX_VEL = 0.012;
+    const rawVx = ((dy * 0.007) / dt) * 16;
+    const rawVy = ((dx * 0.007) / dt) * 16;
+    velRef.current = {
+      x: Math.max(-MAX_VEL, Math.min(MAX_VEL, rawVx)),
+      y: Math.max(-MAX_VEL, Math.min(MAX_VEL, rawVy)),
+    };
     ptrDelta.current = { x: dy * 0.007, y: dx * 0.007 };
-    velRef.current = { x: ((dy * 0.007) / dt) * 16, y: ((dx * 0.007) / dt) * 16 };
     lastPtr.current = { x: e.clientX, y: e.clientY };
     lastPtrTime.current = e.timeStamp;
     angleRef.current.x += ptrDelta.current.x;
@@ -502,31 +513,6 @@ function OverflowPill({ skill, isDark, delay }: { skill: Skill; isDark: boolean;
   );
 }
 
-// ── Category sphere view ──────────────────────────────────────────────────────
-
-function CategorySphereView({ group, isDark }: { group: SkillGroup; isDark: boolean }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.3 }}
-      className="flex flex-col items-center gap-6"
-    >
-      <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-primary shadow-glow">
-          {React.createElement(group.icon, { className: "h-5 w-5 text-primary-foreground" })}
-        </div>
-        <div>
-          <h3 className="font-heading text-lg font-bold">{group.category}</h3>
-          <p className="text-xs text-muted-foreground">{group.description}</p>
-        </div>
-      </div>
-      <SkillSphere skills={group.skills} isDark={isDark} />
-    </motion.div>
-  );
-}
-
 // ── Grid pill (used in All-view and mobile fallback) ──────────────────────────
 
 function SkillPill({ skill, delay, isDark }: { skill: Skill; delay: number; isDark: boolean }) {
@@ -642,6 +628,7 @@ function CategoryCard({
 // ── Filter types ──────────────────────────────────────────────────────────────
 
 type FilterKey = "all" | "Frontend" | "Backend" | "Tools & DevOps";
+type SkillView = "sphere" | "list";
 
 const FILTERS: { label: string; value: FilterKey }[] = [
   { label: "All", value: "all" },
@@ -649,6 +636,49 @@ const FILTERS: { label: string; value: FilterKey }[] = [
   { label: "Backend", value: "Backend" },
   { label: "Tools", value: "Tools & DevOps" },
 ];
+
+// ── View toggle — Grid ↔ 3D Sphere (shared across all filters) ───────────────
+
+function ViewToggle({ view, onChange }: { view: SkillView; onChange: (v: SkillView) => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28, delay: 0.1 }}
+      className="hidden md:flex items-center gap-0.5 rounded-xl border border-border/60 bg-card p-1 shadow-sm"
+      role="group"
+      aria-label="Switch skills view"
+    >
+      {(
+        [
+          { value: "sphere" as const, icon: Globe2, label: "3D Sphere" },
+          { value: "list" as const, icon: LayoutGrid, label: "Grid" },
+        ] as const
+      ).map(({ value, icon: Icon, label }) => (
+        <button
+          key={value}
+          onClick={() => onChange(value)}
+          title={label}
+          aria-pressed={view === value}
+          className={cn(
+            "relative flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+            view === value ? "text-primary" : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {view === value && (
+            <motion.div
+              layoutId="skill-view-active"
+              className="absolute inset-0 rounded-lg bg-primary/10"
+              transition={{ type: "spring", stiffness: 420, damping: 30 }}
+            />
+          )}
+          <Icon className="relative z-10 h-3.5 w-3.5" />
+          <span className="relative z-10">{label}</span>
+        </button>
+      ))}
+    </motion.div>
+  );
+}
 
 // ── Main section ──────────────────────────────────────────────────────────────
 
@@ -658,6 +688,8 @@ export function SkillsSection() {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+  // Sphere is the default — it's the premium experience
+  const [view, setView] = useState<SkillView>("sphere");
 
   const expNumeric = expLabel.startsWith("<") ? 0 : parseFloat(expLabel);
   const expHalves = Math.round(expNumeric * 2);
@@ -681,10 +713,12 @@ export function SkillsSection() {
         ? `${expHalfCount / 2}+`
         : `${(expHalfCount / 2).toFixed(1)}+`;
 
-  const visibleGroups =
-    activeFilter === "all" ? SKILL_GROUPS : SKILL_GROUPS.filter((g) => g.category === activeFilter);
+  const activeGroup =
+    activeFilter === "all" ? null : (SKILL_GROUPS.find((g) => g.category === activeFilter) ?? null);
 
-  const isSingleCategory = activeFilter !== "all";
+  // Skills to show in the sphere — all when "All", filtered group otherwise
+  const sphereSkills =
+    activeFilter === "all" ? SKILL_GROUPS.flatMap((g) => g.skills) : (activeGroup?.skills ?? []);
 
   return (
     <section id="skills" className="relative overflow-hidden px-6 py-14 md:py-28">
@@ -723,39 +757,46 @@ export function SkillsSection() {
           ))}
         </motion.div>
 
-        {/* Filter tabs */}
+        {/* Filter tabs + view toggle — always visible together */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-10 flex items-center justify-center gap-2 flex-wrap"
-          role="tablist"
-          aria-label="Filter skills by category"
+          className="mt-10 flex items-center justify-center gap-3 flex-wrap"
         >
-          {FILTERS.map((f) => (
-            <button
-              key={f.value}
-              role="tab"
-              aria-selected={activeFilter === f.value}
-              onClick={() => setActiveFilter(f.value)}
-              className={cn(
-                "relative rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                activeFilter === f.value
-                  ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {activeFilter === f.value && (
-                <motion.div
-                  layoutId="skill-filter-active"
-                  className="absolute inset-0 rounded-lg bg-primary/10"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
-              )}
-              <span className="relative z-10">{f.label}</span>
-            </button>
-          ))}
+          <div
+            className="flex items-center gap-2 flex-wrap justify-center"
+            role="tablist"
+            aria-label="Filter skills by category"
+          >
+            {FILTERS.map((f) => (
+              <button
+                key={f.value}
+                role="tab"
+                aria-selected={activeFilter === f.value}
+                onClick={() => setActiveFilter(f.value)}
+                className={cn(
+                  "relative rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                  activeFilter === f.value
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {activeFilter === f.value && (
+                  <motion.div
+                    layoutId="skill-filter-active"
+                    className="absolute inset-0 rounded-lg bg-primary/10"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{f.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* View toggle — always shown, desktop only */}
+          <ViewToggle view={view} onChange={setView} />
         </motion.div>
 
         {/* Jay's Brain game trigger */}
@@ -774,64 +815,115 @@ export function SkillsSection() {
         {/* Content */}
         <div className="mt-12">
           <AnimatePresence mode="wait">
-            {/* ── ALL view: three category cards with pill grids ── */}
-            {!isSingleCategory && (
-              <motion.div
-                key="all"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="grid gap-12 lg:grid-cols-3"
-              >
-                {SKILL_GROUPS.map((group, i) => (
-                  <CategoryCard key={group.category} group={group} index={i} isDark={isDark} />
-                ))}
-              </motion.div>
-            )}
-
-            {/* ── SINGLE category: orbital on desktop, grid on mobile ── */}
-            {isSingleCategory && visibleGroups[0] && (
-              <motion.div
-                key={activeFilter}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                {/* Desktop sphere — hidden on mobile */}
-                <div className="hidden md:flex justify-center">
-                  <CategorySphereView group={visibleGroups[0]} isDark={isDark} />
-                </div>
-
-                {/* Mobile grid fallback */}
-                <div className="md:hidden space-y-5">
-                  <div className="flex items-center gap-3 justify-center">
-                    {(() => {
-                      const Icon = visibleGroups[0].icon;
-                      return (
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-primary shadow-glow">
-                          <Icon className="h-5 w-5 text-primary-foreground" />
-                        </div>
-                      );
-                    })()}
-                    <div>
-                      <h3 className="font-heading text-lg font-bold">
-                        {visibleGroups[0].category}
-                      </h3>
-                      <p className="text-xs text-muted-foreground">
-                        {visibleGroups[0].description}
-                      </p>
+            <motion.div
+              key={`${activeFilter}-${view}`}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+            >
+              {/* ── SPHERE view (desktop) ── */}
+              {view === "sphere" && (
+                <>
+                  {/* Category header when a single filter is active */}
+                  {activeGroup && (
+                    <div className="mb-8 flex items-center justify-center gap-3">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-primary shadow-glow">
+                        {React.createElement(activeGroup.icon, {
+                          className: "h-5 w-5 text-primary-foreground",
+                        })}
+                      </div>
+                      <div>
+                        <h3 className="font-heading text-lg font-bold">{activeGroup.category}</h3>
+                        <p className="text-xs text-muted-foreground">{activeGroup.description}</p>
+                      </div>
                     </div>
+                  )}
+
+                  {/* Sphere — desktop */}
+                  <div className="hidden md:flex justify-center">
+                    <SkillSphere skills={sphereSkills} isDark={isDark} />
                   </div>
-                  <div className="flex flex-wrap justify-center gap-3">
-                    {visibleGroups[0].skills.map((skill, si) => (
-                      <SkillPill key={skill.name} skill={skill} delay={si * 0.05} isDark={isDark} />
-                    ))}
+
+                  {/* Mobile fallback — pill grid (sphere is too small on mobile) */}
+                  <div className="md:hidden">
+                    {activeFilter === "all" ? (
+                      <div className="grid gap-12">
+                        {SKILL_GROUPS.map((group, i) => (
+                          <CategoryCard
+                            key={group.category}
+                            group={group}
+                            index={i}
+                            isDark={isDark}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      activeGroup && (
+                        <div className="flex flex-wrap justify-center gap-3">
+                          {activeGroup.skills.map((skill, si) => (
+                            <SkillPill
+                              key={skill.name}
+                              skill={skill}
+                              delay={si * 0.05}
+                              isDark={isDark}
+                            />
+                          ))}
+                        </div>
+                      )
+                    )}
                   </div>
-                </div>
-              </motion.div>
-            )}
+                </>
+              )}
+
+              {/* ── GRID / LIST view ── */}
+              {view === "list" && (
+                <>
+                  {activeFilter === "all" ? (
+                    <div className="grid gap-12 lg:grid-cols-3">
+                      {SKILL_GROUPS.map((group, i) => (
+                        <CategoryCard
+                          key={group.category}
+                          group={group}
+                          index={i}
+                          isDark={isDark}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    activeGroup && (
+                      <>
+                        <div className="mb-8 flex items-center justify-center gap-3">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-xl gradient-primary shadow-glow">
+                            {React.createElement(activeGroup.icon, {
+                              className: "h-5 w-5 text-primary-foreground",
+                            })}
+                          </div>
+                          <div>
+                            <h3 className="font-heading text-lg font-bold">
+                              {activeGroup.category}
+                            </h3>
+                            <p className="text-xs text-muted-foreground">
+                              {activeGroup.description}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap justify-center gap-3">
+                          {activeGroup.skills.map((skill, si) => (
+                            <OverflowPill
+                              key={skill.name}
+                              skill={skill}
+                              isDark={isDark}
+                              delay={si * 0.04}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )
+                  )}
+                </>
+              )}
+            </motion.div>
           </AnimatePresence>
         </div>
 

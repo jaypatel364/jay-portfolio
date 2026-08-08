@@ -45,7 +45,7 @@ const CHIP_GROUPS = [
   ],
   [
     { icon: "💼", label: "Are you available for hire?" },
-    { icon: "📬", label: "How can I contact you?" },
+    { icon: "💰", label: "What are your hourly rates?" },
     { icon: "🤝", label: "Are you open to freelance?" },
     { icon: "📄", label: "Can I see your resume?" },
   ],
@@ -435,11 +435,11 @@ export function ChatBot() {
           throw new Error(raw);
         }
 
-        // Off-topic canned reply — JSON response, not a stream
+        // Pre-built / off-topic canned reply — JSON response, not a stream
         const contentType = res.headers.get("content-type") ?? "";
         if (contentType.includes("application/json")) {
           const d = (await res.json()) as { offTopic?: boolean; reply?: string; error?: string };
-          if (d.offTopic && d.reply) {
+          if (d.reply) {
             setMessages((p) =>
               p.map((m) =>
                 m.id === asstMsg.id ? { ...m, content: d.reply!, streaming: false } : m,
