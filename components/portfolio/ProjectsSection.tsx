@@ -253,7 +253,7 @@ export function ProjectsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-2"
+          className="mt-10 flex flex-wrap items-center justify-center gap-0 md:gap-2"
           role="tablist"
           aria-label="Filter projects by category"
         >
