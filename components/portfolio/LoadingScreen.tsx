@@ -162,37 +162,80 @@ export function LoadingScreen({ onDone }: { onDone: () => void }) {
   const [progress, setProgress] = useState(0);
   const [revealing, setRevealing] = useState(false);
   const [skipVisible, setSkipVisible] = useState(false);
+  const revealedRef = useRef(false);
 
+  // Show skip button after 1.5s
   useEffect(() => {
     const t = setTimeout(() => setSkipVisible(true), 1500);
     return () => clearTimeout(t);
   }, []);
 
+  // ── Smooth progress timer ─────────────────────────────────────────────────
+  // Drives progress independently from typing so it always looks alive.
+  // Budget: reach ~90% in 5s, finishing line pushes to 100.
+  // Uses a RAF loop so it's frame-accurate and never stutters.
+  const progressRef = useRef(0);
+  const progressRafRef = useRef<number>(0);
+  const progressStartRef = useRef<number>(0);
+  const BUDGET_MS = 5200; // reach 90% by this point
+
   useEffect(() => {
-    const target = Math.min(97, Math.round((doneCount / BOOT_LINES.length) * 97));
-    setProgress((p) => (target > p ? target : p));
-  }, [doneCount]);
+    progressStartRef.current = performance.now();
+
+    const tick = (now: number) => {
+      if (revealedRef.current) return;
+      const elapsed = now - progressStartRef.current;
+      // Ease-out curve: fast at start, slows near 90
+      const t = Math.min(elapsed / BUDGET_MS, 1);
+      const eased = 1 - Math.pow(1 - t, 2.2); // quadratic ease-out
+      const target = Math.round(eased * 90); // cap at 90 — last line pushes to 100
+      if (target > progressRef.current) {
+        progressRef.current = target;
+        setProgress(target);
+      }
+      if (t < 1) progressRafRef.current = requestAnimationFrame(tick);
+    };
+
+    progressRafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(progressRafRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Hard cap at 6s ────────────────────────────────────────────────────────
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (!revealedRef.current) triggerReveal();
+    }, 6000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const triggerReveal = () => {
+    if (revealedRef.current) return;
+    revealedRef.current = true;
+    cancelAnimationFrame(progressRafRef.current);
+    setProgress(100);
+    setTimeout(() => {
+      setRevealing(true);
+      setTimeout(onDone, 900);
+    }, 400);
+  };
 
   const handleLineDone = () => {
+    if (revealedRef.current) return;
     const justDone = current;
     setDoneCount(justDone + 1);
     if (justDone < BOOT_LINES.length - 1) {
-      const next = justDone + 1;
-      setTimeout(() => setCurrent(next), BOOT_LINES[next].preDelay);
+      setTimeout(() => setCurrent(justDone + 1), BOOT_LINES[justDone + 1].preDelay);
     } else {
+      // All lines done — push to 100% and reveal
+      cancelAnimationFrame(progressRafRef.current);
       setProgress(100);
-      setTimeout(() => {
-        setRevealing(true);
-        setTimeout(onDone, 850);
-      }, 700);
+      setTimeout(triggerReveal, 500);
     }
   };
 
-  const handleSkip = () => {
-    setProgress(100);
-    setRevealing(true);
-    setTimeout(onDone, 650);
-  };
+  const handleSkip = () => triggerReveal();
 
   return (
     <AnimatePresence>
@@ -331,29 +374,59 @@ export function LoadingScreen({ onDone }: { onDone: () => void }) {
           </AnimatePresence>
         </motion.div>
       ) : (
-        /* Split curtain reveal — uses bg-background to match site exactly */
+        /* ── Cinematic reveal ──────────────────────────────────────────────
+           Three-layer exit:
+           1. Left + right panels slide out (curtain split) with spring easing
+           2. A glowing horizontal seam pulses at the split point
+           3. A radial "iris" bloom scales up from centre — pure magic ✨
+        ── */
         <motion.div
           key="curtain"
-          className="pointer-events-none fixed inset-0 z-[9999]"
+          className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden"
           initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, delay: 0.7 }}
         >
+          {/* Left panel */}
           <motion.div
             className="absolute inset-y-0 left-0 w-1/2 bg-background"
-            animate={{ x: "-100%" }}
-            transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+            initial={{ x: 0 }}
+            animate={{ x: "-101%" }}
+            transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1], delay: 0.05 }}
           />
+          {/* Right panel */}
           <motion.div
             className="absolute inset-y-0 right-0 w-1/2 bg-background"
-            animate={{ x: "100%" }}
-            transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+            initial={{ x: 0 }}
+            animate={{ x: "101%" }}
+            transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1], delay: 0.05 }}
           />
-          {/* Glowing seam */}
+          {/* Glowing vertical seam at the split */}
           <motion.div
-            className="absolute inset-y-0 left-1/2 w-[2px] -translate-x-1/2 gradient-primary blur-[3px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0] }}
-            transition={{ duration: 0.75, ease: "easeInOut" }}
+            className="absolute inset-y-0 left-1/2 w-[3px] -translate-x-1/2 gradient-primary"
+            style={{ filter: "blur(4px)" }}
+            initial={{ opacity: 0, scaleY: 0 }}
+            animate={{ opacity: [0, 1, 1, 0], scaleY: [0, 1, 1, 1] }}
+            transition={{
+              duration: 0.85,
+              ease: "easeInOut",
+              delay: 0.05,
+              times: [0, 0.15, 0.7, 1],
+            }}
+          />
+          {/* Radial iris bloom — expands from centre, fades out */}
+          <motion.div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in oklch, var(--primary) 18%, transparent) 0%, transparent 70%)",
+              width: "120vmax",
+              height: "120vmax",
+            }}
+            initial={{ scale: 0, opacity: 0.8 }}
+            animate={{ scale: 1.4, opacity: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           />
         </motion.div>
       )}
@@ -375,7 +448,7 @@ export function LoadingScreenWrapper({ children }: { children: React.ReactNode }
   }, []);
 
   const handleDone = () => {
-    sessionStorage.setItem(SESSION_KEY, "1");
+    sessionStorage.setItem(SESSION_KEY, "0");
     setBooting(false);
   };
 
@@ -388,8 +461,8 @@ export function LoadingScreenWrapper({ children }: { children: React.ReactNode }
       </AnimatePresence>
       <motion.div
         initial={false}
-        animate={{ opacity: booting ? 0 : 1 }}
-        transition={{ duration: 0.01 }}
+        animate={booting ? { opacity: 0, scale: 0.985 } : { opacity: 1, scale: 1 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         style={{ visibility: booting ? "hidden" : "visible" }}
       >
         {children}

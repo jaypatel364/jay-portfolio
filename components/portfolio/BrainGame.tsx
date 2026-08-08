@@ -15,7 +15,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Brain, Sparkles, Trophy, RotateCcw, Zap, Lock } from "lucide-react";
+import { X, Brain, Sparkles, Trophy, RotateCcw, Zap, Lock, ArrowRight, Mail } from "lucide-react";
 import type { IconType } from "react-icons";
 import {
   SiReact,
@@ -627,21 +627,131 @@ export function BrainGame({ onClose }: { onClose: () => void }) {
             )}
           </AnimatePresence>
 
-          {/* All-unlocked banner */}
+          {/* All-unlocked celebration overlay */}
           <AnimatePresence>
             {allUnlocked && (
               <motion.div
-                initial={{ opacity: 0, y: -14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -14 }}
-                className="absolute left-1/2 top-4 z-20 -translate-x-1/2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.35 }}
+                className="absolute inset-0 z-20 flex items-center justify-center"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at 50% 60%, color-mix(in oklch, var(--primary) 10%, transparent) 0%, color-mix(in oklch, var(--background) 92%, transparent) 70%)",
+                  backdropFilter: "blur(2px)",
+                }}
               >
-                <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-card/95 px-4 py-2 shadow-premium backdrop-blur-md">
-                  <Trophy className="h-4 w-4 text-primary" />
-                  <span className="whitespace-nowrap text-[12px] font-bold text-foreground">
-                    You explored all of Jay's brain! 🎉
-                  </span>
-                </div>
+                {/* Card */}
+                <motion.div
+                  initial={{ scale: 0.82, opacity: 0, y: 28 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  transition={{ type: "spring", stiffness: 340, damping: 28, delay: 0.12 }}
+                  className="relative mx-4 flex max-w-sm flex-col items-center gap-5 overflow-hidden rounded-3xl border border-primary/25 bg-card/95 px-8 py-8 shadow-premium text-center"
+                >
+                  {/* Top shimmer bar */}
+                  <div className="absolute inset-x-0 top-0 h-[3px] gradient-primary" />
+
+                  {/* Trophy glow */}
+                  <div className="relative flex items-center justify-center">
+                    <motion.div
+                      className="absolute h-24 w-24 rounded-full bg-primary/15 blur-2xl"
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.6, 1, 0.6] }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                    <motion.div
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+                      className="relative flex h-20 w-20 items-center justify-center rounded-2xl gradient-primary shadow-glow"
+                    >
+                      <Trophy className="h-9 w-9 text-primary-foreground" />
+                    </motion.div>
+                    {/* Sparkle dots orbiting */}
+                    {[0, 72, 144, 216, 288].map((deg, i) => (
+                      <motion.span
+                        key={i}
+                        className="absolute h-2 w-2 rounded-full bg-primary"
+                        style={{
+                          top: `${50 - 46 * Math.cos((deg * Math.PI) / 180)}%`,
+                          left: `${50 + 46 * Math.sin((deg * Math.PI) / 180)}%`,
+                          opacity: 0.7,
+                        }}
+                        animate={{ scale: [0.6, 1.3, 0.6], opacity: [0.4, 1, 0.4] }}
+                        transition={{
+                          duration: 1.8,
+                          repeat: Infinity,
+                          delay: i * 0.22,
+                          ease: "easeInOut",
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Headline */}
+                  <div className="space-y-1.5">
+                    <p className="font-heading text-xl font-black tracking-tight text-foreground">
+                      You cracked Jay's Brain! 🧠
+                    </p>
+                    <p className="text-[13px] leading-relaxed text-muted-foreground">
+                      You just explored every skill, tool, and story behind the code.
+                      <br />
+                      Most people don't make it this far.
+                    </p>
+                  </div>
+
+                  {/* Stat pills */}
+                  <motion.div
+                    className="flex w-full gap-2"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      visible: { transition: { staggerChildren: 0.08, delayChildren: 0.3 } },
+                    }}
+                  >
+                    {[
+                      { label: "Skills", value: `${SKILL_NODES.length}`, sub: "unlocked" },
+                      { label: "Brain IQ", value: "200+", sub: "certified" },
+                      { label: "Badge", value: "🏆", sub: "Explorer" },
+                    ].map((s) => (
+                      <motion.div
+                        key={s.label}
+                        variants={{
+                          hidden: { opacity: 0, y: 12 },
+                          visible: { opacity: 1, y: 0 },
+                        }}
+                        transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                        className="flex flex-1 flex-col items-center gap-0.5 rounded-xl border border-border/60 bg-muted/40 py-2.5"
+                      >
+                        <span className="text-base font-black gradient-text">{s.value}</span>
+                        <span className="text-[10px] text-muted-foreground">{s.sub}</span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+
+                  {/* CTAs */}
+                  <div className="flex w-full flex-col gap-2">
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => {
+                        // close game first, then scroll
+                        // onClose is injected via the parent — we emit a custom event
+                        window.dispatchEvent(new CustomEvent("braingame:hire"));
+                      }}
+                      className="btn-shine flex w-full items-center justify-center gap-2 rounded-xl gradient-primary px-4 py-3 text-[13px] font-bold text-primary-foreground shadow-glow transition-all"
+                    >
+                      <Mail className="h-4 w-4" />
+                      Now let's build something together
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </motion.button>
+                    <button
+                      onClick={() => setAllUnlocked(false)}
+                      className="w-full rounded-xl border border-border/60 bg-transparent py-2.5 text-[12px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    >
+                      Keep exploring ↩
+                    </button>
+                  </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -677,6 +787,18 @@ export function BrainGame({ onClose }: { onClose: () => void }) {
 
 export function BrainGameTrigger() {
   const [open, setOpen] = useState(false);
+
+  // Listen for the "hire me" CTA fired from inside the celebration overlay
+  useEffect(() => {
+    const handler = () => {
+      setOpen(false);
+      setTimeout(() => {
+        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+      }, 320); // let the modal exit animation finish first
+    };
+    window.addEventListener("braingame:hire", handler);
+    return () => window.removeEventListener("braingame:hire", handler);
+  }, []);
 
   return (
     <>
