@@ -1,20 +1,24 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
+import { resumePageMetadata, resumeBreadcrumbJsonLd } from "@/lib/seo";
 import { getExperienceLabel } from "@/lib/utils";
 import { EXPERIENCES, EDUCATION, SKILL_CATEGORIES } from "@/lib/resume-data";
 import { ResumeThemeSync } from "@/components/portfolio/ResumeThemeSync";
 
-export const metadata: Metadata = {
-  title: `${siteConfig.name} — Resume`,
-  description: siteConfig.description,
-};
+// ── SEO: rich metadata for the /resume route ────────────────────────────────
+// Title, description, keywords, OG, and Twitter card are defined in lib/seo.ts.
+export const metadata = resumePageMetadata;
 
 export default function ResumePage() {
   const expLabel = getExperienceLabel(siteConfig.careerStartDate);
 
   return (
     <>
+      {/* ── JSON-LD: BreadcrumbList for /resume ──────────────────────────── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeBreadcrumbJsonLd) }}
+      />
       <ResumeThemeSync />
       <div className="min-h-screen bg-background py-10 px-4 print:bg-white print:py-0">
         <div className="resume-page mx-auto max-w-3xl space-y-8">

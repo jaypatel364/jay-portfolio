@@ -1,8 +1,12 @@
 import type { MetadataRoute } from "next";
+import { BASE_URL } from "@/lib/seo";
 
-// Update BASE_URL once you have a real domain
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://jay-portfolio.vercel.app";
-
+/**
+ * Sitemap — submitted to Google Search Console.
+ *
+ * Add new routes here as you expand the site.
+ * BASE_URL is driven by the NEXT_PUBLIC_SITE_URL env var (see .env.example).
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
