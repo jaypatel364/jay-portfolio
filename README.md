@@ -35,11 +35,11 @@ Live at: `https://jay-portfolio.vercel.app`
 - **Typewriter effect** — 8 lines type one at a time with realistic per-character delays
 - **macOS-style terminal window** — traffic light buttons, username@portfolio title bar
 - **Aurora glow orbs** — three layered radial blobs animated independently behind the terminal
-- **Smooth progress bar** — RAF-driven ease-out fill always reaches 100% within the 6-second budget, never gets stuck mid-way
+- **Smooth progress bar** — RAF-driven ease-out fill always reaches 100% within the 6-second budget
 - **6-second hard cap** — loader always completes within budget even on slow machines
-- **ESC to skip** — keyboard shortcut works from the very first render (no delay)
-- **Skip button** — visible after 1.5 s with ESC hint for impatient visitors
-- **Cinematic reveal** — three-layer exit: left/right curtain panels slide out, glowing seam pulses, radial iris bloom expands from centre
+- **ESC to skip** — keyboard shortcut works from the very first render
+- **Skip button** — visible after 1.5 s with ESC hint
+- **Cinematic reveal** — three-layer exit: left/right curtain panels, glowing seam, radial iris bloom
 - **Fully theme-aware** — uses CSS variables so it matches light, dark, and every accent colour
 - **Toggle in `site-config`**: `showLoadingScreen: true | false`
 
@@ -49,36 +49,41 @@ Live at: `https://jay-portfolio.vercel.app`
 - **"Chat with Jay" label** — animated pill appears ~2.8 s after load
 - **Streaming responses** — word-by-word reveal with blinking caret
 - **14 pre-built instant answers** — intro, tech stack, experience, location, rates, hire, freelance, contact, resume, portfolio build, coolest feature, learning, tools, GitHub/LinkedIn — zero Groq tokens for these
-- **Pricing chip** — "💰 What are your hourly rates?" quick chip added to group 3
-- **Hourly rates in system prompt** — Small $15–30/hr · Medium $25–50/hr · Complex $35–80/hr, always negotiable
 - **Quick chip suggestions** — 3 rotating groups of 4 chips on welcome screen + scrollable bar during conversation
 - **Inline markdown** — `**bold**`, `` `code` ``, URLs as friendly pill links
 - **Conversation limit** — 10 messages then "start fresh" banner
-- **Security**: per-IP rate limiting (6 req/min, 30 req/hr), Zod validation, prompt injection guard, off-topic guard, token budget enforcer (3,500-token ceiling), history trimmed to 4 exchanges
+- **Security** — per-IP rate limiting (6 req/min, 30 req/hr), Zod validation, prompt injection guard, off-topic guard, token budget enforcer (3,500-token ceiling), history trimmed to 4 exchanges
 
 ### Jay's Brain Game
 
 - **20 floating skill nodes** with real `react-icons/si` icons and physics drift
 - **Click to unlock** — each node reveals a real fact about Jay's experience
-- **All 20 unlocked → full celebration screen**:
-  - Floating trophy with pulsing glow halo and 5 orbiting sparkle dots
-  - "You cracked Jay's Brain! 🧠" headline with personalised subtext
-  - Stat pills: skills unlocked · 200+ IQ certified · 🏆 Explorer badge
-  - **"Now let's build something together →"** CTA — closes the game and scrolls to the Contact section
-  - "Keep exploring ↩" secondary button to dismiss and continue
-  - Confetti fires behind the overlay
-- **Keyboard**: `Space` = random unlock, `Escape` = close
+- **All 20 unlocked → full celebration screen** with trophy, stat pills, confetti, and CTA to Contact
+- **Keyboard** — `Space` = random unlock, `Escape` = close
 - **Toggle in `site-config`**: `showBrainGame: true | false`
+
+### FAQ Section
+
+- **"Ask Me Anything" accordion** — honest answers to the questions Jay gets asked most
+- **Category filter bar + segment progress dots** — all in one unified toolbar:
+  - Filter pills: All / Work / Tech / Personal / Process — spring `layoutId` animated underlay
+  - Segment dots (`■ ■ ■ □ □ □`) — one dot per question, fills as the user explores; pulses with a glow burst when all are read
+  - `N/T` fraction beside the dots, turns primary colour at 100%
+- **"All read" celebration banner** — slides in below the toolbar when every question has been opened: shimmer sweep, wobbling party-popper icon, inline "say hi →" button that scrolls to Contact
+- **Per-category colour accents** — each category has its own colour (teal · blue · violet · amber) used on the left border, radial ink-blob glow, badge, and chevron
+- **IDE line-number gutter** — `01`, `02`, … prefix on every question, coloured on open
+- **Floating background blobs** — three blurred blobs drift independently (pure CSS, zero JS)
+- **Fully accessible** — `aria-expanded`, `aria-controls`, keyboard Enter/Space, visible focus rings, respects `prefers-reduced-motion`
+- **Toggle in `site-config`**: `showFAQ: true | false` — hides the section and removes the nav link everywhere
 
 ### Skills Section — View Toggle
 
 - **Grid / 3D Sphere toggle** — always visible next to the filter tabs (desktop only)
 - **Sphere is the default** — premium experience shown first
 - **All filter + Sphere** — all 24 skills from every category in a single globe
-- **Category filter + Sphere** — only that category's 8 skills on the globe
-- **Grid view** — original pill layout (All → 3-col CategoryCard, single category → OverflowPill list)
-- **Momentum physics fix** — velocity capped at `MAX_VEL = 0.012`, friction increased to `0.92`, dt spike clamped to 24 ms — fast flicks now decelerate smoothly instead of spinning wildly
-- **Mobile** — always pill grid regardless of toggle (sphere is desktop-only)
+- **Category filter + Sphere** — only that category's skills on the globe
+- **Grid view** — original pill layout
+- **Mobile** — always pill grid regardless of toggle
 
 ### 3D Skill Sphere
 
@@ -92,7 +97,7 @@ Live at: `https://jay-portfolio.vercel.app`
 ### Brand Mark
 
 - `JAY` in Space Grotesk Black with animated gradient text
-- **Shimmer underline** — 2.5 px bar with a sweep animation on 2.4 s loop
+- **Shimmer underline** — 2.5 px bar with a sweep animation on a 2.4 s loop
 - **`.dev` floating pill** — monospace, rotated -1.5°, glow shadow, accent-aware border
 - Fully accent-colour reactive — changes automatically with theme/accent
 
@@ -113,8 +118,9 @@ Live at: `https://jay-portfolio.vercel.app`
 - **Command palette** (`⌘K`) — search, theme, accent, resume, social links
 - **Keyboard shortcuts overlay** (`?`)
 - **Global shortcuts** — `G+H/A/S/E/C/P` sections, `T` theme
-- **Scroll progress badge** — section + page % after hero (desktop)
+- **Scroll progress badge** — section name + page % after hero (desktop)
 - **Mobile accent picker** in hamburger menu
+- FAQ nav link appears / disappears automatically based on `showFAQ`
 
 ### Projects Section
 
@@ -130,7 +136,7 @@ Live at: `https://jay-portfolio.vercel.app`
 - Saves to MongoDB + sends SMTP email independently
 - Confetti on success, rate limiting (3 req/min), honeypot
 
-### Personalization
+### Personalisation
 
 - **6 accent colour presets** persisted in `localStorage`
 - **Dark / light mode** — respects `prefers-color-scheme`
@@ -163,8 +169,9 @@ Live at: `https://jay-portfolio.vercel.app`
 │       ├── SkillsSection.tsx      # Grid/Sphere toggle, 3D globe, filter tabs
 │       ├── ExperienceSection.tsx  # Cards / Timeline toggle
 │       ├── ProjectsSection.tsx    # NDA / WIP / hideCode flags
+│       ├── FAQSection.tsx         # Accordion, category filters, segment progress dots
 │       ├── ContactSection.tsx     # Form with confetti + dual backend
-│       ├── Navbar.tsx             # Responsive (lg breakpoint)
+│       ├── Navbar.tsx             # Responsive, FAQ-aware nav items
 │       ├── GitHubGraph.tsx        # Rolling-year heatmap
 │       ├── CommandPalette.tsx     # ⌘K palette
 │       ├── ChatBot.tsx            # AI chatbot widget (streaming + pre-built)
@@ -178,14 +185,14 @@ Live at: `https://jay-portfolio.vercel.app`
 │       └── ...                    # shadcn/ui primitives
 ├── hooks/
 │   ├── use-accent.ts
-│   ├── use-active-section.ts
+│   ├── use-active-section.tsx     # IntersectionObserver — watches all section IDs
 │   ├── use-count-up.ts
 │   ├── use-scroll-progress.ts
 │   └── use-theme.tsx
 ├── lib/
 │   ├── accent-colors.ts
-│   ├── resume-data.ts
-│   ├── site-config.ts             # Single source of truth for all personal info
+│   ├── resume-data.ts             # Work experience, education, skills (shared by sections + /resume)
+│   ├── site-config.ts             # Single source of truth — all personal info + feature flags
 │   └── utils.ts
 └── public/
     ├── icons/
@@ -210,11 +217,11 @@ Open [http://localhost:3000](http://localhost:3000).
 Create `.env.local` at the project root:
 
 ```env
+# Site URL — used for canonical URLs and sitemap (required in production)
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+
 # Groq AI — required for the chatbot
 GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-# Base URL — used in sitemap
-NEXT_PUBLIC_BASE_URL=https://your-domain.com
 
 # MongoDB — contact form storage (optional)
 MONGODB_URI=mongodb+srv://...
@@ -229,13 +236,13 @@ SMTP_FROM=your@email.com
 CONTACT_NOTIFY_TO=your@email.com
 ```
 
-`GROQ_API_KEY` is the only required variable. Contact form degrades gracefully if MongoDB or SMTP is unconfigured.
+`GROQ_API_KEY` is required for the chatbot. `NEXT_PUBLIC_SITE_URL` should be set to your real domain before going live. All other variables are optional — the site degrades gracefully without them.
 
 ---
 
 ## Customisation
 
-All personal info lives in **`lib/site-config.ts`**:
+All personal info and feature flags live in **`lib/site-config.ts`**:
 
 ```ts
 export const siteConfig = {
@@ -247,28 +254,47 @@ export const siteConfig = {
   location:        "Ahmedabad, India",
   resumeUrl:       "...",
   bookingUrl:      "...",
-  careerStartDate: "2022-12",   // drives experience label everywhere
-  projectCount:    10,
+  careerStartDate: "2022-12",   // drives the experience label everywhere
 
   headlineWords: ["clean UIs", "scalable apps", ...],
 
-  // Feature flags
-  showTerminalHero:  true,
-  showLoadingScreen: true,
-  showBrainGame:     true,
+  // ── Feature flags ─────────────────────────────────────────────────────────
+  showTerminalHero:  true,   // interactive zsh terminal in Hero
+  showLoadingScreen: true,   // cinematic boot sequence (once per session)
+  showBrainGame:     true,   // floating skill-node game in Skills
+  showFAQ:           true,   // FAQ section + nav link (false = hidden everywhere)
 
-  // Controls pills shown in "All" grid per category
+  // ── FAQ content ───────────────────────────────────────────────────────────
+  faqItems: [
+    {
+      category: "work",     // "work" | "tech" | "personal" | "process"
+      question: "...",
+      answer:   "...",
+    },
+    // add or remove items freely
+  ],
+
+  // ── Skills grid preview counts ────────────────────────────────────────────
   skillPreviewCounts: {
     Frontend:         8,
     Backend:          8,
     "Tools & DevOps": 8,
   },
 
-  dailyStack: [...],          // comment out whole array to hide marquee
-  currentlyBuilding: null,    // or { name, description, url }
-  currentlyLearning: [],      // or [{ name, icon }]
+  dailyStack:         [...],   // comment out whole array to hide the marquee
+  currentlyBuilding:  null,    // or { name, description, url }
+  currentlyLearning:  [],      // or [{ name, icon }]
 };
 ```
+
+### Toggling the FAQ section
+
+```ts
+// lib/site-config.ts
+showFAQ: false; // hides the section, removes the nav link, done
+```
+
+Editing FAQ questions and answers is also done entirely in `faqItems` — no other file needs to change.
 
 ### Adding skills
 
@@ -296,9 +322,9 @@ Edit `PROJECTS` in `components/portfolio/ProjectsSection.tsx`:
 
 ### Updating the AI chatbot
 
-- **Pre-built answers** (zero token cost): edit `CANNED_ANSWERS` in `app/api/chat/route.ts`
-- **Hourly rates**: already in both `CANNED_ANSWERS` and `SYSTEM_PROMPT` — update both
-- **Persona / facts**: edit `SYSTEM_PROMPT` in the same file
+- **Pre-built answers** (zero token cost) — edit `CANNED_ANSWERS` in `app/api/chat/route.ts`
+- **Hourly rates** — update both `CANNED_ANSWERS` and `SYSTEM_PROMPT` in the same file
+- **Persona / facts** — edit `SYSTEM_PROMPT` in the same file
 
 ### Updating the loading screen
 
@@ -308,7 +334,7 @@ Edit `BOOT_LINES` in `components/portfolio/LoadingScreen.tsx`:
 { text: "Loading React · Next.js · TypeScript", preDelay: 140, suffix: "✓", speed: 22 }
 ```
 
-- `preDelay` — ms before this line starts
+- `preDelay` — ms before this line starts typing
 - `speed` — ms per character (lower = faster)
 - `comment: true` — italic dimmed style for `// comment` lines
 
@@ -331,4 +357,4 @@ npm run build
 npm run start
 ```
 
-Deploys to Vercel automatically on push. Service worker only activates in production.
+Deploys to Vercel automatically on push. Service worker only activates in production. Set `NEXT_PUBLIC_SITE_URL` to your real domain in Vercel environment variables before going live.

@@ -806,7 +806,7 @@ export function SkillsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: 0.45 }}
-            className="mt-6 flex justify-center"
+            className="mt-6 hidden md:flex justify-center"
           >
             <BrainGameTrigger />
           </motion.div>

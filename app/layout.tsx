@@ -1,8 +1,9 @@
-import type { Metadata, Viewport } from "next";
+import { rootMetadata, rootViewport } from "@/lib/seo";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
+// ── Fonts ─────────────────────────────────────────────────────────────────────
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-heading",
@@ -21,31 +22,13 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  title: "Full Stack Developer — Portfolio",
-  description:
-    "MERN Full Stack Developer with 3+ years of experience building scalable web applications.",
-  authors: [{ name: "Jay" }],
-  openGraph: {
-    title: "Full Stack Developer — Portfolio",
-    description:
-      "MERN Full Stack Developer with 3+ years of experience building scalable web applications.",
-    type: "website",
-  },
-  twitter: {
-    card: "summary",
-  },
-};
+// ── SEO exports ───────────────────────────────────────────────────────────────
+// All metadata and viewport config lives in lib/seo.ts.
+// Edit that file to change titles, descriptions, OG images, keywords, etc.
+export const metadata = rootMetadata;
+export const viewport = rootViewport;
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf8" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e0f17" },
-  ],
-};
-
+// ── Root layout ───────────────────────────────────────────────────────────────
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -1,3 +1,5 @@
+import { homePageJsonLdSchemas } from "@/lib/seo";
+import { siteConfig } from "@/lib/site-config";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { PageTransition, PageTransitionItem } from "@/components/portfolio/PageTransition";
 import { Navbar } from "@/components/portfolio/Navbar";
@@ -13,6 +15,7 @@ import { SkillsSection } from "@/components/portfolio/SkillsSection";
 import { ExperienceSection } from "@/components/portfolio/ExperienceSection";
 import { EducationSection } from "@/components/portfolio/EducationSection";
 import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
+import { FAQSection } from "@/components/portfolio/FAQSection";
 import { ContactSection } from "@/components/portfolio/ContactSection";
 import { Footer } from "@/components/portfolio/Footer";
 import { LoadingScreenWrapper } from "@/components/portfolio/LoadingScreen";
@@ -20,6 +23,20 @@ import { LoadingScreenWrapper } from "@/components/portfolio/LoadingScreen";
 export default function Home() {
   return (
     <ThemeProvider>
+      {/*
+       * ── JSON-LD Structured Data ─────────────────────────────────────────
+       * Injected as <script type="application/ld+json"> in the <head>.
+       * Includes: Person, WebSite, ProfilePage, and FAQ schemas.
+       * All schema content is defined in lib/seo.ts — edit it there.
+       */}
+      {homePageJsonLdSchemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+
       {/*
        * LoadingScreenWrapper:
        *   - Controlled by siteConfig.showLoadingScreen
@@ -58,6 +75,11 @@ export default function Home() {
                 <SectionErrorBoundary section="Projects">
                   <ProjectsSection />
                 </SectionErrorBoundary>
+                {siteConfig.showFAQ && (
+                  <SectionErrorBoundary section="FAQ">
+                    <FAQSection />
+                  </SectionErrorBoundary>
+                )}
                 <SectionErrorBoundary section="Contact">
                   <ContactSection />
                 </SectionErrorBoundary>

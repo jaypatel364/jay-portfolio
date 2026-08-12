@@ -107,6 +107,7 @@ const NAV_ITEMS = [
   { id: "education", label: "Education" },
   { id: "projects", label: "Projects" },
   // { id: "testimonials", label: "Testimonials" },
+  ...(siteConfig.showFAQ ? [{ id: "faq", label: "FAQ" }] : []),
   { id: "contact", label: "Contact" },
 ];
 
