@@ -228,9 +228,9 @@ Use these versions on **Mac and Windows** so hooks and CI behave the same:
 
 | Tool    | Version    | Notes                                                                                                                     |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Node.js | **20 LTS** | `.nvmrc` pins `20`; use [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows) |
+| Node.js | **22 LTS** | `.nvmrc` pins `22`; use [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows) |
+| npm     | **10+**    | **npm only** — always commit `package-lock.json` after `npm install` (CI runs `npm ci`)                                   |
 | Git     | **≥ 2.32** | Mac: `brew install git` (avoid old Xcode Git). Windows: [Git for Windows](https://git-scm.com/download/win)               |
-| npm     | **10+**    | Ships with Node 20                                                                                                        |
 
 After `brew install git` on Mac, confirm the Homebrew binary is first on your PATH:
 
@@ -255,6 +255,8 @@ Then open a new terminal and check again.
 npm install
 npm run dev
 ```
+
+**Important:** always use `npm` (not yarn). After changing dependencies, run `npm install` and commit **`package-lock.json`** — CI runs `npm ci`, which fails if the lock file is out of sync.
 
 Open [http://localhost:3000](http://localhost:3000).
 
