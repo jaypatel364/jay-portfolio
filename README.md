@@ -226,11 +226,11 @@ Full conventions for humans and AI: see **[STRUCTURE.md](./STRUCTURE.md)**.
 
 Use these versions on **Mac and Windows** so hooks and CI behave the same:
 
-| Tool    | Version    | Notes                                                                                                                     |
-| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Node.js | **22 LTS** | `.nvmrc` pins `22`; use [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows) |
-| npm     | **10+**    | **npm only** — always commit `package-lock.json` after `npm install` (CI runs `npm ci`)                                   |
-| Git     | **≥ 2.32** | Mac: `brew install git` (avoid old Xcode Git). Windows: [Git for Windows](https://git-scm.com/download/win)               |
+| Tool    | Version    | Notes                                                                                                                                             |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js | **22 LTS** | `.nvmrc` pins `22`; use [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows)                         |
+| npm     | **10.9.x** | Ships with Node 22. **Do not use npm 11** — it generates a lock file CI cannot install (`npm ci` fails). Regenerate with `npx npm@10.9.2 install` |
+| Git     | **≥ 2.32** | Mac: `brew install git` (avoid old Xcode Git). Windows: [Git for Windows](https://git-scm.com/download/win)                                       |
 
 After `brew install git` on Mac, confirm the Homebrew binary is first on your PATH:
 
@@ -256,7 +256,14 @@ npm install
 npm run dev
 ```
 
-**Important:** always use `npm` (not yarn). After changing dependencies, run `npm install` and commit **`package-lock.json`** — CI runs `npm ci`, which fails if the lock file is out of sync.
+**Important:** always use `npm` (not yarn). After changing dependencies:
+
+```bash
+npx npm@10.9.2 install   # use npm 10 — npm 11 breaks CI lock file sync
+git add package-lock.json
+```
+
+CI runs `npm ci`, which fails if `package-lock.json` was generated with npm 11 or is out of sync with `package.json`.
 
 Open [http://localhost:3000](http://localhost:3000).
 
