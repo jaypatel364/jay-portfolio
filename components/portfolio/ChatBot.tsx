@@ -520,7 +520,7 @@ export function ChatBot() {
             exit={{ opacity: 0, scale: 0.93, y: 16 }}
             transition={{ type: "spring", stiffness: 420, damping: 36 }}
             style={{ transformOrigin: "bottom right" }}
-            className="fixed bottom-[88px] right-6 z-50 flex w-[375px] max-w-[calc(100vw-1.5rem)] flex-col overflow-hidden rounded-2xl border border-border/60 bg-background shadow-premium"
+            className="fixed bottom-[88px] right-1 xsm:right-6 z-50 flex w-[375px] max-w-[calc(100vw-1.5rem)] flex-col overflow-hidden rounded-2xl border border-border/60 bg-background shadow-premium"
             role="dialog"
             aria-label="Chat with Jay"
             aria-modal="true"

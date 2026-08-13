@@ -31,118 +31,132 @@ Live at: `https://jay-portfolio.vercel.app`
 
 ### Loading Screen
 
-- **Cinematic terminal boot sequence** — plays once per browser session (`sessionStorage` flag)
-- **Typewriter effect** — 8 lines type one at a time with realistic per-character delays
-- **macOS-style terminal window** — traffic light buttons, username@portfolio title bar
-- **Aurora glow orbs** — three layered radial blobs animated independently behind the terminal
-- **Smooth progress bar** — RAF-driven ease-out fill always reaches 100% within the 6-second budget
-- **6-second hard cap** — loader always completes within budget even on slow machines
-- **ESC to skip** — keyboard shortcut works from the very first render
-- **Skip button** — visible after 1.5 s with ESC hint
-- **Cinematic reveal** — three-layer exit: left/right curtain panels, glowing seam, radial iris bloom
-- **Fully theme-aware** — uses CSS variables so it matches light, dark, and every accent colour
-- **Toggle in `site-config`**: `showLoadingScreen: true | false`
+- Cinematic terminal boot sequence — plays once per browser session (`sessionStorage` flag)
+- Typewriter effect — 8 lines type one at a time with realistic per-character delays
+- macOS-style terminal window — traffic light buttons, username@portfolio title bar
+- Smooth progress bar, 6-second hard cap, ESC to skip
+- Three-layer cinematic reveal: left/right curtain panels, glowing seam, radial iris bloom
+- Toggle: `showLoadingScreen: true | false`
 
 ### AI Chatbot
 
-- **Floating FAB** — bottom-right, pulse ring, unread badge
-- **"Chat with Jay" label** — animated pill appears ~2.8 s after load
-- **Streaming responses** — word-by-word reveal with blinking caret
-- **14 pre-built instant answers** — intro, tech stack, experience, location, rates, hire, freelance, contact, resume, portfolio build, coolest feature, learning, tools, GitHub/LinkedIn — zero Groq tokens for these
-- **Quick chip suggestions** — 3 rotating groups of 4 chips on welcome screen + scrollable bar during conversation
-- **Inline markdown** — `**bold**`, `` `code` ``, URLs as friendly pill links
-- **Conversation limit** — 10 messages then "start fresh" banner
-- **Security** — per-IP rate limiting (6 req/min, 30 req/hr), Zod validation, prompt injection guard, off-topic guard, token budget enforcer (3,500-token ceiling), history trimmed to 4 exchanges
+- Floating FAB — bottom-right, pulse ring, unread badge, animated "Chat with Jay" label
+- Streaming responses — word-by-word reveal with blinking caret
+- 14 pre-built instant answers — no Groq tokens for intro, stack, experience, rates, hire, contact, resume, etc.
+- Quick chip suggestions — rotating groups during conversation
+- Inline markdown — `**bold**`, `` `code` ``, URLs as pill links
+- 10-message conversation limit then "start fresh" banner
+- Security — per-IP rate limiting (6 req/min, 30 req/hr), Zod validation, prompt injection guard, 3,500-token ceiling
 
-### Jay's Brain Game
+### Game Zone
 
-- **20 floating skill nodes** with real `react-icons/si` icons and physics drift
-- **Click to unlock** — each node reveals a real fact about Jay's experience
-- **All 20 unlocked → full celebration screen** with trophy, stat pills, confetti, and CTA to Contact
-- **Keyboard** — `Space` = random unlock, `Escape` = close
-- **Toggle in `site-config`**: `showBrainGame: true | false`
+A single "Game Zone" button in the Skills section opens a full hub modal with all mini-games. Sticky header with category filter tabs (All / Reflex / Memory / Creative / Chill). Featured hero card for the recommended game. Compact scrollable game rows for the rest — scales to any number of games. Body scroll locked while hub is open. Smooth cross-fade when switching tabs.
+
+Every game has an on/off flag in `lib/site-config.ts`. Setting it to `false` removes the game card entirely — no button, no modal.
+
+| Game                  | Category | Flag               |
+| --------------------- | -------- | ------------------ |
+| ⚡ Reaction Time Test | Reflex   | `showReactionTest` |
+| 🃏 Emoji Memory Flip  | Memory   | `showEmojiMemory`  |
+| 🎨 Color Match Blitz  | Reflex   | `showColorMatch`   |
+| 🎯 Dot Collector      | Reflex   | `showDotCollector` |
+| 🔢 Code Breaker       | Memory   | `showCodeBreaker`  |
+| ⌨️ Typing Speed Test  | Creative | `showTypingTest`   |
+| ✨ Vibe Check         | Creative | `showVibeCheck`    |
+| 🔮 Gravity Orbs       | Chill    | `showGravityOrbs`  |
+| 🎨 Pixel Draw Race    | Creative | `showPixelDraw`    |
+| 🧠 Jay's Brain        | Chill    | `showBrainGame`    |
+| 🔀 Word Scramble      | Creative | `showWordScramble` |
+
+All high scores are persisted in `localStorage`. Each game has a hire CTA that scrolls to the Contact section.
+
+#### Game descriptions
+
+**Reaction Time Test** — Screen goes dark, wait for the green flash, click as fast as possible. 5 rounds, running average, personal rank (Ninja / Pro / Human / Casual / Sloth).
+
+**Emoji Memory Flip** — 16 face-down emoji cards, 8 pairs. Flip two at a time to find matches. Tracked by moves and time.
+
+**Color Match Blitz** — A target color swatch appears. Pick the matching one from 4 options before 3 seconds runs out. Colors get closer together each round.
+
+**Dot Collector** — Glowing dots pop onto screen and shrink away. Click them before they vanish. Combos earn bonus points. 30 seconds.
+
+**Code Breaker** — 3×3 glowing tile grid lights up a sequence. Mirror it back. Each round adds one more step; speed increases.
+
+**Typing Speed Test** — Type real code snippets from Jay's codebase. Live WPM + accuracy. 6 snippets: React hook, API route, Prisma query, Auth middleware, Socket.io, Zustand.
+
+**Vibe Check** — 6 "this or that" dev choices (dark mode vs light, tabs vs spaces, etc.) reveal your developer archetype. Shareable result badge with copy-to-clipboard.
+
+**Gravity Orbs** — Physics orbs float on screen. Move your cursor to attract them. Click to burst into smaller ones. 30 seconds.
+
+**Pixel Draw Race** — An 8×8 pixel silhouette appears. Recreate it cell by cell before 20 seconds runs out. Match % and star rating at the end.
+
+**Jay's Brain** — 20 floating skill nodes with real brand icons. Click each to unlock a real story from Jay's dev journey. Unlock all 20 for a celebration screen.
+
+**Word Scramble** — A tech word gets scrambled. Type the correct word before 10 seconds runs out. Streak combos earn bonus points. Skip button available.
+
+### Catch the Bug Easter Egg
+
+A tiny animated bug (🐛🐞🦗🪲🦟) crawls across the screen at random intervals (45–120 seconds). Click it before it escapes.
+
+- **70% chance** → full immersive overlay with squash animation, orbiting sparkles, stat pills, confetti burst, and hire CTA
+- **30% chance** → quick toast notification only
+- Bug hides automatically while any Game Zone modal is open
+- Toggle: `showCatchTheBug: true | false`
+
+### Cursor Effects
+
+Five canvas-based cursor effects. Set one value in `site-config.ts` — switching is instant.
+
+| Value         | Effect                                                       |
+| ------------- | ------------------------------------------------------------ |
+| `"none"`      | Disabled                                                     |
+| `"particles"` | Hue-cycling glow orbs drift and fade behind the cursor       |
+| `"ripple"`    | Expanding water-drop ring ripples on every move              |
+| `"magnetic"`  | 9 orbital dots elastically chase the cursor like planets     |
+| `"lightning"` | Electric arc bolts shoot from cursor to random nearby points |
+| `"pixelate"`  | Colored square pixels fall and dissolve behind the trail     |
+
+All effects are canvas-only (`pointer-events: none`), fine-pointer only, auto-skip on touch and `prefers-reduced-motion`.
+
+Config: `cursorEffect: "magnetic"` (or any value above)
 
 ### FAQ Section
 
-- **"Ask Me Anything" accordion** — honest answers to the questions Jay gets asked most
-- **Category filter bar + segment progress dots** — all in one unified toolbar:
-  - Filter pills: All / Work / Tech / Personal / Process — spring `layoutId` animated underlay
-  - Segment dots (`■ ■ ■ □ □ □`) — one dot per question, fills as the user explores; pulses with a glow burst when all are read
-  - `N/T` fraction beside the dots, turns primary colour at 100%
-- **"All read" celebration banner** — slides in below the toolbar when every question has been opened: shimmer sweep, wobbling party-popper icon, inline "say hi →" button that scrolls to Contact
-- **Per-category colour accents** — each category has its own colour (teal · blue · violet · amber) used on the left border, radial ink-blob glow, badge, and chevron
-- **IDE line-number gutter** — `01`, `02`, … prefix on every question, coloured on open
-- **Floating background blobs** — three blurred blobs drift independently (pure CSS, zero JS)
-- **Fully accessible** — `aria-expanded`, `aria-controls`, keyboard Enter/Space, visible focus rings, respects `prefers-reduced-motion`
-- **Toggle in `site-config`**: `showFAQ: true | false` — hides the section and removes the nav link everywhere
+- "Ask Me Anything" accordion with category filter bar (All / Work / Tech / Personal / Process)
+- Spring-animated `layoutId` underlay on active filter
+- Segment progress dots — fill as questions are opened, pulse on completion
+- "All read" celebration banner with shimmer sweep and scroll-to-contact CTA
+- Per-category colour accents on border, glow blob, badge, and chevron
+- IDE line-number gutter prefix on every question
+- Toggle: `showFAQ: true | false`
 
-### Skills Section — View Toggle
+### Skills Section
 
-- **Grid / 3D Sphere toggle** — always visible next to the filter tabs (desktop only)
-- **Sphere is the default** — premium experience shown first
-- **All filter + Sphere** — all 24 skills from every category in a single globe
-- **Category filter + Sphere** — only that category's skills on the globe
-- **Grid view** — original pill layout
-- **Mobile** — always pill grid regardless of toggle
-
-### 3D Skill Sphere
-
-- **Fibonacci lattice** — most uniform point distribution on a sphere surface
-- **Quadratic depth curve** — back nodes smaller/dimmer, theme-aware opacity floors
-- **Rotating latitude rings** — 3 SVG rings projected through the same 3D math
-- **Drag to spin** with Pointer Events API + `setPointerCapture`
-- **Smooth momentum** — velocity capped + friction decay, auto-spin resumes when coasted to stop
-- **Hover tooltip** — floating name card above each node in brand colour
-
-### Brand Mark
-
-- `JAY` in Space Grotesk Black with animated gradient text
-- **Shimmer underline** — 2.5 px bar with a sweep animation on a 2.4 s loop
-- **`.dev` floating pill** — monospace, rotated -1.5°, glow shadow, accent-aware border
-- Fully accent-colour reactive — changes automatically with theme/accent
-
-### GitHub Activity Graph
-
-- **Rolling 12-month window** — always the trailing year from today
-- **No horizontal scroll** — cells use `flex-1` + `ResizeObserver`
-- **Correct month labels** — placed at the exact week where the 1st of each month falls
-- **Local date arithmetic** — avoids UTC off-by-one in UTC+ timezones
+- Grid / 3D Sphere view toggle
+- 3D sphere uses Fibonacci lattice for uniform point distribution, quadratic depth curve for realistic depth, drag-to-spin with momentum
+- Category filter tabs — sphere shows only that category's skills
+- Game Zone trigger button at the bottom (desktop)
 
 ### Hero Section
 
-- **Word-swap headline** — configurable words with slot-machine slide animation
-- **Interactive terminal** (`showTerminalHero: true`) — `zsh`-style, accepts `whoami`, `skills`, `experience`, `projects`, `contact`, `status`, `clear`, `help`; ↑↓ history, `Ctrl+C`, `Ctrl+L`
+- Word-swap headline with configurable words and slot-machine animation
+- Interactive `zsh`-style terminal (`showTerminalHero: true`) — accepts `whoami`, `skills`, `experience`, `projects`, `contact`, `status`, `clear`, `help`; ↑↓ history, `Ctrl+C`, `Ctrl+L`
 
 ### Navigation
 
-- **Command palette** (`⌘K`) — search, theme, accent, resume, social links
-- **Keyboard shortcuts overlay** (`?`)
-- **Global shortcuts** — `G+H/A/S/E/C/P` sections, `T` theme
-- **Scroll progress badge** — section name + page % after hero (desktop)
-- **Mobile accent picker** in hamburger menu
-- FAQ nav link appears / disappears automatically based on `showFAQ`
+- Command palette (`⌘K`) — search, theme, accent, resume, social links
+- Keyboard shortcuts overlay (`?`)
+- Global shortcuts — `G+H/A/S/E/C/P` for sections, `T` for theme
+- Scroll progress badge — section name + page % after hero (desktop)
 
-### Projects Section
+### Other Features
 
-- Filter tabs: All / Fullstack / Frontend / Backend
-- States: default · `hideCode: true` · `nda: true` (NDA ribbon) · `wip: true` (pulsing badge)
-
-### Experience Section
-
-- Cards and Timeline views with animated transitions
-
-### Contact Form
-
-- Saves to MongoDB + sends SMTP email independently
-- Confetti on success, rate limiting (3 req/min), honeypot
-
-### Personalisation
-
-- **6 accent colour presets** persisted in `localStorage`
-- **Dark / light mode** — respects `prefers-color-scheme`
-
-### Performance & Technical
-
+- GitHub activity heatmap — rolling 12-month window, correct month labels, no horizontal scroll
+- Projects section — filter by All / Fullstack / Frontend / Backend; supports `hideCode`, `nda`, `wip` flags
+- Experience section — Cards and Timeline views with animated transitions
+- Contact form — saves to MongoDB + sends SMTP email; confetti on success, rate limiting, honeypot field
+- 6 accent colour presets persisted in `localStorage`
+- Dark / light mode — respects `prefers-color-scheme`
 - Scroll progress bar, cursor spotlight, back-to-top FAB
 - Section error boundaries, PWA (production only)
 - Konami code easter egg — `↑↑↓↓←→←→BA`
@@ -154,7 +168,7 @@ Live at: `https://jay-portfolio.vercel.app`
 ```
 ├── app/
 │   ├── api/
-│   │   ├── chat/route.ts          # AI chatbot (Groq, rate-limited, streamed, pre-built answers)
+│   │   ├── chat/route.ts          # AI chatbot (Groq, streaming, rate-limited, pre-built answers)
 │   │   └── contact/route.ts       # Contact form (MongoDB + SMTP)
 │   ├── resume/page.tsx
 │   ├── manifest.ts
@@ -164,35 +178,54 @@ Live at: `https://jay-portfolio.vercel.app`
 │   └── globals.css
 ├── components/
 │   └── portfolio/
-│       ├── HeroSection.tsx        # Word-swap headline + interactive terminal
-│       ├── AboutSection.tsx       # Bio, tech marquee, GitHub graph
-│       ├── SkillsSection.tsx      # Grid/Sphere toggle, 3D globe, filter tabs
-│       ├── ExperienceSection.tsx  # Cards / Timeline toggle
-│       ├── ProjectsSection.tsx    # NDA / WIP / hideCode flags
-│       ├── FAQSection.tsx         # Accordion, category filters, segment progress dots
-│       ├── ContactSection.tsx     # Form with confetti + dual backend
-│       ├── Navbar.tsx             # Responsive, FAQ-aware nav items
-│       ├── GitHubGraph.tsx        # Rolling-year heatmap
-│       ├── CommandPalette.tsx     # ⌘K palette
-│       ├── ChatBot.tsx            # AI chatbot widget (streaming + pre-built)
-│       ├── LoadingScreen.tsx      # Terminal boot sequence + cinematic reveal
-│       ├── BrainGame.tsx          # Skill explorer + celebration screen
-│       ├── AccentPicker.tsx
-│       ├── ShortcutsOverlay.tsx
+│       ├── HeroSection.tsx         # Word-swap headline + interactive terminal
+│       ├── AboutSection.tsx        # Bio, tech marquee, GitHub graph
+│       ├── SkillsSection.tsx       # Grid/Sphere toggle, 3D globe, filter tabs
+│       ├── ExperienceSection.tsx   # Cards / Timeline toggle
+│       ├── ProjectsSection.tsx     # NDA / WIP / hideCode flags
+│       ├── FAQSection.tsx          # Accordion, category filters, segment progress dots
+│       ├── ContactSection.tsx      # Form with confetti + dual backend
+│       ├── Navbar.tsx              # Responsive, FAQ-aware nav items
+│       ├── GitHubGraph.tsx         # Rolling-year heatmap
+│       ├── CommandPalette.tsx      # ⌘K palette
+│       ├── ChatBot.tsx             # AI chatbot widget (streaming + pre-built)
+│       ├── LoadingScreen.tsx       # Terminal boot sequence + cinematic reveal
+│       │
+│       ├── GameZone.tsx            # Game hub — scalable modal with category tabs
+│       ├── BrainGame.tsx           # Jay's Brain — floating skill-node explorer
+│       ├── CodeBreakerGame.tsx     # Code Breaker — Simon Says tile game
+│       ├── TypingSpeedTest.tsx     # Typing Speed Test — type Jay's real code
+│       ├── ReactionTimeTest.tsx    # Reaction Time Test — flash + click
+│       ├── EmojiMemory.tsx         # Emoji Memory Flip — 4×4 card matching
+│       ├── ColorMatch.tsx          # Color Match Blitz — swatch matching
+│       ├── DotCollector.tsx        # Dot Collector — 30s click frenzy
+│       ├── VibeCheck.tsx           # Vibe Check — dev personality quiz
+│       ├── GravityOrbs.tsx         # Gravity Orbs — physics cursor game
+│       ├── PixelDrawRace.tsx       # Pixel Draw Race — 8×8 pixel art recreation
+│       ├── WordScramble.tsx        # Word Scramble — unscramble tech words
+│       ├── StackBuild.tsx          # Stack & Build — block stacker (hidden)
+│       ├── NumberNinja.tsx         # Number Ninja — math blitz (hidden)
+│       │
+│       ├── CatchTheBug.tsx         # Roaming bug easter egg (70/30 overlay/toast)
+│       ├── CursorTrail.tsx         # 5 cursor effects (canvas RAF)
+│       ├── CursorSpotlight.tsx     # Radial spotlight following cursor
+│       ├── KonamiEasterEgg.tsx     # ↑↑↓↓←→←→BA easter egg
+│       ├── AccentPicker.tsx        # 6 accent colour presets
+│       ├── ShortcutsOverlay.tsx    # ? keyboard shortcuts panel
 │       └── ...
 │   └── ui/
-│       ├── Brand.tsx              # JAY·dev logo mark with shimmer underline
-│       └── ...                    # shadcn/ui primitives
+│       ├── Brand.tsx               # JAY·dev logo mark with shimmer underline
+│       └── ...                     # shadcn/ui primitives
 ├── hooks/
 │   ├── use-accent.ts
-│   ├── use-active-section.tsx     # IntersectionObserver — watches all section IDs
+│   ├── use-active-section.tsx      # IntersectionObserver — watches all section IDs
 │   ├── use-count-up.ts
 │   ├── use-scroll-progress.ts
 │   └── use-theme.tsx
 ├── lib/
 │   ├── accent-colors.ts
-│   ├── resume-data.ts             # Work experience, education, skills (shared by sections + /resume)
-│   ├── site-config.ts             # Single source of truth — all personal info + feature flags
+│   ├── resume-data.ts              # Work experience, education, skills
+│   ├── site-config.ts              # Single source of truth — all personal info + feature flags
 │   └── utils.ts
 └── public/
     ├── icons/
@@ -242,59 +275,60 @@ CONTACT_NOTIFY_TO=your@email.com
 
 ## Customisation
 
-All personal info and feature flags live in **`lib/site-config.ts`**:
+All personal info and feature flags live in **`lib/site-config.ts`**.
+
+### Personal info
 
 ```ts
-export const siteConfig = {
-  fullName:        "Jay Patel",
-  email:           "...",
-  github:          "...",
-  githubUsername:  "jaypatel364",
-  linkedin:        "...",
-  location:        "Ahmedabad, India",
-  resumeUrl:       "...",
-  bookingUrl:      "...",
-  careerStartDate: "2022-12",   // drives the experience label everywhere
-
-  headlineWords: ["clean UIs", "scalable apps", ...],
-
-  // ── Feature flags ─────────────────────────────────────────────────────────
-  showTerminalHero:  true,   // interactive zsh terminal in Hero
-  showLoadingScreen: true,   // cinematic boot sequence (once per session)
-  showBrainGame:     true,   // floating skill-node game in Skills
-  showFAQ:           true,   // FAQ section + nav link (false = hidden everywhere)
-
-  // ── FAQ content ───────────────────────────────────────────────────────────
-  faqItems: [
-    {
-      category: "work",     // "work" | "tech" | "personal" | "process"
-      question: "...",
-      answer:   "...",
-    },
-    // add or remove items freely
-  ],
-
-  // ── Skills grid preview counts ────────────────────────────────────────────
-  skillPreviewCounts: {
-    Frontend:         8,
-    Backend:          8,
-    "Tools & DevOps": 8,
-  },
-
-  dailyStack:         [...],   // comment out whole array to hide the marquee
-  currentlyBuilding:  null,    // or { name, description, url }
-  currentlyLearning:  [],      // or [{ name, icon }]
-};
+fullName:        "Jay Patel",
+email:           "...",
+github:          "...",
+githubUsername:  "jaypatel364",
+linkedin:        "...",
+location:        "Ahmedabad, India",
+resumeUrl:       "...",
+bookingUrl:      "...",
+careerStartDate: "2022-12",   // drives the experience label everywhere
+headlineWords:   ["clean UIs", "scalable apps", ...],
 ```
 
-### Toggling the FAQ section
+### Feature flags
 
 ```ts
-// lib/site-config.ts
-showFAQ: false; // hides the section, removes the nav link, done
+// Sections
+showTerminalHero:  true,   // interactive zsh terminal in Hero
+showLoadingScreen: true,   // cinematic boot sequence (once per session)
+showFAQ:           true,   // FAQ section + nav link
+
+// Game Zone hub
+showGameZone:      true,   // entire hub on/off
+
+// Individual games (only matter when showGameZone is true)
+showBrainGame:     true,
+showCodeBreaker:   true,
+showTypingTest:    true,
+showReactionTest:  true,
+showEmojiMemory:   true,
+showColorMatch:    true,
+showDotCollector:  true,
+showVibeCheck:     true,
+showGravityOrbs:   true,
+showPixelDraw:     true,
+showWordScramble:  true,
+showStackBuild:    false,  // hidden
+showNumberNinja:   false,  // hidden
+
+// Easter eggs & effects
+showCatchTheBug:   true,
+cursorEffect:      "magnetic",  // "none" | "particles" | "ripple" | "magnetic" | "lightning" | "pixelate"
 ```
 
-Editing FAQ questions and answers is also done entirely in `faqItems` — no other file needs to change.
+### Adding a new game
+
+1. Build your game component in `components/portfolio/YourGame.tsx` — export a `YourGame({ onClose })` function
+2. Add a flag to `lib/site-config.ts`: `showYourGame: true`
+3. Add an entry to the `GAMES` array in `GameZone.tsx`
+4. Add the modal to the `AnimatePresence` block in `GameZoneHub`
 
 ### Adding skills
 
@@ -323,7 +357,6 @@ Edit `PROJECTS` in `components/portfolio/ProjectsSection.tsx`:
 ### Updating the AI chatbot
 
 - **Pre-built answers** (zero token cost) — edit `CANNED_ANSWERS` in `app/api/chat/route.ts`
-- **Hourly rates** — update both `CANNED_ANSWERS` and `SYSTEM_PROMPT` in the same file
 - **Persona / facts** — edit `SYSTEM_PROMPT` in the same file
 
 ### Updating the loading screen
@@ -334,13 +367,18 @@ Edit `BOOT_LINES` in `components/portfolio/LoadingScreen.tsx`:
 { text: "Loading React · Next.js · TypeScript", preDelay: 140, suffix: "✓", speed: 22 }
 ```
 
-- `preDelay` — ms before this line starts typing
-- `speed` — ms per character (lower = faster)
-- `comment: true` — italic dimmed style for `// comment` lines
-
 ### Updating Brain Game facts
 
 Edit `SKILL_NODES` in `components/portfolio/BrainGame.tsx` — each node has `id`, `label`, `Icon`, `color`, and `fact`.
+
+### Cursor effect
+
+```ts
+// lib/site-config.ts
+cursorEffect: "lightning",
+```
+
+Change to any of: `"none"` `"particles"` `"ripple"` `"magnetic"` `"lightning"` `"pixelate"`
 
 ---
 

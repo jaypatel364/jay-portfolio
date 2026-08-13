@@ -38,7 +38,7 @@ import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
 import { useCountUp } from "@/hooks/use-count-up";
 import { cn } from "@/lib/utils";
-import { BrainGameTrigger } from "@/components/portfolio/BrainGame";
+import { GameZoneTrigger } from "@/components/portfolio/GameZone";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -799,8 +799,8 @@ export function SkillsSection() {
           <ViewToggle view={view} onChange={setView} />
         </motion.div>
 
-        {/* Jay's Brain game trigger */}
-        {siteConfig.showBrainGame && (
+        {/* ── Game Zone trigger ── */}
+        {siteConfig.showGameZone && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -808,7 +808,7 @@ export function SkillsSection() {
             transition={{ duration: 0.4, delay: 0.45 }}
             className="mt-6 hidden md:flex justify-center"
           >
-            <BrainGameTrigger />
+            <GameZoneTrigger />
           </motion.div>
         )}
 

@@ -8,6 +8,8 @@ import { BackToTop } from "@/components/portfolio/BackToTop";
 import { ChatBot } from "@/components/portfolio/ChatBot";
 import { CursorSpotlight } from "@/components/portfolio/CursorSpotlight";
 import { KonamiEasterEgg } from "@/components/portfolio/KonamiEasterEgg";
+import { CatchTheBug } from "@/components/portfolio/CatchTheBug";
+import { CursorTrail } from "@/components/portfolio/CursorTrail";
 import { SectionErrorBoundary } from "@/components/portfolio/SectionErrorBoundary";
 import { HeroSection } from "@/components/portfolio/HeroSection";
 import { AboutSection } from "@/components/portfolio/AboutSection";
@@ -49,6 +51,15 @@ export default function Home() {
           <CursorSpotlight />
           <ScrollProgressBar />
           <KonamiEasterEgg />
+          {/*
+           * CatchTheBug:
+           *   - Controlled by siteConfig.showCatchTheBug
+           *   - A tiny bug crawls across the screen at random intervals
+           *   - Click it to squash → confetti + toast
+           *   - Setting showCatchTheBug: false disables it entirely
+           */}
+          {siteConfig.showCatchTheBug && <CatchTheBug />}
+          {siteConfig.cursorEffect !== "none" && <CursorTrail mode={siteConfig.cursorEffect} />}
 
           <PageTransition>
             <PageTransitionItem>
