@@ -66,11 +66,47 @@ export const siteConfig = {
   // reveals. Set to false to disable entirely (visitors land directly on hero).
   showLoadingScreen: true,
 
-  // ── Jay's Brain game ──────────────────────────────────────────────────────
-  // Interactive floating skill-node game in the Skills section.
-  // Click nodes to unlock fun facts; all unlocked = confetti 🎉
-  // Set to false to hide the game button and keep the normal skills layout.
-  showBrainGame: true,
+  // ── Game Zone ─────────────────────────────────────────────────────────────
+  // The Game Zone hub is a single glowing trigger in the Skills section that
+  // opens a beautiful game-picker modal listing all available mini-games.
+  // Set to false to hide the entire hub (no button, no modal).
+  showGameZone: true,
+
+  // Individual game flags — only matter when showGameZone is true.
+  // Set any to false to remove that game card from the hub.
+  showBrainGame: true, // Jay's Brain — floating skill-node explorer
+  showCodeBreaker: true, // Code Breaker — Simon Says reflex tile game
+  showTypingTest: true, // Typing Speed Test — type Jay's real code snippets
+  showReactionTest: true, // Reaction Time Test — flash and click, ms timer
+  showEmojiMemory: true, // Emoji Memory Flip — 4×4 card matching game
+  showColorMatch: true, // Color Match Blitz — match the swatch under pressure
+  showStackBuild: false, // Stack & Build — hidden (replaced soon)
+  showDotCollector: true, // Dot Collector — 30s click frenzy
+  showNumberNinja: false, // Number Ninja — hidden (replaced soon)
+  showWordScramble: true, // Word Scramble — unscramble the jumbled tech word
+  showVibeCheck: true, // Vibe Check — dev personality quiz with shareable result
+  showGravityOrbs: true, // Gravity Orbs — physics orbs attracted to your cursor
+  showPixelDraw: true, // Pixel Draw Race — recreate pixel art in 20s
+
+  // ── Catch the Bug easter egg ──────────────────────────────────────────────
+  // A tiny animated bug randomly crawls across the screen every few minutes.
+  // 70 % chance: a full immersive easter-egg overlay appears on squash.
+  // 30 % chance: just a toast notification reward.
+  // Set to false to disable entirely — the bug will never appear.
+  showCatchTheBug: true,
+
+  // ── Cursor Effect ─────────────────────────────────────────────────────────
+  // Choose one cursor effect. Set to "none" to disable entirely.
+  // Touch devices and prefers-reduced-motion are always auto-skipped.
+  //
+  //  "none"       — no cursor effect
+  //  "particles"  — hue-cycling glow orbs that drift and fade behind the cursor
+  //  "ripple"     — expanding ring ripples on every move (water drop feel)
+  //  "magnetic"   — 9 orbital dots that elastically chase the cursor like planets
+  //  "lightning"  — electric arc bolts shoot from cursor to nearby points
+  //  "pixelate"   — falling colored square pixels dissolve behind the cursor
+  //
+  cursorEffect: "none" as import("@/components/portfolio/CursorTrail").CursorEffectMode,
 
   // ── Skills section — "All" grid preview counts ───────────────────────────
   // How many skills to show per category in the "All" grid view.
