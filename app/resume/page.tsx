@@ -3,7 +3,7 @@ import { siteConfig } from "@/lib/site-config";
 import { resumePageMetadata, resumeBreadcrumbJsonLd } from "@/lib/seo";
 import { getExperienceLabel } from "@/lib/utils";
 import { EXPERIENCES, EDUCATION, SKILL_CATEGORIES } from "@/lib/resume-data";
-import { ResumeThemeSync } from "@/components/portfolio/ResumeThemeSync";
+import { ResumeThemeSync } from "@/components/layout";
 
 // ── SEO: rich metadata for the /resume route ────────────────────────────────
 // Title, description, keywords, OG, and Twitter card are defined in lib/seo.ts.

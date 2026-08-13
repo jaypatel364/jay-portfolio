@@ -1,0 +1,25 @@
+---
+description: Portfolio folder architecture — keep sections/features/settings structure
+alwaysApply: true
+---
+
+# Architecture (always apply)
+
+Before moving files or adding features, follow **STRUCTURE.md** at the repo root.
+
+## Hard rules
+
+1. **Page → sections → pieces.** Home sections live in `components/sections/<name>/`. Do not recreate `components/portfolio/`.
+2. **Cross-cutting** UI (games, chatbot, palette) → `components/features/<name>/`.
+3. **Shell** (nav, footer, loading) → `components/layout/`. **Overlays** → `components/effects/`. **Tiny reused UI** → `components/shared/`.
+4. **Site data & flags** → `settings/` (`identity.ts`, `features.ts`, `content.ts`, `seo.ts`). Do not grow a new mega-config in `lib/`.
+5. **`components/ui/` stays flat** (shadcn). Do not nest or bulk-add unused primitives.
+6. Prefer barrels (`index.ts`) for public exports. Prefer `@/settings` for config ( `@/lib/site-config` / `@/lib/seo` are compat shims only).
+7. Structure/cleanup work = move + imports only — **do not change runtime logic**.
+8. After structural edits, run `npx tsc --noEmit`.
+
+## New work shortcuts
+
+- New section → `components/sections/<name>/` + wire in `app/page.tsx`
+- New game → `components/features/games/` + flag in `settings/features.ts` + `game-registry.tsx`
+- Toggle / copy / SEO → edit the matching file under `settings/`

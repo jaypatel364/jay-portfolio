@@ -77,7 +77,15 @@ export function useTypewriter({
 
     timeout = setTimeout(tick, typeSpeed);
     return () => clearTimeout(timeout);
-  }, [phase, words, typeSpeed, deleteSpeed, pauseAfterType, pauseAfterDelete, prefersReducedMotion]);
+  }, [
+    phase,
+    words,
+    typeSpeed,
+    deleteSpeed,
+    pauseAfterType,
+    pauseAfterDelete,
+    prefersReducedMotion,
+  ]);
 
   return { displayText, isTyping: phase === "typing" };
 }

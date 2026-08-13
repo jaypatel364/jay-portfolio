@@ -23,6 +23,8 @@ Live at: `https://jay-portfolio.vercel.app`
 | Toast           | Sonner                                                        |
 | Command Palette | cmdk                                                          |
 | PWA             | @ducanh2912/next-pwa                                          |
+| Rate limiting   | Upstash Redis                                                 |
+| Errors          | Sentry                                                        |
 | Deployment      | Vercel                                                        |
 
 ---
@@ -52,7 +54,7 @@ Live at: `https://jay-portfolio.vercel.app`
 
 A single "Game Zone" button in the Skills section opens a full hub modal with all mini-games. Sticky header with category filter tabs (All / Reflex / Memory / Creative / Chill). Featured hero card for the recommended game. Compact scrollable game rows for the rest — scales to any number of games. Body scroll locked while hub is open. Smooth cross-fade when switching tabs.
 
-Every game has an on/off flag in `lib/site-config.ts`. Setting it to `false` removes the game card entirely — no button, no modal.
+Every game has an on/off flag in `settings/features.ts`. Setting it to `false` removes the game card entirely — no button, no modal.
 
 | Game                  | Category | Flag               |
 | --------------------- | -------- | ------------------ |
@@ -105,7 +107,7 @@ A tiny animated bug (🐛🐞🦗🪲🦟) crawls across the screen at random in
 
 ### Cursor Effects
 
-Five canvas-based cursor effects. Set one value in `site-config.ts` — switching is instant.
+Five canvas-based cursor effects. Set one value in `settings/features.ts` — switching is instant.
 
 | Value         | Effect                                                       |
 | ------------- | ------------------------------------------------------------ |
@@ -166,71 +168,84 @@ Config: `cursorEffect: "magnetic"` (or any value above)
 ## Project Structure
 
 ```
-├── app/
-│   ├── api/
-│   │   ├── chat/route.ts          # AI chatbot (Groq, streaming, rate-limited, pre-built answers)
-│   │   └── contact/route.ts       # Contact form (MongoDB + SMTP)
+├── app/                              # Next.js App Router (routes + APIs only)
+│   ├── api/chat/route.ts
+│   ├── api/contact/route.ts
 │   ├── resume/page.tsx
-│   ├── manifest.ts
-│   ├── sitemap.ts
 │   ├── layout.tsx
-│   ├── page.tsx
-│   └── globals.css
+│   ├── page.tsx                      # Composes sections — keep thin
+│   ├── globals.css
+│   ├── manifest.ts
+│   └── sitemap.ts
+│
+├── settings/                         # ★ Edit site data & flags here
+│   ├── identity.ts                   # Name, email, links, career date
+│   ├── features.ts                   # Boolean toggles + cursorEffect
+│   ├── content.ts                    # FAQ, headlines, marquee, badges
+│   ├── types.ts                      # Shared settings types
+│   ├── seo.ts                        # Metadata + JSON-LD
+│   └── index.ts                      # Merges into siteConfig
+│
 ├── components/
-│   └── portfolio/
-│       ├── HeroSection.tsx         # Word-swap headline + interactive terminal
-│       ├── AboutSection.tsx        # Bio, tech marquee, GitHub graph
-│       ├── SkillsSection.tsx       # Grid/Sphere toggle, 3D globe, filter tabs
-│       ├── ExperienceSection.tsx   # Cards / Timeline toggle
-│       ├── ProjectsSection.tsx     # NDA / WIP / hideCode flags
-│       ├── FAQSection.tsx          # Accordion, category filters, segment progress dots
-│       ├── ContactSection.tsx      # Form with confetti + dual backend
-│       ├── Navbar.tsx              # Responsive, FAQ-aware nav items
-│       ├── GitHubGraph.tsx         # Rolling-year heatmap
-│       ├── CommandPalette.tsx      # ⌘K palette
-│       ├── ChatBot.tsx             # AI chatbot widget (streaming + pre-built)
-│       ├── LoadingScreen.tsx       # Terminal boot sequence + cinematic reveal
-│       │
-│       ├── GameZone.tsx            # Game hub — scalable modal with category tabs
-│       ├── BrainGame.tsx           # Jay's Brain — floating skill-node explorer
-│       ├── CodeBreakerGame.tsx     # Code Breaker — Simon Says tile game
-│       ├── TypingSpeedTest.tsx     # Typing Speed Test — type Jay's real code
-│       ├── ReactionTimeTest.tsx    # Reaction Time Test — flash + click
-│       ├── EmojiMemory.tsx         # Emoji Memory Flip — 4×4 card matching
-│       ├── ColorMatch.tsx          # Color Match Blitz — swatch matching
-│       ├── DotCollector.tsx        # Dot Collector — 30s click frenzy
-│       ├── VibeCheck.tsx           # Vibe Check — dev personality quiz
-│       ├── GravityOrbs.tsx         # Gravity Orbs — physics cursor game
-│       ├── PixelDrawRace.tsx       # Pixel Draw Race — 8×8 pixel art recreation
-│       ├── WordScramble.tsx        # Word Scramble — unscramble tech words
-│       ├── StackBuild.tsx          # Stack & Build — block stacker (hidden)
-│       ├── NumberNinja.tsx         # Number Ninja — math blitz (hidden)
-│       │
-│       ├── CatchTheBug.tsx         # Roaming bug easter egg (70/30 overlay/toast)
-│       ├── CursorTrail.tsx         # 5 cursor effects (canvas RAF)
-│       ├── CursorSpotlight.tsx     # Radial spotlight following cursor
-│       ├── KonamiEasterEgg.tsx     # ↑↑↓↓←→←→BA easter egg
-│       ├── AccentPicker.tsx        # 6 accent colour presets
-│       ├── ShortcutsOverlay.tsx    # ? keyboard shortcuts panel
-│       └── ...
-│   └── ui/
-│       ├── Brand.tsx               # JAY·dev logo mark with shimmer underline
-│       └── ...                     # shadcn/ui primitives
+│   ├── sections/                     # Page → section → local pieces
+│   │   ├── hero/                     # HeroSection, TerminalBlock, …
+│   │   ├── about/                    # About + TechMarquee + GitHubGraph
+│   │   ├── skills/                   # Skills + SkillSphere + data
+│   │   ├── experience/
+│   │   ├── education/
+│   │   ├── projects/
+│   │   ├── faq/
+│   │   ├── contact/
+│   │   └── testimonials/
+│   ├── features/                     # Cross-cutting features
+│   │   ├── games/                    # GameZone + all mini-games
+│   │   ├── chatbot/
+│   │   ├── command-palette/
+│   │   └── accent/
+│   ├── layout/                       # Navbar, Footer, LoadingScreen, …
+│   ├── effects/                      # Cursor, Konami, CatchTheBug
+│   ├── shared/                       # Brand, SectionHeading, CopyEmail, …
+│   └── ui/                           # Used shadcn primitives only (flat)
+│
 ├── hooks/
-│   ├── use-accent.ts
-│   ├── use-active-section.tsx      # IntersectionObserver — watches all section IDs
-│   ├── use-count-up.ts
-│   ├── use-scroll-progress.ts
-│   └── use-theme.tsx
-├── lib/
+├── lib/                              # Utilities + thin re-exports
+│   ├── site-config.ts                # → re-exports @/settings
+│   ├── seo.ts                        # → re-exports @/settings/seo
+│   ├── resume-data.ts
 │   ├── accent-colors.ts
-│   ├── resume-data.ts              # Work experience, education, skills
-│   ├── site-config.ts              # Single source of truth — all personal info + feature flags
 │   └── utils.ts
-└── public/
-    ├── icons/
-    └── robots.txt
+├── public/
+└── STRUCTURE.md                      # Architecture guide (humans + AI)
 ```
+
+Full conventions for humans and AI: see **[STRUCTURE.md](./STRUCTURE.md)**.
+
+---
+
+## Prerequisites
+
+Use these versions on **Mac and Windows** so hooks and CI behave the same:
+
+| Tool    | Version    | Notes                                                                                                                                             |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js | **22 LTS** | `.nvmrc` pins `22`; use [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows)                         |
+| npm     | **10.9.x** | Ships with Node 22. **Do not use npm 11** — it generates a lock file CI cannot install (`npm ci` fails). Regenerate with `npx npm@10.9.2 install` |
+| Git     | **≥ 2.32** | Mac: `brew install git` (avoid old Xcode Git). Windows: [Git for Windows](https://git-scm.com/download/win)                                       |
+
+After `brew install git` on Mac, confirm the Homebrew binary is first on your PATH:
+
+```bash
+git --version   # should be 2.32+ (e.g. 2.55)
+which git       # should NOT be /usr/bin/git on Mac if Homebrew git is installed
+```
+
+If `which git` still shows `/usr/bin/git`, add to `~/.zshrc`:
+
+```bash
+export PATH="/opt/homebrew/bin:$PATH"
+```
+
+Then open a new terminal and check again.
 
 ---
 
@@ -241,11 +256,22 @@ npm install
 npm run dev
 ```
 
+**Important:** always use `npm` (not yarn). After changing dependencies:
+
+```bash
+npx npm@10.9.2 install   # use npm 10 — npm 11 breaks CI lock file sync
+git add package-lock.json
+```
+
+CI runs `npm ci`, which fails if `package-lock.json` was generated with npm 11 or is out of sync with `package.json`.
+
 Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
 ## Environment Variables
+
+Step-by-step cloud setup (Vercel, Groq, Upstash, Sentry, MongoDB, SMTP, CI): **[INFRA.md](./INFRA.md)**.
 
 Create `.env.local` at the project root:
 
@@ -255,6 +281,13 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 
 # Groq AI — required for the chatbot
 GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# Upstash Redis — shared rate limits on Vercel (recommended for production)
+UPSTASH_REDIS_REST_URL=https://your-db.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your-upstash-token
+
+# Sentry — optional error monitoring
+NEXT_PUBLIC_SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
 
 # MongoDB — contact form storage (optional)
 MONGODB_URI=mongodb+srv://...
@@ -275,11 +308,22 @@ CONTACT_NOTIFY_TO=your@email.com
 
 ## Customisation
 
-All personal info and feature flags live in **`lib/site-config.ts`**.
+All personal info, feature flags, and SEO live under **`settings/`**.
+
+| File                   | What to edit                                                     |
+| ---------------------- | ---------------------------------------------------------------- |
+| `settings/identity.ts` | Name, email, social links, location, resume, career date         |
+| `settings/features.ts` | Booleans (`showFAQ`, games, loading screen, …) + `cursorEffect`  |
+| `settings/content.ts`  | FAQ items, headline words, daily stack, building/learning badges |
+| `settings/chat.ts`     | Chatbot rates, system prompt, canned answers                     |
+| `settings/seo.ts`      | Titles, descriptions, keywords, Open Graph, JSON-LD              |
+
+`lib/site-config.ts` and `lib/seo.ts` remain as thin re-exports so old imports still work.
 
 ### Personal info
 
 ```ts
+// settings/identity.ts
 fullName:        "Jay Patel",
 email:           "...",
 github:          "...",
@@ -288,51 +332,42 @@ linkedin:        "...",
 location:        "Ahmedabad, India",
 resumeUrl:       "...",
 bookingUrl:      "...",
-careerStartDate: "2022-12",   // drives the experience label everywhere
-headlineWords:   ["clean UIs", "scalable apps", ...],
+careerStartDate: "2022-12",
 ```
 
 ### Feature flags
 
 ```ts
-// Sections
-showTerminalHero:  true,   // interactive zsh terminal in Hero
-showLoadingScreen: true,   // cinematic boot sequence (once per session)
-showFAQ:           true,   // FAQ section + nav link
-
-// Game Zone hub
-showGameZone:      true,   // entire hub on/off
-
-// Individual games (only matter when showGameZone is true)
+// settings/features.ts
+showTerminalHero:  true,
+showLoadingScreen: true,
+showFAQ:           true,
+showGameZone:      true,
 showBrainGame:     true,
-showCodeBreaker:   true,
-showTypingTest:    true,
-showReactionTest:  true,
-showEmojiMemory:   true,
-showColorMatch:    true,
-showDotCollector:  true,
-showVibeCheck:     true,
-showGravityOrbs:   true,
-showPixelDraw:     true,
-showWordScramble:  true,
-showStackBuild:    false,  // hidden
-showNumberNinja:   false,  // hidden
-
-// Easter eggs & effects
+// …
 showCatchTheBug:   true,
 cursorEffect:      "magnetic",  // "none" | "particles" | "ripple" | "magnetic" | "lightning" | "pixelate"
+allowIndexing:     false,       // flip true when going live
+```
+
+### Content (FAQ, headlines)
+
+```ts
+// settings/content.ts
+headlineWords: ["clean UIs", "scalable apps", ...],
+faqItems: [ { category: "work", question: "...", answer: "..." }, ... ],
 ```
 
 ### Adding a new game
 
-1. Build your game component in `components/portfolio/YourGame.tsx` — export a `YourGame({ onClose })` function
-2. Add a flag to `lib/site-config.ts`: `showYourGame: true`
-3. Add an entry to the `GAMES` array in `GameZone.tsx`
-4. Add the modal to the `AnimatePresence` block in `GameZoneHub`
+1. Build your game component in `components/features/games/YourGame.tsx` — export a `YourGame({ onClose })` function
+2. Add a flag to `settings/features.ts`: `showYourGame: true`
+3. Add an entry to the `GAMES` array in `components/features/games/game-registry.tsx`
+4. Wire the modal in `GameZone.tsx`
 
 ### Adding skills
 
-Edit `SKILL_GROUPS` in `components/portfolio/SkillsSection.tsx`:
+Edit `SKILL_GROUPS` in `components/sections/skills/skill-data.ts`:
 
 ```ts
 { name: "Redis", icon: SiRedis, lightColor: "#D32E22", darkColor: "#FF4438" }
@@ -342,7 +377,7 @@ Icons from `react-icons/si` — browse [simpleicons.org](https://simpleicons.org
 
 ### Adding projects
 
-Edit `PROJECTS` in `components/portfolio/ProjectsSection.tsx`:
+Edit `PROJECTS` in `components/sections/projects/ProjectsSection.tsx`:
 
 ```ts
 {
@@ -361,7 +396,7 @@ Edit `PROJECTS` in `components/portfolio/ProjectsSection.tsx`:
 
 ### Updating the loading screen
 
-Edit `BOOT_LINES` in `components/portfolio/LoadingScreen.tsx`:
+Edit `BOOT_LINES` in `components/layout/LoadingScreenParts.tsx`:
 
 ```ts
 { text: "Loading React · Next.js · TypeScript", preDelay: 140, suffix: "✓", speed: 22 }
@@ -369,12 +404,12 @@ Edit `BOOT_LINES` in `components/portfolio/LoadingScreen.tsx`:
 
 ### Updating Brain Game facts
 
-Edit `SKILL_NODES` in `components/portfolio/BrainGame.tsx` — each node has `id`, `label`, `Icon`, `color`, and `fact`.
+Edit `SKILL_NODES` in `components/features/games/brain-data.ts` — each node has `id`, `label`, `Icon`, `color`, and `fact`.
 
 ### Cursor effect
 
 ```ts
-// lib/site-config.ts
+// settings/features.ts
 cursorEffect: "lightning",
 ```
 
@@ -396,3 +431,26 @@ npm run start
 ```
 
 Deploys to Vercel automatically on push. Service worker only activates in production. Set `NEXT_PUBLIC_SITE_URL` to your real domain in Vercel environment variables before going live.
+
+---
+
+## Developer tooling
+
+Git hooks (Husky) run automatically:
+
+| Hook           | What runs                             |
+| -------------- | ------------------------------------- |
+| **pre-commit** | ESLint fix + Prettier on staged files |
+| **pre-push**   | `tsc --noEmit` typecheck              |
+
+Manual commands:
+
+```bash
+npm run lint          # ESLint (whole project)
+npm run lint:fix      # ESLint with auto-fix
+npm run format        # Prettier write
+npm run format:check  # Prettier check (CI-friendly)
+npm run typecheck     # TypeScript
+```
+
+After `npm install`, Husky is set up via the `prepare` script.

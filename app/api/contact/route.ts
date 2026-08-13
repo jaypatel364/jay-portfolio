@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { MongoClient } from "mongodb";
 import nodemailer from "nodemailer";
+import { rateLimitContact, getClientIp } from "@/lib/rate-limit";
+import { captureServerError } from "@/lib/sentry";
 
 export const runtime = "nodejs";
 
@@ -12,23 +14,6 @@ const contactSchema = z.object({
   email: z.string().trim().email().max(255),
   message: z.string().trim().min(1).max(2000),
 });
-
-// ── Rate limiter (in-memory, per serverless instance) ────────────────────────
-
-const rateMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 3;
-const RATE_WINDOW = 60_000; // 1 minute
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
-    return false;
-  }
-  entry.count++;
-  return entry.count > RATE_LIMIT;
-}
 
 // ── MongoDB service ──────────────────────────────────────────────────────────
 // Gracefully no-ops when MONGODB_URI is not set.
@@ -60,7 +45,7 @@ async function saveToDatabase(payload: {
     console.log("[Contact] Saved to MongoDB:", { name: payload.name, email: payload.email });
     return { saved: true };
   } catch (err) {
-    // DB failure is non-fatal — log and continue
+    captureServerError(err, { route: "contact", ip: payload.ip });
     console.error("[Contact] MongoDB save failed:", err instanceof Error ? err.message : err);
     // Reset client so next request retries a fresh connection
     cachedClient = null;
@@ -136,7 +121,7 @@ async function sendEmail(payload: {
     console.log("[Contact] Email sent to:", config.to);
     return { sent: true };
   } catch (err) {
-    // Email failure is non-fatal — log and continue
+    captureServerError(err, { route: "contact-email", ip: payload.ip });
     console.error("[Contact] Email send failed:", err instanceof Error ? err.message : err);
     // Reset transporter so next request tries a fresh connection
     cachedTransporter = null;
@@ -207,14 +192,10 @@ function escapeHtml(value: string): string {
 // ── Route handler ────────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
-  // 1. Extract IP
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    request.headers.get("x-real-ip") ??
-    "unknown";
+  const ip = getClientIp(request);
 
-  // 2. Rate limit — the only hard rejection besides validation
-  if (isRateLimited(ip)) {
+  const { limited } = await rateLimitContact(ip);
+  if (limited) {
     return NextResponse.json(
       { error: "Too many requests. Please try again in a minute." },
       { status: 429 },
