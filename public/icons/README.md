@@ -10,5 +10,6 @@ Replace `icon-192.png` and `icon-512.png` with properly designed icons before de
 4. Replace the placeholder files in this folder
 
 ## Required sizes
+
 - `icon-192.png` — 192×192px (maskable, used on Android home screen)
 - `icon-512.png` — 512×512px (used for splash screen and app install)

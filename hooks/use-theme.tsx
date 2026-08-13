@@ -45,7 +45,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (!mounted) return;
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    
+
     const handleChange = () => {
       if (theme === "system") {
         setResolvedTheme(getSystemTheme());
@@ -59,7 +59,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Apply theme to document
   useEffect(() => {
     if (!mounted) return;
-    
+
     const root = document.documentElement;
     if (resolvedTheme === "dark") {
       root.classList.add("dark");

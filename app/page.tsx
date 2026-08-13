@@ -1,26 +1,26 @@
 import { homePageJsonLdSchemas } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 import { ThemeProvider } from "@/hooks/use-theme";
-import { PageTransition, PageTransitionItem } from "@/components/portfolio/PageTransition";
-import { Navbar } from "@/components/portfolio/Navbar";
-import { ScrollProgressBar } from "@/components/portfolio/ScrollProgressBar";
-import { BackToTop } from "@/components/portfolio/BackToTop";
-import { ChatBot } from "@/components/portfolio/ChatBot";
-import { CursorSpotlight } from "@/components/portfolio/CursorSpotlight";
-import { KonamiEasterEgg } from "@/components/portfolio/KonamiEasterEgg";
-import { CatchTheBug } from "@/components/portfolio/CatchTheBug";
-import { CursorTrail } from "@/components/portfolio/CursorTrail";
-import { SectionErrorBoundary } from "@/components/portfolio/SectionErrorBoundary";
-import { HeroSection } from "@/components/portfolio/HeroSection";
-import { AboutSection } from "@/components/portfolio/AboutSection";
-import { SkillsSection } from "@/components/portfolio/SkillsSection";
-import { ExperienceSection } from "@/components/portfolio/ExperienceSection";
-import { EducationSection } from "@/components/portfolio/EducationSection";
-import { ProjectsSection } from "@/components/portfolio/ProjectsSection";
-import { FAQSection } from "@/components/portfolio/FAQSection";
-import { ContactSection } from "@/components/portfolio/ContactSection";
-import { Footer } from "@/components/portfolio/Footer";
-import { LoadingScreenWrapper } from "@/components/portfolio/LoadingScreen";
+import {
+  PageTransition,
+  PageTransitionItem,
+  Navbar,
+  ScrollProgressBar,
+  BackToTop,
+  LoadingScreenWrapper,
+  Footer,
+} from "@/components/layout";
+import { ChatBot } from "@/components/features/chatbot";
+import { CursorSpotlight, KonamiEasterEgg, CatchTheBug, CursorTrail } from "@/components/effects";
+import { SectionErrorBoundary } from "@/components/shared";
+import { HeroSection } from "@/components/sections/hero";
+import { AboutSection } from "@/components/sections/about";
+import { SkillsSection } from "@/components/sections/skills";
+import { ExperienceSection } from "@/components/sections/experience";
+import { EducationSection } from "@/components/sections/education";
+import { ProjectsSection } from "@/components/sections/projects";
+import { FAQSection } from "@/components/sections/faq";
+import { ContactSection } from "@/components/sections/contact";
 
 export default function Home() {
   return (

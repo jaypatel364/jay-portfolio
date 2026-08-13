@@ -1,0 +1,4 @@
+{
+  "*.{js,jsx,ts,tsx,mjs}": ["npm run lint-staged:eslint --", "prettier --write"],
+  "*.{json,md,css,yml,yaml,mdc}": ["prettier --write"]
+}

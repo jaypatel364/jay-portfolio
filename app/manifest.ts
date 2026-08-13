@@ -8,7 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
       "Full Stack Developer crafting performant, scalable web applications with the MERN stack.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0e0f17",   // matches dark --background
+    background_color: "#0e0f17", // matches dark --background
     theme_color: "#0e0f17",
     orientation: "portrait-primary",
     icons: [

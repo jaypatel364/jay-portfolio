@@ -1,0 +1,216 @@
+# Portfolio Architecture Guide
+
+> **For humans and AI agents.** Read this before adding features, moving files, or changing config.
+> Goal: keep the folder structure intentional, predictable, and easy to maintain.
+
+---
+
+## 1. Mental model (memorize this)
+
+```
+app/page.tsx
+   └── composes layout + effects + sections
+         └── each section lives in components/sections/<name>/
+               └── local UI pieces + data stay beside that section
+         └── cross-cutting features live in components/features/<name>/
+settings/     ← all editable site data & SEO
+lib/          ← pure utils + thin re-exports (not a dumping ground)
+```
+
+**Rule of thumb:** if it is _page content_, it is a **section**. If it is _reusable across sections_ (chatbot, games, palette), it is a **feature**. If it is _chrome_ (nav, footer, loading), it is **layout**. If it is _global overlay_, it is an **effect**.
+
+---
+
+## 2. Directory map
+
+| Path                             | Purpose                         | Put new code here when…                     |
+| -------------------------------- | ------------------------------- | ------------------------------------------- |
+| `app/`                           | Routes & API only               | New page or API endpoint                    |
+| `settings/`                      | Identity, flags, content, SEO   | Changing name, toggles, FAQ, metadata       |
+| `components/sections/<section>/` | One home-page section           | Building UI for Hero, About, Skills, …      |
+| `components/features/<feature>/` | Cross-cutting product features  | Games, chatbot, command palette             |
+| `components/layout/`             | Shell chrome                    | Navbar, Footer, LoadingScreen, transitions  |
+| `components/effects/`            | Global overlays                 | Cursor, easter eggs not tied to one section |
+| `components/shared/`             | Tiny reused UI                  | Brand, headings, confetti, copy-email       |
+| `components/ui/`                 | **Used** shadcn primitives only | Adding via `npx shadcn@latest add …`        |
+| `hooks/`                         | React hooks                     | Shared client state / observers             |
+| `lib/`                           | Utils + compatibility shims     | Pure helpers — **not** site config          |
+| `public/`                        | Static assets                   | Icons, images, robots.txt                   |
+
+### Do **not** recreate
+
+- ❌ `components/portfolio/` (removed — flat dump)
+- ❌ Nested category folders under `components/ui/` (breaks shadcn CLI)
+- ❌ Dumping new flags into random components — use `settings/features.ts`
+
+---
+
+## 3. Settings layout (single source of truth)
+
+```
+settings/
+  identity.ts   → who you are (name, email, links, career date)
+  features.ts   → booleans + cursorEffect + allowIndexing
+  content.ts    → FAQ, headline words, marquee, badges
+  chat.ts       → chatbot rates, system prompt, canned answers
+  types.ts      → shared TS types
+  seo.ts        → metadata + JSON-LD
+  index.ts      → merges into `siteConfig`
+```
+
+**Compatibility:** `@/lib/site-config` and `@/lib/seo` re-export from `settings/`. Prefer new imports:
+
+```ts
+import { siteConfig } from "@/settings";
+import { rootMetadata } from "@/settings/seo";
+// or focused:
+import { features } from "@/settings/features";
+```
+
+### Where to edit what
+
+| Want to change…                    | File                                               |
+| ---------------------------------- | -------------------------------------------------- |
+| Name / email / GitHub / resume URL | `settings/identity.ts`                             |
+| Show/hide FAQ, games, loading, bug | `settings/features.ts`                             |
+| FAQ copy, headline words           | `settings/content.ts`                              |
+| Google title / OG / JSON-LD        | `settings/seo.ts`                                  |
+| Resume experience rows             | `lib/resume-data.ts`                               |
+| Skill list icons                   | `components/sections/skills/skill-data.ts`         |
+| Project cards                      | `components/sections/projects/ProjectsSection.tsx` |
+| Game registry                      | `components/features/games/game-registry.tsx`      |
+
+---
+
+## 4. Component conventions
+
+### Page → section → pieces
+
+```
+components/sections/hero/
+  index.ts              # public barrel — export the section
+  HeroSection.tsx       # orchestrator (keep relatively thin)
+  TerminalBlock.tsx     # extracted UI
+  terminal-commands.tsx # command data / helpers
+  SocialIcons.tsx
+```
+
+**When a file grows past ~300–400 lines of mixed UI + data:** extract  
+data → `*-data.ts` / `*-commands.tsx`  
+UI pieces → sibling components  
+keep the orchestrator as the exported entry.
+
+### Features
+
+```
+components/features/games/
+  index.ts
+  GameZone.tsx          # hub orchestrator
+  game-registry.tsx     # GAMES list + types
+  GameZoneCards.tsx     # presentational cards
+  BrainGame.tsx
+  brain-data.ts
+  …
+```
+
+### Barrels
+
+Every folder that is imported from outside should have an `index.ts` that exports the public API. Internal files may import siblings relatively (`./Foo`).
+
+### `components/ui`
+
+Keep **flat**. Only keep primitives the app uses. Re-add with:
+
+```bash
+npx shadcn@latest add button
+```
+
+App brand mark is **`components/shared/Brand.tsx`**, not `ui/`.
+
+---
+
+## 5. AI agent rules (must follow)
+
+1. **Read this file** before restructuring or adding folders.
+2. **Never** flatten everything back into one `portfolio/` folder.
+3. **Never** change runtime logic when the task is “cleanup / structure” — move + import only.
+4. **Prefer** editing `settings/*` for copy and toggles over hardcoding in components.
+5. **New home section** → `components/sections/<kebab-name>/` + wire in `app/page.tsx` behind `SectionErrorBoundary`.
+6. **New mini-game** → `components/features/games/` + flag in `settings/features.ts` + entry in `game-registry.tsx`.
+7. **New global overlay** → `components/effects/` (not inside a random section).
+8. **Do not** add unused shadcn components “just in case”.
+9. **Do not** invent deep abstractions\*\* (providers, context, stores) unless the feature needs shared state.
+10. After moves: run `npx tsc --noEmit` and keep public exports working via barrels / shims.
+
+### Import style
+
+```ts
+// ✅ preferred
+import { HeroSection } from "@/components/sections/hero";
+import { siteConfig } from "@/settings";
+import { GameZoneTrigger } from "@/components/features/games";
+
+// ✅ ok (compat)
+import { siteConfig } from "@/lib/site-config";
+
+// ❌ avoid
+import { HeroSection } from "@/components/portfolio/HeroSection";
+```
+
+---
+
+## 6. Adding a new section (checklist)
+
+1. Create `components/sections/<name>/`.
+2. Add `<Name>Section.tsx` + `index.ts`.
+3. Import in `app/page.tsx` inside `<SectionErrorBoundary section="…">`.
+4. Add nav id / link in Navbar if it should appear in the menu.
+5. If toggleable, add a flag in `settings/features.ts` and gate render with it.
+6. Keep data local or in `settings/content.ts` if it is site-wide copy.
+
+---
+
+## 7. Adding a new game (checklist)
+
+1. `components/features/games/YourGame.tsx` → `export function YourGame({ onClose })`.
+2. `settings/features.ts` → `showYourGame: true`.
+3. `game-registry.tsx` → add `GAMES` entry using that flag.
+4. `GameZone.tsx` → render `<YourGame />` when active.
+5. Export from `components/features/games/index.ts` if needed elsewhere.
+
+---
+
+## 8. What belongs in `lib/` vs `settings/`
+
+| `settings/`                              | `lib/`                                   |
+| ---------------------------------------- | ---------------------------------------- |
+| Editable personal / marketing / SEO data | Pure functions (`utils`)                 |
+| Feature flags                            | Resume structured data used by `/resume` |
+| Things a non-dev might change            | Accent color tokens, error helpers       |
+
+If you are unsure: **if changing it changes what visitors see about Jay without changing algorithms → `settings/`.**
+
+---
+
+## 9. Quick “where is X?”
+
+| Feature          | Location                                     |
+| ---------------- | -------------------------------------------- |
+| Home composition | `app/page.tsx`                               |
+| Hero terminal    | `components/sections/hero/`                  |
+| Skills sphere    | `components/sections/skills/SkillSphere.tsx` |
+| GitHub heatmap   | `components/sections/about/GitHubGraph.tsx`  |
+| FAQ UI           | `components/sections/faq/`                   |
+| Chatbot          | `components/features/chatbot/`               |
+| Games hub        | `components/features/games/GameZone.tsx`     |
+| Loading boot     | `components/layout/LoadingScreen.tsx`        |
+| Site toggles     | `settings/features.ts`                       |
+| SEO              | `settings/seo.ts`                            |
+
+---
+
+## 10. Maintenance pledge
+
+Keep the tree **section-oriented**, settings **split by concern**, and files **small enough to navigate**. When in doubt, mirror an existing section folder rather than inventing a new top-level pattern.
+
+Cloud services, env vars, and go-live checks: **[INFRA.md](./INFRA.md)**.
