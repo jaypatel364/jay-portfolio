@@ -37,10 +37,13 @@ If a **optional** service is unset, that feature no-ops. The site still loads.
 ## 1. Vercel
 
 1. Import the GitHub repo at [vercel.com/new](https://vercel.com/new).
-2. Framework preset: **Next.js**. Build command: `next build` (default).
-3. Add the env vars from the table below.
-4. Set `NEXT_PUBLIC_SITE_URL` to the real domain **with no trailing slash** (example: `https://jaypatel.dev`).
-5. Redeploy after changing any `NEXT_PUBLIC_*` variable — those are baked in at build time.
+2. Framework preset: **Next.js**. Install command: `npm ci` (see `vercel.json`).
+3. **Node.js version:** `22.x` — set in `package.json` → `engines.node`. In Vercel → Settings → General → Node.js Version, pick **22.x** if the dashboard override differs.
+4. Add the env vars from the table below.
+5. Set `NEXT_PUBLIC_SITE_URL` to the real domain **with no trailing slash** (example: `https://jaypatel.dev`).
+6. Redeploy after changing any `NEXT_PUBLIC_*` variable — those are baked in at build time.
+
+Fonts are **self-hosted** via `@fontsource/*` (no Google Fonts fetch at build time).
 
 Custom domain: Project → Settings → Domains.
 
