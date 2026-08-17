@@ -110,7 +110,7 @@ export function EmojiMemory({ onClose }: { onClose: () => void }) {
         const [a, b] = newSelected;
         const ca = cards[a],
           cb = cards[id];
-
+        console.log(b);
         if (ca.emoji === cb.emoji) {
           // match
           setCards((prev) =>
@@ -212,7 +212,7 @@ export function EmojiMemory({ onClose }: { onClose: () => void }) {
           className="relative w-full max-w-sm overflow-hidden rounded-3xl border border-border/60 bg-background shadow-premium"
         >
           <div className="h-[3px] w-full gradient-primary" />
-
+          {best && <div className="hidden"></div>}
           {/* header */}
           <div className="flex items-center justify-between border-b border-border/50 bg-card/80 px-5 py-3.5">
             <div className="flex items-center gap-3">

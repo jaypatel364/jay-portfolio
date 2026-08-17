@@ -28,6 +28,7 @@ Visitor
 | MongoDB            | Optional    | Persist contact form submissions           | `app/api/contact/route.ts`            |
 | SMTP (Gmail, etc.) | Optional    | Email you when someone submits contact     | `app/api/contact/route.ts`            |
 | GitHub Actions     | Automatic   | CI: format, lint, typecheck, build         | `.github/workflows/ci.yml`            |
+| SonarCloud         | Optional    | Code quality scan on `main` only           | `.github/workflows/sonarcloud.yml`    |
 | GitHub graph API   | None        | Contribution heatmap — no key              | `lib/github-contributions.ts`         |
 
 If a **optional** service is unset, that feature no-ops. The site still loads.
@@ -218,7 +219,30 @@ Optional repo secret: `GROQ_API_KEY` (build uses a placeholder if unset). You do
 
 ---
 
-## 8. GitHub contribution graph
+## 8. SonarCloud (main branch only)
+
+File: [`.github/workflows/sonarcloud.yml`](./.github/workflows/sonarcloud.yml).  
+Config: [`sonar-project.properties`](./sonar-project.properties).
+
+Runs **only** when code is pushed to `main` / `master` — including when a PR is merged. It does **not** run on feature-branch pushes or open PRs (CI still runs on PRs).
+
+### One-time setup (free account)
+
+1. Sign in at [sonarcloud.io](https://sonarcloud.io) with GitHub.
+2. **+** → **Analyze new project** → import **`jaypatel364/jay-portfolio`**.
+3. SonarCloud creates a project key (usually `jaypatel364_jay-portfolio`) and organization key (usually `jaypatel364`). Confirm they match [`sonar-project.properties`](./sonar-project.properties); edit that file if SonarCloud shows different values.
+4. SonarCloud → **My Account** → **Security** → **Generate Tokens** → name it `github-actions` → copy the token.
+5. GitHub repo → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**:
+   - Name: `SONAR_TOKEN`
+   - Value: paste the token from step 4
+6. (Recommended) Install the **SonarQube Cloud** GitHub App when SonarCloud prompts you — enables richer GitHub integration.
+7. Merge or push these workflow files to `main`. The **SonarCloud** job appears under **Actions**; results live on [sonarcloud.io](https://sonarcloud.io).
+
+No tests are required for the first scan — SonarCloud analyzes TypeScript/TSX for bugs, smells, and security hotspots. When you add tests later, point `sonar.javascript.lcov.reportPaths=coverage/lcov.info` in `sonar-project.properties`.
+
+---
+
+## 9. GitHub contribution graph
 
 No token. Server fetch in `lib/github-contributions.ts` with **ISR 1 hour**. Username comes from `settings/identity.ts` → `githubUsername`.
 
@@ -244,6 +268,7 @@ No token. Server fetch in `lib/github-contributions.ts` with **ISR 1 hour**. Use
 | `SMTP_PASS`                | Vercel + local            | Email contacts     |
 | `SMTP_FROM`                | Vercel + local            | Email contacts     |
 | `CONTACT_NOTIFY_TO`        | Vercel + local            | Email contacts     |
+| `SONAR_TOKEN`              | GitHub Actions secret     | SonarCloud scans   |
 
 ---
 

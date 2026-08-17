@@ -1,14 +1,8 @@
 "use client";
 
 import { useState, useId, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import {
-  MessageCircleQuestion,
-  ChevronRight,
-  Sparkles,
-  ArrowRight,
-  PartyPopper,
-} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight, PartyPopper } from "lucide-react";
 import type { FAQCategory } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import { CATEGORY_META, type Filter } from "./faq-meta";

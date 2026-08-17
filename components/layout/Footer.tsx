@@ -1,7 +1,6 @@
 "use client";
 
-import { Mail, Zap, FileText } from "lucide-react";
-import Link from "next/link";
+import { Mail, Zap } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { CopyEmail } from "@/components/shared";
 import { Brand } from "@/components/shared";

@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Maximize2 } from "lucide-react";
+import { X } from "lucide-react";
 import {
   type Day,
   type Week,
-  MONTHS,
   DAY_LABELS,
   SHOW_DAY_INDICES,
   CELL_CLASS,

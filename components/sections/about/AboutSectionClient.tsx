@@ -10,13 +10,11 @@ import {
   ArrowUpRight,
   BookOpen,
   MapPin,
-  Sparkles,
   CheckCircle2,
 } from "lucide-react";
 import { SectionHeading } from "@/components/shared";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
-import { useCountUp } from "@/hooks/use-count-up";
 import { TechMarquee } from "./TechMarquee";
 import { GitHubGraph } from "./GitHubGraph";
 import type { ContributionDay } from "@/lib/github-contributions";
@@ -37,31 +35,31 @@ const TRAITS = ["Clean Code", "Fast Delivery", "Always Learning", "Team Player"]
 
 // ── Stat card ─────────────────────────────────────────────────────────────────
 
-function StatCard({
-  target,
-  suffix,
-  label,
-  delay,
-}: {
-  target: number;
-  suffix: string;
-  label: string;
-  delay: number;
-}) {
-  const { count, ref } = useCountUp({ target, duration: 1600, delay });
-  return (
-    <div className="rounded-2xl border border-border bg-card p-5 text-center">
-      <span
-        ref={ref as React.RefObject<HTMLSpanElement>}
-        className="text-3xl font-bold gradient-text tabular-nums"
-      >
-        {count}
-        {suffix}
-      </span>
-      <p className="mt-1 text-xs font-medium text-muted-foreground">{label}</p>
-    </div>
-  );
-}
+// function StatCard({
+//   target,
+//   suffix,
+//   label,
+//   delay,
+// }: {
+//   target: number;
+//   suffix: string;
+//   label: string;
+//   delay: number;
+// }) {
+//   const { count, ref } = useCountUp({ target, duration: 1600, delay });
+//   return (
+//     <div className="rounded-2xl border border-border bg-card p-5 text-center">
+//       <span
+//         ref={ref as React.RefObject<HTMLSpanElement>}
+//         className="text-3xl font-bold gradient-text tabular-nums"
+//       >
+//         {count}
+//         {suffix}
+//       </span>
+//       <p className="mt-1 text-xs font-medium text-muted-foreground">{label}</p>
+//     </div>
+//   );
+// }
 
 // ── Currently-building sub-component ─────────────────────────────────────────
 
@@ -99,7 +97,6 @@ export function AboutSectionClient({
   initialContributions: ContributionDay[];
 }) {
   const expLabel = getExperienceLabel(siteConfig.careerStartDate);
-  const expNumeric = expLabel.startsWith("<") ? 0 : parseFloat(expLabel);
   const building = siteConfig.currentlyBuilding;
   const learning = siteConfig.currentlyLearning;
 

@@ -159,15 +159,6 @@ export function ColorMatch({ onClose }: { onClose: () => void }) {
     [current, phase, score, round, startRound, endGame],
   );
 
-  const reset = () => {
-    cancelAnimationFrame(rafRef.current);
-    setPhase("idle");
-    setScore(0);
-    setRound(0);
-    setFlash(null);
-    setNewRecord(false);
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0 }}

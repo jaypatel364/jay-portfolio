@@ -122,25 +122,9 @@ export function DotCollector({ onClose }: { onClose: () => void }) {
     scoreRef.current += pts;
     setScore(scoreRef.current);
     setCombo(comboRef.current);
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     setPopups((prev) => [...prev, { id: nextId++, x: dot.x, y: dot.y, val: pts }]);
     setTimeout(() => setPopups((prev) => prev.slice(1)), 700);
   }, []);
-
-  const reset = () => {
-    clearInterval(timerRef.current);
-    clearTimeout(spawnRef.current);
-    scoreRef.current = -1;
-    setPhase("idle");
-    setDots([]);
-    setPopups([]);
-    setScore(0);
-    setCombo(0);
-    setNewRecord(false);
-    setTimeout(() => {
-      scoreRef.current = 0;
-    }, 50);
-  };
 
   const pct = timeLeft / GAME_TIME;
 
