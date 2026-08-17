@@ -9,6 +9,8 @@ export interface Experience {
   companyUrl: string;
   location: string;
   period: string;
+  startYear: string;
+  endYear: string;
   description: string;
   highlights: string[];
 }
@@ -31,7 +33,9 @@ export const EXPERIENCES: Experience[] = [
     company: "Krishang Technolab",
     companyUrl: "https://www.krishangtechnolab.com",
     location: "Ahmedabad, India",
-    period: "2023 – Present",
+    period: "December 2022 – Present",
+    startYear: "2022",
+    endYear: "Present",
     description:
       "MERN Stack Developer with experience in building scalable web applications, dynamic form systems, and team collaboration using Agile methodologies.",
     highlights: [
@@ -46,7 +50,9 @@ export const EXPERIENCES: Experience[] = [
     company: "Krishang Technolab",
     companyUrl: "https://www.krishangtechnolab.com",
     location: "Ahmedabad, India",
-    period: "August 2022 – December 2022",
+    period: "August 2022 – November 2022",
+    startYear: "2022",
+    endYear: "2022",
     description:
       "Contributed to frontend development using React and TypeScript. Participated in agile sprints and collaborated with designers on UI/UX improvements.",
     highlights: [

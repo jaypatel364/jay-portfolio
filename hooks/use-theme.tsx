@@ -56,10 +56,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [theme, mounted]);
 
-  // Apply theme to document
+  // Apply after localStorage hydrate so we don't overwrite the head boot script
+  // with the default "dark" state on the first client render.
   useEffect(() => {
     if (!mounted) return;
-
     const root = document.documentElement;
     if (resolvedTheme === "dark") {
       root.classList.add("dark");

@@ -5,24 +5,44 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Gamepad2, Sparkles, Trophy } from "lucide-react";
-import { BrainGame } from "./BrainGame";
-import { CodeBreakerGame } from "./CodeBreakerGame";
-import { ReactionTimeTest } from "./ReactionTimeTest";
-import { EmojiMemory } from "./EmojiMemory";
-import { ColorMatch } from "./ColorMatch";
-import { StackBuild } from "./StackBuild";
-import { DotCollector } from "./DotCollector";
-import { NumberNinja } from "./NumberNinja";
-import { WordScramble } from "./WordScramble";
-import { VibeCheck } from "./VibeCheck";
-import { GravityOrbs } from "./GravityOrbs";
-import { PixelDrawRace } from "./PixelDrawRace";
-import { TypingSpeedTest } from "./TypingSpeedTest";
 import { cn } from "@/lib/utils";
 import { GAMES, CATEGORIES, type Category } from "./game-registry";
 import { FeaturedCard, GameRow } from "./GameZoneCards";
+
+const BrainGame = dynamic(() => import("./BrainGame").then((m) => ({ default: m.BrainGame })));
+const CodeBreakerGame = dynamic(() =>
+  import("./CodeBreakerGame").then((m) => ({ default: m.CodeBreakerGame })),
+);
+const TypingSpeedTest = dynamic(() =>
+  import("./TypingSpeedTest").then((m) => ({ default: m.TypingSpeedTest })),
+);
+const ReactionTimeTest = dynamic(() =>
+  import("./ReactionTimeTest").then((m) => ({ default: m.ReactionTimeTest })),
+);
+const EmojiMemory = dynamic(() =>
+  import("./EmojiMemory").then((m) => ({ default: m.EmojiMemory })),
+);
+const ColorMatch = dynamic(() => import("./ColorMatch").then((m) => ({ default: m.ColorMatch })));
+const StackBuild = dynamic(() => import("./StackBuild").then((m) => ({ default: m.StackBuild })));
+const DotCollector = dynamic(() =>
+  import("./DotCollector").then((m) => ({ default: m.DotCollector })),
+);
+const NumberNinja = dynamic(() =>
+  import("./NumberNinja").then((m) => ({ default: m.NumberNinja })),
+);
+const WordScramble = dynamic(() =>
+  import("./WordScramble").then((m) => ({ default: m.WordScramble })),
+);
+const VibeCheck = dynamic(() => import("./VibeCheck").then((m) => ({ default: m.VibeCheck })));
+const GravityOrbs = dynamic(() =>
+  import("./GravityOrbs").then((m) => ({ default: m.GravityOrbs })),
+);
+const PixelDrawRace = dynamic(() =>
+  import("./PixelDrawRace").then((m) => ({ default: m.PixelDrawRace })),
+);
 
 // ── Hub modal ─────────────────────────────────────────────────────────────────
 

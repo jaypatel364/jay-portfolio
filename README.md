@@ -2,7 +2,7 @@
 
 Personal portfolio website for Jay Patel, Full Stack Developer. Built with Next.js 15, React 19, Tailwind CSS v4, and Framer Motion.
 
-Live at: `https://jay-portfolio.vercel.app`
+Live at: `https://jaypateldev.com`
 
 ---
 
@@ -22,7 +22,6 @@ Live at: `https://jay-portfolio.vercel.app`
 | Email           | Nodemailer (SMTP contact notifications)                       |
 | Toast           | Sonner                                                        |
 | Command Palette | cmdk                                                          |
-| PWA             | @ducanh2912/next-pwa                                          |
 | Rate limiting   | Upstash Redis                                                 |
 | Errors          | Sentry                                                        |
 | Deployment      | Vercel                                                        |
@@ -33,12 +32,13 @@ Live at: `https://jay-portfolio.vercel.app`
 
 ### Loading Screen
 
-- Cinematic terminal boot sequence — plays once per browser session (`sessionStorage` flag)
+- Cinematic terminal boot sequence — optional, off by default (`showLoadingScreen: false`)
+- Plays once per browser session when enabled (`sessionStorage` flag)
 - Typewriter effect — 8 lines type one at a time with realistic per-character delays
 - macOS-style terminal window — traffic light buttons, username@portfolio title bar
 - Smooth progress bar, 6-second hard cap, ESC to skip
 - Three-layer cinematic reveal: left/right curtain panels, glowing seam, radial iris bloom
-- Toggle: `showLoadingScreen: true | false`
+- Toggle: `showLoadingScreen: true | false` — keep off for LCP; page HTML is always in the document either way
 
 ### AI Chatbot
 
@@ -160,7 +160,7 @@ Config: `cursorEffect: "magnetic"` (or any value above)
 - 6 accent colour presets persisted in `localStorage`
 - Dark / light mode — respects `prefers-color-scheme`
 - Scroll progress bar, cursor spotlight, back-to-top FAB
-- Section error boundaries, PWA (production only)
+- Section error boundaries
 - Konami code easter egg — `↑↑↓↓←→←→BA`
 
 ---
@@ -175,7 +175,7 @@ Config: `cursorEffect: "magnetic"` (or any value above)
 │   ├── layout.tsx
 │   ├── page.tsx                      # Composes sections — keep thin
 │   ├── globals.css
-│   ├── manifest.ts
+│   ├── robots.ts
 │   └── sitemap.ts
 │
 ├── settings/                         # ★ Edit site data & flags here
@@ -277,7 +277,7 @@ Create `.env.local` at the project root:
 
 ```env
 # Site URL — used for canonical URLs and sitemap (required in production)
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_URL=https://jaypateldev.com
 
 # Groq AI — required for the chatbot
 GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -340,7 +340,7 @@ careerStartDate: "2022-12",
 ```ts
 // settings/features.ts
 showTerminalHero:  true,
-showLoadingScreen: true,
+showLoadingScreen: false,
 showFAQ:           true,
 showGameZone:      true,
 showBrainGame:     true,
@@ -417,9 +417,13 @@ Change to any of: `"none"` `"particles"` `"ripple"` `"magnetic"` `"lightning"` `
 
 ---
 
-## PWA Icons
+## Icons
 
-Replace placeholder icons in `public/icons/` before deploying.
+Icons are generated at request time:
+
+- Favicon: `app/icon.tsx` → `/icon`
+- Apple: `app/apple-icon.tsx` → `/apple-icon`
+- Social card: `app/opengraph-image.tsx` → `/opengraph-image`
 
 ---
 
@@ -430,7 +434,7 @@ npm run build
 npm run start
 ```
 
-Deploys to Vercel automatically on push. Service worker only activates in production. Set `NEXT_PUBLIC_SITE_URL` to your real domain in Vercel environment variables before going live.
+Deploys to Vercel automatically on push. Set `NEXT_PUBLIC_SITE_URL=https://jaypateldev.com` in Vercel environment variables before going live.
 
 ---
 

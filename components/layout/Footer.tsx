@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { Mail, Zap } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { CopyEmail } from "@/components/shared";
@@ -34,8 +35,22 @@ const SOCIALS = [
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
 
   const scrollTo = (id: string) => {
+    if (id === "home") {
+      if (pathname !== "/") {
+        window.location.assign("/");
+        return;
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.location.hash) history.replaceState(null, "", "/");
+      return;
+    }
+    if (pathname !== "/") {
+      window.location.assign(`/#${id}`);
+      return;
+    }
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -66,14 +81,6 @@ export function Footer() {
                   {link.label}
                 </button>
               ))}
-              {/* <Link
-                href="/resume"
-                target="_blank"
-                className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
-              >
-                <FileText className="h-3.5 w-3.5" />
-                Resume
-              </Link> */}
             </nav>
           </div>
 

@@ -1,4 +1,5 @@
 import { siteConfig } from "@/settings";
+import { contributionYearQuery } from "@/lib/github-years";
 
 export interface ContributionDay {
   date: string;
@@ -10,7 +11,7 @@ export interface ContributionDay {
 export async function getGitHubContributions(): Promise<ContributionDay[]> {
   try {
     const res = await fetch(
-      `https://github-contributions-api.jogruber.de/v4/${siteConfig.githubUsername}?y=2025&y=2026`,
+      `https://github-contributions-api.jogruber.de/v4/${siteConfig.githubUsername}?${contributionYearQuery()}`,
       { next: { revalidate: 3600 } },
     );
     if (!res.ok) return [];

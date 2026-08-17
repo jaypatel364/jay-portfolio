@@ -141,6 +141,56 @@
   --sidebar-ring: oklch(0.72 0.17 45);
 }
 
+/* First-visit boot cover — shown via layout beforeInteractive script (html[data-booting]).
+   Page HTML stays in the document for crawlers; this only hides it visually. */
+.site-boot-cover {
+  display: none;
+}
+html[data-booting="true"] .site-boot-cover {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: var(--background);
+}
+
+/* Hold a themed blank until navbar + hero have hydrated, then fade the full page in. */
+html[data-page-pending="true"] .site-shell {
+  opacity: 0;
+  transform: translateY(10px);
+}
+html[data-page-ready="true"] .site-shell {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-page-ready="true"] .site-shell {
+    transition: none;
+    transform: none;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 100;
+  border-radius: 0.5rem;
+  background: var(--primary);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary-foreground);
+}
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);

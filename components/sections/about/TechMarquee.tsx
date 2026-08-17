@@ -129,7 +129,7 @@ function TechPill({ item, isDark }: { item: { name: string; icon: string }; isDa
         aria-hidden="true"
       >
         {Icon ? (
-          <Icon size={18} style={{ color }} />
+          <Icon aria-hidden role="presentation" size={18} style={{ color }} />
         ) : (
           <span className="text-base leading-none">{item.icon}</span>
         )}

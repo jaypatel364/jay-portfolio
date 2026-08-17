@@ -3,30 +3,7 @@
 import { motion } from "framer-motion";
 import { GraduationCap } from "lucide-react";
 import { SectionHeading } from "@/components/shared";
-
-const EDUCATION = [
-  {
-    degree: "Bachelor's in Computer Engineering",
-    school: "SCET, Kalol",
-    year: "2019 – 2022",
-    desc: "Focused on software engineering, web development, data structures, and modern programming concepts.",
-    icon: GraduationCap,
-  },
-  {
-    degree: "Diploma in Computer Engineering",
-    school: "GPG, Gandhinagar",
-    year: "2016 – 2019",
-    desc: "Built strong fundamentals in programming, databases, computer networks, and application development.",
-    icon: GraduationCap,
-  },
-  // {
-  //   degree: "AWS Certified Cloud Practitioner",
-  //   school: "Amazon Web Services",
-  //   year: "2023",
-  //   desc: "Validated understanding of AWS Cloud concepts, services, security, architecture, and pricing. Applied cloud skills to production deployments.",
-  //   icon: Award,
-  // },
-];
+import { EDUCATION } from "@/lib/resume-data";
 
 export function EducationSection() {
   return (
@@ -41,7 +18,7 @@ export function EducationSection() {
 
           <div className="space-y-12">
             {EDUCATION.map((item, i) => {
-              const Icon = item.icon;
+              const Icon = GraduationCap;
               const isLeft = i % 2 === 0;
               return (
                 <motion.div

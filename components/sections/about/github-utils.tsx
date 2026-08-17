@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { animate } from "framer-motion";
+import { contributionYearQuery } from "@/lib/github-years";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -27,7 +28,7 @@ const MOBILE_WEEKS = 16; // ~4 months shown by default on small screens
 
 async function fetchContributions(username: string): Promise<Day[]> {
   const res = await fetch(
-    `https://github-contributions-api.jogruber.de/v4/${username}?y=2025&y=2026`,
+    `https://github-contributions-api.jogruber.de/v4/${username}?${contributionYearQuery()}`,
   );
   if (!res.ok) throw new Error("fetch failed");
   const json = await res.json();

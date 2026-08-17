@@ -1,17 +1,18 @@
 import { homePageJsonLdSchemas } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 import { ThemeProvider } from "@/hooks/use-theme";
+import { Suspense } from "react";
 import {
   PageTransition,
   PageTransitionItem,
+  PageReveal,
   Navbar,
   ScrollProgressBar,
   BackToTop,
   LoadingScreenWrapper,
   Footer,
+  HomeOverlays,
 } from "@/components/layout";
-import { ChatBot } from "@/components/features/chatbot";
-import { CursorSpotlight, KonamiEasterEgg, CatchTheBug, CursorTrail } from "@/components/effects";
 import { SectionErrorBoundary } from "@/components/shared";
 import { HeroSection } from "@/components/sections/hero";
 import { AboutSection } from "@/components/sections/about";
@@ -35,7 +36,9 @@ export default function Home() {
         <script
           key={i}
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+          }}
         />
       ))}
 
@@ -43,23 +46,15 @@ export default function Home() {
        * LoadingScreenWrapper:
        *   - Controlled by siteConfig.showLoadingScreen
        *   - Plays the boot sequence once per session (sessionStorage)
-       *   - Hides site content behind it, reveals via split-wipe on done
+       *   - Overlays the boot UI; page HTML is always in the document (SEO)
        */}
       <LoadingScreenWrapper>
-        <div className="relative min-h-screen bg-background text-foreground">
-          {/* Non-layout overlays */}
-          <CursorSpotlight />
+        <PageReveal />
+        <div className="site-shell relative min-h-screen bg-background text-foreground">
           <ScrollProgressBar />
-          <KonamiEasterEgg />
-          {/*
-           * CatchTheBug:
-           *   - Controlled by siteConfig.showCatchTheBug
-           *   - A tiny bug crawls across the screen at random intervals
-           *   - Click it to squash → confetti + toast
-           *   - Setting showCatchTheBug: false disables it entirely
-           */}
-          {siteConfig.showCatchTheBug && <CatchTheBug />}
-          {siteConfig.cursorEffect !== "none" && <CursorTrail mode={siteConfig.cursorEffect} />}
+          <Suspense fallback={null}>
+            <HomeOverlays />
+          </Suspense>
 
           <PageTransition>
             <PageTransitionItem>
@@ -67,7 +62,7 @@ export default function Home() {
             </PageTransitionItem>
 
             <PageTransitionItem>
-              <main>
+              <main id="main">
                 <SectionErrorBoundary section="Hero">
                   <HeroSection />
                 </SectionErrorBoundary>
@@ -103,7 +98,6 @@ export default function Home() {
           </PageTransition>
 
           <BackToTop />
-          <ChatBot />
         </div>
       </LoadingScreenWrapper>
     </ThemeProvider>

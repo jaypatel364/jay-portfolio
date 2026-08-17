@@ -99,6 +99,9 @@ export function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
+            action={`mailto:${siteConfig.email}`}
+            method="post"
+            encType="text/plain"
             onSubmit={handleSubmit}
             className="space-y-5 lg:col-span-3"
           >

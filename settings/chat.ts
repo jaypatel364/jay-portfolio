@@ -73,7 +73,7 @@ export function getCannedAnswers(): CannedAnswer[] {
     },
     {
       patterns: [/resume/i, /cv/i, /download/i],
-      reply: `Here's my resume: ${siteConfig.resumeUrl}\n\nYou can also view the formatted version at /resume on this site. Want to discuss my experience? Book a call: ${siteConfig.bookingUrl}`,
+      reply: `Here's my resume: ${siteConfig.resumeUrl}\n\nWant to discuss my experience? Book a call: ${siteConfig.bookingUrl}`,
     },
     {
       patterns: [/where.*based/i, /location/i, /where.*live/i, /from/i],

@@ -296,39 +296,44 @@ export function LoadingScreen({ onDone }: { onDone: () => void }) {
   );
 }
 
-// ── Wrapper — handles sessionStorage + SSR ────────────────────────────────────
+// ── Wrapper — overlay boot screen; children always stay in the HTML ───────────
+//
+// Critical for SEO/LCP: never return null and never visibility:hidden the page.
+// Server HTML includes hero/sections. A beforeInteractive script in layout.tsx
+// paints an opaque cover (html[data-booting]) on first visit so users don't
+// flash content; crawlers that skip JS still see the full document.
 
 export function LoadingScreenWrapper({ children }: { children: React.ReactNode }) {
-  const [booting, setBooting] = useState<boolean | null>(null);
+  const [booting, setBooting] = useState(false);
 
   useEffect(() => {
     if (!siteConfig.showLoadingScreen) {
-      setBooting(false);
+      document.documentElement.removeAttribute("data-booting");
       return;
     }
-    setBooting(!sessionStorage.getItem(SESSION_KEY));
+    const shouldBoot = !sessionStorage.getItem(SESSION_KEY);
+    setBooting(shouldBoot);
+    if (!shouldBoot) {
+      document.documentElement.removeAttribute("data-booting");
+    }
   }, []);
+
+  useEffect(() => {
+    if (booting) document.documentElement.removeAttribute("data-booting");
+  }, [booting]);
 
   const handleDone = () => {
     sessionStorage.setItem(SESSION_KEY, "0");
+    document.documentElement.removeAttribute("data-booting");
     setBooting(false);
   };
-
-  if (booting === null) return null;
 
   return (
     <>
       <AnimatePresence>
         {booting && <LoadingScreen key="boot" onDone={handleDone} />}
       </AnimatePresence>
-      <motion.div
-        initial={false}
-        animate={booting ? { opacity: 0, scale: 0.985 } : { opacity: 1, scale: 1 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        style={{ visibility: booting ? "hidden" : "visible" }}
-      >
-        {children}
-      </motion.div>
+      {children}
     </>
   );
 }

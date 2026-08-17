@@ -1,14 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript", "prettier"],
-  "ignorePatterns": [
-    ".next/**",
-    "node_modules/**",
-    "next-env.d.ts",
-    "public/sw.js",
-    "public/workbox-*.js",
-    "public/fallback-*.js",
-    "public/swe-worker-*.js"
-  ],
+  "ignorePatterns": [".next/**", "node_modules/**", "next-env.d.ts", "public/sw.js", "e2e/**"],
   "rules": {
     "@typescript-eslint/no-unused-vars": [
       "warn",

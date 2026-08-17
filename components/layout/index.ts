@@ -1,7 +1,11 @@
 export { Navbar } from "./Navbar";
 export { Footer } from "./Footer";
 export { PageTransition, PageTransitionItem } from "./PageTransition";
+export { PageReveal } from "./PageReveal";
 export { LoadingScreenWrapper } from "./LoadingScreen";
 export { ScrollProgressBar } from "./ScrollProgressBar";
 export { BackToTop } from "./BackToTop";
 export { ResumeThemeSync } from "./ResumeThemeSync";
+export { ResumePrintButton } from "./ResumePrintButton";
+export { HomeOverlays } from "./HomeOverlays";
+export { SiteChrome } from "./SiteChrome";
