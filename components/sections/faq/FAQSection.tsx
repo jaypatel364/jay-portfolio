@@ -4,13 +4,12 @@
  * FAQSection — "Ask Me Anything" accordion
  */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MessageCircleQuestion, Sparkles, ArrowRight } from "lucide-react";
-import { siteConfig, type FAQCategory } from "@/lib/site-config";
+import { siteConfig } from "@/lib/site-config";
 import { SectionHeading } from "@/components/shared";
-import { cn } from "@/lib/utils";
-import { CATEGORY_META, type Filter } from "./faq-meta";
+import { type Filter } from "./faq-meta";
 import { FAQCard, Toolbar, AllDoneBanner, FloatingBlobs } from "./FAQParts";
 
 // ─── Main export ──────────────────────────────────────────────────────────────

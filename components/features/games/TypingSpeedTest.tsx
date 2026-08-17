@@ -120,7 +120,6 @@ export function TypingSpeedTest({ onClose }: { onClose: () => void }) {
   const [snippetIdx, setSnippetIdx] = useState(0);
   const [typed, setTyped] = useState("");
   const [phase, setPhase] = useState<Phase>("idle");
-  const [startTime, setStartTime] = useState<number | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
@@ -180,7 +179,6 @@ export function TypingSpeedTest({ onClose }: { onClose: () => void }) {
       if (phase === "idle" || phase === "typing") {
         if (phase === "idle" && val.length > 0) {
           const now = Date.now();
-          setStartTime(now);
           startRef.current = now;
           setPhase("typing");
         }
@@ -229,7 +227,6 @@ export function TypingSpeedTest({ onClose }: { onClose: () => void }) {
       setSnippetIdx(idx);
       setTyped("");
       setPhase("idle");
-      setStartTime(null);
       startRef.current = null;
       setElapsed(0);
       setWpm(0);

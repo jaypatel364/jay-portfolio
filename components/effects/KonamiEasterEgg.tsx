@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import { createPortal } from "react-dom";
 import { toast } from "sonner";
 
 const KONAMI = [

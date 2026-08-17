@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GraduationCap, Award } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 import { SectionHeading } from "@/components/shared";
 
 const EDUCATION = [

@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   GitCommitHorizontal,
   Flame,
@@ -28,7 +28,6 @@ import {
   longestStreak,
   busiestDay,
   currentStreak,
-  AnimatedNumber,
   useIsMobile,
 } from "./github-utils";
 import {

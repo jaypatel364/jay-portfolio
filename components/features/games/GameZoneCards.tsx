@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Play, Trophy, ChevronRight } from "lucide-react";
+import { Play, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Difficulty, GameEntry } from "./game-registry";
 

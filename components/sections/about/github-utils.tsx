@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import { animate } from "framer-motion";
-import { siteConfig } from "@/lib/site-config";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
