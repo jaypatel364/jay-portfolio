@@ -1,5 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { hashClientIp } from "@/lib/client-ip";
 
 export interface RateLimitResult {
   limited: boolean;
@@ -66,13 +67,14 @@ async function upstashLimit(
 }
 
 export async function rateLimitChat(ip: string): Promise<RateLimitResult> {
-  const minute = await upstashLimit(chatMinute, `chat:min:${ip}`, 6, 60_000);
+  const key = hashClientIp(ip);
+  const minute = await upstashLimit(chatMinute, `chat:min:${key}`, 6, 60_000);
   if (minute.limited) return minute;
-  return upstashLimit(chatHour, `chat:hr:${ip}`, 30, 3_600_000);
+  return upstashLimit(chatHour, `chat:hr:${key}`, 30, 3_600_000);
 }
 
 export async function rateLimitContact(ip: string): Promise<RateLimitResult> {
-  return upstashLimit(contactMinute, `contact:${ip}`, 3, 60_000);
+  return upstashLimit(contactMinute, `contact:${hashClientIp(ip)}`, 3, 60_000);
 }
 
 export function getClientIp(request: Request): string {

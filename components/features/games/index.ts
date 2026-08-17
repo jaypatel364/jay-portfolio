@@ -1,14 +1,1 @@
 export { GameZoneTrigger } from "./GameZone";
-export { BrainGame, BrainGameTrigger } from "./BrainGame";
-export { CodeBreakerGame } from "./CodeBreakerGame";
-export { ReactionTimeTest } from "./ReactionTimeTest";
-export { EmojiMemory } from "./EmojiMemory";
-export { ColorMatch } from "./ColorMatch";
-export { StackBuild } from "./StackBuild";
-export { DotCollector } from "./DotCollector";
-export { NumberNinja } from "./NumberNinja";
-export { WordScramble } from "./WordScramble";
-export { VibeCheck } from "./VibeCheck";
-export { GravityOrbs } from "./GravityOrbs";
-export { PixelDrawRace } from "./PixelDrawRace";
-export { TypingSpeedTest } from "./TypingSpeedTest";

@@ -63,6 +63,29 @@ const URL_LABELS: { pattern: RegExp; label: string }[] = [
   { pattern: /render\.com/i, label: "Live Demo" },
 ];
 
+const ALLOWED_LINK_HOSTS = new Set([
+  "jaypateldev.com",
+  "www.jaypateldev.com",
+  "github.com",
+  "www.github.com",
+  "linkedin.com",
+  "www.linkedin.com",
+  "calendly.com",
+  "www.calendly.com",
+  "drive.google.com",
+  "docs.google.com",
+]);
+
+function isAllowedChatUrl(raw: string): boolean {
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol !== "https:") return false;
+    return ALLOWED_LINK_HOSTS.has(parsed.hostname.toLowerCase());
+  } catch {
+    return false;
+  }
+}
+
 function friendlyLabel(url: string): string {
   for (const { pattern, label } of URL_LABELS) {
     if (pattern.test(url)) return label;
@@ -111,6 +134,9 @@ function renderContent(text: string): React.ReactNode {
       );
     }
     if (part.startsWith("http")) {
+      if (!isAllowedChatUrl(part)) {
+        return <span key={i}>{part}</span>;
+      }
       return (
         <a
           key={i}

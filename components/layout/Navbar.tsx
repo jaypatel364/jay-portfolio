@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Search, Palette, Check } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
@@ -118,6 +119,8 @@ export function Navbar() {
   const { resolvedTheme, toggleTheme } = useTheme();
   const active = useActiveSection();
   const { percent, pastHero } = useScrollProgress();
+  const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -200,20 +203,35 @@ export function Navbar() {
   }, [toggleTheme]);
 
   const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMobileOpen(false);
+    if (id === "home") {
+      if (pathname !== "/") {
+        router.push("/");
+        return;
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.location.hash) history.replaceState(null, "", "/");
+      return;
+    }
+    if (pathname !== "/") {
+      router.push(`/#${id}`);
+      return;
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <motion.header
-      initial={{ y: -100 }}
+      initial={false}
       animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled ? "glass-strong shadow-lg py-3" : "py-5",
       )}
     >
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6">
         <button
           onClick={() => scrollTo("home")}

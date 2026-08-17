@@ -36,7 +36,10 @@ export const content = {
   currentlyBuilding: null as BuildingItem | null,
 
   /** About "What I'm learning" badge. [] = hidden. */
-  currentlyLearning: [] as LearningItem[],
+  currentlyLearning: [
+    // { name: "Distributed systems", icon: "⚡" },
+    // { name: "LLM integrations", icon: "🤖" },
+  ] as LearningItem[],
 
   /** FAQ accordion items. category: "work" | "tech" | "personal" | "process" */
   faqItems: [

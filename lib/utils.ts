@@ -32,7 +32,5 @@ export function getExperienceLabel(startDate: string, now: Date = new Date()): s
   const halfYears = Math.floor(totalMonths / 6);
   const value = halfYears * 0.5;
 
-  // Format: drop trailing ".0" for whole numbers (1, 2, 3…), keep ".5"
-  const formatted = value % 1 === 0 ? `${value}` : `${value}`;
-  return `${formatted}+`;
+  return `${value}+`;
 }

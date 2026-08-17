@@ -41,12 +41,12 @@ If a **optional** service is unset, that feature no-ops. The site still loads.
 2. Framework preset: **Next.js**. Install command: `npm ci` (see `vercel.json`).
 3. **Node.js version:** `22.x` — set in `package.json` → `engines.node`. In Vercel → Settings → General → Node.js Version, pick **22.x** if the dashboard override differs.
 4. Add the env vars from the table below.
-5. Set `NEXT_PUBLIC_SITE_URL` to the real domain **with no trailing slash** (example: `https://jaypatel.dev`).
+5. Set `NEXT_PUBLIC_SITE_URL` to **`https://jaypateldev.com`** (no trailing slash).
 6. Redeploy after changing any `NEXT_PUBLIC_*` variable — those are baked in at build time.
 
-Fonts are **self-hosted** via `@fontsource/*` (no Google Fonts fetch at build time).
+**Domains:** attach `jaypateldev.com` and `www.jaypateldev.com` in Vercel → Settings → Domains. `next.config.ts` 301s `www` and the old production aliases (`jay-portfolio.vercel.app`, `jay-patel-dev.vercel.app`) to the apex. Preview URLs are not redirected.
 
-Custom domain: Project → Settings → Domains.
+Fonts are **self-hosted** via `@fontsource/*` (no Google Fonts fetch at build time).
 
 ---
 
@@ -163,7 +163,9 @@ Session Replay is **off** (`replaysSessionSampleRate: 0`). PII is not sent (`sen
 
 ## 5. MongoDB (optional — contact storage)
 
-Without `MONGODB_URI`, submissions are not stored. The form still returns success if SMTP is configured (or even if neither is — see contact route).
+The contact form **fails closed**: `POST /api/contact` returns **503** unless Mongo saved the message **or** SMTP sent it. Configure at least one of MongoDB or SMTP for production.
+
+Without `MONGODB_URI`, submissions are not stored. SMTP can still deliver the message.
 
 1. Create a free cluster at [cloud.mongodb.com](https://cloud.mongodb.com).
 2. Database user + Network Access: allow `0.0.0.0/0` (Vercel IPs are dynamic) or use Atlas Network Peering if you prefer.
@@ -181,7 +183,7 @@ The app uses database **`portfolio`**, collection **`contact`**.
 
 ## 6. SMTP (optional — contact email)
 
-Without SMTP vars, no notification email is sent.
+Without SMTP vars, no notification email is sent. Mongo can still persist the submission. If **neither** Mongo nor SMTP is set, visitors see an error and are asked to email Jay directly.
 
 Typical Gmail setup (App Password, 2FA on):
 
@@ -205,13 +207,16 @@ All of `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` (falls ba
 
 File: [`.github/workflows/ci.yml`](./.github/workflows/ci.yml).
 
-Runs on push/PR to `main` or `master`:
+Runs on push/PR to `main` or `master` (`permissions: contents: read`):
 
 1. `npm ci`
-2. Prettier check
-3. ESLint
-4. `tsc --noEmit`
-5. `next build`
+2. `npm audit --omit=dev --audit-level=high`
+3. Prettier check
+4. ESLint
+5. `tsc --noEmit`
+6. `next build`
+
+Dependabot: [`.github/dependabot.yml`](./.github/dependabot.yml) — weekly npm and GitHub Actions updates.
 
 No GitHub UI setup beyond pushing the workflow file.
 
@@ -250,25 +255,28 @@ No token. Server fetch in `lib/github-contributions.ts` with **ISR 1 hour**. Use
 
 ## Env var cheat sheet
 
-| Variable                   | Where                     | Required           |
-| -------------------------- | ------------------------- | ------------------ |
-| `NEXT_PUBLIC_SITE_URL`     | Vercel + local            | Production SEO     |
-| `GROQ_API_KEY`             | Vercel + local            | Chatbot            |
-| `UPSTASH_REDIS_REST_URL`   | Vercel + local            | Shared rate limits |
-| `UPSTASH_REDIS_REST_TOKEN` | Vercel + local            | Shared rate limits |
-| `NEXT_PUBLIC_SENTRY_DSN`   | Vercel + local            | Error monitoring   |
-| `SENTRY_ORG`               | Vercel (optional)         | Source maps later  |
-| `SENTRY_PROJECT`           | Vercel (optional)         | Source maps later  |
-| `SENTRY_AUTH_TOKEN`        | Vercel (optional, secret) | Source maps later  |
-| `MONGODB_URI`              | Vercel + local            | Store contacts     |
-| `SMTP_HOST`                | Vercel + local            | Email contacts     |
-| `SMTP_PORT`                | Vercel + local            | Email contacts     |
-| `SMTP_SECURE`              | Vercel + local            | `true` for 465     |
-| `SMTP_USER`                | Vercel + local            | Email contacts     |
-| `SMTP_PASS`                | Vercel + local            | Email contacts     |
-| `SMTP_FROM`                | Vercel + local            | Email contacts     |
-| `CONTACT_NOTIFY_TO`        | Vercel + local            | Email contacts     |
-| `SONAR_TOKEN`              | GitHub Actions secret     | SonarCloud scans   |
+| Variable                               | Where                     | Required                |
+| -------------------------------------- | ------------------------- | ----------------------- |
+| `NEXT_PUBLIC_SITE_URL`                 | Vercel + local            | Production SEO          |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Vercel (optional)         | Search Console HTML tag |
+| `NEXT_PUBLIC_BING_SITE_VERIFICATION`   | Vercel (optional)         | Bing Webmaster HTML tag |
+| `GROQ_API_KEY`                         | Vercel + local            | Chatbot                 |
+| `UPSTASH_REDIS_REST_URL`               | Vercel + local            | Shared rate limits      |
+| `UPSTASH_REDIS_REST_TOKEN`             | Vercel + local            | Shared rate limits      |
+| `NEXT_PUBLIC_SENTRY_DSN`               | Vercel + local            | Error monitoring        |
+| `SENTRY_ORG`                           | Vercel (optional)         | Source maps later       |
+| `SENTRY_PROJECT`                       | Vercel (optional)         | Source maps later       |
+| `SENTRY_AUTH_TOKEN`                    | Vercel (optional, secret) | Source maps later       |
+| `MONGODB_URI`                          | Vercel + local            | Store contacts          |
+| `SMTP_HOST`                            | Vercel + local            | Email contacts          |
+| `SMTP_PORT`                            | Vercel + local            | Email contacts          |
+| `SMTP_SECURE`                          | Vercel + local            | `true` for 465          |
+| `SMTP_USER`                            | Vercel + local            | Email contacts          |
+| `SMTP_PASS`                            | Vercel + local            | Email contacts          |
+| `SMTP_FROM`                            | Vercel + local            | Email contacts          |
+| `CONTACT_NOTIFY_TO`                    | Vercel + local            | Email contacts          |
+| `IP_HASH_SALT`                         | Vercel + local (optional) | Hash IPs in rate limits |
+| `SONAR_TOKEN`                          | GitHub Actions secret     | SonarCloud scans        |
 
 ---
 
@@ -286,12 +294,15 @@ No token. Server fetch in `lib/github-contributions.ts` with **ISR 1 hour**. Use
 ## Go-live checklist
 
 1. All env vars above that you use are on **Vercel Production** (and Preview if you want staging parity).
-2. `NEXT_PUBLIC_SITE_URL` is the real domain, no trailing slash.
+2. `NEXT_PUBLIC_SITE_URL` is `https://jaypateldev.com`, no trailing slash.
 3. Redeploy after adding `NEXT_PUBLIC_*` vars.
 4. Chat: one real message works; spam → 429.
-5. Contact: Mongo row and/or email arrive.
+5. Contact: Mongo row and/or email arrive. If neither backend is configured, the form returns 503 (fail-closed).
 6. Sentry: Issues page is receiving events after a real error.
-7. Flip `allowIndexing: true` in `settings/features.ts` when the public domain is ready.
-8. Confirm `settings/identity.ts` name, links, and resume URL.
+7. Confirm `jaypateldev.com` and `www` in Vercel Domains; HTTPS is on.
+8. **Search Console (needs you in the Google UI):** add `https://jaypateldev.com`, verify via DNS or HTML tag. If HTML tag, paste the token into `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` and redeploy. Submit `https://jaypateldev.com/sitemap.xml`.
+9. **Bing Webmaster (needs you in the Bing UI):** same flow with `NEXT_PUBLIC_BING_SITE_VERIFICATION`.
+10. Flip `allowIndexing: true` in `settings/features.ts` **only after** the custom domain, sitemap, and OG/favicon routes work on production.
+11. Confirm `settings/identity.ts` name, links, and resume URL.
 
 Folder architecture (not cloud): [STRUCTURE.md](./STRUCTURE.md).

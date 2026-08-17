@@ -33,7 +33,7 @@ function OverflowPill({ skill, isDark, delay }: { skill: Skill; isDark: boolean;
           className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg transition-all duration-200"
           style={{ backgroundColor: `${color}18` }}
         >
-          <Icon size={14} style={{ color }} />
+          <Icon aria-hidden role="presentation" size={14} style={{ color }} />
         </span>
         <span className="text-xs font-semibold" style={{ color: hovered ? color : undefined }}>
           {skill.name}
@@ -77,7 +77,7 @@ function SkillPill({ skill, delay, isDark }: { skill: Skill; delay: number; isDa
           className="relative z-10 flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-200"
           style={{ backgroundColor: hovered ? `${color}22` : `${color}14` }}
         >
-          <Icon size={22} style={{ color }} />
+          <Icon aria-hidden role="presentation" size={22} style={{ color }} />
         </span>
         <span className="relative z-10 text-center text-[11px] font-semibold leading-tight text-muted-foreground">
           {skill.name}

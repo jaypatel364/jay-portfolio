@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import {
   CommandDialog,
   CommandEmpty,
@@ -23,7 +24,6 @@ import {
   Moon,
   CalendarDays,
   Keyboard,
-  FileText,
   FolderKanban,
 } from "lucide-react";
 import { ACCENT_PRESETS, ACCENT_STORAGE_KEY } from "@/lib/accent-colors";
@@ -68,6 +68,7 @@ export function CommandPalette({
 }: CommandPaletteProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const { resolvedTheme, toggleTheme } = useTheme();
+  const pathname = usePathname();
 
   // Support both controlled (from Navbar button) and uncontrolled (keyboard shortcut)
   const isOpen = controlledOpen ?? internalOpen;
@@ -84,8 +85,20 @@ export function CommandPalette({
 
   const scrollTo = (id: string) => {
     setOpen(false);
-    // Small delay so the dialog closes before scrolling
     setTimeout(() => {
+      if (id === "home") {
+        if (pathname !== "/") {
+          window.location.assign("/");
+          return;
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (window.location.hash) history.replaceState(null, "", "/");
+        return;
+      }
+      if (pathname !== "/") {
+        window.location.assign(`/#${id}`);
+        return;
+      }
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     }, 80);
   };
@@ -131,18 +144,6 @@ export function CommandPalette({
           >
             <Download className="h-4 w-4 text-muted-foreground" />
             <span>Download CV</span>
-          </CommandItem>
-
-          <CommandItem
-            value="View Resume Print PDF"
-            onSelect={() => {
-              setOpen(false);
-              window.open("/resume", "_blank");
-            }}
-            className="gap-3 cursor-pointer"
-          >
-            <FileText className="h-4 w-4 text-muted-foreground" />
-            <span>View Resume</span>
           </CommandItem>
 
           <CommandItem

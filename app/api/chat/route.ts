@@ -3,6 +3,7 @@ import Groq from "groq-sdk";
 import { z } from "zod";
 import { buildChatSystemPrompt, getCannedAnswers } from "@/settings/chat";
 import { rateLimitChat, getClientIp } from "@/lib/rate-limit";
+import { isAllowedRequestOrigin } from "@/lib/request-origin";
 import { captureServerError } from "@/lib/sentry";
 
 export const runtime = "nodejs";
@@ -164,6 +165,10 @@ function getGroq(): Groq {
 // ── Route handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
+  if (!isAllowedRequestOrigin(req)) {
+    return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+  }
+
   // 1. IP + rate limit (Upstash Redis on Vercel, in-memory fallback locally)
   const ip = getClientIp(req);
   const { limited, retryAfter } = await rateLimitChat(ip);
@@ -267,7 +272,7 @@ export async function POST(req: NextRequest) {
         { status: 429 },
       );
     }
-    captureServerError(err, { route: "chat", ip });
+    captureServerError(err, { route: "chat" });
     console.error("[Chat] Groq error:", msg);
     return NextResponse.json(
       { error: "Something went wrong. Please use the contact form to reach Jay directly." },

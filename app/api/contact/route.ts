@@ -1,19 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import { MongoClient } from "mongodb";
 import nodemailer from "nodemailer";
 import { rateLimitContact, getClientIp } from "@/lib/rate-limit";
+import { isAllowedRequestOrigin } from "@/lib/request-origin";
+import { contactSchema } from "@/lib/contact-schema";
 import { captureServerError } from "@/lib/sentry";
 
 export const runtime = "nodejs";
-
-// ── Validation ───────────────────────────────────────────────────────────────
-
-const contactSchema = z.object({
-  name: z.string().trim().min(1).max(100),
-  email: z.string().trim().email().max(255),
-  message: z.string().trim().min(1).max(2000),
-});
 
 // ── MongoDB service ──────────────────────────────────────────────────────────
 // Gracefully no-ops when MONGODB_URI is not set.
@@ -24,7 +17,6 @@ async function saveToDatabase(payload: {
   name: string;
   email: string;
   message: string;
-  ip: string;
   createdAt: Date;
 }): Promise<{ saved: boolean }> {
   const uri = process.env.MONGODB_URI;
@@ -45,7 +37,7 @@ async function saveToDatabase(payload: {
     console.log("[Contact] Saved to MongoDB:", { name: payload.name, email: payload.email });
     return { saved: true };
   } catch (err) {
-    captureServerError(err, { route: "contact", ip: payload.ip });
+    captureServerError(err, { route: "contact" });
     console.error("[Contact] MongoDB save failed:", err instanceof Error ? err.message : err);
     // Reset client so next request retries a fresh connection
     cachedClient = null;
@@ -89,7 +81,6 @@ async function sendEmail(payload: {
   name: string;
   email: string;
   message: string;
-  ip: string;
   createdAt: Date;
 }): Promise<{ sent: boolean }> {
   const config = resolveSmtpConfig();
@@ -121,7 +112,7 @@ async function sendEmail(payload: {
     console.log("[Contact] Email sent to:", config.to);
     return { sent: true };
   } catch (err) {
-    captureServerError(err, { route: "contact-email", ip: payload.ip });
+    captureServerError(err, { route: "contact-email" });
     console.error("[Contact] Email send failed:", err instanceof Error ? err.message : err);
     // Reset transporter so next request tries a fresh connection
     cachedTransporter = null;
@@ -135,7 +126,6 @@ function buildTextBody(p: {
   name: string;
   email: string;
   message: string;
-  ip: string;
   createdAt: Date;
 }): string {
   return [
@@ -143,7 +133,6 @@ function buildTextBody(p: {
     "",
     `Name:    ${p.name}`,
     `Email:   ${p.email}`,
-    `IP:      ${p.ip}`,
     `Time:    ${p.createdAt.toISOString()}`,
     "",
     "Message:",
@@ -155,7 +144,6 @@ function buildHtmlBody(p: {
   name: string;
   email: string;
   message: string;
-  ip: string;
   createdAt: Date;
 }): string {
   const e = escapeHtml;
@@ -167,8 +155,6 @@ function buildHtmlBody(p: {
             <td style="padding:4px 0;font-size:14px;">${e(p.name)}</td></tr>
         <tr><td style="padding:4px 12px 4px 0;color:#6b7280;font-size:14px;">Email</td>
             <td style="padding:4px 0;font-size:14px;"><a href="mailto:${e(p.email)}">${e(p.email)}</a></td></tr>
-        <tr><td style="padding:4px 12px 4px 0;color:#6b7280;font-size:14px;">IP</td>
-            <td style="padding:4px 0;font-size:14px;">${e(p.ip)}</td></tr>
         <tr><td style="padding:4px 12px 4px 0;color:#6b7280;font-size:14px;">Time</td>
             <td style="padding:4px 0;font-size:14px;">${e(p.createdAt.toISOString())}</td></tr>
       </table>
@@ -189,9 +175,17 @@ function escapeHtml(value: string): string {
     .replaceAll("'", "&#39;");
 }
 
+function backendsConfigured(): boolean {
+  return Boolean(process.env.MONGODB_URI) || resolveSmtpConfig() !== null;
+}
+
 // ── Route handler ────────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
+  if (!isAllowedRequestOrigin(request)) {
+    return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+  }
+
   const ip = getClientIp(request);
 
   const { limited } = await rateLimitContact(ip);
@@ -231,18 +225,29 @@ export async function POST(request: NextRequest) {
 
   const { name, email, message } = parsed.data;
   const createdAt = new Date();
-  const payload = { name, email, message, ip, createdAt };
+  const payload = { name, email, message, createdAt };
 
-  // 6. Fire both services independently — neither blocks nor breaks the other.
-  //    We run them in parallel for speed.
+  if (!backendsConfigured()) {
+    captureServerError(new Error("Contact backends not configured"), { route: "contact" });
+    return NextResponse.json(
+      {
+        error:
+          "The contact form is temporarily unavailable. Please email pjay99909@gmail.com instead.",
+      },
+      { status: 503 },
+    );
+  }
+
   const [dbResult, emailResult] = await Promise.all([saveToDatabase(payload), sendEmail(payload)]);
 
-  // 7. Always return 200 to the user.
-  //    Log a warning if both services were unavailable (config issue, not user fault).
   if (!dbResult.saved && !emailResult.sent) {
-    console.warn(
-      "[Contact] Neither MongoDB nor SMTP is configured. " + "Message received but not persisted.",
-      { name, email },
+    captureServerError(new Error("Contact backends failed"), { route: "contact" });
+    return NextResponse.json(
+      {
+        error:
+          "Message could not be delivered. Please email pjay99909@gmail.com or try again later.",
+      },
+      { status: 503 },
     );
   }
 

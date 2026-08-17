@@ -18,6 +18,7 @@ import { getExperienceLabel } from "@/lib/utils";
 import { TechMarquee } from "./TechMarquee";
 import { GitHubGraph } from "./GitHubGraph";
 import type { ContributionDay } from "@/lib/github-contributions";
+import type { BuildingItem } from "@/settings/types";
 import React from "react";
 
 // ── Highlight cards ───────────────────────────────────────────────────────────
@@ -63,13 +64,7 @@ const TRAITS = ["Clean Code", "Fast Delivery", "Always Learning", "Team Player"]
 
 // ── Currently-building sub-component ─────────────────────────────────────────
 
-interface BuildingInfo {
-  name: string;
-  description: string;
-  url: string | null;
-}
-
-function CurrentlyBuildingContent({ building }: { building: BuildingInfo }) {
+function CurrentlyBuildingContent({ building }: { building: BuildingItem }) {
   return (
     <>
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">

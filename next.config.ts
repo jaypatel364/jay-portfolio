@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
-import withPWA from "@ducanh2912/next-pwa";
 import path from "path";
+
+const isProd = process.env.NODE_ENV === "production";
 
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
@@ -16,30 +17,35 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      isProd
+        ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com"
+        : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https:",
+      "img-src 'self' data: blob:",
       "font-src 'self' data:",
-      "connect-src 'self' https://api.groq.com https://github-contributions-api.jogruber.de https://*.ingest.sentry.io",
-      "frame-src 'self' https://calendly.com https://drive.google.com",
+      "connect-src 'self' https://github-contributions-api.jogruber.de https://*.ingest.sentry.io https://vitals.vercel-insights.com https://va.vercel-scripts.com",
+      "frame-src 'none'",
       "object-src 'none'",
       "base-uri 'self'",
-      "form-action 'self'",
+      "form-action 'self' mailto:",
       "frame-ancestors 'self'",
+      "upgrade-insecure-requests",
     ].join("; "),
   },
 ];
 
+const PRODUCTION_ORIGIN = "https://jaypateldev.com";
+
+const hostRedirect = (host: string) => ({
+  source: "/:path*",
+  has: [{ type: "host" as const, value: host }],
+  destination: `${PRODUCTION_ORIGIN}/:path*`,
+  permanent: true,
+});
+
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
   images: {
-    remotePatterns: [
-      { protocol: "https", hostname: "avatars.githubusercontent.com" },
-      { protocol: "https", hostname: "lh3.googleusercontent.com" },
-      { protocol: "https", hostname: "drive.google.com" },
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "cdn.sanity.io" },
-    ],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 7,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
@@ -54,15 +60,19 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
+  async redirects() {
+    // Preview deployments (*.vercel.app unique URLs) are not redirected.
+    const hosts = ["www.jaypateldev.com", "jay-portfolio.vercel.app", "jay-patel-dev.vercel.app"];
+    return hosts.flatMap((host) => [
+      {
+        source: "/",
+        has: [{ type: "host" as const, value: host }],
+        destination: PRODUCTION_ORIGIN,
+        permanent: true,
+      },
+      hostRedirect(host),
+    ]);
+  },
 };
 
-export default withPWA({
-  dest: "public",
-  disable: process.env.NODE_ENV === "development",
-  cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
-  reloadOnOnline: true,
-  workboxOptions: {
-    disableDevLogs: true,
-  },
-})(nextConfig);
+export default nextConfig;

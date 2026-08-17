@@ -234,6 +234,7 @@ function SkillSphere({ skills, isDark }: { skills: Skill[]; isDark: boolean }) {
         height={svgSize}
         viewBox={`0 0 ${svgSize} ${svgSize}`}
         overflow="visible"
+        aria-hidden="true"
       >
         {/* Outer sphere circle */}
         <circle
@@ -339,18 +340,21 @@ function SkillSphere({ skills, isDark }: { skills: Skill[]; isDark: boolean }) {
                 transform: `scale(${isHovered ? 1.22 : 1})`,
               }}
             >
-              <Icon
-                size={Math.max(10, Math.round(nodeSize * 0.45))}
-                style={{
-                  // Dark mode: full color always; light mode: 87% on idle
-                  color: isDark ? color : isHovered ? color : `${color}dd`,
-                  filter: isDark
-                    ? `drop-shadow(0 0 ${isHovered ? "6px" : "3px"} ${color}cc)`
-                    : isHovered
-                      ? `drop-shadow(0 0 5px ${color}aa)`
-                      : undefined,
-                }}
-              />
+              <span aria-hidden="true">
+                <Icon
+                  role="presentation"
+                  size={Math.max(10, Math.round(nodeSize * 0.45))}
+                  style={{
+                    // Dark mode: full color always; light mode: 87% on idle
+                    color: isDark ? color : isHovered ? color : `${color}dd`,
+                    filter: isDark
+                      ? `drop-shadow(0 0 ${isHovered ? "6px" : "3px"} ${color}cc)`
+                      : isHovered
+                        ? `drop-shadow(0 0 5px ${color}aa)`
+                        : undefined,
+                  }}
+                />
+              </span>
             </div>
           </div>
         );

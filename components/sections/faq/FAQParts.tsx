@@ -113,54 +113,58 @@ function FAQCard({
         )}
       </AnimatePresence>
 
-      {/* Question toggle button */}
-      <button
-        id={`faq-btn-${id}`}
-        aria-expanded={isOpen}
-        aria-controls={`faq-panel-${id}`}
-        onClick={onToggle}
-        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onToggle())}
-        className="relative z-10 flex w-full items-start gap-4 px-6 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-      >
-        {/* IDE line number */}
-        <span
-          className="mt-0.5 shrink-0 font-mono text-xs font-semibold tabular-nums leading-5 transition-colors duration-300"
-          style={{ color: isOpen ? meta.color : "var(--muted-foreground)" }}
-          aria-hidden
+      {/* Question toggle — heading so crawlers see FAQ questions */}
+      <h3 className="relative z-10 m-0 text-base font-semibold">
+        <button
+          id={`faq-btn-${id}`}
+          aria-expanded={isOpen}
+          aria-controls={`faq-panel-${id}`}
+          onClick={onToggle}
+          onKeyDown={(e) =>
+            (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onToggle())
+          }
+          className="flex w-full items-start gap-4 px-6 py-5 text-left font-heading text-base font-semibold leading-snug text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-[17px]"
         >
-          {num}
-        </span>
-
-        {/* Question */}
-        <span className="flex-1 font-heading text-base font-semibold leading-snug text-foreground sm:text-[17px]">
-          {question}
-        </span>
-
-        {/* Category badge + chevron */}
-        <span className="mt-1 flex shrink-0 items-center gap-2.5">
+          {/* IDE line number */}
           <span
-            className="hidden rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest sm:inline-flex"
-            style={{
-              color: meta.color,
-              borderColor: `${meta.color}35`,
-              background: `${meta.color}0e`,
-            }}
+            className="mt-0.5 shrink-0 font-mono text-xs font-semibold tabular-nums leading-5 transition-colors duration-300"
+            style={{ color: isOpen ? meta.color : "var(--muted-foreground)" }}
+            aria-hidden
           >
-            {meta.label}
+            {num}
           </span>
-          <motion.span
-            animate={{ rotate: isOpen ? 90 : 0 }}
-            transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 28 }}
-            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors duration-200"
-            style={{
-              background: isOpen ? `${meta.color}18` : "var(--muted)",
-              color: isOpen ? meta.color : "var(--muted-foreground)",
-            }}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </motion.span>
-        </span>
-      </button>
+
+          {/* Question */}
+          <span className="flex-1">{question}</span>
+
+          {/* Category badge + chevron */}
+          <span className="mt-1 flex shrink-0 items-center gap-2.5">
+            <span
+              className="hidden rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest sm:inline-flex"
+              style={{
+                color: meta.color,
+                borderColor: `${meta.color}35`,
+                background: `${meta.color}0e`,
+              }}
+            >
+              {meta.label}
+            </span>
+            <motion.span
+              animate={{ rotate: isOpen ? 90 : 0 }}
+              transition={
+                reduced ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 28 }
+              }
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors duration-200"
+              style={{
+                background: isOpen ? `${meta.color}18` : "var(--muted)",
+                color: isOpen ? meta.color : "var(--muted-foreground)",
+              }}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </motion.span>
+          </span>
+        </button>
+      </h3>
 
       {/* Answer panel */}
       <div id={`faq-panel-${id}`} role="region" aria-labelledby={`faq-btn-${id}`}>

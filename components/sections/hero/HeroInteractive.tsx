@@ -42,9 +42,7 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
     >
       <div className={cn(withTerminal ? "lg:text-left" : "")}>
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={false}
           className={cn(
             "mb-8 flex",
             withTerminal ? "justify-center lg:justify-start" : "justify-center",
@@ -64,9 +62,7 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.32 }}
+          initial={false}
           className={cn(
             "flex flex-col gap-0 text-3xl font-bold tracking-tight text-foreground sm:text-4xl",
             withTerminal
@@ -112,9 +108,7 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
         )}
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+          initial={false}
           className={cn(
             "mt-10 flex flex-wrap gap-4",
             withTerminal ? "justify-center lg:justify-start" : "items-center justify-center",
@@ -123,10 +117,11 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
           <a
             href={siteConfig.resumeUrl}
             target="_blank"
+            rel="noopener noreferrer"
             className="btn-shine inline-flex items-center gap-2 rounded-xl gradient-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105 active:scale-95"
           >
             <Download className="h-4 w-4" />
-            Download My CV
+            View Resume
           </a>
           <button
             onClick={() =>
@@ -139,9 +134,7 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.65 }}
+          initial={false}
           className={cn(
             "mt-8 flex items-center gap-4",
             withTerminal ? "justify-center lg:justify-start" : "justify-center",

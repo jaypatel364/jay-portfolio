@@ -1,162 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink, Code2, Lock, Hammer, ChevronDown } from "lucide-react";
 import { SectionHeading } from "@/components/shared";
 import { cn } from "@/lib/utils";
-
-interface Project {
-  title: string;
-  tagline: string;
-  desc: string;
-  tags: string[];
-  category: string;
-  color: string;
-  iconColor: string;
-  /** Private / closed-source — hides the Code link, Demo still shows */
-  hideCode?: true;
-  /** NDA project — hides both Code and Demo, shows lock badge */
-  nda?: true;
-  /** Currently being built — shows an "In Progress" badge */
-  wip?: true;
-  /** URLs — omit the key to hide that link */
-  codeUrl?: string;
-  demoUrl?: string;
-}
-
-const PROJECTS: Project[] = [
-  // ── Open / personal projects ─────────────────────────────────────────────
-  {
-    title: "Chat App",
-    tagline: "Real-Time Group Chat",
-    desc: "A lightweight real-time group chat application built with WebSockets, featuring instant messaging, chat rooms, typing indicators, and seen status. Built as a Turborepo monorepo with a Next.js frontend and Node.js backend, delivering a clean, responsive, and modern chat experience.",
-    tags: [
-      "Next.js",
-      "Node.js",
-      "TypeScript",
-      "WebSockets",
-      "Express.js",
-      "Tailwind CSS",
-      // "Shadcn UI",
-    ],
-    category: "fullstack",
-    color: "from-sky-500/20 to-cyan-500/20",
-    iconColor: "oklch(0.72 0.17 240)",
-    hideCode: true,
-    demoUrl: "https://chat-app-web-eta.vercel.app/",
-  },
-  {
-    title: "Social Media Backend",
-    tagline: "Instagram-Style Backend API",
-    desc: "A modular social media backend built with NestJS, GraphQL, and Prisma, implementing core social networking features like posts, likes, follows, notifications, JWT authentication, and feed ranking using a hotScore algorithm. Designed with a clean modular monolith architecture for scalability and maintainability.",
-    tags: ["NestJS", "GraphQL", "Prisma", "PostgreSQL", "JWT", "TypeScript"],
-    category: "backend",
-    color: "from-violet-500/20 to-fuchsia-500/20",
-    iconColor: "oklch(0.72 0.22 305)",
-    hideCode: true,
-    demoUrl: "https://nestjs-graphql-social.onrender.com/graphql",
-  },
-  {
-    title: "MiniList CMS",
-    tagline: "Headless Content Management System",
-    desc: "A full-stack headless CMS featuring a modern Next.js admin dashboard and a scalable NestJS backend. It provides rich text editing, blog and author management, API key generation, analytics, Google OAuth authentication, SEO tools, and a REST API for seamless content delivery. Built with Prisma and PostgreSQL for a clean, scalable, and self-hostable content management experience.",
-    tags: [
-      "Next.js",
-      "NestJS",
-      "TypeScript",
-      "PostgreSQL",
-      "Prisma",
-      "Tailwind CSS",
-      "GraphQL",
-      // "Google OAuth",
-    ],
-    category: "fullstack",
-    color: "from-emerald-500/20 to-teal-500/20",
-    iconColor: "oklch(0.74 0.16 165)",
-    hideCode: true,
-    demoUrl: "https://minilist-cms.vercel.app/",
-  },
-  // {
-  //   title: "Terminal AI Assistant",
-  //   tagline: "LLM-Powered CLI Chatbot",
-  //   desc: "An intelligent terminal-based AI assistant that enables natural conversations through both text and voice. Powered by modern LLMs, it supports custom system prompts, context-aware responses, streaming output, and configurable personalities, making it ideal for developers seeking a lightweight AI companion directly from the command line.",
-  //   tags: ["TypeScript", "Node.js", "LLM", "OpenAI API", "CLI", "Speech-to-Text", "Text-to-Speech"],
-  //   category: "ai",
-  //   color: "from-indigo-500/20 to-violet-500/20",
-  //   iconColor: "oklch(0.72 0.19 275)",
-  //   hideCode: true,
-  //   demoUrl: "#",
-  // },
-
-  // ── Work in progress ─────────────────────────────────────────────────────
-  // {
-  //   title: "Jay Portfolio",
-  //   tagline: "Personal Portfolio",
-  //   desc: "The portfolio you're looking at right now. Built with Next.js 15, Tailwind CSS v4, and Framer Motion. Continuously being improved with new features and polish.",
-  //   tags: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-  //   category: "frontend",
-  //   color: "from-cyan-500/20 to-sky-500/20",
-  //   iconColor: "oklch(0.65 0.16 215)",
-  //   wip: true,
-  //   codeUrl: "https://github.com/jaypatel364/jay-portfolio",
-  //   demoUrl: "https://jay-patel-dev.vercel.app/",
-  // },
-
-  // ── Professional / NDA projects ──────────────────────────────────────────
-  // nda: true hides both Code and Demo automatically.
-  {
-    title: "PMS",
-    tagline: "HR Management System",
-    desc: "Built a full-cycle HR platform for a mid-sized enterprise covering attendance, leave, payroll processing, and role-based access control, integrated with an existing ERP system.",
-    tags: ["React", "Node.js", "PostgreSQL", "REST API"],
-    category: "fullstack",
-    color: "from-slate-500/20 to-zinc-500/20",
-    iconColor: "oklch(0.55 0.04 255)",
-    nda: true,
-  },
-  {
-    title: "Philantro AI",
-    tagline: "AI-Powered NGO Management Platform",
-    desc: "Built a full-stack NGO management platform with configurable modules including a custom form builder, dynamic report generation, customizable chart builder, and milestone tracking. Collaborated on AI-assisted UI prototyping using Visily, transforming concepts into Figma designs and production-ready React components with server-side rendering.",
-    tags: ["React", "Node.js", "Express.js", "MongoDB", "SSR", "Tailwind CSS", "Visily", "Figma"],
-    category: "fullstack",
-    color: "from-emerald-500/20 to-teal-500/20",
-    iconColor: "oklch(0.72 0.18 165)",
-    nda: true,
-  },
-
-  // {
-  //   title: "Rostered AI",
-  //   tagline: "Healthcare Workforce Management System",
-  //   desc: "Developed workforce planning features including leave and staff unavailability management for healthcare organizations. Refactored a large Next.js codebase, reducing bugs by 60% and accelerating feature delivery by 40% while improving maintainability and developer productivity.",
-  //   tags: ["Next.js", "React", "Material UI", "JavaScript", "GitHub Copilot"],
-  //   category: "frontend",
-  //   color: "from-blue-500/20 to-cyan-500/20",
-  //   iconColor: "oklch(0.67 0.18 250)",
-  //   nda: true,
-  // },
-
-  {
-    title: "Verify 360",
-    tagline: "Digital Identity Verification & KYC Platform",
-    desc: "Engineered an enterprise KYC verification platform supporting secure document verification, 3D liveness detection, real-time geolocation tracking, and third-party identity verification APIs. Implemented an intelligent risk-scoring system to detect suspicious users and streamline compliance workflows for 100+ client verifications.",
-    tags: [
-      "React Native",
-      "React",
-      "Node.js",
-      "Express.js",
-      "MongoDB",
-      "AWS Rekognition",
-      "REST API",
-      "Geolocation",
-    ],
-    category: "fullstack",
-    color: "from-violet-500/20 to-fuchsia-500/20",
-    iconColor: "oklch(0.65 0.22 300)",
-    nda: true,
-  },
-];
+import { PROJECTS, PROJECT_FILTERS } from "@/settings/projects";
+import { features } from "@/settings/features";
 
 // ── Expandable description ────────────────────────────────────────────────────
 
@@ -234,8 +85,7 @@ function ExpandableDesc({ text }: { text: string }) {
   );
 }
 
-const FILTERS = ["all", "fullstack", "frontend", "backend"] as const;
-type Filter = (typeof FILTERS)[number];
+type Filter = (typeof PROJECT_FILTERS)[number];
 
 export function ProjectsSection() {
   const [filter, setFilter] = useState<Filter>("all");
@@ -257,7 +107,7 @@ export function ProjectsSection() {
           role="tablist"
           aria-label="Filter projects by category"
         >
-          {FILTERS.map((f) => (
+          {PROJECT_FILTERS.map((f) => (
             <button
               key={f}
               role="tab"
@@ -407,11 +257,10 @@ export function ProjectsSection() {
                         Code &amp; demo unavailable under NDA
                       </p>
                     ) : (
-                      <div className="flex items-center gap-4">
-                        {/* Code — hidden when hideCode is set */}
-                        {!project.hideCode && (
+                      <div className="flex flex-wrap items-center gap-4">
+                        {project.codeUrl && (
                           <a
-                            href={project.codeUrl ?? "#"}
+                            href={project.codeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
@@ -422,19 +271,28 @@ export function ProjectsSection() {
                           </a>
                         )}
 
-                        {/* Demo — always shown for non-NDA projects */}
-                        <a
-                          href={project.demoUrl ?? "#"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                          aria-label={`View live demo for ${project.title}`}
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                          Demo
-                        </a>
+                        {project.demoUrl && (
+                          <a
+                            href={project.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                            aria-label={`View live demo for ${project.title}`}
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            Demo
+                          </a>
+                        )}
 
-                        {/* WIP hint alongside the links */}
+                        {features.showCaseStudies && project.caseStudy && (
+                          <Link
+                            href={`/projects/${project.slug}`}
+                            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                          >
+                            Case study
+                          </Link>
+                        )}
+
                         {project.wip && (
                           <span className="inline-flex items-center gap-1 text-xs text-primary/70">
                             <Hammer className="h-3 w-3" />

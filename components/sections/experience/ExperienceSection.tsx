@@ -7,42 +7,7 @@ import { SectionHeading } from "@/components/shared";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
 import { cn } from "@/lib/utils";
-
-const EXPERIENCES = [
-  {
-    title: "Full Stack Developer",
-    company: "Krishang Technolab",
-    companyUrl: "https://www.krishangtechnolab.com",
-    location: "Ahmedabad, India",
-    period: "December 2022 – Present",
-    startYear: "2023",
-    endYear: "Present",
-    description:
-      "MERN Stack Developer with experience in building scalable web applications, dynamic form systems, and team collaboration using Agile methodologies.",
-    highlights: [
-      "Built scalable React.js and Node.js platform features with API integrations",
-      "Led a project and mentored 5 junior developers",
-      "Created a dynamic form system supporting 100+ configurable forms",
-      "Improved code quality through Git workflows, Jira, and peer reviews",
-    ],
-  },
-  {
-    title: "Web Developer Intern",
-    company: "Krishang Technolab",
-    companyUrl: "https://www.krishangtechnolab.com",
-    location: "Ahmedabad, India",
-    period: "August 2022 – November 2022",
-    startYear: "2022",
-    endYear: "2022",
-    description:
-      "Contributed to frontend development using React and TypeScript. Participated in agile sprints and collaborated with designers on UI/UX improvements.",
-    highlights: [
-      "Built an internal HR management tool for attendance and leave tracking",
-      "Developed automated notification and holiday management features",
-      "Collaborated with 4 developers to improve UI and boost performance by 20%.",
-    ],
-  },
-];
+import { EXPERIENCES } from "@/lib/resume-data";
 
 type ViewMode = "cards" | "timeline";
 

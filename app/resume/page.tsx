@@ -1,15 +1,19 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { features } from "@/settings/features";
 import { siteConfig } from "@/lib/site-config";
 import { resumePageMetadata, resumeBreadcrumbJsonLd } from "@/lib/seo";
 import { getExperienceLabel } from "@/lib/utils";
 import { EXPERIENCES, EDUCATION, SKILL_CATEGORIES } from "@/lib/resume-data";
-import { ResumeThemeSync } from "@/components/layout";
+import { ResumeThemeSync, ResumePrintButton } from "@/components/layout";
 
 // ── SEO: rich metadata for the /resume route ────────────────────────────────
 // Title, description, keywords, OG, and Twitter card are defined in lib/seo.ts.
 export const metadata = resumePageMetadata;
 
 export default function ResumePage() {
+  if (!features.showResumePage) notFound();
+
   const expLabel = getExperienceLabel(siteConfig.careerStartDate);
 
   return (
@@ -17,10 +21,12 @@ export default function ResumePage() {
       {/* ── JSON-LD: BreadcrumbList for /resume ──────────────────────────── */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(resumeBreadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(resumeBreadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
       />
       <ResumeThemeSync />
-      <div className="min-h-screen bg-background py-10 px-4 print:bg-white print:py-0">
+      <div id="main" className="min-h-screen bg-background py-10 px-4 print:bg-white print:py-0">
         <div className="resume-page mx-auto max-w-3xl space-y-8">
           {/* ── Top bar ──────────────────────────────────────────────── */}
           <div className="no-print flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-border bg-card px-5 py-4">
@@ -42,23 +48,7 @@ export default function ResumePage() {
             </Link>
 
             {/* Right — primary action */}
-            <a
-              href={siteConfig.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105 active:scale-95"
-            >
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" className="shrink-0">
-                <path
-                  d="M7.5 1v9m0 0L4 6.5m3.5 3.5L11 6.5M2 12.5h11"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Download Full Resume
-            </a>
+            <ResumePrintButton />
           </div>
 
           {/* ── Header ───────────────────────────────────────────────── */}

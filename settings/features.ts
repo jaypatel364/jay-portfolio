@@ -6,12 +6,17 @@
 export const features = {
   // ── Sections / chrome ─────────────────────────────────────────────────────
   showTerminalHero: true,
-  showLoadingScreen: true,
-  showFAQ: true,
+  showLoadingScreen: false, // off for production: overlay does not help SEO and delays LCP
+  showFAQ: true, // keep visible — FAQ JSON-LD is only injected when this is true
 
   // ── SEO indexing ──────────────────────────────────────────────────────────
-  // false while building/staging; true when live on the real domain.
+  // false until jaypateldev.com is live and Search Console is verified. Flip last.
   allowIndexing: false,
+
+  // ── Extra routes — keep off for launch; flip after the homepage is live ───
+  showResumePage: false,
+  showEngineeringPage: false,
+  showCaseStudies: false,
 
   // ── Game Zone ─────────────────────────────────────────────────────────────
   showGameZone: true,
