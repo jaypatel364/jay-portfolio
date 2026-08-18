@@ -45,6 +45,8 @@ const hostRedirect = (host: string) => ({
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
+  // Required so Next.js metadata keeps https://jaypateldev.com/ (not …com).
+  trailingSlash: true,
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 7,
