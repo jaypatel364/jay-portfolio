@@ -35,11 +35,17 @@
 import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/settings";
 // ─── Base URL ──────────────────────────────────────────────────────────────────
-// Set NEXT_PUBLIC_SITE_URL in your .env (production domain, no trailing slash).
-// Falls back to the Vercel deployment URL, then localhost for local dev.
-export const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+// Canonical / OG / sitemap must be the public domain — never VERCEL_URL.
+// VERCEL_URL is a unique deploy host (e.g. jay-portfolio-xxxx.vercel.app).
+const PRODUCTION_ORIGIN = "https://jaypateldev.com";
+
+export const BASE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.NODE_ENV === "production" ? PRODUCTION_ORIGIN : "http://localhost:3000")
+).replace(/\/$/, "");
+
+/** Homepage canonical — always with a trailing slash (`https://jaypateldev.com/`). */
+export const HOME_URL = `${BASE_URL}/`;
 
 /** Real content date — do not use `new Date()` in JSON-LD or sitemap. */
 export const LAST_UPDATED = "2026-08-17";
@@ -184,14 +190,14 @@ export const rootMetadata: Metadata = {
 
   // ── Canonical / Alternates ─────────────────────────────────────────────────
   alternates: {
-    canonical: BASE_URL,
+    canonical: HOME_URL,
   },
 
   // ── Open Graph ─────────────────────────────────────────────────────────────
   openGraph: {
     type: "profile",
     locale: "en_US",
-    url: BASE_URL,
+    url: HOME_URL,
     siteName: `${siteConfig.fullName} — Portfolio`,
     title: SEO_TITLE_DEFAULT,
     description: SEO_DESCRIPTION,
@@ -220,12 +226,10 @@ export const rootMetadata: Metadata = {
   classification: "Portfolio, Developer, Software Engineer",
 
   // ── Verification ──────────────────────────────────────────────────────────
-  // Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION / NEXT_PUBLIC_BING_SITE_VERIFICATION
-  // after adding the domain in Search Console / Bing Webmaster (see INFRA.md).
+  // Next.js renders this as <meta name="google-site-verification" content="…" />.
+  // Override with NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION if Search Console issues a new token.
   verification: {
-    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
-      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
-      : {}),
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
     ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
       ? { other: { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
       : {}),
@@ -343,7 +347,7 @@ export const personJsonLd = {
   name: siteConfig.fullName,
   givenName: "Jay",
   familyName: "Patel",
-  url: BASE_URL,
+  url: HOME_URL,
   image: `${BASE_URL}/opengraph-image`,
   email: `mailto:${siteConfig.email}`,
   jobTitle: "Full Stack Developer",
@@ -403,7 +407,7 @@ export const webSiteJsonLd = {
   "@type": "WebSite",
   "@id": `${BASE_URL}/#website`,
   name: `${siteConfig.fullName} — Portfolio`,
-  url: BASE_URL,
+  url: HOME_URL,
   description: SEO_DESCRIPTION,
   author: {
     "@id": `${BASE_URL}/#person`,
@@ -418,7 +422,7 @@ export const profilePageJsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
   "@id": `${BASE_URL}/#profilepage`,
-  url: BASE_URL,
+  url: HOME_URL,
   name: SEO_TITLE_DEFAULT,
   description: SEO_DESCRIPTION,
   breadcrumb: {
@@ -428,7 +432,7 @@ export const profilePageJsonLd = {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: BASE_URL,
+        item: HOME_URL,
       },
     ],
   },
@@ -453,7 +457,7 @@ export const resumeBreadcrumbJsonLd = {
       "@type": "ListItem",
       position: 1,
       name: "Home",
-      item: BASE_URL,
+      item: HOME_URL,
     },
     {
       "@type": "ListItem",

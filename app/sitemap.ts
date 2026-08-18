@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { BASE_URL, LAST_UPDATED } from "@/lib/seo";
+import { BASE_URL, HOME_URL, LAST_UPDATED } from "@/lib/seo";
 import { features } from "@/settings/features";
 import { publicCaseStudies } from "@/settings/projects";
 
@@ -36,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: BASE_URL,
+      url: HOME_URL,
       lastModified,
       changeFrequency: "monthly",
       priority: 1,
