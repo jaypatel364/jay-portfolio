@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { BASE_URL, HOME_URL, LAST_UPDATED } from "@/lib/seo";
+import { HOME_URL, LAST_UPDATED, pageUrl } from "@/lib/seo";
 import { features } from "@/settings/features";
 import { publicCaseStudies } from "@/settings/projects";
 
@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   if (features.showResumePage) {
     extra.push({
-      url: `${BASE_URL}/resume`,
+      url: pageUrl("resume"),
       lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.8,
@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
   if (features.showEngineeringPage) {
     extra.push({
-      url: `${BASE_URL}/engineering`,
+      url: pageUrl("engineering"),
       lastModified,
       changeFrequency: "monthly" as const,
       priority: 0.7,
@@ -26,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   if (features.showCaseStudies) {
     extra.push(
       ...publicCaseStudies().map((p) => ({
-        url: `${BASE_URL}/projects/${p.slug}`,
+        url: pageUrl(`projects/${p.slug}`),
         lastModified,
         changeFrequency: "monthly" as const,
         priority: 0.7,

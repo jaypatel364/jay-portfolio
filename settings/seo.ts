@@ -47,6 +47,12 @@ export const BASE_URL = (
 /** Homepage canonical — always with a trailing slash (`https://jaypateldev.com/`). */
 export const HOME_URL = `${BASE_URL}/`;
 
+/** Page URL with trailing slash. Do not use for files (`sitemap.xml`, og image). */
+export function pageUrl(path: string): string {
+  const slug = path.replace(/^\/+|\/+$/g, "");
+  return slug ? `${BASE_URL}/${slug}/` : HOME_URL;
+}
+
 /** Real content date — do not use `new Date()` in JSON-LD or sitemap. */
 export const LAST_UPDATED = "2026-08-17";
 
@@ -274,11 +280,11 @@ export const resumePageMetadata: Metadata = {
     ...SEO_KEYWORDS.slice(0, 20),
   ],
   alternates: {
-    canonical: `${BASE_URL}/resume`,
+    canonical: pageUrl("resume"),
   },
   openGraph: {
     type: "profile",
-    url: `${BASE_URL}/resume`,
+    url: pageUrl("resume"),
     title: `${siteConfig.fullName} — Resume`,
     description:
       `Full Stack Developer resume — React, Next.js, Node.js, TypeScript, MongoDB. ` +
@@ -302,9 +308,9 @@ export const resumePageMetadata: Metadata = {
 export const engineeringPageMetadata: Metadata = {
   title: `Engineering | ${siteConfig.fullName}`,
   description: `How ${siteConfig.fullName}'s portfolio is built: App Router, APIs, rate limits, CSP, CI, and settings as source of truth.`,
-  alternates: { canonical: `${BASE_URL}/engineering` },
+  alternates: { canonical: pageUrl("engineering") },
   openGraph: {
-    url: `${BASE_URL}/engineering`,
+    url: pageUrl("engineering"),
     title: `${siteConfig.fullName} — Engineering`,
     description: "How this portfolio is built and operated.",
     images: [OG_IMAGE],
@@ -320,9 +326,9 @@ export function projectPageMetadata(project: {
   return {
     title: `${project.title} | ${siteConfig.fullName}`,
     description: project.desc.slice(0, 160),
-    alternates: { canonical: `${BASE_URL}/projects/${project.slug}` },
+    alternates: { canonical: pageUrl(`projects/${project.slug}`) },
     openGraph: {
-      url: `${BASE_URL}/projects/${project.slug}`,
+      url: pageUrl(`projects/${project.slug}`),
       title: `${project.title} — ${project.tagline}`,
       description: project.desc.slice(0, 160),
       images: [OG_IMAGE],
@@ -451,7 +457,7 @@ export const profilePageJsonLd = {
 export const resumeBreadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "@id": `${BASE_URL}/resume#breadcrumb`,
+  "@id": `${BASE_URL}/resume/#breadcrumb`,
   itemListElement: [
     {
       "@type": "ListItem",
@@ -463,7 +469,7 @@ export const resumeBreadcrumbJsonLd = {
       "@type": "ListItem",
       position: 2,
       name: "Resume",
-      item: `${BASE_URL}/resume`,
+      item: pageUrl("resume"),
     },
   ],
 };

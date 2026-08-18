@@ -5,7 +5,7 @@ import { ArrowLeft, Code2, ExternalLink } from "lucide-react";
 import { SiteChrome } from "@/components/layout";
 import { features } from "@/settings/features";
 import { publicCaseStudies, getProjectBySlug } from "@/settings/projects";
-import { BASE_URL, projectPageMetadata } from "@/settings/seo";
+import { pageUrl, projectPageMetadata } from "@/settings/seo";
 
 export function generateStaticParams() {
   if (!features.showCaseStudies) return [];
@@ -40,7 +40,7 @@ export default async function ProjectCaseStudyPage({
     "@type": project.codeUrl ? "SoftwareSourceCode" : "CreativeWork",
     name: project.title,
     description: project.desc,
-    url: `${BASE_URL}/projects/${project.slug}`,
+    url: pageUrl(`projects/${project.slug}`),
     ...(project.codeUrl ? { codeRepository: project.codeUrl } : {}),
     ...(project.demoUrl ? { sameAs: project.demoUrl } : {}),
   };
