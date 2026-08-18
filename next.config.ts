@@ -61,13 +61,14 @@ const nextConfig: NextConfig = {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
   async redirects() {
-    // Preview deployments (*.vercel.app unique URLs) are not redirected.
-    const hosts = ["www.jaypateldev.com", "jay-portfolio.vercel.app", "jay-patel-dev.vercel.app"];
+    // Preview deployments (unique *.vercel.app URLs) are not redirected.
+    // www is also redirected in Vercel Domains; this is a backup.
+    const hosts = ["www.jaypateldev.com", "jay-patel-dev.vercel.app"];
     return hosts.flatMap((host) => [
       {
         source: "/",
         has: [{ type: "host" as const, value: host }],
-        destination: PRODUCTION_ORIGIN,
+        destination: `${PRODUCTION_ORIGIN}/`,
         permanent: true,
       },
       hostRedirect(host),

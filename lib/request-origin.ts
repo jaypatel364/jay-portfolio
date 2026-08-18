@@ -21,7 +21,12 @@ function extraAllowedHosts(): string[] {
 
 export function isAllowedRequestOrigin(request: Request): boolean {
   const origin = request.headers.get("origin");
-  const allowed = new Set(["jaypateldev.com", "www.jaypateldev.com", ...extraAllowedHosts()]);
+  const allowed = new Set([
+    "jaypateldev.com",
+    "www.jaypateldev.com",
+    "jay-patel-dev.vercel.app",
+    ...extraAllowedHosts(),
+  ]);
 
   if (process.env.NODE_ENV !== "production") {
     allowed.add("localhost");
