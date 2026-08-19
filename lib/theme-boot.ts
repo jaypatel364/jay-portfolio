@@ -31,7 +31,7 @@ export function getThemeBootScript(): string {
   }
 
   try {
-    root.dataset.pagePending = "true";
+    root.dataset.pageReady = "true";
   } catch (e) {}
 
   ${
@@ -60,8 +60,8 @@ export function getThemeBootScript(): string {
 
 export const PAGE_REVEAL_CSS = `
 html[data-page-pending="true"] .site-shell {
-  opacity: 0;
-  transform: translateY(10px);
+  opacity: 1;
+  transform: none;
 }
 `.trim();
 

@@ -18,7 +18,7 @@ const SHORTCUTS: Shortcut[] = [
   { keys: ["G", "A"], description: "Go to About", category: "Navigation" },
   { keys: ["G", "S"], description: "Go to Skills", category: "Navigation" },
   { keys: ["G", "E"], description: "Go to Experience", category: "Navigation" },
-  { keys: ["G", "P"], description: "Go to Projects (G+O also works)", category: "Navigation" },
+  { keys: ["G", "P"], description: "Go to Work (G+O also works)", category: "Navigation" },
   { keys: ["G", "C"], description: "Go to Contact", category: "Navigation" },
   // Actions
   { keys: ["⌘", "K"], description: "Open command palette", category: "Actions" },

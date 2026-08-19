@@ -13,7 +13,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Trophy, RotateCcw, ArrowRight, Mail, Layers } from "lucide-react";
+import { X, Trophy, RotateCcw, Layers } from "lucide-react";
 
 const LS_KEY = "stackbuild_best";
 const CANVAS_W = 300;
@@ -346,23 +346,6 @@ export function StackBuild({ onClose }: { onClose: () => void }) {
                       className="btn-shine flex items-center justify-center gap-2 rounded-xl gradient-primary py-3 text-[13px] font-bold text-primary-foreground shadow-glow"
                     >
                       <RotateCcw className="h-3.5 w-3.5" /> Try Again
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => {
-                        onClose();
-                        setTimeout(
-                          () =>
-                            document
-                              .getElementById("contact")
-                              ?.scrollIntoView({ behavior: "smooth" }),
-                          300,
-                        );
-                      }}
-                      className="flex items-center justify-center gap-2 rounded-xl border border-border/60 bg-card/60 py-2.5 text-[12px] font-semibold text-muted-foreground hover:text-foreground transition-all"
-                    >
-                      <Mail className="h-3.5 w-3.5" /> Hire Jay <ArrowRight className="h-3 w-3" />
                     </motion.button>
                   </div>
                 </motion.div>

@@ -19,7 +19,7 @@ Live at: `https://jaypateldev.com`
 | Fonts           | Space Grotesk (headings), Inter (body), JetBrains Mono (code) |
 | AI Chat         | Groq SDK (`llama-3.1-8b-instant`)                             |
 | Database        | MongoDB (contact form storage)                                |
-| Email           | Nodemailer (SMTP contact notifications)                       |
+| Email           | Resend (contact form notifications)                           |
 | Toast           | Sonner                                                        |
 | Command Palette | cmdk                                                          |
 | Rate limiting   | Upstash Redis                                                 |
@@ -156,7 +156,7 @@ Config: `cursorEffect: "magnetic"` (or any value above)
 - GitHub activity heatmap — rolling 12-month window, correct month labels, no horizontal scroll
 - Projects section — filter by All / Fullstack / Frontend / Backend; supports `hideCode`, `nda`, `wip` flags
 - Experience section — Cards and Timeline views with animated transitions
-- Contact form — saves to MongoDB + sends SMTP email; confetti on success, rate limiting, honeypot field
+- Contact form — reCAPTCHA v2 checkbox, MongoDB save, Resend email, confetti, rate limiting, honeypot
 - 6 accent colour presets persisted in `localStorage`
 - Dark / light mode — respects `prefers-color-scheme`
 - Scroll progress bar, cursor spotlight, back-to-top FAB
@@ -171,7 +171,10 @@ Config: `cursorEffect: "magnetic"` (or any value above)
 ├── app/                              # Next.js App Router (routes + APIs only)
 │   ├── api/chat/route.ts
 │   ├── api/contact/route.ts
-│   ├── resume/page.tsx
+│   ├── about/page.tsx
+│   ├── skills/page.tsx
+│   ├── work/page.tsx
+│   ├── contact/page.tsx
 │   ├── layout.tsx
 │   ├── page.tsx                      # Composes sections — keep thin
 │   ├── globals.css
@@ -201,6 +204,7 @@ Config: `cursorEffect: "magnetic"` (or any value above)
 │   │   ├── games/                    # GameZone + all mini-games
 │   │   ├── chatbot/
 │   │   ├── command-palette/
+│   │   ├── resume/                   # PDF viewer overlay
 │   │   └── accent/
 │   ├── layout/                       # Navbar, Footer, LoadingScreen, …
 │   ├── effects/                      # Cursor, Konami, CatchTheBug
@@ -271,7 +275,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Environment Variables
 
-Step-by-step cloud setup (Vercel, Groq, Upstash, Sentry, MongoDB, SMTP, CI): **[INFRA.md](./INFRA.md)**.
+Step-by-step cloud setup (Vercel, Groq, Upstash, Sentry, MongoDB, Resend, reCAPTCHA, CI): **[INFRA.md](./INFRA.md)**.
 
 Create `.env.local` at the project root:
 
@@ -292,14 +296,14 @@ NEXT_PUBLIC_SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
 # MongoDB — contact form storage (optional)
 MONGODB_URI=mongodb+srv://...
 
-# SMTP — contact form email notifications (optional)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=465
-SMTP_SECURE=true
-SMTP_USER=your@email.com
-SMTP_PASS=your-app-password
-SMTP_FROM=your@email.com
+# Resend — contact form email (recommended)
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+RESEND_FROM="Jay Patel <noreply@jaypateldev.com>"
 CONTACT_NOTIFY_TO=your@email.com
+
+# Google reCAPTCHA v2 checkbox
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
+RECAPTCHA_SECRET_KEY=
 ```
 
 `GROQ_API_KEY` is required for the chatbot. `NEXT_PUBLIC_SITE_URL` should be set to your real domain before going live. All other variables are optional — the site degrades gracefully without them.
@@ -330,7 +334,8 @@ github:          "...",
 githubUsername:  "jaypatel364",
 linkedin:        "...",
 location:        "Ahmedabad, India",
-resumeUrl:       "...",
+resumeUrl:       "/jay-patel-resume.pdf",
+resumeFileName:  "Jay-Patel-Resume.pdf",
 bookingUrl:      "...",
 careerStartDate: "2022-12",
 ```

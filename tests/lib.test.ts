@@ -54,22 +54,46 @@ describe("contributionYearQuery", () => {
   });
 });
 
-describe("contactSchema", () => {
-  it("accepts a valid payload", () => {
-    const parsed = contactSchema.safeParse({
-      name: "Ada",
-      email: "ada@example.com",
-      message: "Hello",
-    });
-    expect(parsed.success).toBe(true);
+describe("verifyRecaptchaToken", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
   });
 
-  it("rejects an invalid email", () => {
-    const parsed = contactSchema.safeParse({
-      name: "Ada",
-      email: "not-an-email",
-      message: "Hello",
-    });
-    expect(parsed.success).toBe(false);
+  it("skips verification outside production even if a secret is set", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("RECAPTCHA_SECRET_KEY", "test-secret");
+    const { verifyRecaptchaToken } = await import("@/lib/recaptcha");
+    await expect(verifyRecaptchaToken(undefined)).resolves.toBe(true);
+  });
+
+  it("skips verification when no secret is configured", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("RECAPTCHA_SECRET_KEY", "");
+    const { verifyRecaptchaToken } = await import("@/lib/recaptcha");
+    await expect(verifyRecaptchaToken(undefined)).resolves.toBe(true);
+  });
+
+  it("rejects an empty token when a secret is set in production", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("RECAPTCHA_SECRET_KEY", "test-secret");
+    const { verifyRecaptchaToken } = await import("@/lib/recaptcha");
+    await expect(verifyRecaptchaToken("")).resolves.toBe(false);
+  });
+
+  it("returns Google's success flag", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("VERCEL_ENV", "production");
+    vi.stubEnv("RECAPTCHA_SECRET_KEY", "test-secret");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ success: true }),
+      }),
+    );
+    const { verifyRecaptchaToken } = await import("@/lib/recaptcha");
+    await expect(verifyRecaptchaToken("tok")).resolves.toBe(true);
   });
 });

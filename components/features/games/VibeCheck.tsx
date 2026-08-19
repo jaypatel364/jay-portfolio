@@ -11,7 +11,7 @@
 
 import { useCallback, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowRight, RotateCcw, Share2, Mail, Check } from "lucide-react";
+import { X, ArrowRight, RotateCcw, Share2, Check } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -495,24 +495,6 @@ export function VibeCheck({ onClose }: { onClose: () => void }) {
                         <RotateCcw className="h-3.5 w-3.5" /> Retry
                       </motion.button>
                     </div>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => {
-                        onClose();
-                        setTimeout(
-                          () =>
-                            document
-                              .getElementById("contact")
-                              ?.scrollIntoView({ behavior: "smooth" }),
-                          300,
-                        );
-                      }}
-                      className="flex w-full items-center justify-center gap-2 rounded-xl border border-border/60 bg-card/60 py-2.5 text-[12px] font-semibold text-muted-foreground hover:text-foreground transition-all"
-                    >
-                      <Mail className="h-3.5 w-3.5" /> Hire the{" "}
-                      {info.name.split(" ").slice(1).join(" ")} <ArrowRight className="h-3 w-3" />
-                    </motion.button>
                   </div>
                 </motion.div>
               )}

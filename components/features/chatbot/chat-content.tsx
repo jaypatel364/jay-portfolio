@@ -56,7 +56,7 @@ const URL_LABELS: { pattern: RegExp; label: string }[] = [
   { pattern: /linkedin\.com/i, label: "LinkedIn Profile" },
   { pattern: /github\.com\/[^/]+$/i, label: "GitHub Profile" },
   { pattern: /github\.com/i, label: "GitHub" },
-  { pattern: /drive\.google\.com/i, label: "Resume (Google Drive)" },
+  { pattern: /jay-patel-resume\.pdf/i, label: "Resume PDF" },
   { pattern: /calendly\.com/i, label: "Book a Call" },
   { pattern: /vercel\.app/i, label: "Live Demo" },
   { pattern: /onrender\.com/i, label: "Live Demo" },
@@ -72,8 +72,6 @@ const ALLOWED_LINK_HOSTS = new Set([
   "www.linkedin.com",
   "calendly.com",
   "www.calendly.com",
-  "drive.google.com",
-  "docs.google.com",
 ]);
 
 function isAllowedChatUrl(raw: string): boolean {

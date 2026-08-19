@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   CommandDialog,
   CommandEmpty,
@@ -28,6 +28,9 @@ import {
 } from "lucide-react";
 import { ACCENT_PRESETS, ACCENT_STORAGE_KEY } from "@/lib/accent-colors";
 import { siteConfig } from "@/lib/site-config";
+import { PRIMARY_NAV } from "@/lib/nav";
+import { navigateToNavItem } from "@/lib/navigate";
+import { openResumeViewer } from "@/components/features/resume";
 import { useTheme } from "@/hooks/use-theme";
 
 // Brand icons not available in this version of lucide-react
@@ -43,15 +46,21 @@ const LinkedinIcon = () => (
   </svg>
 );
 
-const NAV_ITEMS = [
-  { id: "home", label: "Home", icon: Home },
-  { id: "about", label: "About", icon: User },
-  { id: "skills", label: "Skills", icon: Wrench },
-  { id: "experience", label: "Experience", icon: Briefcase },
-  { id: "education", label: "Education", icon: GraduationCap },
-  { id: "projects", label: "Projects", icon: FolderKanban },
-  { id: "contact", label: "Contact", icon: Mail },
-];
+const NAV_ICONS: Record<string, typeof Home> = {
+  home: Home,
+  about: User,
+  skills: Wrench,
+  experience: Briefcase,
+  education: GraduationCap,
+  work: FolderKanban,
+  faq: Keyboard,
+  contact: Mail,
+};
+
+const NAV_ITEMS = PRIMARY_NAV.map((item) => ({
+  ...item,
+  icon: NAV_ICONS[item.id] ?? Home,
+}));
 
 interface CommandPaletteProps {
   /** Controlled open state — parent (Navbar) can also open it */
@@ -69,6 +78,7 @@ export function CommandPalette({
   const [internalOpen, setInternalOpen] = useState(false);
   const { resolvedTheme, toggleTheme } = useTheme();
   const pathname = usePathname();
+  const router = useRouter();
 
   // Support both controlled (from Navbar button) and uncontrolled (keyboard shortcut)
   const isOpen = controlledOpen ?? internalOpen;
@@ -83,24 +93,9 @@ export function CommandPalette({
   // ⌘K / Ctrl+K is handled by Navbar's global listener to coordinate
   // with the shortcuts overlay. No listener needed here.
 
-  const scrollTo = (id: string) => {
+  const goTo = (item: (typeof NAV_ITEMS)[number]) => {
     setOpen(false);
-    setTimeout(() => {
-      if (id === "home") {
-        if (pathname !== "/") {
-          window.location.assign("/");
-          return;
-        }
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        if (window.location.hash) history.replaceState(null, "", "/");
-        return;
-      }
-      if (pathname !== "/") {
-        window.location.assign(`/#${id}`);
-        return;
-      }
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    }, 80);
+    setTimeout(() => navigateToNavItem(item, { pathname, router }), 80);
   };
 
   const handleThemeToggle = () => {
@@ -120,7 +115,7 @@ export function CommandPalette({
             <CommandItem
               key={id}
               value={label}
-              onSelect={() => scrollTo(id)}
+              onSelect={() => goTo(NAV_ITEMS.find((n) => n.id === id)!)}
               className="gap-3 cursor-pointer"
             >
               <Icon className="h-4 w-4 text-muted-foreground" />
@@ -138,12 +133,12 @@ export function CommandPalette({
             value="Download CV Resume"
             onSelect={() => {
               setOpen(false);
-              window.open(siteConfig.resumeUrl, "_blank");
+              openResumeViewer();
             }}
             className="gap-3 cursor-pointer"
           >
             <Download className="h-4 w-4 text-muted-foreground" />
-            <span>Download CV</span>
+            <span>View Resume</span>
           </CommandItem>
 
           <CommandItem

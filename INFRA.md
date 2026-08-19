@@ -14,22 +14,23 @@ Template: [`.env.example`](./.env.example).
 Visitor
   └── Vercel (Next.js 15)
         ├── /api/chat     → Groq + Upstash rate limit + Sentry on 500s
-        ├── /api/contact  → Upstash rate limit + MongoDB + SMTP + Sentry
+        ├── /api/contact  → Upstash rate limit + reCAPTCHA + MongoDB + Resend + Sentry
         ├── GitHub graph  → public contributions API (ISR, 1h)
         └── UI crashes    → Sentry (SectionErrorBoundary, app/error, global-error)
 ```
 
-| Service            | Required?   | What it does                               | Code                                  |
-| ------------------ | ----------- | ------------------------------------------ | ------------------------------------- |
-| Vercel             | Yes         | Hosting, HTTPS, env vars, ISR              | `next.config.ts`                      |
-| Groq               | For chatbot | LLM replies                                | `app/api/chat/route.ts`               |
-| Upstash Redis      | Recommended | Shared rate limits across Vercel instances | `lib/rate-limit.ts`                   |
-| Sentry             | Recommended | Error monitoring (API + UI)                | `sentry.*.config.ts`, `lib/sentry.ts` |
-| MongoDB            | Optional    | Persist contact form submissions           | `app/api/contact/route.ts`            |
-| SMTP (Gmail, etc.) | Optional    | Email you when someone submits contact     | `app/api/contact/route.ts`            |
-| GitHub Actions     | Automatic   | CI: format, lint, typecheck, build         | `.github/workflows/ci.yml`            |
-| SonarCloud         | Optional    | Code quality scan on `main` only           | `.github/workflows/sonarcloud.yml`    |
-| GitHub graph API   | None        | Contribution heatmap — no key              | `lib/github-contributions.ts`         |
+| Service          | Required?   | What it does                               | Code                                  |
+| ---------------- | ----------- | ------------------------------------------ | ------------------------------------- |
+| Vercel           | Yes         | Hosting, HTTPS, env vars, ISR              | `next.config.ts`                      |
+| Groq             | For chatbot | LLM replies                                | `app/api/chat/route.ts`               |
+| Upstash Redis    | Recommended | Shared rate limits across Vercel instances | `lib/rate-limit.ts`                   |
+| Sentry           | Recommended | Error monitoring (API + UI)                | `sentry.*.config.ts`, `lib/sentry.ts` |
+| MongoDB          | Optional    | Persist contact form submissions           | `app/api/contact/route.ts`            |
+| Resend           | Recommended | Email you when someone submits contact     | `lib/contact-mail.ts`                 |
+| reCAPTCHA v2     | Recommended | Checkbox captcha on the contact form       | `lib/recaptcha.ts`                    |
+| GitHub Actions   | Automatic   | CI: format, lint, typecheck, build         | `.github/workflows/ci.yml`            |
+| SonarCloud       | Optional    | Code quality scan on `main` only           | `.github/workflows/sonarcloud.yml`    |
+| GitHub graph API | None        | Contribution heatmap — no key              | `lib/github-contributions.ts`         |
 
 If a **optional** service is unset, that feature no-ops. The site still loads.
 
@@ -163,9 +164,9 @@ Session Replay is **off** (`replaysSessionSampleRate: 0`). PII is not sent (`sen
 
 ## 5. MongoDB (optional — contact storage)
 
-The contact form **fails closed**: `POST /api/contact` returns **503** unless Mongo saved the message **or** SMTP sent it. Configure at least one of MongoDB or SMTP for production.
+The contact form **fails closed**: `POST /api/contact` returns **503** unless Mongo saved the message **or** Resend sent it. Configure at least one of MongoDB or Resend for production.
 
-Without `MONGODB_URI`, submissions are not stored. SMTP can still deliver the message.
+Without `MONGODB_URI`, submissions are not stored. Resend can still deliver the message.
 
 1. Create a free cluster at [cloud.mongodb.com](https://cloud.mongodb.com).
 2. Database user + Network Access: allow `0.0.0.0/0` (Vercel IPs are dynamic) or use Atlas Network Peering if you prefer.
@@ -181,25 +182,46 @@ The app uses database **`portfolio`**, collection **`contact`**.
 
 ---
 
-## 6. SMTP (optional — contact email)
+## 6. Resend (contact email)
 
-Without SMTP vars, no notification email is sent. Mongo can still persist the submission. If **neither** Mongo nor SMTP is set, visitors see an error and are asked to email Jay directly.
+Without Resend, no notification email is sent. Mongo can still persist the submission. If **neither** Mongo nor Resend is set, visitors see an error and are asked to email Jay directly.
 
-Typical Gmail setup (App Password, 2FA on):
+Free tier is **3,000 emails/month** (100/day). One API key — the easiest fit for Vercel.
+
+1. Sign in at [resend.com](https://resend.com).
+2. Add and verify domain `jaypateldev.com` (DNS records Resend shows).
+3. Create an API key.
+4. Set:
 
 ```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=465
-SMTP_SECURE=true
-SMTP_USER=you@gmail.com
-SMTP_PASS=your-16-char-app-password
-SMTP_FROM=you@gmail.com
+RESEND_API_KEY=re_…
+RESEND_FROM="Jay Patel <noreply@jaypateldev.com>"
 CONTACT_NOTIFY_TO=you@gmail.com
 ```
 
-All of `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` (falls back to `SMTP_USER`), and `CONTACT_NOTIFY_TO` must be set or email is skipped.
+Until the domain is verified, Resend only allows sending from their onboarding address (`beth.t@example.com`) to **your own** account email.
 
 **Verify:** submit contact → inbox at `CONTACT_NOTIFY_TO`, Reply-To = visitor email.
+
+---
+
+## 6b. Google reCAPTCHA v2 (checkbox)
+
+Use the **“I'm not a robot” Checkbox** (v2), not Invisible or v3.
+
+1. Open [Google reCAPTCHA admin](https://www.google.com/recaptcha/admin).
+2. Create a key: type **reCAPTCHA v2** → **I'm not a robot Checkbox**.
+3. Add domains: `jaypateldev.com` and `www.jaypateldev.com` (localhost is not needed — captcha is production-only).
+4. Set:
+
+```env
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=…
+RECAPTCHA_SECRET_KEY=…
+```
+
+Redeploy after changing `NEXT_PUBLIC_*`. The checkbox and server check run **only on production** (`jaypateldev.com`). `npm run dev`, localhost, and Vercel preview skip captcha so you can test the form freely.
+
+**Verify:** contact form shows the checkbox; Send stays disabled until it is checked; a failed/expired checkbox returns 400.
 
 ---
 
@@ -255,28 +277,26 @@ No token. Server fetch in `lib/github-contributions.ts` with **ISR 1 hour**. Use
 
 ## Env var cheat sheet
 
-| Variable                               | Where                     | Required                |
-| -------------------------------------- | ------------------------- | ----------------------- |
-| `NEXT_PUBLIC_SITE_URL`                 | Vercel + local            | Production SEO          |
-| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Vercel (optional)         | Search Console HTML tag |
-| `NEXT_PUBLIC_BING_SITE_VERIFICATION`   | Vercel (optional)         | Bing Webmaster HTML tag |
-| `GROQ_API_KEY`                         | Vercel + local            | Chatbot                 |
-| `UPSTASH_REDIS_REST_URL`               | Vercel + local            | Shared rate limits      |
-| `UPSTASH_REDIS_REST_TOKEN`             | Vercel + local            | Shared rate limits      |
-| `NEXT_PUBLIC_SENTRY_DSN`               | Vercel + local            | Error monitoring        |
-| `SENTRY_ORG`                           | Vercel (optional)         | Source maps later       |
-| `SENTRY_PROJECT`                       | Vercel (optional)         | Source maps later       |
-| `SENTRY_AUTH_TOKEN`                    | Vercel (optional, secret) | Source maps later       |
-| `MONGODB_URI`                          | Vercel + local            | Store contacts          |
-| `SMTP_HOST`                            | Vercel + local            | Email contacts          |
-| `SMTP_PORT`                            | Vercel + local            | Email contacts          |
-| `SMTP_SECURE`                          | Vercel + local            | `true` for 465          |
-| `SMTP_USER`                            | Vercel + local            | Email contacts          |
-| `SMTP_PASS`                            | Vercel + local            | Email contacts          |
-| `SMTP_FROM`                            | Vercel + local            | Email contacts          |
-| `CONTACT_NOTIFY_TO`                    | Vercel + local            | Email contacts          |
-| `IP_HASH_SALT`                         | Vercel + local (optional) | Hash IPs in rate limits |
-| `SONAR_TOKEN`                          | GitHub Actions secret     | SonarCloud scans        |
+| Variable                               | Where                     | Required                   |
+| -------------------------------------- | ------------------------- | -------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                 | Vercel + local            | Production SEO             |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Vercel (optional)         | Search Console HTML tag    |
+| `NEXT_PUBLIC_BING_SITE_VERIFICATION`   | Vercel (optional)         | Bing Webmaster HTML tag    |
+| `GROQ_API_KEY`                         | Vercel + local            | Chatbot                    |
+| `UPSTASH_REDIS_REST_URL`               | Vercel + local            | Shared rate limits         |
+| `UPSTASH_REDIS_REST_TOKEN`             | Vercel + local            | Shared rate limits         |
+| `NEXT_PUBLIC_SENTRY_DSN`               | Vercel + local            | Error monitoring           |
+| `SENTRY_ORG`                           | Vercel (optional)         | Source maps later          |
+| `SENTRY_PROJECT`                       | Vercel (optional)         | Source maps later          |
+| `SENTRY_AUTH_TOKEN`                    | Vercel (optional, secret) | Source maps later          |
+| `MONGODB_URI`                          | Vercel + local            | Store contacts             |
+| `RESEND_API_KEY`                       | Vercel + local            | Email contacts             |
+| `RESEND_FROM`                          | Vercel + local            | Email from-address         |
+| `CONTACT_NOTIFY_TO`                    | Vercel + local            | Email inbox                |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`       | Vercel + local            | Contact checkbox widget    |
+| `RECAPTCHA_SECRET_KEY`                 | Vercel + local            | Verify captcha server-side |
+| `IP_HASH_SALT`                         | Vercel + local (optional) | Hash IPs in rate limits    |
+| `SONAR_TOKEN`                          | GitHub Actions secret     | SonarCloud scans           |
 
 ---
 
@@ -297,12 +317,12 @@ No token. Server fetch in `lib/github-contributions.ts` with **ISR 1 hour**. Use
 2. `NEXT_PUBLIC_SITE_URL` is `https://jaypateldev.com`, no trailing slash.
 3. Redeploy after adding `NEXT_PUBLIC_*` vars.
 4. Chat: one real message works; spam → 429.
-5. Contact: Mongo row and/or email arrive. If neither backend is configured, the form returns 503 (fail-closed).
+5. Contact: Mongo row and/or email arrive. Checkbox captcha required when reCAPTCHA keys are set. If neither backend is configured, the form returns 503 (fail-closed).
 6. Sentry: Issues page is receiving events after a real error.
 7. Confirm `jaypateldev.com` and `www` in Vercel Domains; HTTPS is on.
 8. **Search Console (needs you in the Google UI):** add `https://jaypateldev.com`, verify via DNS or HTML tag. If HTML tag, paste the token into `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` and redeploy. Submit `https://jaypateldev.com/sitemap.xml`.
 9. **Bing Webmaster (needs you in the Bing UI):** same flow with `NEXT_PUBLIC_BING_SITE_VERIFICATION`.
 10. Flip `allowIndexing: true` in `settings/features.ts` **only after** the custom domain, sitemap, and OG/favicon routes work on production.
-11. Confirm `settings/identity.ts` name, links, and resume URL.
+11. Confirm `settings/identity.ts` name, links, and that `public/jay-patel-resume.pdf` is current.
 
 Folder architecture (not cloud): [STRUCTURE.md](./STRUCTURE.md).

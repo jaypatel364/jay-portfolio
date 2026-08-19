@@ -6,10 +6,10 @@ import { siteConfig } from "@/lib/site-config";
 const BOOT_LINES = [
   {
     text: `Last login: ${new Date().toDateString()} on ttys001`,
-    color: "text-muted-foreground/50",
+    color: "text-muted-foreground",
   },
   { text: `Portfolio OS v2.0 — ${siteConfig.fullName}`, color: "text-foreground/70" },
-  { text: 'Type "help" for available commands.', color: "text-primary/70" },
+  { text: 'Type "help" for available commands.', color: "text-primary" },
 ];
 
 type OutputLine =
@@ -93,6 +93,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
               href={siteConfig.github}
               target="_blank"
               rel="noopener noreferrer"
+              title={`${siteConfig.fullName} on GitHub`}
               className="text-primary hover:underline underline-offset-2"
             >
               @{siteConfig.githubUsername}
@@ -142,7 +143,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             Full Stack Developer — Krishang Technolab
           </span>,
           <span key="e1p" className="block text-muted-foreground/60 text-xs">
-            Dec 2022 – Present · Ahmedabad, India
+            Dec 2022 – Present · India
           </span>,
           <span key="e1d" className="block text-muted-foreground/80 mt-0.5">
             MERN stack · led team of 5 · 100+ form configs
@@ -161,13 +162,13 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
       },
     ];
 
-  if (c === "projects")
+  if (c === "projects" || c === "work")
     return [
       {
         type: "output",
         nodes: [
           <span key="t" className="block text-primary font-semibold mb-1">
-            {siteConfig.projectCount}+ production projects
+            {siteConfig.projectCount}+ production builds
           </span>,
           <span key="p1" className="block">
             → ShopFlow{" "}
@@ -206,6 +207,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             </span>
             <a
               href={`mailto:${siteConfig.email}`}
+              title={`Email ${siteConfig.fullName}`}
               className="text-primary hover:underline underline-offset-2"
             >
               {siteConfig.email}
@@ -219,6 +221,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
               href={siteConfig.linkedin}
               target="_blank"
               rel="noopener noreferrer"
+              title={`${siteConfig.fullName} on LinkedIn`}
               className="text-primary hover:underline underline-offset-2"
             >
               jaypatelfullstack
@@ -232,6 +235,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
               href={siteConfig.bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
+              title="Book a call with Jay Patel"
               className="text-primary hover:underline underline-offset-2"
             >
               calendly.com/jaypatel-dev
@@ -276,6 +280,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             ["skills", "d", "Tech stack with orbital UI"],
             ["experience", "d", "Work history"],
             ["education", "d", "Academic background"],
+            ["work", "d", "Selected work"],
             ["contact", "d", "Let's talk"],
           ].map(([name, type, desc]) => (
             <button
@@ -316,10 +321,10 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             building production-grade MERN applications.
           </span>,
           <span key="b4" className="block mt-2">
-            I care deeply about clean code, great UX, and
+            Chat App, MiniList CMS, form systems, HR and KYC platforms.
           </span>,
           <span key="b5" className="block">
-            shipping things people actually use.
+            React, Next.js, Node.js — I ship things people use.
           </span>,
           <span key="b6" className="block text-muted-foreground/40 text-xs mt-2">
             ~{siteConfig.fullName.split(" ")[0].toLowerCase()}/about.md [readonly]
@@ -506,7 +511,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
         type: "output",
         nodes: [
           <span key="p" className="block text-foreground/80">
-            /usr/local/bin:/usr/bin:/bin:/skills:/experience:/projects
+            /usr/local/bin:/usr/bin:/bin:/skills:/experience:/work
           </span>,
         ],
       },
@@ -521,7 +526,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             ✓ Request submitted!
           </span>,
           <span key="s2" className="block text-muted-foreground/70 text-xs mt-0.5">
-            Redirecting to contact form...
+            Redirecting to contact page...
           </span>,
         ],
         _sideEffect: "contact" as const,

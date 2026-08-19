@@ -53,11 +53,10 @@ export function Brand({ className }: { className?: string }) {
 
       {/* ── .dev floating pill ────────────────────────────────────── */}
       <span
-        className="relative -top-[4px] inline-flex items-center rounded-md px-[5px] py-[2px] text-[0.52em] font-bold tracking-wide leading-none font-mono"
+        className="relative -top-[4px] inline-flex items-center rounded-md px-[5px] py-[2px] text-[0.52em] font-bold tracking-wide leading-none font-mono text-primary"
         style={{
-          color: "var(--primary)",
-          background: "color-mix(in oklch, var(--primary) 12%, transparent)",
-          border: "1px solid color-mix(in oklch, var(--primary) 28%, transparent)",
+          background: "color-mix(in oklch, var(--primary) 18%, var(--card))",
+          border: "1px solid color-mix(in oklch, var(--primary) 45%, transparent)",
           transform: "rotate(-1.5deg)",
           boxShadow: "0 0 8px -2px color-mix(in oklch, var(--glow) 40%, transparent)",
           transition: "box-shadow 0.2s ease, background 0.2s ease",

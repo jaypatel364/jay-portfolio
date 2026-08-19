@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SectionHeading } from "@/components/shared";
+import { SectionHeading, SectionPageCta } from "@/components/shared";
+import { innerPages } from "@/settings/pages";
 import { Sparkles } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { siteConfig } from "@/lib/site-config";
@@ -62,7 +63,7 @@ export function SkillsSection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl">
-        <SectionHeading label="Expertise" title="Skills & Technologies" />
+        <SectionHeading label="Skills" title="Stack I ship with" />
 
         {/* Stats bar */}
         <motion.div
@@ -75,7 +76,7 @@ export function SkillsSection() {
           {[
             { ref: skillRef, val: `${skillCount}+`, label: "Tools & Technologies" },
             { ref: expRef, val: animatedExp, label: "Years Experience" },
-            { ref: projRef, val: `${projCount}+`, label: "Production Projects" },
+            { ref: projRef, val: `${projCount}+`, label: "Shipped builds" },
           ].map(({ ref, val, label }, i, arr) => (
             <React.Fragment key={label}>
               <div>
@@ -100,7 +101,7 @@ export function SkillsSection() {
           transition={{ duration: 0.4, delay: 0.3 }}
           className="mt-10 flex items-center justify-center gap-3 flex-wrap"
         >
-          <div
+          {/* <div
             className="flex items-center gap-2 flex-wrap justify-center"
             role="tablist"
             aria-label="Filter skills by category"
@@ -128,7 +129,7 @@ export function SkillsSection() {
                 <span className="relative z-10">{f.label}</span>
               </button>
             ))}
-          </div>
+          </div> */}
 
           {/* View toggle — always shown, desktop only */}
           <ViewToggle view={view} onChange={setView} />
@@ -268,12 +269,15 @@ export function SkillsSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.8 }}
-          className="mt-14 flex justify-center"
+          className="mt-14 flex flex-col items-center gap-6"
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-5 py-2.5 text-sm text-muted-foreground">
             <Sparkles className="h-4 w-4 text-primary" />
             Always learning &amp; exploring new technologies
           </div>
+          <SectionPageCta href={`${innerPages.skills.path}/`}>
+            {innerPages.skills.homeCta}
+          </SectionPageCta>
         </motion.div>
       </div>
     </section>

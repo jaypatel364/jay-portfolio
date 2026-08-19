@@ -1,6 +1,7 @@
+import { siteConfig } from "@/settings";
 import { ImageResponse } from "next/og";
 
-export const alt = "Jay Patel — Full Stack Developer Portfolio";
+export const alt = `${siteConfig.fullName} — Full Stack Developer in India`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -74,7 +75,7 @@ export default function OpenGraphImage() {
               marginTop: 8,
             }}
           >
-            Full Stack Developer
+            Full Stack Developer in India
           </div>
         </div>
         <div

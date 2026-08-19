@@ -1,16 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Self-hosted fonts — no Google Fonts fetch at build time (Vercel-safe) */
-@import "@fontsource/space-grotesk/500.css";
-@import "@fontsource/space-grotesk/600.css";
-@import "@fontsource/space-grotesk/700.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
+/* Fonts loaded via next/font in app/layout.tsx — variables wired below */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -59,9 +50,13 @@
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
   --color-glow: var(--glow);
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-heading: "Space Grotesk", "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-heading: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+html {
+  scrollbar-gutter: stable;
 }
 
 :root {
@@ -154,23 +149,11 @@ html[data-booting="true"] .site-boot-cover {
   background: var(--background);
 }
 
-/* Hold a themed blank until navbar + hero have hydrated, then fade the full page in. */
-html[data-page-pending="true"] .site-shell {
-  opacity: 0;
-  transform: translateY(10px);
-}
+/* Hero and nav paint immediately — no delayed reveal. */
+html[data-page-pending="true"] .site-shell,
 html[data-page-ready="true"] .site-shell {
   opacity: 1;
   transform: none;
-  transition:
-    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-@media (prefers-reduced-motion: reduce) {
-  html[data-page-ready="true"] .site-shell {
-    transition: none;
-    transform: none;
-  }
 }
 
 .skip-link {
@@ -345,6 +328,25 @@ html[data-page-ready="true"] .site-shell {
   }
   50% {
     opacity: 0;
+  }
+}
+
+@keyframes hero-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes hero-orbit-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-orbit,
+  .hero-orbit-rev {
+    animation: none !important;
   }
 }
 

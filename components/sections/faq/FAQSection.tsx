@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * FAQSection — "Ask Me Anything" accordion
+ * FAQSection — hiring FAQ accordion
  */
 
 import { useState } from "react";
@@ -68,7 +68,7 @@ export function FAQSection() {
             <span className="h-px w-12 bg-border" />
           </motion.div> */}
 
-          <SectionHeading label="FAQ" title="Ask Me Anything" />
+          <SectionHeading label="FAQ" title="Questions hiring teams ask" />
 
           <motion.p
             initial={reduced ? false : { opacity: 0, y: 12 }}
@@ -160,16 +160,14 @@ export function FAQSection() {
                 If something isn&apos;t covered above, just ask directly — I reply to every message.
               </p>
             </div>
-            <button
-              onClick={() =>
-                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
-              }
+            <a
+              href="/contact"
               className="group inline-flex shrink-0 items-center gap-2 rounded-xl gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <Sparkles className="h-4 w-4" />
               Let&apos;s Talk
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-            </button>
+            </a>
           </div>
           <div
             className="h-px w-full"

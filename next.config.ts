@@ -18,13 +18,13 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       isProd
-        ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com"
-        : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+        ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://www.google.com https://www.gstatic.com"
+        : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://www.google.com https://www.gstatic.com",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob:",
+      "img-src 'self' data: blob: https://www.gstatic.com https://www.google.com",
       "font-src 'self' data:",
-      "connect-src 'self' https://github-contributions-api.jogruber.de https://*.ingest.sentry.io https://vitals.vercel-insights.com https://va.vercel-scripts.com",
-      "frame-src 'none'",
+      "connect-src 'self' https://github-contributions-api.jogruber.de https://*.ingest.sentry.io https://vitals.vercel-insights.com https://va.vercel-scripts.com https://www.google.com https://www.gstatic.com",
+      "frame-src 'self' https://www.google.com https://recaptcha.google.com https://www.recaptcha.net",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self' mailto:",
@@ -47,6 +47,9 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
   // Required so Next.js metadata keeps https://jaypateldev.com/ (not …com).
   trailingSlash: true,
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion", "react-icons"],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 7,
@@ -66,15 +69,19 @@ const nextConfig: NextConfig = {
     // Preview deployments (unique *.vercel.app URLs) are not redirected.
     // www is also redirected in Vercel Domains; this is a backup.
     const hosts = ["www.jaypateldev.com", "jay-patel-dev.vercel.app"];
-    return hosts.flatMap((host) => [
-      {
-        source: "/",
-        has: [{ type: "host" as const, value: host }],
-        destination: `${PRODUCTION_ORIGIN}/`,
-        permanent: true,
-      },
-      hostRedirect(host),
-    ]);
+    return [
+      { source: "/resume", destination: "/", permanent: true },
+      { source: "/engineering", destination: "/", permanent: true },
+      ...hosts.flatMap((host) => [
+        {
+          source: "/",
+          has: [{ type: "host" as const, value: host }],
+          destination: `${PRODUCTION_ORIGIN}/`,
+          permanent: true,
+        },
+        hostRedirect(host),
+      ]),
+    ];
   },
 };
 

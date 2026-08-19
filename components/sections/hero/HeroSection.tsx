@@ -20,15 +20,15 @@ export function HeroSection() {
             withTerminal ? "text-center lg:text-left mb-10 lg:mb-0" : "text-center mb-10",
           )}
         >
-          <h1 className="font-heading text-6xl font-bold tracking-tight sm:text-7xl lg:text-8xl">
+          <h1 className="font-heading text-6xl font-bold tracking-tight sm:text-7xl lg:text-8xl [text-wrap:balance]">
             <span className="gradient-text-animated">{siteConfig.fullName}</span>
           </h1>
           <p className="mt-3 text-base font-medium uppercase tracking-[0.2em] text-muted-foreground">
             Full Stack Developer
           </p>
           <p className="mt-6 text-base leading-relaxed text-muted-foreground mx-auto max-w-lg lg:mx-0">
-            {expLabel} years building scalable web applications and production-ready solutions with
-            the MERN stack. Building {siteConfig.headlineWords.join(", ")} people actually use.
+            Full stack developer in India. {expLabel} years with React, Next.js, and Node.js —
+            real-time apps, large form systems, and MERN work that ships.
           </p>
         </header>
         <HeroInteractive expLabel={expLabel} withTerminal={withTerminal} />

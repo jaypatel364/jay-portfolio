@@ -164,12 +164,13 @@ export function GitHubGraph({ initialDays = [] }: GitHubGraphProps) {
                 href={siteConfig.github}
                 target="_blank"
                 rel="noopener noreferrer"
+                title={`${siteConfig.fullName} on GitHub (@${username})`}
                 className="text-xs text-muted-foreground transition-colors hover:text-primary"
               >
                 @{username}
               </a>
               <span className="text-[10px] text-muted-foreground/40">·</span>
-              <span className="text-[10px] text-muted-foreground/60">
+              <span className="text-[10px] text-muted-foreground/75">
                 {isMobile ? `Last ${MOBILE_WEEKS} weeks` : windowLabel}
               </span>
             </div>

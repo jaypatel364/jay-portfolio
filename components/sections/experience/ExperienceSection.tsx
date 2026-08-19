@@ -58,6 +58,7 @@ function CardView() {
                       href={exp.companyUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      title={`Visit ${exp.company}`}
                       className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
                     >
                       {exp.company}
@@ -180,6 +181,7 @@ function TimelineView() {
                     href={exp.companyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    title={`Visit ${exp.company}`}
                     className={cn(
                       "mt-0.5 inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80",
                       isLeft ? "md:flex-row-reverse" : "",

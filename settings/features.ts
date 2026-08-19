@@ -13,9 +13,7 @@ export const features = {
   // false until jaypateldev.com is live and Search Console is verified. Flip last.
   allowIndexing: false,
 
-  // ── Extra routes — keep off for launch; flip after the homepage is live ───
-  showResumePage: false,
-  showEngineeringPage: false,
+  // ── Extra routes ──────────────────────────────────────────────────────────
   showCaseStudies: false,
 
   // ── Game Zone ─────────────────────────────────────────────────────────────

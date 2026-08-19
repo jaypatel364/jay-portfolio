@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { Terminal } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
@@ -21,7 +20,7 @@ function TerminalBlock() {
   const inputRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
 
-  // Boot: one line per 300 ms
+  // Boot: one line per 300 ms (skipped when reduced motion)
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setBootStep(BOOT_LINES.length);
@@ -45,7 +44,6 @@ function TerminalBlock() {
   useEffect(() => {
     const el = bodyRef.current;
     if (!el) return;
-    // rAF ensures DOM has painted before we measure scrollHeight
     const id = requestAnimationFrame(() => {
       el.scrollTop = el.scrollHeight;
     });
@@ -64,7 +62,6 @@ function TerminalBlock() {
     if (cmd) setCmdHistory((h) => [cmd, ...h]);
     setHistoryIdx(-1);
     setInput("");
-    // Handle side effects (e.g. sudo hire-me scrolls to contact)
     const sideEffect = out.find(
       (l) =>
         l.type === "output" &&
@@ -75,10 +72,7 @@ function TerminalBlock() {
       (sideEffect as { type: "output"; nodes: React.ReactNode[]; _sideEffect?: string })
         ._sideEffect === "contact"
     ) {
-      setTimeout(
-        () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }),
-        800,
-      );
+      setTimeout(() => window.location.assign("/contact"), 800);
     }
   };
 
@@ -110,10 +104,7 @@ function TerminalBlock() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 24 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    <div
       className="w-full overflow-hidden rounded-2xl border border-border bg-card shadow-premium cursor-text"
       onClick={() => inputRef.current?.focus({ preventScroll: true })}
     >
@@ -131,13 +122,12 @@ function TerminalBlock() {
         <span className="w-14" />
       </div>
 
-      {/* Body */}
+      {/* Body — fixed height prevents layout shift as boot lines appear */}
       <div
         ref={bodyRef}
         className="h-64 lg:h-80 overflow-y-auto p-4 font-mono text-sm"
         style={{ scrollbarWidth: "none" }}
         onWheel={(e) => {
-          // Stop wheel events from bubbling to the page
           const el = bodyRef.current;
           if (!el) return;
           const atTop = el.scrollTop === 0 && e.deltaY < 0;
@@ -146,15 +136,9 @@ function TerminalBlock() {
         }}
       >
         {BOOT_LINES.slice(0, bootStep).map((l, i) => (
-          <motion.div
-            key={`b${i}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
-            className={cn("leading-relaxed", l.color)}
-          >
+          <div key={`b${i}`} className={cn("leading-relaxed", l.color)}>
             {l.text}
-          </motion.div>
+          </div>
         ))}
         {booted && <div className="h-2" />}
         {booted &&
@@ -220,13 +204,12 @@ function TerminalBlock() {
         )}
       </div>
 
-      {/* Footer */}
       {booted && (
-        <div className="border-t border-border/40 px-4 py-2 font-mono text-[10px] text-muted-foreground/80 text-center select-none">
+        <div className="border-t border-border/40 px-4 py-2 font-mono text-[10px] text-muted-foreground text-center select-none">
           click · type a command · try "neofetch" or "sudo hire-me" · ↑↓ history
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }
 

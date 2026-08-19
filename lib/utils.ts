@@ -5,6 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+/** Normalize a path under public/ — strips accidental `/public` prefix. */
+export function publicAssetPath(path: string): string {
+  if (path.startsWith("/public/")) return path.slice("/public".length);
+  if (path.startsWith("public/")) return `/${path.slice("public".length)}`;
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
 /**
  * Calculates a human-friendly experience label from a start date.
  *

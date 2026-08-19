@@ -53,11 +53,11 @@ export default async function ProjectCaseStudyPage({
       />
       <main id="main" className="mx-auto max-w-3xl px-6 pb-24 pt-28">
         <Link
-          href="/#projects"
+          href="/work/"
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          All projects
+          All work
         </Link>
 
         <p className="mt-8 text-xs font-semibold uppercase tracking-wider text-primary">
