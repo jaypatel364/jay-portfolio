@@ -5,12 +5,12 @@ import { Suspense } from "react";
 import {
   PageTransition,
   PageTransitionItem,
-  PageReveal,
   Navbar,
   ScrollProgressBar,
   BackToTop,
   LoadingScreenWrapper,
   Footer,
+  GlobalCtaGate,
   HomeOverlays,
 } from "@/components/layout";
 import { SectionErrorBoundary } from "@/components/shared";
@@ -21,7 +21,6 @@ import { ExperienceSection } from "@/components/sections/experience";
 import { EducationSection } from "@/components/sections/education";
 import { ProjectsSection } from "@/components/sections/projects";
 import { FAQSection } from "@/components/sections/faq";
-import { ContactSection } from "@/components/sections/contact";
 
 export default function Home() {
   return (
@@ -49,7 +48,6 @@ export default function Home() {
        *   - Overlays the boot UI; page HTML is always in the document (SEO)
        */}
       <LoadingScreenWrapper>
-        <PageReveal />
         <div className="site-shell relative min-h-screen bg-background text-foreground">
           <ScrollProgressBar />
           <Suspense fallback={null}>
@@ -86,13 +84,11 @@ export default function Home() {
                     <FAQSection />
                   </SectionErrorBoundary>
                 )}
-                <SectionErrorBoundary section="Contact">
-                  <ContactSection />
-                </SectionErrorBoundary>
               </main>
             </PageTransitionItem>
 
             <PageTransitionItem>
+              <GlobalCtaGate />
               <Footer />
             </PageTransitionItem>
           </PageTransition>

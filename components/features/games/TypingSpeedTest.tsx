@@ -14,7 +14,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Keyboard, RotateCcw, ArrowRight, Mail, Trophy, Timer, Target, Zap } from "lucide-react";
+import { X, Keyboard, RotateCcw, Trophy, Timer, Target, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -538,25 +538,6 @@ export function TypingSpeedTest({ onClose }: { onClose: () => void }) {
                         Retry
                       </motion.button>
                     </div>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => {
-                        onClose();
-                        setTimeout(
-                          () =>
-                            document
-                              .getElementById("contact")
-                              ?.scrollIntoView({ behavior: "smooth" }),
-                          300,
-                        );
-                      }}
-                      className="flex w-full items-center justify-center gap-2 rounded-xl border border-border/60 bg-card/60 py-2.5 text-[12px] font-semibold text-muted-foreground hover:border-primary/40 hover:text-foreground transition-all"
-                    >
-                      <Mail className="h-3.5 w-3.5" />
-                      Hire the person who wrote this code
-                      <ArrowRight className="h-3 w-3" />
-                    </motion.button>
                   </div>
                 </motion.div>
               )}

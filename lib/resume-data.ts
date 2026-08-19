@@ -1,6 +1,6 @@
 /**
- * Single source of truth for resume content.
- * Imported by both the portfolio sections and the /resume print route.
+ * Experience + education shown on the site.
+ * The downloadable CV is `public/jay-patel-resume.pdf` (not a duplicate HTML page).
  */
 
 export interface Experience {
@@ -20,11 +20,6 @@ export interface Education {
   school: string;
   year: string;
   desc: string;
-}
-
-export interface SkillCategory {
-  category: string;
-  skills: string[];
 }
 
 export const EXPERIENCES: Experience[] = [
@@ -75,20 +70,5 @@ export const EDUCATION: Education[] = [
     school: "GPG, Gandhinagar",
     year: "2016 – 2019",
     desc: "Built strong fundamentals in programming, databases, computer networks, and application development.",
-  },
-];
-
-export const SKILL_CATEGORIES: SkillCategory[] = [
-  {
-    category: "Frontend",
-    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux / Zustand", "HTML / CSS"],
-  },
-  {
-    category: "Backend",
-    skills: ["Node.js", "Express.js", "MongoDB", "PostgreSQL", "REST APIs", "GraphQL"],
-  },
-  {
-    category: "Tools & DevOps",
-    skills: ["Git / GitHub", "Docker", "AWS", "Jest / Vitest", "CI/CD", "Figma"],
   },
 ];

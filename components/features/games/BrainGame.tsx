@@ -6,7 +6,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Brain, Sparkles, Trophy, RotateCcw, Zap, Mail, Lock, ArrowRight } from "lucide-react";
+import { X, Brain, Sparkles, Trophy, RotateCcw, Zap, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SKILL_NODES, type SkillNode } from "./brain-data";
 import { buildInitialPositions, tickPhysics, type PhysicsNode } from "./brain-physics";
@@ -378,20 +378,6 @@ export function BrainGame({ onClose }: { onClose: () => void }) {
 
                     {/* CTAs */}
                     <div className="flex w-full flex-col gap-2">
-                      <motion.button
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => {
-                          // close game first, then scroll
-                          // onClose is injected via the parent — we emit a custom event
-                          window.dispatchEvent(new CustomEvent("braingame:hire"));
-                        }}
-                        className="btn-shine flex w-full items-center justify-center gap-2 rounded-xl gradient-primary px-4 py-3 text-[13px] font-bold text-primary-foreground shadow-glow transition-all"
-                      >
-                        <Mail className="h-4 w-4" />
-                        Now let's build something together
-                        <ArrowRight className="h-3.5 w-3.5" />
-                      </motion.button>
                       <button
                         onClick={() => setAllUnlocked(false)}
                         className="w-full rounded-xl border border-border/60 bg-transparent py-2.5 text-[12px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -438,18 +424,6 @@ export function BrainGame({ onClose }: { onClose: () => void }) {
 
 export function BrainGameTrigger() {
   const [open, setOpen] = useState(false);
-
-  // Listen for the "hire me" CTA fired from inside the celebration overlay
-  useEffect(() => {
-    const handler = () => {
-      setOpen(false);
-      setTimeout(() => {
-        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-      }, 320); // let the modal exit animation finish first
-    };
-    window.addEventListener("braingame:hire", handler);
-    return () => window.removeEventListener("braingame:hire", handler);
-  }, []);
 
   return (
     <>

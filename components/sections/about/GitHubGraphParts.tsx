@@ -157,13 +157,13 @@ function ContributionGrid({
 
       {/* Legend */}
       <div className="mt-4 flex items-center justify-end gap-2">
-        <span className="select-none text-[10px] font-medium text-muted-foreground/60">Less</span>
+        <span className="select-none text-[10px] font-medium text-muted-foreground/75">Less</span>
         <div className="flex items-center gap-1.5">
           {([0, 1, 2, 3, 4] as const).map((level) => (
             <div key={level} className={`h-[10px] w-[10px] rounded-[2px] ${CELL_CLASS[level]}`} />
           ))}
         </div>
-        <span className="select-none text-[10px] font-medium text-muted-foreground/60">More</span>
+        <span className="select-none text-[10px] font-medium text-muted-foreground/75">More</span>
       </div>
     </div>
   );

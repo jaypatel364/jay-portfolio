@@ -19,3 +19,11 @@ export interface LearningItem {
   name: string;
   icon: string;
 }
+
+/** External profile / marketplace link — null href = hidden until you add a URL. */
+export interface ProfileLink {
+  id: string;
+  label: string;
+  href: string | null;
+  tagline: string;
+}

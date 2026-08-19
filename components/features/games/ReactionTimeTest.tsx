@@ -14,7 +14,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Zap, Trophy, RotateCcw, ArrowRight, Mail, Timer } from "lucide-react";
+import { X, Zap, Trophy, RotateCcw, Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const LS_KEY = "reaction_best_avg";
@@ -380,23 +380,6 @@ export function ReactionTimeTest({ onClose }: { onClose: () => void }) {
                   className="btn-shine flex flex-1 items-center justify-center gap-2 rounded-xl gradient-primary py-3 text-[13px] font-bold text-primary-foreground shadow-glow"
                 >
                   <RotateCcw className="h-3.5 w-3.5" /> Play Again
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => {
-                    onClose();
-                    setTimeout(
-                      () =>
-                        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }),
-                      300,
-                    );
-                  }}
-                  className="flex items-center justify-center gap-1.5 rounded-xl border border-border/60 bg-card/60 px-4 py-3 text-[12px] font-semibold text-muted-foreground hover:text-foreground transition-all"
-                >
-                  <Mail className="h-3.5 w-3.5" />
-                  Hire Jay
-                  <ArrowRight className="h-3 w-3" />
                 </motion.button>
               </div>
               <p className="text-center text-[10px] text-muted-foreground/40">

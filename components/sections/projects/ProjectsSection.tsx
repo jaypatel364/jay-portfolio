@@ -2,14 +2,14 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ExternalLink, Code2, Lock, Hammer, ChevronDown } from "lucide-react";
-import { SectionHeading } from "@/components/shared";
+import { SectionHeading, SectionPageCta } from "@/components/shared";
+import { innerPages } from "@/settings/pages";
 import { cn } from "@/lib/utils";
-import { PROJECTS, PROJECT_FILTERS } from "@/settings/projects";
+import { PROJECTS, HOME_PROJECT_COUNT } from "@/settings/projects";
 import { features } from "@/settings/features";
-
-// ── Expandable description ────────────────────────────────────────────────────
+import { ProjectVisual } from "./ProjectVisual";
 
 function ExpandableDesc({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
@@ -22,17 +22,12 @@ function ExpandableDesc({ text }: { text: string }) {
     const el = innerRef.current;
     if (!el) return;
 
-    // 1. Read the actual rendered clamped height (line-clamp is still active)
     const clamped = el.clientHeight;
-
-    // 2. Temporarily lift all clamp constraints to measure the full scrollHeight
     el.style.display = "block";
     el.style.webkitLineClamp = "unset";
     el.style.overflow = "visible";
     el.style.webkitBoxOrient = "unset";
     const full = el.scrollHeight;
-
-    // 3. Restore
     el.style.display = "";
     el.style.webkitLineClamp = "";
     el.style.overflow = "";
@@ -40,14 +35,13 @@ function ExpandableDesc({ text }: { text: string }) {
 
     setClampedH(clamped);
     setFullHeight(full);
-    // 2px tolerance — descenders on letters like g/p/y extend slightly below
     setOverflows(full > clamped + 2);
   }, [text]);
 
   const currentHeight = expanded ? (fullHeight ?? "auto") : (clampedH ?? "auto");
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-1 flex-col">
       <motion.div
         animate={{ height: currentHeight }}
         transition={{ type: "spring", stiffness: 280, damping: 28 }}
@@ -85,244 +79,127 @@ function ExpandableDesc({ text }: { text: string }) {
   );
 }
 
-type Filter = (typeof PROJECT_FILTERS)[number];
-
+/** Homepage summary — first 3 projects, no filters. Full catalog lives on /work. */
 export function ProjectsSection() {
-  const [filter, setFilter] = useState<Filter>("all");
-
-  const filtered = filter === "all" ? PROJECTS : PROJECTS.filter((p) => p.category === filter);
+  const preview = PROJECTS.slice(0, HOME_PROJECT_COUNT);
 
   return (
-    <section id="projects" className="px-6 py-14 md:py-28">
+    <section id="work" className="px-6 py-14 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading label="Portfolio" title="Featured Projects" />
+        <SectionHeading label="Work" title="Selected work" />
 
-        {/* Filter tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-0 md:gap-2"
-          role="tablist"
-          aria-label="Filter projects by category"
-        >
-          {PROJECT_FILTERS.map((f) => (
-            <button
-              key={f}
-              role="tab"
-              aria-selected={filter === f}
-              onClick={() => setFilter(f)}
+        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {preview.map((project, i) => (
+            <motion.div
+              key={project.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, delay: i * 0.07 }}
+              whileHover={{ y: -4 }}
               className={cn(
-                "relative rounded-lg px-4 py-2 text-sm font-medium capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                filter === f ? "text-primary" : "text-muted-foreground hover:text-foreground",
+                "group flex flex-col overflow-hidden rounded-2xl border bg-card transition-all duration-300",
+                project.nda
+                  ? "border-border/60 hover:border-border hover:shadow-md"
+                  : project.wip
+                    ? "border-primary/20 hover:border-primary/40 hover:shadow-premium"
+                    : "border-border hover:border-primary/30 hover:shadow-premium",
               )}
             >
-              {filter === f && (
-                <motion.div
-                  layoutId="project-filter-active"
-                  className="absolute inset-0 rounded-lg bg-primary/10"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
-              )}
-              <span className="relative z-10">{f}</span>
-            </button>
-          ))}
-        </motion.div>
+              <ProjectVisual project={project} />
 
-        {/* Grid */}
-        <AnimatePresence mode="popLayout">
-          <motion.div
-            key={filter}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {filtered.map((project, i) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.45, delay: i * 0.07 }}
-                whileHover={{ y: -4 }}
-                className={cn(
-                  "group flex flex-col overflow-hidden rounded-2xl border bg-card transition-all duration-300",
-                  project.nda
-                    ? "border-border/60 hover:border-border hover:shadow-md"
-                    : project.wip
-                      ? "border-primary/20 hover:border-primary/40 hover:shadow-premium"
-                      : "border-border hover:border-primary/30 hover:shadow-premium",
-                )}
-              >
-                {/* Header */}
-                <div
+              <div className="flex flex-1 flex-col p-6">
+                <p
                   className={cn(
-                    "relative flex h-32 items-center justify-center bg-gradient-to-br",
-                    project.color,
-                    project.nda && "opacity-70",
+                    "text-xs font-semibold uppercase tracking-wider",
+                    project.nda ? "text-muted-foreground" : "text-primary",
                   )}
                 >
-                  {/* Grid texture */}
-                  <div
-                    className="absolute inset-0 opacity-[0.06]"
-                    style={{
-                      backgroundImage:
-                        "repeating-linear-gradient(0deg,currentColor 0,currentColor 1px,transparent 1px,transparent 32px),repeating-linear-gradient(90deg,currentColor 0,currentColor 1px,transparent 1px,transparent 32px)",
-                    }}
-                  />
+                  {project.tagline}
+                </p>
+                <h3 className="font-heading mt-1 text-lg font-bold leading-snug">
+                  {project.title}
+                </h3>
+                <div className="mt-2.5 flex flex-1 flex-col">
+                  <ExpandableDesc text={project.desc} />
+                </div>
 
-                  {/* Icon badge */}
-                  {project.nda ? (
-                    <div className="relative z-10">
-                      <span
-                        className="flex h-12 w-12 items-center justify-center rounded-2xl shadow-sm"
-                        style={{
-                          backgroundColor: `color-mix(in oklch, ${project.iconColor} 15%, transparent)`,
-                          border: `1.5px solid color-mix(in oklch, ${project.iconColor} 30%, transparent)`,
-                        }}
-                      >
-                        <Lock className="h-5 w-5" style={{ color: project.iconColor }} />
-                      </span>
-                    </div>
-                  ) : (
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {project.tags.map((tag) => (
                     <span
-                      className="relative z-10 flex h-12 w-12 items-center justify-center rounded-2xl text-xl font-bold shadow-sm"
-                      style={{
-                        backgroundColor: `color-mix(in oklch, ${project.iconColor} 18%, transparent)`,
-                        color: project.iconColor,
-                        border: `1.5px solid color-mix(in oklch, ${project.iconColor} 35%, transparent)`,
-                      }}
+                      key={tag}
+                      className="rounded-md border border-border bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground"
                     >
-                      {project.title[0]}
+                      {tag}
                     </span>
-                  )}
-
-                  {/* Top-right badge — NDA or WIP (mutually exclusive) */}
-                  {project.nda && (
-                    <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-border/80 bg-background/80 px-2 py-0.5 backdrop-blur-sm text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      <Lock className="h-2.5 w-2.5" />
-                      NDA
-                    </span>
-                  )}
-                  {project.wip && !project.nda && (
-                    <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 backdrop-blur-sm text-[10px] font-semibold uppercase tracking-wider text-primary">
-                      {/* Pulsing dot */}
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-                      </span>
-                      In Progress
-                    </span>
-                  )}
+                  ))}
                 </div>
 
-                {/* Body */}
-                <div className="flex flex-1 flex-col p-6">
-                  <p
-                    className={cn(
-                      "text-xs font-semibold uppercase tracking-wider",
-                      project.nda ? "text-muted-foreground" : "text-primary",
-                    )}
-                  >
-                    {project.tagline}
-                  </p>
-                  <h3 className="font-heading mt-1 text-lg font-bold leading-snug">
-                    {project.title}
-                  </h3>
-                  <div className="mt-2.5 flex-1 flex flex-col">
-                    <ExpandableDesc text={project.desc} />
-                  </div>
+                <div className="mt-5 flex items-center gap-4 border-t border-border pt-4">
+                  {project.nda ? (
+                    <p className="flex select-none items-center gap-1.5 text-xs text-muted-foreground/70">
+                      <Lock className="h-3 w-3 shrink-0" />
+                      Code &amp; demo unavailable under NDA
+                    </p>
+                  ) : (
+                    <div className="flex flex-wrap items-center gap-4">
+                      {project.codeUrl && (
+                        <a
+                          href={project.codeUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                          aria-label={`View source code for ${project.title}`}
+                          title={`View source code for ${project.title}`}
+                        >
+                          <Code2 className="h-4 w-4" aria-hidden />
+                          Code
+                        </a>
+                      )}
+                      {project.demoUrl && (
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                          aria-label={`View live demo for ${project.title}`}
+                          title={`Live demo: ${project.title}`}
+                        >
+                          <ExternalLink className="h-4 w-4" aria-hidden />
+                          Demo
+                        </a>
+                      )}
+                      {features.showCaseStudies && project.caseStudy && (
+                        <Link
+                          href={`/projects/${project.slug}`}
+                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                        >
+                          Case study
+                        </Link>
+                      )}
+                      {project.wip && (
+                        <span className="inline-flex items-center gap-1 text-xs text-primary/70">
+                          <Hammer className="h-3 w-3" />
+                          Building
+                        </span>
+                      )}
+                    </div>
+                  )}
 
-                  {/* Tags */}
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-md border border-border bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Footer row */}
-                  <div className="mt-5 flex items-center gap-4 border-t border-border pt-4">
-                    {project.nda ? (
-                      /* NDA — no links at all */
-                      <p className="flex items-center gap-1.5 text-xs text-muted-foreground/70 select-none">
-                        <Lock className="h-3 w-3 shrink-0" />
-                        Code &amp; demo unavailable under NDA
-                      </p>
-                    ) : (
-                      <div className="flex flex-wrap items-center gap-4">
-                        {project.codeUrl && (
-                          <a
-                            href={project.codeUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                            aria-label={`View source code for ${project.title}`}
-                          >
-                            <Code2 className="h-4 w-4" />
-                            Code
-                          </a>
-                        )}
-
-                        {project.demoUrl && (
-                          <a
-                            href={project.demoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                            aria-label={`View live demo for ${project.title}`}
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                            Demo
-                          </a>
-                        )}
-
-                        {features.showCaseStudies && project.caseStudy && (
-                          <Link
-                            href={`/projects/${project.slug}`}
-                            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                          >
-                            Case study
-                          </Link>
-                        )}
-
-                        {project.wip && (
-                          <span className="inline-flex items-center gap-1 text-xs text-primary/70">
-                            <Hammer className="h-3 w-3" />
-                            Building
-                          </span>
-                        )}
-                      </div>
-                    )}
-
-                    <span className="ml-auto rounded-full border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                      {project.category}
-                    </span>
-                  </div>
+                  <span className="ml-auto rounded-full border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {project.category}
+                  </span>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
-        {/* Bottom notes */}
-        {filtered.some((p) => p.nda) && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-8 text-center text-xs text-muted-foreground/60"
-          >
-            Projects marked NDA were built professionally. Descriptions and tech stacks are shared
-            with permission; code and demos cannot be disclosed.
-          </motion.p>
-        )}
+        <div className="mt-12 flex justify-center">
+          <SectionPageCta href={`${innerPages.work.path}/`}>
+            {innerPages.work.homeCta}
+          </SectionPageCta>
+        </div>
       </div>
     </section>
   );

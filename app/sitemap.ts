@@ -7,22 +7,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = LAST_UPDATED;
   const extra = [];
 
-  if (features.showResumePage) {
-    extra.push({
-      url: pageUrl("resume"),
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    });
-  }
-  if (features.showEngineeringPage) {
-    extra.push({
-      url: pageUrl("engineering"),
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    });
-  }
   if (features.showCaseStudies) {
     extra.push(
       ...publicCaseStudies().map((p) => ({
@@ -41,6 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
+    ...(["about", "skills", "work", "contact"] as const).map((slug) => ({
+      url: pageUrl(slug),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
     ...extra,
   ];
 }

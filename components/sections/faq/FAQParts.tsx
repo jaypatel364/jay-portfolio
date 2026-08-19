@@ -113,58 +113,58 @@ function FAQCard({
         )}
       </AnimatePresence>
 
-      {/* Question toggle — heading so crawlers see FAQ questions */}
-      <h3 className="relative z-10 m-0 text-base font-semibold">
-        <button
-          id={`faq-btn-${id}`}
-          aria-expanded={isOpen}
-          aria-controls={`faq-panel-${id}`}
-          onClick={onToggle}
-          onKeyDown={(e) =>
-            (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onToggle())
-          }
-          className="flex w-full items-start gap-4 px-6 py-5 text-left font-heading text-base font-semibold leading-snug text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-[17px]"
+      {/* Number + category stay outside <h3> so crawlers index the question only. */}
+      <div className="relative z-10 flex items-start gap-4 px-6">
+        <span
+          className="mt-[1.375rem] shrink-0 font-mono text-xs font-semibold tabular-nums leading-5 transition-colors duration-300"
+          style={{ color: isOpen ? meta.color : "var(--muted-foreground)" }}
+          aria-hidden
         >
-          {/* IDE line number */}
-          <span
-            className="mt-0.5 shrink-0 font-mono text-xs font-semibold tabular-nums leading-5 transition-colors duration-300"
-            style={{ color: isOpen ? meta.color : "var(--muted-foreground)" }}
-            aria-hidden
+          {num}
+        </span>
+
+        <h3 className="relative m-0 min-w-0 flex-1 text-base font-semibold">
+          <button
+            id={`faq-btn-${id}`}
+            aria-expanded={isOpen}
+            aria-controls={`faq-panel-${id}`}
+            onClick={onToggle}
+            onKeyDown={(e) =>
+              (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onToggle())
+            }
+            className="relative w-full py-5 text-left font-heading text-base font-semibold leading-snug text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-[17px] after:absolute after:inset-y-0 after:-left-14 after:-right-24 after:content-['']"
           >
-            {num}
-          </span>
+            {question}
+          </button>
+        </h3>
 
-          {/* Question */}
-          <span className="flex-1">{question}</span>
-
-          {/* Category badge + chevron */}
-          <span className="mt-1 flex shrink-0 items-center gap-2.5">
-            <span
-              className="hidden rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest sm:inline-flex"
-              style={{
-                color: meta.color,
-                borderColor: `${meta.color}35`,
-                background: `${meta.color}0e`,
-              }}
-            >
-              {meta.label}
-            </span>
-            <motion.span
-              animate={{ rotate: isOpen ? 90 : 0 }}
-              transition={
-                reduced ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 28 }
-              }
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors duration-200"
-              style={{
-                background: isOpen ? `${meta.color}18` : "var(--muted)",
-                color: isOpen ? meta.color : "var(--muted-foreground)",
-              }}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </motion.span>
+        <span
+          className="pointer-events-none relative z-10 mt-5 flex shrink-0 items-center gap-2.5"
+          aria-hidden
+        >
+          <span
+            className="hidden rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest sm:inline-flex"
+            style={{
+              color: meta.color,
+              borderColor: `${meta.color}35`,
+              background: `${meta.color}0e`,
+            }}
+          >
+            {meta.label}
           </span>
-        </button>
-      </h3>
+          <motion.span
+            animate={{ rotate: isOpen ? 90 : 0 }}
+            transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 28 }}
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg transition-colors duration-200"
+            style={{
+              background: isOpen ? `${meta.color}18` : "var(--muted)",
+              color: isOpen ? meta.color : "var(--muted-foreground)",
+            }}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </motion.span>
+        </span>
+      </div>
 
       {/* Answer panel */}
       <div id={`faq-panel-${id}`} role="region" aria-labelledby={`faq-btn-${id}`}>
@@ -207,6 +207,9 @@ function FilterPill({
   return (
     <button
       onClick={onClick}
+      type="button"
+      aria-pressed={active}
+      aria-label={`${meta.label} questions, ${count}`}
       className={cn(
         "relative flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
         active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
@@ -247,6 +250,7 @@ function FilterPill({
 function SegmentDots({ total, done, allDone }: { total: number; done: number; allDone: boolean }) {
   return (
     <div
+      role="group"
       className="flex items-center gap-[4px]"
       aria-label={`${done} of ${total} questions explored`}
       title={`${done}/${total} explored`}
@@ -376,12 +380,12 @@ function AllDoneBanner({ reduced }: { reduced: boolean }) {
           </span>
         </div>
 
-        <button
-          onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+        <a
+          href="/contact"
           className="ml-auto shrink-0 rounded-lg border border-primary/30 bg-primary/8 px-3 py-1.5 font-mono text-[11px] font-semibold text-primary transition-all hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         >
           say hi →
-        </button>
+        </a>
       </div>
     </motion.div>
   );

@@ -17,8 +17,6 @@ export default function robots(): MetadataRoute.Robots {
   }
 
   const disallow = ["/api/"];
-  if (!features.showResumePage) disallow.push("/resume");
-  if (!features.showEngineeringPage) disallow.push("/engineering");
   if (!features.showCaseStudies) disallow.push("/projects/");
 
   return {

@@ -12,7 +12,8 @@ import {
   MapPin,
   CheckCircle2,
 } from "lucide-react";
-import { SectionHeading } from "@/components/shared";
+import { SectionHeading, SectionPageCta } from "@/components/shared";
+import { innerPages } from "@/settings/pages";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
 import { TechMarquee } from "./TechMarquee";
@@ -32,7 +33,7 @@ const HIGHLIGHTS = [
 
 // ── Traits ────────────────────────────────────────────────────────────────────
 
-const TRAITS = ["Clean Code", "Fast Delivery", "Always Learning", "Team Player"];
+const TRAITS = ["Based in India", "3.5+ years", "100+ forms shipped", "Mentored juniors"];
 
 // ── Stat card ─────────────────────────────────────────────────────────────────
 
@@ -88,8 +89,14 @@ function CurrentlyBuildingContent({ building }: { building: BuildingItem }) {
 
 export function AboutSectionClient({
   initialContributions,
+  showPageCta = true,
+  heading = { label: "About", title: "Full stack developer in India" },
+  variant = "home",
 }: {
   initialContributions: ContributionDay[];
+  showPageCta?: boolean;
+  heading?: { label: string; title: string };
+  variant?: "home" | "page";
 }) {
   const expLabel = getExperienceLabel(siteConfig.careerStartDate);
   const building = siteConfig.currentlyBuilding;
@@ -98,7 +105,7 @@ export function AboutSectionClient({
   return (
     <section id="about" className="px-6 py-14 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading label="About" title="Who I Am" />
+        <SectionHeading label={heading.label} title={heading.title} />
 
         <div className="mt-16 grid gap-14 lg:grid-cols-2 lg:items-center">
           {/* ── Left column — story + signals ── */}
@@ -124,21 +131,33 @@ export function AboutSectionClient({
               </span>
             </div>
 
-            {/* Bio — sharp, specific, no filler */}
+            {/* Bio — unique per variant to avoid duplicate content */}
             <div className="space-y-4">
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                I&apos;m a full-stack developer with{" "}
-                <span className="font-semibold text-foreground">{expLabel} years</span> of
-                experience turning complex requirements into clean, production-ready web
-                applications. I live in the{" "}
-                <span className="font-semibold text-foreground">MERN stack</span> and care deeply
-                about both the code quality and the experience it delivers.
-              </p>
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                I&apos;ve built everything from real-time collaboration tools and e-commerce
-                platforms to enterprise HR systems — often leading small teams and owning the full
-                cycle from architecture to deployment.
-              </p>
+              {variant === "home" ? (
+                <p className="text-lg leading-relaxed text-muted-foreground">
+                  I build scalable web applications using{" "}
+                  <span className="font-semibold text-foreground">React, Next.js, Node.js</span> and
+                  modern databases — helping startups and businesses ship faster from{" "}
+                  <span className="font-semibold text-foreground">{siteConfig.location}</span> with{" "}
+                  <span className="font-semibold text-foreground">{expLabel} years</span> of
+                  hands-on experience.
+                </p>
+              ) : (
+                <>
+                  <p className="text-lg leading-relaxed text-muted-foreground">
+                    I&apos;m a full-stack developer in{" "}
+                    <span className="font-semibold text-foreground">{siteConfig.location}</span>{" "}
+                    with <span className="font-semibold text-foreground">{expLabel} years</span> on
+                    the <span className="font-semibold text-foreground">MERN stack</span> — React,
+                    Next.js, Node.js, MongoDB, and PostgreSQL.
+                  </p>
+                  <p className="text-lg leading-relaxed text-muted-foreground">
+                    I&apos;ve shipped real-time chat, a form system that runs 100+ configurable
+                    forms, HR and KYC platforms, and mentored junior developers. I own the work from
+                    architecture to deploy.
+                  </p>
+                </>
+              )}
             </div>
 
             {/* Trait chips */}
@@ -241,6 +260,14 @@ export function AboutSectionClient({
             </div>
           </motion.div>
         </div>
+
+        {showPageCta && (
+          <div className="mt-12 flex justify-start">
+            <SectionPageCta href={`${innerPages.about.path}/`}>
+              {innerPages.about.homeCta}
+            </SectionPageCta>
+          </div>
+        )}
 
         {/* ── Tech marquee ── */}
         <TechMarquee />

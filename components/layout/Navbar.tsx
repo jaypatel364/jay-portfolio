@@ -5,7 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Search, Palette, Check } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
-import { useActiveSection } from "@/hooks/use-active-section";
+import { useNavActive } from "@/hooks/use-nav-active";
+import { PRIMARY_NAV } from "@/lib/nav";
+import { navigateToNavItem } from "@/lib/navigate";
 import { useScrollProgress } from "@/hooks/use-scroll-progress";
 import { useAccent } from "@/hooks/use-accent";
 import { ACCENT_PRESETS } from "@/lib/accent-colors";
@@ -16,6 +18,7 @@ import {
   ShortcutsOverlay,
   ShortcutsTrigger,
 } from "@/components/features/command-palette";
+import { ResumeViewer } from "@/components/features/resume";
 import { AccentPicker } from "@/components/features/accent";
 import { Brand } from "@/components/shared";
 
@@ -103,21 +106,11 @@ function MobileAccentPicker() {
   );
 }
 
-const NAV_ITEMS = [
-  { id: "home", label: "Home" },
-  { id: "about", label: "About" },
-  { id: "skills", label: "Skills" },
-  { id: "experience", label: "Experience" },
-  { id: "education", label: "Education" },
-  { id: "projects", label: "Projects" },
-  // { id: "testimonials", label: "Testimonials" },
-  ...(siteConfig.showFAQ ? [{ id: "faq", label: "FAQ" }] : []),
-  { id: "contact", label: "Contact" },
-];
+const NAV_ITEMS = PRIMARY_NAV;
 
 export function Navbar() {
   const { resolvedTheme, toggleTheme } = useTheme();
-  const active = useActiveSection();
+  const active = useNavActive();
   const { percent, pastHero } = useScrollProgress();
   const pathname = usePathname();
   const router = useRouter();
@@ -137,13 +130,15 @@ export function Navbar() {
     let gPressed = false;
     let gTimer: ReturnType<typeof setTimeout>;
 
-    const GO_MAP: Record<string, string> = {
+    const GO_KEYS: Record<string, string> = {
       h: "home",
       a: "about",
       s: "skills",
       e: "experience",
-      p: "projects",
-      o: "projects",
+      d: "education",
+      p: "work",
+      o: "work",
+      f: "faq",
       c: "contact",
     };
 
@@ -187,11 +182,12 @@ export function Navbar() {
         return;
       }
 
-      if (gPressed && GO_MAP[key]) {
+      if (gPressed && GO_KEYS[key]) {
         e.preventDefault();
         gPressed = false;
         clearTimeout(gTimer);
-        document.getElementById(GO_MAP[key])?.scrollIntoView({ behavior: "smooth" });
+        const item = NAV_ITEMS.find((nav) => nav.id === GO_KEYS[key]);
+        if (item) navigateToNavItem(item, { pathname, router });
       }
     };
 
@@ -200,30 +196,15 @@ export function Navbar() {
       window.removeEventListener("keydown", handler);
       clearTimeout(gTimer);
     };
-  }, [toggleTheme]);
+  }, [toggleTheme, pathname, router]);
 
-  const scrollTo = (id: string) => {
+  const goTo = (item: (typeof NAV_ITEMS)[number]) => {
     setMobileOpen(false);
-    if (id === "home") {
-      if (pathname !== "/") {
-        router.push("/");
-        return;
-      }
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      if (window.location.hash) history.replaceState(null, "", "/");
-      return;
-    }
-    if (pathname !== "/") {
-      router.push(`/#${id}`);
-      return;
-    }
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    navigateToNavItem(item, { pathname, router });
   };
 
   return (
-    <motion.header
-      initial={false}
-      animate={{ y: 0 }}
+    <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled ? "glass-strong shadow-lg py-3" : "py-5",
@@ -234,7 +215,8 @@ export function Navbar() {
       </a>
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6">
         <button
-          onClick={() => scrollTo("home")}
+          onClick={() => goTo(NAV_ITEMS[0])}
+          aria-label={`${siteConfig.fullName} — home`}
           className="font-heading text-xl font-bold tracking-tight"
         >
           <Brand />
@@ -244,7 +226,7 @@ export function Navbar() {
           {NAV_ITEMS.map((item) => (
             <button
               key={item.id}
-              onClick={() => scrollTo(item.id)}
+              onClick={() => goTo(item)}
               className={cn(
                 "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 active === item.id ? "text-primary" : "text-muted-foreground hover:text-foreground",
@@ -370,7 +352,7 @@ export function Navbar() {
               {NAV_ITEMS.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollTo(item.id)}
+                  onClick={() => goTo(item)}
                   className={cn(
                     "relative rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors",
                     active === item.id
@@ -419,6 +401,7 @@ export function Navbar() {
 
       {/* Keyboard shortcuts overlay */}
       <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
-    </motion.header>
+      <ResumeViewer />
+    </header>
   );
 }

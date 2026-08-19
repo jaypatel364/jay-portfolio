@@ -12,7 +12,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Trophy, RotateCcw, ArrowRight, Mail, Brush } from "lucide-react";
+import { X, Trophy, RotateCcw, Brush } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const LS_KEY = "pixeldraw_best";
@@ -498,23 +498,6 @@ export function PixelDrawRace({ onClose }: { onClose: () => void }) {
                         New target
                       </motion.button>
                     </div>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => {
-                        onClose();
-                        setTimeout(
-                          () =>
-                            document
-                              .getElementById("contact")
-                              ?.scrollIntoView({ behavior: "smooth" }),
-                          300,
-                        );
-                      }}
-                      className="flex w-full items-center justify-center gap-2 rounded-xl border border-border/60 bg-card/60 py-2.5 text-[12px] font-semibold text-muted-foreground hover:text-foreground transition-all"
-                    >
-                      <Mail className="h-3.5 w-3.5" /> Hire Jay <ArrowRight className="h-3 w-3" />
-                    </motion.button>
                   </div>
                 </motion.div>
               )}

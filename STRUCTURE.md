@@ -71,11 +71,11 @@ import { features } from "@/settings/features";
 
 | Want to change…                    | File                                               |
 | ---------------------------------- | -------------------------------------------------- |
-| Name / email / GitHub / resume URL | `settings/identity.ts`                             |
+| Name / email / GitHub / resume PDF | `settings/identity.ts`                             |
 | Show/hide FAQ, games, loading, bug | `settings/features.ts`                             |
 | FAQ copy, headline words           | `settings/content.ts`                              |
 | Google title / OG / JSON-LD        | `settings/seo.ts`                                  |
-| Resume experience rows             | `lib/resume-data.ts`                               |
+| Experience / education rows        | `lib/resume-data.ts`                               |
 | Skill list icons                   | `components/sections/skills/skill-data.ts`         |
 | Project cards                      | `components/sections/projects/ProjectsSection.tsx` |
 | Game registry                      | `components/features/games/game-registry.tsx`      |
@@ -182,11 +182,11 @@ import { HeroSection } from "@/components/portfolio/HeroSection";
 
 ## 8. What belongs in `lib/` vs `settings/`
 
-| `settings/`                              | `lib/`                                   |
-| ---------------------------------------- | ---------------------------------------- |
-| Editable personal / marketing / SEO data | Pure functions (`utils`)                 |
-| Feature flags                            | Resume structured data used by `/resume` |
-| Things a non-dev might change            | Accent color tokens, error helpers       |
+| `settings/`                              | `lib/`                                      |
+| ---------------------------------------- | ------------------------------------------- |
+| Editable personal / marketing / SEO data | Pure functions (`utils`)                    |
+| Feature flags                            | Experience/education rows for site sections |
+| Things a non-dev might change            | Accent color tokens, error helpers          |
 
 If you are unsure: **if changing it changes what visitors see about Jay without changing algorithms → `settings/`.**
 
@@ -194,18 +194,19 @@ If you are unsure: **if changing it changes what visitors see about Jay without 
 
 ## 9. Quick “where is X?”
 
-| Feature          | Location                                     |
-| ---------------- | -------------------------------------------- |
-| Home composition | `app/page.tsx`                               |
-| Hero terminal    | `components/sections/hero/`                  |
-| Skills sphere    | `components/sections/skills/SkillSphere.tsx` |
-| GitHub heatmap   | `components/sections/about/GitHubGraph.tsx`  |
-| FAQ UI           | `components/sections/faq/`                   |
-| Chatbot          | `components/features/chatbot/`               |
-| Games hub        | `components/features/games/GameZone.tsx`     |
-| Loading boot     | `components/layout/LoadingScreen.tsx`        |
-| Site toggles     | `settings/features.ts`                       |
-| SEO              | `settings/seo.ts`                            |
+| Feature          | Location                                                      |
+| ---------------- | ------------------------------------------------------------- |
+| Home composition | `app/page.tsx`                                                |
+| Hero terminal    | `components/sections/hero/`                                   |
+| Skills sphere    | `components/sections/skills/SkillSphere.tsx`                  |
+| GitHub heatmap   | `components/sections/about/GitHubGraph.tsx`                   |
+| FAQ UI           | `components/sections/faq/`                                    |
+| Chatbot          | `components/features/chatbot/`                                |
+| Resume PDF       | `public/jay-patel-resume.pdf` + `components/features/resume/` |
+| Games hub        | `components/features/games/GameZone.tsx`                      |
+| Loading boot     | `components/layout/LoadingScreen.tsx`                         |
+| Site toggles     | `settings/features.ts`                                        |
+| SEO              | `settings/seo.ts`                                             |
 
 ---
 

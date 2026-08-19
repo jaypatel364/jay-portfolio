@@ -24,6 +24,8 @@ export interface Project {
   wip?: true;
   codeUrl?: string;
   demoUrl?: string;
+  /** Bullet highlights for the work-page zigzag layout. */
+  highlights?: string[];
   /** Long-form page. Omit for NDA cards. */
   caseStudy?: {
     problem: string;
@@ -43,6 +45,11 @@ export const PROJECTS: Project[] = [
     color: "from-sky-500/20 to-cyan-500/20",
     iconColor: "oklch(0.72 0.17 240)",
     demoUrl: "https://chat-app-web-eta.vercel.app/",
+    highlights: [
+      "Instant rooms, typing indicators, and seen receipts over WebSockets",
+      "Turborepo split — Next.js client + Node.js socket server",
+      "Shared TypeScript types so message shapes cannot drift",
+    ],
     caseStudy: {
       problem:
         "Build a group chat that feels instant without dragging in a heavy real-time SaaS. Rooms, typing, and seen status had to work on a small Node process.",
@@ -69,6 +76,11 @@ export const PROJECTS: Project[] = [
     color: "from-violet-500/20 to-fuchsia-500/20",
     iconColor: "oklch(0.72 0.22 305)",
     demoUrl: "https://nestjs-graphql-social.onrender.com/graphql",
+    highlights: [
+      "Modular NestJS monolith with GraphQL + Prisma",
+      "Posts, likes, follows, notifications, and JWT auth",
+      "hotScore ranking so the feed is not a naive timeline",
+    ],
     caseStudy: {
       problem:
         "Model a social graph (posts, likes, follows, notifications) with a typed API and a feed that is not a naive chronological dump.",
@@ -95,6 +107,11 @@ export const PROJECTS: Project[] = [
     color: "from-emerald-500/20 to-teal-500/20",
     iconColor: "oklch(0.74 0.16 165)",
     demoUrl: "https://minilist-cms.vercel.app/",
+    highlights: [
+      "Next.js admin + NestJS API as a self-hostable headless CMS",
+      "Rich text, authors, SEO fields, API keys, and Google OAuth",
+      "REST and GraphQL so consumers pick the shape they already use",
+    ],
     caseStudy: {
       problem:
         "Ship a self-hostable headless CMS: editors need a real admin, sites need a stable content API, and keys/auth cannot be an afterthought.",
@@ -148,6 +165,11 @@ export const PROJECTS: Project[] = [
     color: "from-slate-500/20 to-zinc-500/20",
     iconColor: "oklch(0.55 0.04 255)",
     nda: true,
+    highlights: [
+      "Attendance, leave, payroll, and role-based access in one HR cycle",
+      "Integrated with an existing ERP without a rewrite",
+      "Enterprise-ready workflows for a mid-sized org",
+    ],
   },
   {
     slug: "philantro-ai",
@@ -159,6 +181,11 @@ export const PROJECTS: Project[] = [
     color: "from-emerald-500/20 to-teal-500/20",
     iconColor: "oklch(0.72 0.18 165)",
     nda: true,
+    highlights: [
+      "Configurable form builder, reports, charts, and milestone tracking",
+      "AI-assisted prototyping (Visily → Figma → production React)",
+      "SSR React on Node/Mongo for a modular NGO platform",
+    ],
   },
   {
     slug: "verify-360",
@@ -179,10 +206,18 @@ export const PROJECTS: Project[] = [
     color: "from-violet-500/20 to-fuchsia-500/20",
     iconColor: "oklch(0.65 0.22 300)",
     nda: true,
+    highlights: [
+      "Document verification, 3D liveness, and live geolocation",
+      "Risk scoring to flag suspicious users in KYC workflows",
+      "100+ client verifications with third-party identity APIs",
+    ],
   },
 ];
 
 export const PROJECT_FILTERS = ["all", "fullstack", "frontend", "backend"] as const;
+
+/** Homepage shows a short preview; the rest lives on /work. */
+export const HOME_PROJECT_COUNT = 3;
 
 export function publicCaseStudies(): Project[] {
   return PROJECTS.filter((p) => p.caseStudy && !p.nda);
@@ -190,4 +225,26 @@ export function publicCaseStudies(): Project[] {
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return PROJECTS.find((p) => p.slug === slug);
+}
+
+/** Unique tech tags across all projects — for work-page stack links. */
+export function getProjectStackTags(): string[] {
+  return [...new Set(PROJECTS.flatMap((p) => p.tags))].sort((a, b) => a.localeCompare(b));
+}
+
+/** Aggregate counts for the work-page stats bar. */
+export function getWorkPageStats() {
+  const tags = getProjectStackTags();
+  const production = PROJECTS.filter((p) => !p.wip);
+  const withDemos = PROJECTS.filter((p) => Boolean(p.demoUrl) && !p.nda);
+  const caseStudies = publicCaseStudies();
+
+  return {
+    projectCount: PROJECTS.length,
+    productionCount: production.length,
+    techCount: tags.length,
+    demoCount: withDemos.length,
+    caseStudyCount: caseStudies.length,
+    ndaCount: PROJECTS.filter((p) => p.nda).length,
+  };
 }

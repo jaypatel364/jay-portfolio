@@ -26,7 +26,7 @@ function WelcomeScreen({ chipGroup, onChip }: { chipGroup: number; onChip: (s: s
           </div>
           <div className="min-w-0">
             <p className="text-sm font-bold text-foreground leading-tight">Jay Patel</p>
-            <p className="text-[11px] text-muted-foreground">Full Stack Dev · Ahmedabad, IN</p>
+            <p className="text-[11px] text-muted-foreground">Full Stack Dev · India</p>
           </div>
           <span className="ml-auto flex shrink-0 items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/8 px-2 py-1">
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />

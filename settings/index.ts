@@ -10,7 +10,7 @@ import { identity } from "./identity";
 import { features } from "./features";
 import { content } from "./content";
 
-export type { FAQCategory, FAQItem, BuildingItem, LearningItem } from "./types";
+export type { FAQCategory, FAQItem, BuildingItem, LearningItem, ProfileLink } from "./types";
 
 export { identity } from "./identity";
 export { features } from "./features";
