@@ -31,10 +31,10 @@ export function HomeOverlays() {
     const mount = () => setReady(true);
     const ric = window.requestIdleCallback;
     if (ric) {
-      const id = ric(mount, { timeout: 2000 });
+      const id = ric(mount, { timeout: 4000 });
       return () => window.cancelIdleCallback(id);
     }
-    const id = setTimeout(mount, 1);
+    const id = setTimeout(mount, 1500);
     return () => clearTimeout(id);
   }, []);
 

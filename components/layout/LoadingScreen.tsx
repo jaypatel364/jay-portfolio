@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig } from "@/lib/site-config";
-import { SESSION_KEY, BOOT_LINES, TypedLine, CompletedLine } from "./LoadingScreenParts";
+import { BOOT_LINES, TypedLine, CompletedLine } from "./LoadingScreenParts";
 
 // ── Main loading screen ───────────────────────────────────────────────────────
 
@@ -297,43 +297,4 @@ export function LoadingScreen({ onDone }: { onDone: () => void }) {
 }
 
 // ── Wrapper — overlay boot screen; children always stay in the HTML ───────────
-//
-// Critical for SEO/LCP: never return null and never visibility:hidden the page.
-// Server HTML includes hero/sections. A beforeInteractive script in layout.tsx
-// paints an opaque cover (html[data-booting]) on first visit so users don't
-// flash content; crawlers that skip JS still see the full document.
-
-export function LoadingScreenWrapper({ children }: { children: React.ReactNode }) {
-  const [booting, setBooting] = useState(false);
-
-  useEffect(() => {
-    if (!siteConfig.showLoadingScreen) {
-      document.documentElement.removeAttribute("data-booting");
-      return;
-    }
-    const shouldBoot = !sessionStorage.getItem(SESSION_KEY);
-    setBooting(shouldBoot);
-    if (!shouldBoot) {
-      document.documentElement.removeAttribute("data-booting");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (booting) document.documentElement.removeAttribute("data-booting");
-  }, [booting]);
-
-  const handleDone = () => {
-    sessionStorage.setItem(SESSION_KEY, "0");
-    document.documentElement.removeAttribute("data-booting");
-    setBooting(false);
-  };
-
-  return (
-    <>
-      <AnimatePresence>
-        {booting && <LoadingScreen key="boot" onDone={handleDone} />}
-      </AnimatePresence>
-      {children}
-    </>
-  );
-}
+/** Boot UI only — wrapper lives in `LoadingScreenWrapper.tsx` to keep framer off the critical path when boot is disabled. */

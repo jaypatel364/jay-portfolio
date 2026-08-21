@@ -1,1 +1,1 @@
-export { GameZoneTrigger } from "./GameZone";
+export { GameZoneTrigger } from "./GameZoneTrigger";

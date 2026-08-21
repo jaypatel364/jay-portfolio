@@ -48,7 +48,13 @@ const nextConfig: NextConfig = {
   // Required so Next.js metadata keeps https://jaypateldev.com/ (not …com).
   trailingSlash: true,
   experimental: {
-    optimizePackageImports: ["lucide-react", "framer-motion", "react-icons"],
+    optimizePackageImports: [
+      "lucide-react",
+      "framer-motion",
+      "react-icons",
+      "react-icons/si",
+      "@radix-ui/react-dialog",
+    ],
   },
   images: {
     formats: ["image/avif", "image/webp"],

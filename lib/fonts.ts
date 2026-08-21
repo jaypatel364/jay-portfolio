@@ -51,7 +51,8 @@ export const spaceGrotesk = localFont({
   ],
   variable: "--font-space-grotesk",
   display: "swap",
-  preload: true,
+  // Display font — load without competing with Inter on the critical path
+  preload: false,
   adjustFontFallback: "Arial",
   fallback: ["system-ui", "sans-serif"],
 });
@@ -71,7 +72,8 @@ export const jetbrainsMono = localFont({
   ],
   variable: "--font-jetbrains-mono",
   display: "swap",
-  preload: true,
+  // Terminal / code only — defer so Inter wins FCP
+  preload: false,
   adjustFontFallback: false,
   fallback: ["ui-monospace", "monospace"],
 });

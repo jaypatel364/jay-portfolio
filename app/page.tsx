@@ -1,26 +1,46 @@
+import dynamic from "next/dynamic";
 import { homePageJsonLdSchemas } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { Suspense } from "react";
-import {
-  PageTransition,
-  PageTransitionItem,
-  Navbar,
-  ScrollProgressBar,
-  BackToTop,
-  LoadingScreenWrapper,
-  Footer,
-  GlobalCtaGate,
-  HomeOverlays,
-} from "@/components/layout";
+import { PageTransition, PageTransitionItem } from "@/components/layout/PageTransition";
+import { Navbar } from "@/components/layout/Navbar";
+import { ScrollProgressBar } from "@/components/layout/ScrollProgressBar";
+import { BackToTop } from "@/components/layout/BackToTop";
+import { LoadingScreenWrapper } from "@/components/layout/LoadingScreenWrapper";
+import { Footer } from "@/components/layout/Footer";
+import { GlobalCtaGate } from "@/components/layout/GlobalCtaGate";
+import { HomeOverlays } from "@/components/layout/HomeOverlays";
 import { SectionErrorBoundary } from "@/components/shared";
 import { HeroSection } from "@/components/sections/hero";
-import { AboutSection } from "@/components/sections/about";
-import { SkillsSection } from "@/components/sections/skills";
-import { ExperienceSection } from "@/components/sections/experience";
-import { EducationSection } from "@/components/sections/education";
-import { ProjectsSection } from "@/components/sections/projects";
-import { FAQSection } from "@/components/sections/faq";
+
+/** Below-fold sections — code-split so hero paints with less JS. SSR kept for SEO. */
+const sectionFallback = () => <div className="min-h-[32vh]" aria-hidden="true" />;
+
+const AboutSection = dynamic(
+  () => import("@/components/sections/about").then((m) => ({ default: m.AboutSection })),
+  { loading: sectionFallback },
+);
+const SkillsSection = dynamic(
+  () => import("@/components/sections/skills").then((m) => ({ default: m.SkillsSection })),
+  { loading: sectionFallback },
+);
+const ExperienceSection = dynamic(
+  () => import("@/components/sections/experience").then((m) => ({ default: m.ExperienceSection })),
+  { loading: sectionFallback },
+);
+const EducationSection = dynamic(
+  () => import("@/components/sections/education").then((m) => ({ default: m.EducationSection })),
+  { loading: sectionFallback },
+);
+const ProjectsSection = dynamic(
+  () => import("@/components/sections/projects").then((m) => ({ default: m.ProjectsSection })),
+  { loading: sectionFallback },
+);
+const FAQSection = dynamic(
+  () => import("@/components/sections/faq").then((m) => ({ default: m.FAQSection })),
+  { loading: sectionFallback },
+);
 
 export default function Home() {
   return (

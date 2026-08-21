@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Search, Palette, Check } from "lucide-react";
@@ -14,14 +15,38 @@ import { useAccent } from "@/hooks/use-accent";
 import { ACCENT_PRESETS } from "@/lib/accent-colors";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
-import {
-  CommandPalette,
-  ShortcutsOverlay,
-  ShortcutsTrigger,
-} from "@/components/features/command-palette";
-import { ResumeViewer } from "@/components/features/resume";
 import { AccentPicker } from "@/components/features/accent";
 import { Brand } from "@/components/shared";
+
+/** cmdk / resume stay out of the initial bundle until opened or idle. */
+const CommandPalette = dynamic(() =>
+  import("@/components/features/command-palette").then((m) => ({ default: m.CommandPalette })),
+);
+const ShortcutsOverlay = dynamic(() =>
+  import("@/components/features/command-palette/ShortcutsOverlay").then((m) => ({
+    default: m.ShortcutsOverlay,
+  })),
+);
+const ResumeViewer = dynamic(() =>
+  import("@/components/features/resume").then((m) => ({ default: m.ResumeViewer })),
+);
+
+function ShortcutsTrigger({ onClick, className }: { onClick: () => void; className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="Show keyboard shortcuts (?)"
+      title="Keyboard shortcuts"
+      className={cn(
+        "hidden rounded-lg border border-border bg-muted/50 px-2 py-1.5 font-mono text-xs font-semibold text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:inline-flex",
+        className,
+      )}
+    >
+      ?
+    </button>
+  );
+}
 
 /** Inline accent picker for the mobile menu — shows swatches in a row */
 function MobileAccentPicker() {
@@ -121,11 +146,34 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [chromeReady, setChromeReady] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        setScrolled(window.scrollY > 20);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  // Prefetch command palette / resume after first paint so ⌘K isn't cold.
+  useEffect(() => {
+    const mount = () => setChromeReady(true);
+    const ric = window.requestIdleCallback;
+    if (ric) {
+      const id = ric(mount, { timeout: 3500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = setTimeout(mount, 1);
+    return () => clearTimeout(id);
   }, []);
 
   // Global keyboard shortcuts
@@ -395,16 +443,18 @@ export function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Command palette — controlled from navbar search button */}
-      <CommandPalette
-        open={paletteOpen}
-        onOpenChange={setPaletteOpen}
-        onOpenShortcuts={() => setShortcutsOpen(true)}
-      />
-
-      {/* Keyboard shortcuts overlay */}
-      <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
-      <ResumeViewer />
+      {/* Heavy chrome — mount on demand or after idle to cut unused JS / TBT */}
+      {(paletteOpen || chromeReady) && (
+        <CommandPalette
+          open={paletteOpen}
+          onOpenChange={setPaletteOpen}
+          onOpenShortcuts={() => setShortcutsOpen(true)}
+        />
+      )}
+      {(shortcutsOpen || chromeReady) && (
+        <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+      )}
+      {(paletteOpen || chromeReady) && <ResumeViewer />}
     </header>
   );
 }

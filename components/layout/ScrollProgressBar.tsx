@@ -1,33 +1,42 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useSpring } from "framer-motion";
+import { useEffect, useRef } from "react";
 
+/** Top progress bar — CSS transform only (no framer / no layout reads beyond scrollY). */
 export function ScrollProgressBar() {
-  const [progress, setProgress] = useState(0);
-
-  // useSpring gives a smooth lag-free follow
-  const scaleX = useSpring(progress, { stiffness: 200, damping: 30, restDelta: 0.001 });
+  const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateProgress = () => {
-      const scrollTop = window.scrollY;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const el = barRef.current;
+      if (!el) return;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? scrollTop / docHeight : 0;
-      setProgress(pct);
+      const pct = docHeight > 0 ? window.scrollY / docHeight : 0;
+      el.style.transform = `scaleX(${pct})`;
     };
 
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    updateProgress(); // set on mount in case page is already scrolled
-    return () => window.removeEventListener("scroll", updateProgress);
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
-    <motion.div
+    <div
+      ref={barRef}
       aria-hidden="true"
-      className="fixed top-0 left-0 right-0 z-[60] h-[3px] origin-left"
+      className="fixed top-0 left-0 right-0 z-[60] h-[3px] origin-left will-change-transform"
       style={{
-        scaleX,
+        transform: "scaleX(0)",
         background:
           "linear-gradient(90deg, var(--primary) 0%, color-mix(in oklch, var(--primary) 70%, transparent) 100%)",
       }}

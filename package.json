@@ -21,6 +21,13 @@
     "node": "22.x",
     "git": ">=2.32.0"
   },
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 111",
+    "safari >= 16.4",
+    "not dead"
+  ],
   "dependencies": {
     "@fontsource/inter": "5.2.5",
     "@fontsource/jetbrains-mono": "5.2.5",
