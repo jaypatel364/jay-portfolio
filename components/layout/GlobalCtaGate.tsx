@@ -1,8 +1,10 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { shouldShowGlobalCta } from "@/lib/global-cta";
-import { GlobalCta } from "./GlobalCta";
+
+const GlobalCta = dynamic(() => import("./GlobalCta").then((m) => ({ default: m.GlobalCta })));
 
 /** Renders the global CTA above the footer when the route allows it. */
 export function GlobalCtaGate() {

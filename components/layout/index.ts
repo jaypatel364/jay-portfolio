@@ -2,7 +2,7 @@ export { Navbar } from "./Navbar";
 export { Footer } from "./Footer";
 export { PageTransition, PageTransitionItem } from "./PageTransition";
 export { PageReveal } from "./PageReveal";
-export { LoadingScreenWrapper } from "./LoadingScreen";
+export { LoadingScreenWrapper } from "./LoadingScreenWrapper";
 export { ScrollProgressBar } from "./ScrollProgressBar";
 export { BackToTop } from "./BackToTop";
 export { HomeOverlays } from "./HomeOverlays";

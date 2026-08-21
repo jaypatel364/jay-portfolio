@@ -8,13 +8,13 @@
 ## 1. Mental model (memorize this)
 
 ```
-app/page.tsx
-   └── composes layout + effects + sections
-         └── each section lives in components/sections/<name>/
-               └── local UI pieces + data stay beside that section
-         └── cross-cutting features live in components/features/<name>/
-settings/     ← all editable site data & SEO
-lib/          ← pure utils + thin re-exports (not a dumping ground)
+app/                  # Routes: /, /about, /skills, /work, /contact + APIs
+  └── pages compose layout + effects + sections
+        └── each section lives in components/sections/<name>/
+              └── local UI pieces + data stay beside that section
+        └── cross-cutting features live in components/features/<name>/
+settings/             # all editable site data & SEO (including pages.ts)
+lib/                  # pure utils + thin re-exports (not a dumping ground)
 ```
 
 **Rule of thumb:** if it is _page content_, it is a **section**. If it is _reusable across sections_ (chatbot, games, palette), it is a **feature**. If it is _chrome_ (nav, footer, loading), it is **layout**. If it is _global overlay_, it is an **effect**.
@@ -25,11 +25,11 @@ lib/          ← pure utils + thin re-exports (not a dumping ground)
 
 | Path                             | Purpose                         | Put new code here when…                              |
 | -------------------------------- | ------------------------------- | ---------------------------------------------------- |
-| `app/`                           | Routes & API only               | New page or API endpoint                             |
-| `settings/`                      | Identity, flags, content, SEO   | Changing name, toggles, FAQ, metadata                |
-| `components/sections/<section>/` | One home-page section           | Building UI for Hero, About, Skills, …               |
+| `app/`                           | Routes & API only               | New page (`/about`, `/work`, …) or API endpoint      |
+| `settings/`                      | Identity, flags, content, SEO   | Changing name, toggles, FAQ, page copy, metadata     |
+| `components/sections/<section>/` | Reusable page sections          | Building UI for Hero, About, Skills, …               |
 | `components/features/<feature>/` | Cross-cutting product features  | Games, chatbot, command palette                      |
-| `components/layout/`             | Shell chrome                    | Navbar, Footer, LoadingScreen, transitions           |
+| `components/layout/`             | Shell chrome                    | Navbar, Footer, LoadingScreen, inner page shell      |
 | `components/effects/`            | Global overlays                 | Cursor, easter eggs not tied to one section          |
 | `components/shared/`             | Tiny reused UI                  | Brand, headings, confetti, copy-email                |
 | `components/ui/`                 | **Used** shadcn primitives only | Adding via `npx shadcn@latest add …`                 |
@@ -52,7 +52,9 @@ settings/
   identity.ts   → who you are (name, email, links, career date)
   features.ts   → booleans + cursorEffect + allowIndexing
   content.ts    → FAQ, headline words, marquee, badges
+  pages.ts      → inner-route titles, heroes, CTAs
   chat.ts       → chatbot rates, system prompt, canned answers
+  projects.ts   → project / case-study data (when used)
   types.ts      → shared TS types
   seo.ts        → metadata + JSON-LD
   index.ts      → merges into `siteConfig`
@@ -74,6 +76,7 @@ import { features } from "@/settings/features";
 | Name / email / GitHub / resume PDF | `settings/identity.ts`                             |
 | Show/hide FAQ, games, loading, bug | `settings/features.ts`                             |
 | FAQ copy, headline words           | `settings/content.ts`                              |
+| Inner page titles / heroes         | `settings/pages.ts`                                |
 | Google title / OG / JSON-LD        | `settings/seo.ts`                                  |
 | Experience / education rows        | `lib/resume-data.ts`                               |
 | Skill list icons                   | `components/sections/skills/skill-data.ts`         |
@@ -194,19 +197,17 @@ If you are unsure: **if changing it changes what visitors see about Jay without 
 
 ## 9. Quick “where is X?”
 
-| Feature          | Location                                                      |
-| ---------------- | ------------------------------------------------------------- |
-| Home composition | `app/page.tsx`                                                |
-| Hero terminal    | `components/sections/hero/`                                   |
-| Skills sphere    | `components/sections/skills/SkillSphere.tsx`                  |
-| GitHub heatmap   | `components/sections/about/GitHubGraph.tsx`                   |
-| FAQ UI           | `components/sections/faq/`                                    |
-| Chatbot          | `components/features/chatbot/`                                |
-| Resume PDF       | `public/jay-patel-resume.pdf` + `components/features/resume/` |
-| Games hub        | `components/features/games/GameZone.tsx`                      |
-| Loading boot     | `components/layout/LoadingScreen.tsx`                         |
-| Site toggles     | `settings/features.ts`                                        |
-| SEO              | `settings/seo.ts`                                             |
+| Feature           | Location                                                      |
+| ----------------- | ------------------------------------------------------------- |
+| Home composition  | `app/page.tsx`                                                |
+| Inner routes      | `app/about`, `app/skills`, `app/work`, `app/contact`          |
+| Sections          | `components/sections/<name>/`                                 |
+| Chatbot / games   | `components/features/chatbot/`, `…/games/`                    |
+| Command palette   | `components/features/command-palette/`                        |
+| Resume PDF        | `public/jay-patel-resume.pdf` + `components/features/resume/` |
+| Layout / overlays | `components/layout/`, `components/effects/`                   |
+| Site toggles      | `settings/features.ts`                                        |
+| SEO               | `settings/seo.ts`                                             |
 
 ---
 
