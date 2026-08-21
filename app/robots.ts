@@ -16,14 +16,15 @@ export default function robots(): MetadataRoute.Robots {
     };
   }
 
-  const disallow = ["/api/"];
-  if (!features.showCaseStudies) disallow.push("/projects/");
-
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow,
+      disallow: [
+        "/api/",
+        // Legacy path (redirects to /work/)
+        "/projects/",
+      ],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
   };

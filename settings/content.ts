@@ -45,92 +45,131 @@ export const content = {
   faqItems: [
     {
       category: "work" as const,
-      question: "Are you currently available for new opportunities?",
+      question: "Are you available to hire as a full-stack developer?",
       answer:
-        "Yes — full-time roles and a few freelance builds. I work remotely from India " +
-        "(hybrid if it fits). Use the contact form or book a call.",
+        "Yes — full-time roles and select freelance builds. I work remotely from India " +
+        "(hybrid when it fits). Use the contact form or book a 15-minute call.",
     },
     {
       category: "tech" as const,
-      question: "What is your primary tech stack right now?",
+      question: "What tech stack do you use day to day?",
       answer:
         "React and Next.js with TypeScript on the frontend, Node.js and Express on the backend, " +
         "MongoDB or PostgreSQL for data. Tailwind, Docker, and AWS or Vercel for shipping. " +
-        "That's the same stack behind MiniList CMS and the Chat App on this site.",
+        "Same stack behind MiniList CMS and the Chat App on this site.",
     },
     {
       category: "process" as const,
-      question: "How do you approach a new project from scratch?",
+      question: "How do you start a new full-stack project?",
       answer:
-        "I start by understanding the problem deeply before writing a single line of code — " +
-        "requirements, users, constraints. Then I sketch the data model and API contract, " +
-        "set up the project scaffold with CI/CD from day one, build in small vertical slices, " +
-        "and iterate fast with regular feedback loops.",
+        "Problem first: users, constraints, success criteria. Then data model and API contract, " +
+        "scaffold with CI from day one, and ship in small vertical slices with regular feedback.",
     },
     {
       category: "work" as const,
       question: "Do you work remotely or on-site?",
       answer:
-        "Primarily remote from India since 2022. Hybrid is on the table " +
-        "when the team and the work make sense.",
+        "Mostly remote from India since late 2022. Hybrid is fine when the team and the work " +
+        "make that worthwhile.",
     },
     {
       category: "tech" as const,
-      question: "How do you keep your skills sharp and stay current?",
+      question: "Can you build real-time features and complex forms?",
       answer:
-        "I ship small things: Chat App, MiniList CMS, internal tools. I read Next.js and Node " +
-        "release notes. I learn fastest when something is in production.",
+        "Yes. I've shipped WebSocket chat (rooms, typing, seen) and configurable form platforms " +
+        "with 100+ flows — the kind of UI that has to feel instant and stay maintainable.",
     },
     {
       category: "personal" as const,
-      question: "What kind of work genuinely excites you?",
+      question: "What kind of product work do you want next?",
       answer:
-        "Work where the UI has to feel instant — real-time chat, big form systems, " +
-        "tools that disappear into the product. If it's complex underneath and quiet on the surface, that's the job.",
+        "Products where latency and clarity matter — real-time tools, heavy form systems, " +
+        "internal platforms teams use every day. Complex under the hood, quiet on the surface.",
     },
     {
       category: "process" as const,
-      question: "How do you handle tight deadlines and shifting requirements?",
+      question: "How do you handle tight deadlines and changing scope?",
       answer:
-        "Write the scope down first. When it moves, I say what slips, cut features, keep quality. " +
-        "I've shipped under deadline; silence is worse than a smaller release.",
+        "I write the scope down. When it moves, I say what slips, cut features, keep quality. " +
+        "A smaller honest release beats silence or a broken launch.",
     },
     {
       category: "personal" as const,
-      question: "What's something about you that isn't on your resume?",
+      question: "What's something about you that isn't on a resume?",
       answer:
-        "I'll spend an afternoon on a hover that nobody names but everyone feels. " +
-        "An internal HR tool I built saved the team hours every week — that quiet win still beats a loud launch.",
+        "I'll spend an afternoon on a hover nobody names but everyone feels. " +
+        "An internal HR tool I built saved the team hours every week — quiet wins still beat loud demos.",
     },
   ] as FAQItem[],
 
+  /**
+   * About page — “Who I am” (post-hero). Distinct from the home About strip:
+   * personal framing, principles, and snapshot — not a copy of home highlights.
+   */
+  whoAmI: {
+    label: "Who I am",
+    title: "Full-stack developer who owns the product path",
+    lead:
+      "I'm Jay Patel — a full-stack developer in India. I care about how a product feels and whether " +
+      "the API holds up. Most of my work is MERN: React, Next.js, Node.js, MongoDB or PostgreSQL.",
+    body: [
+      "I started professionally in late {year}. Since then I've lived in production systems — " +
+        "real-time chat, configurable form platforms with 100+ flows, HR and KYC tools, and mentoring juniors on the same codebases.",
+      "I prefer work where the hard part stays invisible: latency that disappears, forms that don't fight the user, " +
+        "deploys that don't wake anyone up. Reliability over demos.",
+    ],
+    principles: [
+      {
+        title: "Understand before building",
+        description:
+          "Requirements, users, and constraints first. Code comes after the problem is clear.",
+      },
+      {
+        title: "Own the whole path",
+        description:
+          "Architecture, UI, API, and deploy — one person accountable from sketch to production.",
+      },
+      {
+        title: "Ship in honest slices",
+        description:
+          "Small vertical releases, clear scope, and no surprise quality cuts when deadlines move.",
+      },
+    ],
+    snapshot: [
+      { label: "Based in", value: "India · remote-friendly" },
+      { label: "Focus", value: "React · Next.js · Node.js · MERN" },
+      { label: "Known for", value: "Real-time systems & complex forms" },
+      { label: "Open to", value: "Full-time & select freelance" },
+    ],
+  },
+
   /** Why Choose section — about page proof points + CTA. */
   whyChoose: {
-    label: "Why Choose Jay?",
-    title: "Why work with a full-stack developer who ships?",
+    label: "Why hire Jay",
+    title: "What you get with a full-stack hire who ships",
     intro:
-      "I build production MERN apps from India — real-time features, complex form flows, " +
-      "and frontends that stay fast under real users. You get one person who owns architecture through deploy.",
+      "Production MERN work from India — real-time features, heavy form flows, and frontends that " +
+      "stay fast with real users. One person owns architecture through deploy.",
     points: [
-      { icon: "briefcase", text: "Years of production full-stack experience" },
+      { icon: "briefcase", text: "Production full-stack experience since 2022" },
       { icon: "rocket", text: "MERN apps shipped end-to-end" },
       { icon: "zap", text: "Real-time systems & 100+ form flows built" },
       { icon: "shield", text: "TypeScript-first, tested, maintainable code" },
       { icon: "layers", text: "Owns architecture, API, UI, and deployment" },
-      { icon: "users", text: "Agile mindset with clear, honest updates" },
-      { icon: "globe", text: "Remote-ready — India, open to hybrid" },
+      { icon: "users", text: "Clear updates — scope, risks, and trade-offs named early" },
+      { icon: "globe", text: "Remote from India · open to hybrid" },
       { icon: "graduation", text: "Mentored juniors on real production code" },
       { icon: "clock", text: "On-time delivery with scope you can trust" },
     ] as { icon: string; text: string }[],
     visualCaption:
-      "From wireframe to production — I focus on products that feel fast, stay reliable, and scale without drama.",
+      "From sketch to production — products that feel fast, stay reliable, and don't surprise you at deploy time.",
     cta: {
-      title: "Let's start your",
-      titleHighlight: "next project",
-      titleSuffix: "together",
+      title: "Ready to talk about",
+      titleHighlight: "your next hire",
+      titleSuffix: "or build?",
       description:
-        "Full-time roles and freelance builds — reach out for a quick intro or a scoped quote. I reply to every message.",
-      button: "Get in touch",
+        "Full-time roles and freelance scopes — intro call or a short written brief. I reply to every message.",
+      button: "Contact Jay",
     },
   },
 
@@ -139,11 +178,11 @@ export const content = {
    * Titles + copy are keyword-aware for SEO; keep descriptions concise.
    */
   services: {
-    label: "What I Build",
-    title: "Full-stack development services I ship for real products",
+    label: "Services",
+    title: "Full-stack development services for product teams",
     intro:
-      "From React and Next.js frontends to Node.js APIs, real-time features, and production deploys — " +
-      "here’s how I help teams turn ideas into reliable software.",
+      "React and Next.js on the frontend, Node.js APIs, real-time features, databases, and deploys — " +
+      "how I help teams turn a brief into software people can use.",
     items: [
       {
         icon: "layout",
@@ -269,13 +308,13 @@ export const content = {
   /** Dedicated /contact page — quick panel + form intro. */
   contactPage: {
     intro:
-      "Tell me about your role, product, or freelance scope. I read every message and reply within a day — " +
-      "usually much sooner on weekdays.",
+      "Tell me about the role, product, or freelance scope. I read every message and reply within a day — " +
+      "usually sooner on weekdays.",
     quickContactTitle: "Quick contact",
     profilesTitle: "Find me online",
-    profilesIntro: "Prefer a profile you already use? Connect there or book a short intro call.",
+    profilesIntro: "Prefer LinkedIn or GitHub? Connect there, or book a short intro call.",
     formTitle: "Send a message",
-    formIntro: "Share a few details and I’ll get back with next steps — no auto-reply fluff.",
+    formIntro: "A few details is enough — I’ll reply with next steps, not an auto-reply.",
     availability: [
       { icon: "clock", text: "Replies within 24 hours" },
       { icon: "globe", text: "Remote from India" },
@@ -285,13 +324,12 @@ export const content = {
       label: "Background",
       title: "Teams I've shipped with",
       intro:
-        "Production MERN work for product teams — here's where the day-to-day experience comes from.",
+        "Production MERN work for product teams — day-to-day experience comes from these environments.",
     },
     explore: {
-      label: "Explore first",
-      title: "Want to see the work before reaching out?",
-      intro:
-        "Browse projects, the full stack, or my background — then come back when you're ready to talk.",
+      label: "Before you write",
+      title: "Want context before you reach out?",
+      intro: "Browse work, skills, or background — then come back when you're ready to talk.",
       items: [
         {
           page: "work",
@@ -300,8 +338,7 @@ export const content = {
         },
         {
           page: "skills",
-          description:
-            "Complete stack breakdown, services I ship, and the process behind each delivery.",
+          description: "Full stack breakdown, services, and the process behind each delivery.",
         },
         {
           page: "about",
@@ -313,68 +350,166 @@ export const content = {
 
   /** Skills page — full catalog copy (SEO). Homepage keeps the interactive preview. */
   skillsPage: {
-    catalogTitle: "Complete tech stack breakdown",
+    catalogLabel: "Tech stack",
+    catalogTitle: "Full tech stack — frontend, backend, and DevOps",
     catalogIntro:
-      "Every tool listed here is something I've used in production — not a buzzword dump. " +
-      "Grouped by layer so you can see exactly where React, Next.js, Node.js, MongoDB, and PostgreSQL fit in my day-to-day work.",
-    categories: {
-      Frontend:
-        "React and Next.js with TypeScript for UIs that feel instant — App Router, server components where they help, and Tailwind for consistent design systems.",
-      Backend:
-        "Node.js and Express (or NestJS) for APIs that stay predictable under load — REST, GraphQL, WebSockets, and clear auth boundaries.",
-      "Tools & DevOps":
-        "Git, Docker, AWS, and CI habits that get code live without drama — plus testing and design tools that keep quality high.",
-    } as Record<string, string>,
+      "Tools I've used in production, grouped by layer: React and Next.js on the client, " +
+      "Node.js APIs, MongoDB or PostgreSQL, Redis when latency matters, Docker and AWS to ship.",
+    /** Short pipeline labels — how a request moves through the stack. */
+    pipeline: [
+      { id: "client", label: "Interface", detail: "React · Next.js" },
+      { id: "api", label: "API", detail: "Node · Express" },
+      { id: "data", label: "Data", detail: "Mongo · Postgres · Redis" },
+      { id: "ship", label: "Ship", detail: "Docker · AWS · CI" },
+    ] as { id: string; label: string; detail: string }[],
+    /** Per-layer narrative: SEO body + user / builder / shipping angles. */
+    layers: {
+      Frontend: {
+        summary:
+          "React and Next.js with TypeScript for UIs that feel instant — App Router, server components where they help, and Tailwind for consistent design systems.",
+        userLens:
+          "Pages load fast, layouts stay consistent, and interactions feel immediate — forms, dashboards, and chat UIs that don’t fight the user.",
+        builderLens:
+          "Component-driven React, typed props, and Next.js routing so features ship as vertical slices instead of fragile page rewrites.",
+        shippingLens:
+          "Accessible markup, Core Web Vitals awareness, and design-system tokens so the UI stays maintainable as the product grows.",
+        highlights: [
+          "TypeScript-first components",
+          "App Router & SSR where it helps",
+          "Design-system friendly Tailwind",
+        ],
+      },
+      Backend: {
+        summary:
+          "Node.js and Express (or NestJS) for APIs that stay predictable under load — REST, GraphQL, WebSockets, and clear auth boundaries.",
+        userLens:
+          "Actions complete reliably — saves stick, live updates arrive, and errors are honest instead of silent failures.",
+        builderLens:
+          "Clear API contracts, validation at the edge, and data models that match the product — MongoDB or PostgreSQL by use case, Redis when latency matters.",
+        shippingLens:
+          "Auth boundaries, logging, and retries so third-party integrations and real-time channels hold up in production.",
+        highlights: [
+          "REST, GraphQL & WebSockets",
+          "MongoDB · PostgreSQL · Redis",
+          "Auth, validation & contracts",
+        ],
+      },
+      "Tools & DevOps": {
+        summary:
+          "Git, Docker, AWS, and CI habits that get code live without drama — plus testing and design tools that keep quality high.",
+        userLens:
+          "Releases show up when promised. Fewer regressions, clearer handovers, and a product that keeps working after launch day.",
+        builderLens:
+          "Dockerised environments, GitHub workflows, and tests around the risky paths — so the team can move without fear of the deploy button.",
+        shippingLens:
+          "From local `docker compose` to AWS or Vercel — monitoring-minded deploys and docs so the next person isn’t guessing.",
+        highlights: ["Docker & cloud deploys", "GitHub · CI habits", "Jest · Vitest · Figma"],
+      },
+    } as Record<
+      string,
+      {
+        summary: string;
+        userLens: string;
+        builderLens: string;
+        shippingLens: string;
+        highlights: string[];
+      }
+    >,
+    /** Always-visible principles — crawlable + trust. */
+    approach: {
+      title: "How I pick and use this stack",
+      items: [
+        {
+          title: "Product first, tools second",
+          description:
+            "I pick React, Next.js, Node.js, and the database that fits the problem — not the trend of the week.",
+        },
+        {
+          title: "One coherent system",
+          description:
+            "Frontend, API, and data are designed together so features ship as full slices users can actually try.",
+        },
+        {
+          title: "Production from day one",
+          description:
+            "Types, tests on critical paths, and deployable scaffolding early — so “almost done” means “ready to ship.”",
+        },
+        {
+          title: "Clear enough to hand over",
+          description:
+            "Readable contracts, sensible structure, and docs so another engineer can extend the work without archaeology.",
+        },
+      ] as { title: string; description: string }[],
+    },
     workStrip: {
       label: "In production",
-      title: "Where this stack shows up",
+      title: "Projects that use this stack",
       intro:
-        "Real MERN builds — not tutorial demos. A quick look at projects that put these skills to work in production.",
+        "MERN builds already live — a quick look at work that put these skills into production, not tutorials.",
     },
   },
 
   /** Skills page — delivery process (SEO + trust). */
   process: {
     label: "Process",
-    title: "How I take a project from idea to production",
+    title: "How a project moves from idea to production",
     intro:
-      "Clear steps, honest scope, and small releases — so you always know where things stand and what ships next.",
+      "Written scope, small releases, and honest status — so you always know what’s shipping next.",
     steps: [
       {
         icon: "compass",
         title: "Discover",
         description:
-          "Understand the problem, users, and constraints before writing code. Requirements, edge cases, and success metrics get written down first.",
+          "Users, constraints, and success criteria before code. Edge cases and scope get written down first.",
       },
       {
         icon: "layers",
         title: "Architect",
         description:
-          "Data model, API contracts, and UI flows — scoped into vertical slices. CI/CD and project scaffold go up on day one.",
+          "Data model, API contracts, and UI flows in vertical slices. CI and scaffold go up on day one.",
       },
       {
         icon: "rocket",
         title: "Ship",
         description:
-          "Build in small, demoable increments with regular feedback. Each slice is tested, reviewed, and ready to deploy.",
+          "Small demoable increments with feedback. Each slice is tested, reviewed, and ready to deploy.",
       },
       {
         icon: "life-buoy",
         title: "Support",
         description:
-          "Handover docs, monitoring, and fixes after launch. Ongoing refactors and mentoring so the codebase stays healthy.",
+          "Handover docs, monitoring, and fixes after launch. Refactors and mentoring so the codebase stays healthy.",
       },
     ] as { icon: string; title: string; description: string }[],
   },
 
-  /** Work page — stats bar labels + stack link strip. */
+  /** Work page — stats bar labels + catalog + stack link strip. */
   workPage: {
+    statsLabel: "At a glance",
+    catalog: {
+      label: "Selected work",
+      title: "Full-stack projects and case studies",
+      intro:
+        "Filter by fullstack, frontend, or backend — then open the builds that shipped to production.",
+    },
     stackLinks: {
       label: "Tech stack",
-      title: "Technologies used across this work",
+      title: "Technologies used across these projects",
       intro:
-        "Every tag below is a tool used in at least one of these projects. See the full breakdown — grouped by layer — on the skills page.",
+        "Click a tool to see which projects used it. Tags come from the builds above — open Skills for the full layer catalog.",
       cta: "Explore the full stack",
+      hint: "Click a technology",
+      usedIn: "Used in",
+      idle: "Pick a technology on the left to see where it shipped.",
+    },
+    comingSoon: {
+      label: "Project page",
+      badge: "Coming soon",
+      headline: "Case study in progress",
+      body: "A full write-up — problem, decisions, and screenshots — is on the way. Until then, use the live demo or source when available.",
+      back: "Back to all work",
+      statusSteps: ["Brief locked", "Draft in progress", "Polish & publish"],
+      activeStep: 1,
     },
   },
 };

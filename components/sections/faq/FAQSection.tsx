@@ -68,7 +68,7 @@ export function FAQSection() {
             <span className="h-px w-12 bg-border" />
           </motion.div> */}
 
-          <SectionHeading label="FAQ" title="Questions hiring teams ask" />
+          <SectionHeading label="FAQ" title="Hiring a full-stack developer — FAQ" />
 
           <motion.p
             initial={reduced ? false : { opacity: 0, y: 12 }}

@@ -3,54 +3,148 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Code2, ExternalLink, Lock } from "lucide-react";
+import {
+  Boxes,
+  Code2,
+  ExternalLink,
+  Layout,
+  Lock,
+  Server,
+  ArrowUpRight,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { features } from "@/settings/features";
-import { PROJECTS, PROJECT_FILTERS, type Project } from "@/settings/projects";
+import { siteConfig } from "@/lib/site-config";
+import { PROJECTS, PROJECT_FILTERS, projectHref, type Project } from "@/settings/projects";
 import { ProjectVisual } from "./ProjectVisual";
 
 type Filter = (typeof PROJECT_FILTERS)[number];
 
+const FILTER_META: Record<Filter, { label: string; icon: LucideIcon }> = {
+  all: { label: "All", icon: Boxes },
+  fullstack: { label: "Fullstack", icon: Layout },
+  frontend: { label: "Frontend", icon: Code2 },
+  backend: { label: "Backend", icon: Server },
+};
+
+function filterCount(filter: Filter) {
+  if (filter === "all") return PROJECTS.length;
+  return PROJECTS.filter((p) => p.category === filter).length;
+}
+
 export function WorkProjectsSection() {
   const [filter, setFilter] = useState<Filter>("all");
+  const { catalog } = siteConfig.workPage;
+
   const filtered = filter === "all" ? PROJECTS : PROJECTS.filter((p) => p.category === filter);
 
   return (
-    <section id="work-catalog" className="mt-8 md:mt-10" aria-labelledby="work-catalog-heading">
-      <h2 id="work-catalog-heading" className="sr-only">
-        All selected projects
-      </h2>
+    <section
+      id="work-catalog"
+      className="relative mt-12 md:mt-16"
+      aria-labelledby="work-catalog-heading"
+    >
+      <div className="pointer-events-none absolute inset-x-0 top-24 -z-10 mx-auto h-64 max-w-3xl rounded-full bg-primary/5 blur-3xl" />
 
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="flex flex-wrap items-center justify-center gap-1 md:gap-2"
-        role="tablist"
-        aria-label="Filter work by category"
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="mx-auto max-w-3xl text-center"
       >
-        {PROJECT_FILTERS.map((f) => (
-          <button
-            key={f}
-            type="button"
-            role="tab"
-            aria-selected={filter === f}
-            onClick={() => setFilter(f)}
-            className={cn(
-              "relative rounded-lg px-4 py-2 text-sm font-medium capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-              filter === f ? "text-primary" : "text-muted-foreground hover:text-foreground",
-            )}
+        <span className="text-sm font-semibold uppercase tracking-widest text-primary">
+          {catalog.label}
+        </span>
+        <h2
+          id="work-catalog-heading"
+          className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl"
+        >
+          {catalog.title}
+        </h2>
+        <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+          {catalog.intro}
+        </p>
+      </motion.div>
+
+      {/* Solid filter toolbar — matches skills catalog controls */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.45, delay: 0.05 }}
+        className="sticky top-20 z-20 mt-8 flex flex-col items-center gap-3 sm:mt-10"
+      >
+        <div
+          className={cn(
+            "flex max-w-full items-center gap-0.5 overflow-x-auto rounded-2xl border border-border/70 bg-card/90 p-1.5 shadow-sm backdrop-blur-md",
+            "scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+          )}
+          role="tablist"
+          aria-label="Filter work by category"
+        >
+          {PROJECT_FILTERS.map((f) => {
+            const meta = FILTER_META[f];
+            const Icon = meta.icon;
+            const selected = filter === f;
+            const count = filterCount(f);
+
+            return (
+              <button
+                key={f}
+                type="button"
+                role="tab"
+                aria-selected={selected}
+                onClick={() => setFilter(f)}
+                className={cn(
+                  "relative inline-flex shrink-0 items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-semibold transition-colors",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                  selected ? "text-primary" : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {selected && (
+                  <motion.div
+                    layoutId="work-filter-active"
+                    className="absolute inset-0 rounded-xl bg-primary/10 shadow-[inset_0_0_0_1px] shadow-primary/20"
+                    transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                  />
+                )}
+                <Icon className="relative z-10 h-3.5 w-3.5" aria-hidden />
+                <span className="relative z-10">{meta.label}</span>
+                <span
+                  className={cn(
+                    "relative z-10 rounded-full px-1.5 py-0.5 text-[10px] font-bold tabular-nums",
+                    selected ? "bg-primary/15 text-primary" : "bg-muted/80 text-muted-foreground",
+                  )}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* <AnimatePresence mode="wait">
+          <motion.p
+            key={filter}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2 }}
+            className="text-xs font-medium text-muted-foreground"
+            aria-live="polite"
           >
-            {filter === f && (
-              <motion.div
-                layoutId="work-filter-active"
-                className="absolute inset-0 rounded-lg bg-primary/10"
-                transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              />
+            Showing{" "}
+            <span className="tabular-nums text-foreground">{filtered.length}</span>{" "}
+            {filtered.length === 1 ? "project" : "projects"}
+            {filter !== "all" && (
+              <>
+                {" "}
+                in <span className="text-foreground">{FILTER_META[filter].label}</span>
+              </>
             )}
-            <span className="relative z-10">{f}</span>
-          </button>
-        ))}
+          </motion.p>
+        </AnimatePresence> */}
       </motion.div>
 
       <AnimatePresence mode="wait">
@@ -60,7 +154,7 @@ export function WorkProjectsSection() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-12 space-y-16 md:space-y-24"
+          className="mt-10 space-y-10 md:mt-14 md:space-y-16"
         >
           {filtered.map((project, i) => (
             <ZigzagRow key={project.slug} project={project} reverse={i % 2 === 1} index={i} />
@@ -99,7 +193,7 @@ function ZigzagRow({
         {project.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-full border border-primary/15 bg-primary/5 px-2.5 py-1 text-[11px] font-medium text-primary"
+            className="rounded-full border border-primary/15 bg-primary/5 px-2.5 py-1 text-[11px] font-medium text-primary transition-colors"
           >
             {tag}
           </span>
@@ -115,7 +209,16 @@ function ZigzagRow({
         {project.tagline}
       </p>
       <h3 className="font-heading mt-1.5 text-2xl font-bold tracking-tight sm:text-3xl">
-        {project.title}
+        {project.nda ? (
+          project.title
+        ) : (
+          <Link
+            href={projectHref(project)}
+            className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            {project.title}
+          </Link>
+        )}
       </h3>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
         {project.desc}
@@ -132,9 +235,9 @@ function ZigzagRow({
         </ul>
       )}
 
-      <div className="mt-6 flex flex-wrap items-center gap-4">
+      <div className="mt-6 flex flex-wrap items-center gap-3">
         {project.nda ? (
-          <p className="flex select-none items-center gap-1.5 text-xs text-muted-foreground/70">
+          <p className="flex select-none items-center gap-1.5 rounded-xl border border-border/80 bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
             <Lock className="h-3.5 w-3.5 shrink-0" />
             Code &amp; demo unavailable under NDA
           </p>
@@ -145,7 +248,10 @@ function ZigzagRow({
                 href={project.codeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary"
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-sm font-semibold text-muted-foreground",
+                  "transition-all hover:border-primary/30 hover:text-primary hover:shadow-sm",
+                )}
               >
                 <Code2 className="h-4 w-4" />
                 Code
@@ -156,37 +262,48 @@ function ZigzagRow({
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition-colors hover:text-primary"
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-sm font-semibold text-muted-foreground",
+                  "transition-all hover:border-primary/30 hover:text-primary hover:shadow-sm",
+                )}
               >
                 <ExternalLink className="h-4 w-4" />
                 Live demo
               </a>
             )}
-            {features.showCaseStudies && project.caseStudy && (
-              <Link
-                href={`/projects/${project.slug}/`}
-                className="inline-flex items-center gap-1.5 rounded-full gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
-              >
-                Case study
-              </Link>
-            )}
+            <Link
+              href={projectHref(project)}
+              className="inline-flex items-center gap-1.5 rounded-full gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
+            >
+              View project
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
           </>
         )}
         <span className="rounded-full border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-          {project.category}
+          {FILTER_META[project.category]?.label ?? project.category}
         </span>
       </div>
     </div>
   );
 
-  const visual = (
-    <div className="group">
+  const visual = project.nda ? (
+    <div className="group relative">
       <ProjectVisual
         project={project}
         size="feature"
         className="transition-transform duration-500 group-hover:scale-[1.015]"
       />
     </div>
+  ) : (
+    <Link href={projectHref(project)} className="group relative block">
+      <div className="pointer-events-none absolute -inset-3 -z-10 rounded-3xl bg-primary/0 opacity-0 blur-2xl transition-all duration-500 group-hover:bg-primary/10 group-hover:opacity-100" />
+      <ProjectVisual
+        project={project}
+        size="feature"
+        className="transition-transform duration-500 group-hover:scale-[1.015]"
+      />
+    </Link>
   );
 
   return (
@@ -196,6 +313,7 @@ function ZigzagRow({
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, delay: Math.min(index * 0.04, 0.16), ease: [0.22, 1, 0.36, 1] }}
       className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14"
+      id={`project-${project.slug}`}
     >
       <div className={cn(reverse && "lg:order-2")}>{copy}</div>
       <div className={cn(reverse && "lg:order-1")}>{visual}</div>

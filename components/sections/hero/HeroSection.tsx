@@ -24,11 +24,11 @@ export function HeroSection() {
             <span className="gradient-text-animated">{siteConfig.fullName}</span>
           </h1>
           <p className="mt-3 text-base font-medium uppercase tracking-[0.2em] text-muted-foreground">
-            Full Stack Developer
+            Full Stack Developer · India
           </p>
           <p className="mt-6 text-base leading-relaxed text-muted-foreground mx-auto max-w-lg lg:mx-0">
-            Full stack developer in India. {expLabel} years with React, Next.js, and Node.js —
-            real-time apps, large form systems, and MERN work that ships.
+            {expLabel} years with React, Next.js, and Node.js — real-time apps, large form systems,
+            and production MERN work. Open to full-time and freelance.
           </p>
         </header>
         <HeroInteractive expLabel={expLabel} withTerminal={withTerminal} />

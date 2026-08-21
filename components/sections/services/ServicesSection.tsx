@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  ArrowUpRight,
   Database,
   FileStack,
   Gauge,
@@ -15,10 +14,8 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
-import { innerPages } from "@/settings/pages";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   layout: Layout,
@@ -32,23 +29,9 @@ const ICON_MAP: Record<string, LucideIcon> = {
   wrench: Wrench,
 };
 
-/** Soft checkerboard tones using theme tokens (light + dark safe). */
-const CARD_TONES = [
-  "bg-primary/[0.06] hover:bg-primary/[0.1]",
-  "bg-muted/70 hover:bg-muted",
-  "bg-primary/[0.06] hover:bg-primary/[0.1]",
-  "bg-muted/70 hover:bg-muted",
-  "bg-primary/[0.06] hover:bg-primary/[0.1]",
-  "bg-muted/70 hover:bg-muted",
-  "bg-primary/[0.06] hover:bg-primary/[0.1]",
-  "bg-muted/70 hover:bg-muted",
-  "bg-primary/[0.06] hover:bg-primary/[0.1]",
-] as const;
-
 export function ServicesSection() {
   const { services } = siteConfig;
   const [hovered, setHovered] = useState<number | null>(null);
-  const contactHref = `${innerPages.contact.path}/`;
 
   return (
     <section id="services" aria-labelledby="services-heading" className="relative py-10 md:py-16">
@@ -97,14 +80,13 @@ export function ServicesSection() {
               >
                 <article
                   className={cn(
-                    "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 p-6 transition-all duration-300 sm:p-7",
-                    CARD_TONES[i % CARD_TONES.length],
+                    "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card p-6 transition-all duration-300 sm:p-7",
                     isActive && "border-primary/35 shadow-glow -translate-y-1",
                   )}
                 >
                   <div
                     className={cn(
-                      "pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-primary/10 blur-2xl transition-opacity duration-300",
+                      "pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[0.06] via-transparent to-transparent transition-opacity duration-300",
                       isActive ? "opacity-100" : "opacity-0",
                     )}
                   />
@@ -112,7 +94,7 @@ export function ServicesSection() {
                   <div className="relative flex items-start justify-between gap-3">
                     <span
                       className={cn(
-                        "inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/15 bg-background/70 text-primary shadow-sm transition-all duration-300",
+                        "inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/15 bg-primary/10 text-primary transition-all duration-300",
                         isActive &&
                           "scale-105 border-primary/40 bg-primary text-primary-foreground shadow-glow",
                       )}

@@ -154,6 +154,10 @@ export function RecaptchaCheckbox({
     <div className="space-y-1.5">
       <p className="text-sm font-medium" id={`${instanceId}-label`}>
         Verification
+        <span className="ml-0.5 text-destructive" aria-hidden="true">
+          *
+        </span>
+        <span className="sr-only">(required)</span>
       </p>
       <div className="overflow-x-auto">
         <div

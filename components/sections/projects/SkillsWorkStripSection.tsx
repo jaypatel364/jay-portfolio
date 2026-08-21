@@ -7,13 +7,13 @@ import { SectionPageCta } from "@/components/shared";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import { innerPages } from "@/settings/pages";
-import { HOME_PROJECT_COUNT, PROJECTS } from "@/settings/projects";
+import { HOME_PROJECT_COUNT, publicProjects, projectHref } from "@/settings/projects";
 import { ProjectVisual } from "./ProjectVisual";
 
 /** Skills page — compact preview of production work built with the listed stack. */
 export function SkillsWorkStripSection() {
   const copy = siteConfig.skillsPage.workStrip;
-  const preview = PROJECTS.slice(0, HOME_PROJECT_COUNT);
+  const preview = publicProjects().slice(0, HOME_PROJECT_COUNT);
 
   return (
     <section
@@ -71,7 +71,12 @@ export function SkillsWorkStripSection() {
                   {project.tagline}
                 </p>
                 <h3 className="font-heading mt-1 text-lg font-bold leading-snug">
-                  {project.title}
+                  <Link
+                    href={projectHref(project)}
+                    className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  >
+                    {project.title}
+                  </Link>
                 </h3>
                 <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
                   {project.desc}
@@ -88,13 +93,13 @@ export function SkillsWorkStripSection() {
                   ))}
                 </div>
 
-                {/* <Link
-                  href={`${innerPages.work.path}/`}
+                <Link
+                  href={projectHref(project)}
                   className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary/80"
                 >
-                  View on work page
+                  View project
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </Link> */}
+                </Link>
               </div>
             </motion.article>
           ))}

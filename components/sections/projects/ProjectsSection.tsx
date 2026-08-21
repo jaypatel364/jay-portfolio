@@ -7,7 +7,7 @@ import { ExternalLink, Code2, Lock, Hammer, ChevronDown } from "lucide-react";
 import { SectionHeading, SectionPageCta } from "@/components/shared";
 import { innerPages } from "@/settings/pages";
 import { cn } from "@/lib/utils";
-import { PROJECTS, HOME_PROJECT_COUNT } from "@/settings/projects";
+import { PROJECTS, HOME_PROJECT_COUNT, projectHref } from "@/settings/projects";
 import { features } from "@/settings/features";
 import { ProjectVisual } from "./ProjectVisual";
 
@@ -86,7 +86,7 @@ export function ProjectsSection() {
   return (
     <section id="work" className="px-6 py-14 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading label="Work" title="Selected work" />
+        <SectionHeading label="Work" title="Selected full-stack projects" />
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {preview.map((project, i) => (
@@ -118,7 +118,16 @@ export function ProjectsSection() {
                   {project.tagline}
                 </p>
                 <h3 className="font-heading mt-1 text-lg font-bold leading-snug">
-                  {project.title}
+                  {project.nda ? (
+                    project.title
+                  ) : (
+                    <Link
+                      href={projectHref(project)}
+                      className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    >
+                      {project.title}
+                    </Link>
+                  )}
                 </h3>
                 <div className="mt-2.5 flex flex-1 flex-col">
                   <ExpandableDesc text={project.desc} />
@@ -169,14 +178,12 @@ export function ProjectsSection() {
                           Demo
                         </a>
                       )}
-                      {features.showCaseStudies && project.caseStudy && (
-                        <Link
-                          href={`/projects/${project.slug}`}
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                        >
-                          Case study
-                        </Link>
-                      )}
+                      <Link
+                        href={projectHref(project)}
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                      >
+                        {features.showCaseStudies && project.caseStudy ? "Case study" : "Details"}
+                      </Link>
                       {project.wip && (
                         <span className="inline-flex items-center gap-1 text-xs text-primary/70">
                           <Hammer className="h-3 w-3" />

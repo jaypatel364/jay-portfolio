@@ -14,12 +14,17 @@ export function SectionPageCta({ href, children, className }: SectionPageCtaProp
     <Link
       href={href}
       className={cn(
-        "group inline-flex items-center gap-2 rounded-xl border border-primary/20 bg-primary/5 px-6 py-3 text-sm font-semibold text-primary transition-all duration-200 hover:border-primary/40 hover:bg-primary/10",
+        "group inline-flex items-center gap-3 rounded-full border border-border bg-card",
+        "px-5 py-2.5 text-sm font-semibold text-foreground",
+        "transition-all duration-200 hover:border-primary/35 hover:bg-primary/5 hover:text-primary",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
         className,
       )}
     >
       {children}
-      <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+        <ArrowUpRight className="h-3.5 w-3.5" />
+      </span>
     </Link>
   );
 }

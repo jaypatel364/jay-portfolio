@@ -223,13 +223,57 @@ export function publicCaseStudies(): Project[] {
   return PROJECTS.filter((p) => p.caseStudy && !p.nda);
 }
 
+/** Non-NDA projects — the only ones with a public `/work/<slug>/` page. */
+export function publicProjects(): Project[] {
+  return PROJECTS.filter((p) => !p.nda);
+}
+
 export function getProjectBySlug(slug: string): Project | undefined {
   return PROJECTS.find((p) => p.slug === slug);
+}
+
+/** Canonical project URL — `/work/<slug>/` (trailing slash matches next.config). */
+export function projectPath(slug: string): string {
+  return `/work/${slug}/`;
+}
+
+/**
+ * Where UI should send users for a project.
+ * Public → `/work/<slug>/`. NDA → catalog anchor on `/work/` (no detail page).
+ */
+export function projectHref(project: Pick<Project, "slug" | "nda">): string {
+  if (project.nda) return `/work/#project-${project.slug}`;
+  return projectPath(project.slug);
 }
 
 /** Unique tech tags across all projects — for work-page stack links. */
 export function getProjectStackTags(): string[] {
   return [...new Set(PROJECTS.flatMap((p) => p.tags))].sort((a, b) => a.localeCompare(b));
+}
+
+/** Tag → which projects use it (sorted by usage, then name). */
+export function getProjectStackUsage(): {
+  tag: string;
+  count: number;
+  projects: { slug: string; title: string; nda?: true }[];
+}[] {
+  const map = new Map<string, { slug: string; title: string; nda?: true }[]>();
+
+  for (const project of PROJECTS) {
+    for (const tag of project.tags) {
+      const list = map.get(tag) ?? [];
+      list.push({
+        slug: project.slug,
+        title: project.title,
+        ...(project.nda ? { nda: true as const } : {}),
+      });
+      map.set(tag, list);
+    }
+  }
+
+  return [...map.entries()]
+    .map(([tag, projects]) => ({ tag, count: projects.length, projects }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
 }
 
 /** Aggregate counts for the work-page stats bar. */

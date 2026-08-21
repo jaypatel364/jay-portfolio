@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { ACCENT_PRESETS, ACCENT_STORAGE_KEY } from "@/lib/accent-colors";
 import { siteConfig } from "@/lib/site-config";
-import { PRIMARY_NAV } from "@/lib/nav";
+import { PRIMARY_NAV, SECTION_JUMP_NAV } from "@/lib/nav";
 import { navigateToNavItem } from "@/lib/navigate";
 import { openResumeViewer } from "@/components/features/resume";
 import { useTheme } from "@/hooks/use-theme";
@@ -57,7 +57,12 @@ const NAV_ICONS: Record<string, typeof Home> = {
   contact: Mail,
 };
 
-const NAV_ITEMS = PRIMARY_NAV.map((item) => ({
+const PAGE_ITEMS = PRIMARY_NAV.map((item) => ({
+  ...item,
+  icon: NAV_ICONS[item.id] ?? Home,
+}));
+
+const JUMP_ITEMS = SECTION_JUMP_NAV.map((item) => ({
   ...item,
   icon: NAV_ICONS[item.id] ?? Home,
 }));
@@ -93,7 +98,7 @@ export function CommandPalette({
   // ⌘K / Ctrl+K is handled by Navbar's global listener to coordinate
   // with the shortcuts overlay. No listener needed here.
 
-  const goTo = (item: (typeof NAV_ITEMS)[number]) => {
+  const goTo = (item: (typeof PAGE_ITEMS)[number] | (typeof JUMP_ITEMS)[number]) => {
     setOpen(false);
     setTimeout(() => navigateToNavItem(item, { pathname, router }), 80);
   };
@@ -110,12 +115,12 @@ export function CommandPalette({
         <CommandEmpty>No results found.</CommandEmpty>
 
         {/* Navigation */}
-        <CommandGroup heading="Navigate">
-          {NAV_ITEMS.map(({ id, label, icon: Icon }) => (
+        <CommandGroup heading="Pages">
+          {PAGE_ITEMS.map(({ id, label, icon: Icon }) => (
             <CommandItem
               key={id}
               value={label}
-              onSelect={() => goTo(NAV_ITEMS.find((n) => n.id === id)!)}
+              onSelect={() => goTo(PAGE_ITEMS.find((n) => n.id === id)!)}
               className="gap-3 cursor-pointer"
             >
               <Icon className="h-4 w-4 text-muted-foreground" />
@@ -124,6 +129,26 @@ export function CommandPalette({
             </CommandItem>
           ))}
         </CommandGroup>
+
+        {JUMP_ITEMS.length > 0 ? (
+          <>
+            <CommandSeparator />
+            <CommandGroup heading="Jump to section">
+              {JUMP_ITEMS.map(({ id, label, icon: Icon }) => (
+                <CommandItem
+                  key={id}
+                  value={`${label} section`}
+                  onSelect={() => goTo(JUMP_ITEMS.find((n) => n.id === id)!)}
+                  className="gap-3 cursor-pointer"
+                >
+                  <Icon className="h-4 w-4 text-muted-foreground" />
+                  <span>{label}</span>
+                  <CommandShortcut>↵</CommandShortcut>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </>
+        ) : null}
 
         <CommandSeparator />
 

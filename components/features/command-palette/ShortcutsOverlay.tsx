@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Keyboard } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/lib/site-config";
 
 interface Shortcut {
   keys: string[];
@@ -13,13 +14,24 @@ interface Shortcut {
 }
 
 const SHORTCUTS: Shortcut[] = [
-  // Navigation
+  // Navigation — pages
   { keys: ["G", "H"], description: "Go to Home", category: "Navigation" },
   { keys: ["G", "A"], description: "Go to About", category: "Navigation" },
   { keys: ["G", "S"], description: "Go to Skills", category: "Navigation" },
-  { keys: ["G", "E"], description: "Go to Experience", category: "Navigation" },
   { keys: ["G", "P"], description: "Go to Work (G+O also works)", category: "Navigation" },
   { keys: ["G", "C"], description: "Go to Contact", category: "Navigation" },
+  // Navigation — section jumps
+  { keys: ["G", "E"], description: "Jump to Experience (About)", category: "Navigation" },
+  { keys: ["G", "D"], description: "Jump to Education (About)", category: "Navigation" },
+  ...(siteConfig.showFAQ
+    ? [
+        {
+          keys: ["G", "F"],
+          description: "Jump to FAQ (Home)",
+          category: "Navigation" as const,
+        },
+      ]
+    : []),
   // Actions
   { keys: ["⌘", "K"], description: "Open command palette", category: "Actions" },
   { keys: ["?"], description: "Show this overlay", category: "Actions" },

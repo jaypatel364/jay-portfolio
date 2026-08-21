@@ -1,23 +1,10 @@
 import type { MetadataRoute } from "next";
 import { HOME_URL, LAST_UPDATED, pageUrl } from "@/lib/seo";
-import { features } from "@/settings/features";
-import { publicCaseStudies } from "@/settings/projects";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = LAST_UPDATED;
-  const extra = [];
 
-  if (features.showCaseStudies) {
-    extra.push(
-      ...publicCaseStudies().map((p) => ({
-        url: pageUrl(`projects/${p.slug}`),
-        lastModified,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      })),
-    );
-  }
-
+  // Project slug pages (`/work/<slug>/`) stay out of the sitemap — they are noindex.
   return [
     {
       url: HOME_URL,
@@ -31,6 +18,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.85,
     })),
-    ...extra,
   ];
 }

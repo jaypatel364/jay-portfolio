@@ -10,7 +10,7 @@ export const identity = {
   fullName: "Jay Patel",
   title: "Jay.dev",
   description:
-    "Full Stack Developer in India. React, Next.js, Node.js — MERN apps people actually use.",
+    "Full-stack developer in India. React, Next.js, and Node.js — real-time apps, form platforms, and production MERN products.",
 
   email: "pjay99909@gmail.com",
   /** E.164 or readable format — shown on contact page when set. */

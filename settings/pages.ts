@@ -1,91 +1,98 @@
 /**
  * Inner route copy — titles, intros, and home-section CTA labels.
- * Page bodies will grow in dedicated section components (next pass).
+ * Hero H1 + description are crawlable; keep them human and keyword-clear.
  */
-
-import { siteConfig } from "./index";
 
 export const innerPages = {
   about: {
     path: "/about",
     navId: "about",
     label: "About",
-    title: "About Jay Patel — Full Stack Developer in India",
+    title: "About Jay Patel | Full Stack Developer in India",
     description:
-      `${siteConfig.fullName} builds production MERN apps from India — real-time systems, ` +
-      `large configurable form flows, and React/Next.js frontends that hold up under real users.`,
-    homeCta: "Know more about Jay Patel",
+      "Jay Patel is a full-stack developer in India (since 2022). React, Next.js, and Node.js — " +
+      "real-time systems, large form platforms, and production MERN apps built end to end.",
+    homeCta: "More about Jay Patel",
     placeholder: null,
     hero: {
-      label: "About me",
-      title: "Full-stack developer who ships real products",
+      label: "About",
+      title: "Jay Patel — full-stack developer in India",
       description:
-        "I'm Jay Patel — based in India, building MERN apps with React, Next.js, and Node.js. " +
-        "From real-time chat to 100+ form flows, I own the work from architecture through deploy.",
-      chips: ["Based in India", "Remote-friendly", "Open to full-time & freelance"],
+        "Based in India, building with React, Next.js, and Node.js since late 2022. " +
+        "I ship real-time features, configurable form platforms (100+ flows), and MERN apps — " +
+        "owning the path from architecture through deploy.",
+      chips: [
+        "India · remote-friendly",
+        "React · Next.js · Node.js",
+        "Open to full-time & freelance",
+      ],
     },
     contactSection: {
       label: "Contact",
-      title: "Let's work together",
+      title: "Want to work together?",
       description:
-        "Have a role, a project, or just a question? Send a message — I reply to every email.",
+        "Role, freelance scope, or a quick question — send a message. I reply to every one.",
     },
   },
   skills: {
     path: "/skills",
     navId: "skills",
     label: "Skills",
-    title: "Skills & Services — React, Next.js, Node.js, MERN",
+    title: "Full Stack Skills & Services | React, Next.js, Node.js",
     description:
-      "What Jay builds: React and Next.js frontends, Node.js APIs, real-time features, complex form platforms, " +
-      "and production-ready MERN apps — plus the stack behind them.",
-    homeCta: "Explore the full stack",
+      "React and Next.js frontends, Node.js APIs, real-time features, MongoDB/PostgreSQL, and " +
+      "production MERN apps — the full-stack skills and services Jay Patel ships with.",
+    homeCta: "See skills & services",
     placeholder: null,
     hero: {
-      label: "Skills & stack",
-      title: "The MERN stack I ship with daily",
+      label: "Skills & services",
+      title: "React, Next.js, and Node.js — skills I use in production",
       description:
-        "A detailed look at the tools, frameworks, and practices behind my work — from React and Next.js " +
-        "frontends to Node.js APIs, databases, and production deploys.",
-      chips: ["24+ technologies", "TypeScript-first", "Production MERN"],
+        "Not a buzzword list. Every layer below shows up in shipped work: frontends people use, " +
+        "APIs that stay predictable, databases that match the product, and deploys that don't panic.",
+      chips: ["MERN & TypeScript", "24+ tools in production", "Services + process"],
     },
   },
   work: {
     path: "/work",
     navId: "work",
     label: "Work",
-    title: "Work & Projects — Selected Builds by Jay Patel",
+    title: "Work & Projects | Jay Patel Full Stack Portfolio",
     description:
-      "Case studies and shipped work — MERN apps, real-time features, and NDA-friendly summaries " +
-      "from production roles and side projects.",
-    homeCta: "View all selected work",
+      "Selected projects by Jay Patel — real-time chat, headless CMS, social APIs, and production " +
+      "MERN apps. Case studies and NDA-friendly summaries from shipped work.",
+    homeCta: "Browse selected work",
     placeholder: null,
     hero: {
-      label: "Selected work",
-      title: "Production apps I've shipped",
+      label: "Work",
+      title: "Projects I've shipped — MERN apps and case studies",
       description:
-        "Real MERN builds — real-time chat, complex form platforms, and full-stack products. " +
-        "Filter by category, read the highlights, and dive into case studies where available.",
-      chips: ["MERN & Next.js", "Case studies", "NDA-friendly summaries"],
+        "Real-time chat, a headless CMS, GraphQL social APIs, plus NDA work in HR, NGO tooling, " +
+        "and KYC. Filter by layer, skim the highlights, open a write-up when one exists.",
+      chips: [
+        "Full-stack · frontend · backend",
+        "Live demos where possible",
+        "NDA summaries included",
+      ],
     },
   },
   contact: {
     path: "/contact",
     navId: "contact",
     label: "Contact",
-    title: "Contact Jay Patel — Hire a Full Stack Developer",
+    title: "Hire Jay Patel | Full Stack Developer Contact",
     description:
-      "Reach out for full-time roles, freelance MERN work, or a quick intro call. Based in India, " +
-      "open to remote and hybrid.",
-    homeCta: "Open the contact page",
+      "Contact Jay Patel to hire a full-stack developer in India. Full-time roles, freelance MERN " +
+      "work, or a 15-minute intro call — remote-friendly, replies within 24 hours.",
+    homeCta: "Go to contact",
     placeholder: null,
     hero: {
       label: "Contact",
-      title: "Let's talk about your next build",
+      title: "Hire a full-stack developer — contact Jay Patel",
       description:
-        "Full-time hire, freelance sprint, or a quick intro — email, form, or book a 15-minute call. " +
-        "I reply to every message.",
-      chips: ["Replies within 24h", "Remote-friendly", "Full-time & freelance"],
+        "Full-time hire, freelance sprint, or a short intro call. Use the form, email, or book " +
+        "15 minutes on Calendly. Based in India, open to remote and hybrid — I reply within a day.",
+      chips: ["Replies within 24 hours", "Remote from India", "Full-time & freelance"],
     },
   },
 } as const;

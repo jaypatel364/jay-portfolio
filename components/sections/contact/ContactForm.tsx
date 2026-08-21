@@ -19,6 +19,14 @@ interface ContactFormProps {
 const inputClassName =
   "w-full rounded-xl border border-input bg-card px-4 py-3 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 disabled:opacity-50";
 
+function RequiredMark() {
+  return (
+    <span className="ml-0.5 text-destructive" aria-hidden="true">
+      *
+    </span>
+  );
+}
+
 export function ContactForm({
   className,
   idPrefix = "contact",
@@ -124,6 +132,8 @@ export function ContactForm({
           <div>
             <label htmlFor={`${idPrefix}-firstName`} className="mb-1.5 block text-sm font-medium">
               First name
+              <RequiredMark />
+              <span className="sr-only">(required)</span>
             </label>
             <input
               id={`${idPrefix}-firstName`}
@@ -140,6 +150,8 @@ export function ContactForm({
           <div>
             <label htmlFor={`${idPrefix}-lastName`} className="mb-1.5 block text-sm font-medium">
               Last name
+              <RequiredMark />
+              <span className="sr-only">(required)</span>
             </label>
             <input
               id={`${idPrefix}-lastName`}
@@ -174,6 +186,8 @@ export function ContactForm({
           <div>
             <label htmlFor={`${idPrefix}-email`} className="mb-1.5 block text-sm font-medium">
               Email
+              <RequiredMark />
+              <span className="sr-only">(required)</span>
             </label>
             <input
               id={`${idPrefix}-email`}
@@ -192,6 +206,8 @@ export function ContactForm({
         <div>
           <label htmlFor={`${idPrefix}-message`} className="mb-1.5 block text-sm font-medium">
             Message
+            <RequiredMark />
+            <span className="sr-only">(required)</span>
           </label>
           <textarea
             id={`${idPrefix}-message`}

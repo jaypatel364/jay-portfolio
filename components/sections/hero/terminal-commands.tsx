@@ -83,7 +83,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
           </span>,
           <span key="x" className="block">
             <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">exp</span>
-            {expLabel}+ years
+            {expLabel} years
           </span>,
           <span key="g" className="block">
             <span className="text-muted-foreground/50 min-w-[6rem] shrink-0 inline-block">

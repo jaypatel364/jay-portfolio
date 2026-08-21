@@ -53,7 +53,7 @@ export function pageUrl(path: string): string {
 }
 
 /** Real content date — do not use `new Date()` in JSON-LD or sitemap. */
-export const LAST_UPDATED = "2026-08-17";
+export const LAST_UPDATED = "2026-08-21";
 
 // ─── Core copy ─────────────────────────────────────────────────────────────────
 // Change these to adjust the text that appears in Google results and link previews.
@@ -62,18 +62,18 @@ export const SEO_TITLE_TEMPLATE = `%s | ${siteConfig.fullName}`;
 export const SEO_TITLE_DEFAULT = `${siteConfig.fullName} | Full Stack Developer in India`;
 
 export const SEO_DESCRIPTION =
-  `${siteConfig.fullName} is a full-stack developer in India working with React, Next.js, and Node.js. ` +
-  `${siteConfig.fullName.split(" ")[0]} ships real-time apps, configurable form systems, and production MERN work. ` +
-  `Open to full-time and freelance.`;
+  "Jay Patel is a full-stack developer in India. React, Next.js, and Node.js for real-time apps, " +
+  "form platforms, and production MERN products. Open to full-time roles and freelance builds.";
 
 // ─── Keywords ──────────────────────────────────────────────────────────────────
 // Google ignores <meta name="keywords">. Keep a short identity list for Bing / tools.
 export const SEO_KEYWORDS: string[] = [
   "Jay Patel",
-  "Jay Patel Full Stack Developer",
-  "Full Stack Developer India",
-  "MERN Stack Developer",
-  "React Next.js Developer",
+  "Jay Patel full stack developer",
+  "full stack developer India",
+  "MERN stack developer",
+  "React Next.js Node.js developer",
+  "hire full stack developer India",
 ];
 
 // ─── Open Graph image ──────────────────────────────────────────────────────────
@@ -214,6 +214,10 @@ export const rootViewport: Viewport = {
 //  Per-page metadata helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Inner-page metadata uses `title.absolute` so the root `%s | Name` template
+ * does not double the brand (e.g. "About | Jay Patel | Jay Patel").
+ */
 function innerPageMetadata(
   slug: string,
   title: string,
@@ -221,11 +225,12 @@ function innerPageMetadata(
   keywords?: string[],
 ): Metadata {
   return {
-    title,
+    title: { absolute: title },
     description,
     keywords: keywords ?? SEO_KEYWORDS,
     alternates: { canonical: pageUrl(slug) },
     openGraph: {
+      type: "website",
       url: pageUrl(slug),
       title,
       description,
@@ -242,41 +247,47 @@ function innerPageMetadata(
 
 export const aboutPageMetadata = innerPageMetadata(
   "about",
-  `About | ${siteConfig.fullName}`,
-  `${siteConfig.fullName} is a full-stack developer in India shipping React, Next.js, and Node.js apps — real-time features, form systems, and MERN work.`,
-  ["Jay Patel about", "Full Stack Developer India", ...SEO_KEYWORDS],
+  `About Jay Patel | Full Stack Developer in India`,
+  "Jay Patel is a full-stack developer in India (since 2022). React, Next.js, and Node.js — real-time systems, large form platforms, and production MERN apps built end to end.",
+  ["about Jay Patel", "Jay Patel developer", "full stack developer Ahmedabad", ...SEO_KEYWORDS],
 );
 
 export const skillsPageMetadata = innerPageMetadata(
   "skills",
-  `Skills & Services | ${siteConfig.fullName}`,
-  `Full-stack services by Jay Patel: React & Next.js frontends, Node.js APIs, real-time systems, form platforms, MongoDB/PostgreSQL, and production MERN apps.`,
+  `Full Stack Skills & Services | React, Next.js, Node.js`,
+  "React and Next.js frontends, Node.js APIs, real-time features, MongoDB/PostgreSQL, and production MERN apps — the full-stack skills and services Jay Patel ships with.",
   [
     "full stack development services",
-    "React Next.js developer services",
+    "React Next.js developer",
     "Node.js API development",
     "MERN stack developer India",
-    "Jay Patel skills",
+    "TypeScript full stack developer",
     ...SEO_KEYWORDS,
   ],
 );
 
 export const workPageMetadata = innerPageMetadata(
   "work",
-  `Work | ${siteConfig.fullName}`,
-  `Selected projects and case studies by ${siteConfig.fullName} — MERN apps, real-time systems, and production builds.`,
-  ["Jay Patel projects", "Full stack portfolio work", ...SEO_KEYWORDS],
+  `Work & Projects | Jay Patel Full Stack Portfolio`,
+  "Selected projects by Jay Patel — real-time chat, headless CMS, social APIs, and production MERN apps. Case studies and NDA-friendly summaries from shipped work.",
+  [
+    "Jay Patel portfolio",
+    "full stack developer projects",
+    "MERN stack projects",
+    "Next.js case studies",
+    ...SEO_KEYWORDS,
+  ],
 );
 
 export const contactPageMetadata = innerPageMetadata(
   "contact",
-  `Contact | ${siteConfig.fullName}`,
-  `Contact ${siteConfig.fullName} for full-time or freelance full-stack work. Form, email, phone, or book a call — based in India, remote-friendly.`,
+  `Hire Jay Patel | Full Stack Developer Contact`,
+  "Contact Jay Patel to hire a full-stack developer in India. Full-time roles, freelance MERN work, or a 15-minute intro call — remote-friendly, replies within 24 hours.",
   [
-    "Contact Jay Patel",
-    "Hire full stack developer India",
-    "Freelance MERN developer contact",
-    "Book intro call full stack developer",
+    "hire Jay Patel",
+    "hire full stack developer India",
+    "freelance MERN developer",
+    "contact full stack developer",
     ...SEO_KEYWORDS,
   ],
 );
@@ -427,14 +438,17 @@ export function projectPageMetadata(project: {
   tagline: string;
   desc: string;
 }): Metadata {
+  const title = `${project.title} — ${project.tagline} | Jay Patel`;
+  const description = project.desc.slice(0, 160);
   return {
-    title: `${project.title} | ${siteConfig.fullName}`,
-    description: project.desc.slice(0, 160),
-    alternates: { canonical: pageUrl(`projects/${project.slug}`) },
+    title: { absolute: title },
+    description,
+    alternates: { canonical: pageUrl(`work/${project.slug}`) },
+    robots: { index: false, follow: true },
     openGraph: {
-      url: pageUrl(`projects/${project.slug}`),
+      url: pageUrl(`work/${project.slug}`),
       title: `${project.title} — ${project.tagline}`,
-      description: project.desc.slice(0, 160),
+      description,
       images: [OG_IMAGE],
     },
   };

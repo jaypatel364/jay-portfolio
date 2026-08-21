@@ -19,6 +19,7 @@ export function ContactExploreSection() {
 
   return (
     <section
+      id="contact-explore"
       aria-labelledby="contact-explore-heading"
       className="border-t border-border/60 px-6 pb-24 pt-10 md:pb-28 md:pt-14"
     >
