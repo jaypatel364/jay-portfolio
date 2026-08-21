@@ -10,8 +10,8 @@ export const features = {
   showFAQ: true, // keep visible — FAQ JSON-LD is only injected when this is true
 
   // ── SEO indexing ──────────────────────────────────────────────────────────
-  // false until jaypateldev.com is live and Search Console is verified. Flip last.
-  allowIndexing: false,
+  // true = allow Google/Bing. Keep Search Console verified on jaypateldev.com.
+  allowIndexing: true,
 
   // ── Extra routes ──────────────────────────────────────────────────────────
   showCaseStudies: false,

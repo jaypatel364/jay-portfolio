@@ -1,6 +1,6 @@
 import { SiteChrome, InnerPageHero, AboutHeroVisual } from "@/components/layout";
+import { WhoAmISection } from "@/components/sections/who-am-i";
 import { WhyChooseSection } from "@/components/sections/why-choose";
-import { AboutSection } from "@/components/sections/about";
 import { ExperienceSection } from "@/components/sections/experience";
 import { EducationSection } from "@/components/sections/education";
 import { aboutPageMetadata, innerPageBreadcrumbJsonLd, personJsonLd } from "@/settings/seo";
@@ -36,12 +36,8 @@ export default function AboutPage() {
           chips={page.hero.chips}
           visual={<AboutHeroVisual />}
         />
+        <WhoAmISection />
         <WhyChooseSection />
-        <AboutSection
-          showPageCta={false}
-          heading={{ label: "Bio", title: "Who I am and how I work" }}
-          variant="page"
-        />
         <ExperienceSection />
         <EducationSection />
       </main>

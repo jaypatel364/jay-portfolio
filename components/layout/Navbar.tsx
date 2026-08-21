@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Search, Palette, Check } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { useNavActive } from "@/hooks/use-nav-active";
-import { PRIMARY_NAV } from "@/lib/nav";
+import { useActiveSection } from "@/hooks/use-active-section";
+import { ALL_NAV_TARGETS, PRIMARY_NAV } from "@/lib/nav";
 import { navigateToNavItem } from "@/lib/navigate";
 import { useScrollProgress } from "@/hooks/use-scroll-progress";
 import { useAccent } from "@/hooks/use-accent";
@@ -107,10 +108,12 @@ function MobileAccentPicker() {
 }
 
 const NAV_ITEMS = PRIMARY_NAV;
+const JUMP_TARGETS = ALL_NAV_TARGETS;
 
 export function Navbar() {
   const { resolvedTheme, toggleTheme } = useTheme();
   const active = useNavActive();
+  const readingSection = useActiveSection();
   const { percent, pastHero } = useScrollProgress();
   const pathname = usePathname();
   const router = useRouter();
@@ -186,7 +189,7 @@ export function Navbar() {
         e.preventDefault();
         gPressed = false;
         clearTimeout(gTimer);
-        const item = NAV_ITEMS.find((nav) => nav.id === GO_KEYS[key]);
+        const item = JUMP_TARGETS.find((nav) => nav.id === GO_KEYS[key]);
         if (item) navigateToNavItem(item, { pathname, router });
       }
     };
@@ -254,7 +257,7 @@ export function Navbar() {
               exit={{ opacity: 0, scale: 0.85 }}
               transition={{ type: "spring", stiffness: 380, damping: 28 }}
               className="hidden items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm lg:flex"
-              aria-label={`Reading ${active} — ${percent}% through page`}
+              aria-label={`Reading ${readingSection} — ${percent}% through page`}
             >
               {/* Mini arc progress ring */}
               <svg
@@ -287,7 +290,7 @@ export function Navbar() {
                   style={{ color: "var(--primary)" }}
                 />
               </svg>
-              <span className="capitalize font-medium">{active}</span>
+              <span className="font-medium">{readingSection}</span>
               <span className="opacity-60">·</span>
               <span className="tabular-nums">{percent}%</span>
             </motion.div>

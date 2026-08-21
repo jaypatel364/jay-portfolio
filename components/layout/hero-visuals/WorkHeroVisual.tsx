@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { PROJECTS } from "@/settings/projects";
+import { PROJECTS, projectHref } from "@/settings/projects";
 import { HeroVisualFrame } from "./HeroVisualFrame";
 
-const CARDS = PROJECTS.slice(0, 3);
+const CARDS = PROJECTS.filter((p) => !p.nda).slice(0, 3);
 
 /** Work hero — a cycling stack of shipped project cards. */
 export function WorkHeroVisual() {
@@ -32,7 +32,6 @@ export function WorkHeroVisual() {
         <div className="relative mx-auto mt-4 h-[196px] w-full max-w-[280px]">
           {CARDS.map((project, i) => {
             const offset = (i - front + CARDS.length) % CARDS.length;
-            const href = project.caseStudy && !project.nda ? `/projects/${project.slug}` : "/work";
 
             return (
               <motion.div
@@ -48,7 +47,7 @@ export function WorkHeroVisual() {
                 transition={{ type: "spring", stiffness: 260, damping: 26 }}
               >
                 <Link
-                  href={href}
+                  href={projectHref(project)}
                   className="block rounded-xl border border-border/80 bg-background/90 p-4 shadow-premium backdrop-blur-sm transition-colors hover:border-primary/40"
                 >
                   <div className="flex items-start justify-between gap-2">

@@ -63,7 +63,18 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
   async headers() {
-    return [{ source: "/(.*)", headers: securityHeaders }];
+    return [
+      { source: "/(.*)", headers: securityHeaders },
+      // Project slug pages are always noindex (coming-soon placeholders)
+      {
+        source: "/work/:slug",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }],
+      },
+      {
+        source: "/work/:slug/",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }],
+      },
+    ];
   },
   async redirects() {
     // Preview deployments (unique *.vercel.app URLs) are not redirected.
@@ -72,6 +83,11 @@ const nextConfig: NextConfig = {
     return [
       { source: "/resume", destination: "/", permanent: true },
       { source: "/engineering", destination: "/", permanent: true },
+      // Legacy project / case-study URLs → canonical /work/…
+      { source: "/projects", destination: "/work/", permanent: true },
+      { source: "/projects/", destination: "/work/", permanent: true },
+      { source: "/projects/:slug", destination: "/work/:slug/", permanent: true },
+      { source: "/projects/:slug/", destination: "/work/:slug/", permanent: true },
       ...hosts.flatMap((host) => [
         {
           source: "/",

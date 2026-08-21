@@ -63,7 +63,7 @@ export function SkillsSection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl">
-        <SectionHeading label="Skills" title="Stack I ship with" />
+        <SectionHeading label="Skills" title="React, Next.js, and Node.js stack" />
 
         {/* Stats bar */}
         <motion.div
@@ -93,16 +93,16 @@ export function SkillsSection() {
           ))}
         </motion.div>
 
-        {/* Filter tabs + view toggle — always visible together */}
+        {/* Toolbar — filters + view, one solid control group */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="mt-10 flex items-center justify-center gap-3 flex-wrap"
+          className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4"
         >
           {/* <div
-            className="flex items-center gap-2 flex-wrap justify-center"
+            className="flex max-w-full items-center gap-0.5 overflow-x-auto rounded-xl border border-border/60 bg-card p-1 shadow-sm"
             role="tablist"
             aria-label="Filter skills by category"
           >
@@ -113,7 +113,7 @@ export function SkillsSection() {
                 aria-selected={activeFilter === f.value}
                 onClick={() => setActiveFilter(f.value)}
                 className={cn(
-                  "relative rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                  "relative shrink-0 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:text-[13px]",
                   activeFilter === f.value
                     ? "text-primary"
                     : "text-muted-foreground hover:text-foreground",
@@ -131,7 +131,6 @@ export function SkillsSection() {
             ))}
           </div> */}
 
-          {/* View toggle — always shown, desktop only */}
           <ViewToggle view={view} onChange={setView} />
         </motion.div>
 
@@ -263,18 +262,18 @@ export function SkillsSection() {
           </AnimatePresence>
         </div>
 
-        {/* Footer */}
+        {/* Footer — learning note + page CTA as one aligned block */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.8 }}
-          className="mt-14 flex flex-col items-center gap-6"
+          className="mt-14 flex flex-col items-center gap-5 border-t border-border/60 pt-10"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-5 py-2.5 text-sm text-muted-foreground">
+          <p className="inline-flex items-center gap-2 text-sm text-muted-foreground">
             <Sparkles className="h-4 w-4 text-primary" />
             Always learning &amp; exploring new technologies
-          </div>
+          </p>
           <SectionPageCta href={`${innerPages.skills.path}/`}>
             {innerPages.skills.homeCta}
           </SectionPageCta>

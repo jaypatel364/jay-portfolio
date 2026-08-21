@@ -246,40 +246,44 @@ export function ExperienceSection() {
   return (
     <section id="experience" className="px-6 py-14 md:py-28">
       <div className="mx-auto max-w-5xl">
-        <SectionHeading label="Career" title="Work Experience" />
+        <SectionHeading label="Career" title="Work experience" />
 
-        {/* View toggle */}
+        {/* View toggle — solid segmented control */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-8 flex items-center justify-center gap-2"
-          role="tablist"
-          aria-label="Experience view mode"
+          className="mt-8 flex justify-center"
         >
-          {VIEW_OPTIONS.map(({ value, label, icon: Icon }) => (
-            <button
-              key={value}
-              role="tab"
-              aria-selected={view === value}
-              onClick={() => setView(value)}
-              className={cn(
-                "relative inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                view === value ? "text-primary" : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {view === value && (
-                <motion.div
-                  layoutId="exp-view-active"
-                  className="absolute inset-0 rounded-lg bg-primary/10"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
-              )}
-              <Icon className="relative z-10 h-4 w-4" />
-              <span className="relative z-10">{label}</span>
-            </button>
-          ))}
+          <div
+            className="inline-flex items-center gap-0.5 rounded-xl border border-border/60 bg-card p-1 shadow-sm"
+            role="tablist"
+            aria-label="Experience view mode"
+          >
+            {VIEW_OPTIONS.map(({ value, label, icon: Icon }) => (
+              <button
+                key={value}
+                role="tab"
+                aria-selected={view === value}
+                onClick={() => setView(value)}
+                className={cn(
+                  "relative inline-flex items-center gap-2 rounded-lg px-4 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                  view === value ? "text-primary" : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {view === value && (
+                  <motion.div
+                    layoutId="exp-view-active"
+                    className="absolute inset-0 rounded-lg bg-primary/10"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <Icon className="relative z-10 h-4 w-4" />
+                <span className="relative z-10">{label}</span>
+              </button>
+            ))}
+          </div>
         </motion.div>
 
         {/* Animated view swap */}
