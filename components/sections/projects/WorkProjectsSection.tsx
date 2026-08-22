@@ -73,11 +73,11 @@ export function WorkProjectsSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.5 }}
         transition={{ duration: 0.45, delay: 0.05 }}
-        className="sticky top-20 z-20 mt-8 flex flex-col items-center gap-3 sm:mt-10"
+        className="sticky top-20 z-20 mt-8 flex w-full min-w-0 flex-col items-center gap-3 sm:mt-10"
       >
         <div
           className={cn(
-            "flex max-w-full items-center gap-0.5 overflow-x-auto rounded-2xl border border-border/70 bg-card/90 p-1.5 shadow-sm backdrop-blur-md",
+            "flex w-full min-w-0 max-w-full items-center gap-0.5 overflow-x-auto rounded-2xl border border-border/70 bg-card/90 p-1.5 shadow-sm backdrop-blur-md",
             "scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
           )}
           role="tablist"

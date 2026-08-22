@@ -26,7 +26,7 @@ import {
   Keyboard,
   FolderKanban,
 } from "lucide-react";
-import { ACCENT_PRESETS, ACCENT_STORAGE_KEY } from "@/lib/accent-colors";
+import { ACCENT_PRESETS, ACCENT_STORAGE_KEY, persistAccentChoice } from "@/lib/accent-colors";
 import { siteConfig } from "@/lib/site-config";
 import { PRIMARY_NAV, SECTION_JUMP_NAV } from "@/lib/nav";
 import { navigateToNavItem } from "@/lib/navigate";
@@ -229,11 +229,11 @@ export function CommandPalette({
               value={`Accent color ${preset.label}`}
               onSelect={() => {
                 setOpen(false);
-                localStorage.setItem(ACCENT_STORAGE_KEY, preset.id);
+                const id = persistAccentChoice(preset.id);
                 window.dispatchEvent(
                   new StorageEvent("storage", {
                     key: ACCENT_STORAGE_KEY,
-                    newValue: preset.id,
+                    newValue: id,
                   }),
                 );
               }}

@@ -68,9 +68,9 @@ export function AboutHeroVisual() {
           <span className="ml-2 font-mono text-[11px] text-muted-foreground">about.ts</span>
         </div>
 
-        <pre className="mt-4 flex-1 overflow-hidden font-mono text-[12px] leading-6 sm:text-[13px]">
+        <pre className="mt-4 flex-1 overflow-x-auto font-mono text-[11px] leading-6 sm:text-[13px]">
           {visible.split("\n").map((row, i) => (
-            <div key={i} className="whitespace-pre">
+            <div key={i} className="whitespace-pre-wrap break-all sm:whitespace-pre">
               {colorize(row)}
               {i === visible.split("\n").length - 1 && !done ? (
                 <span className="ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 bg-primary align-middle" />

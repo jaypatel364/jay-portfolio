@@ -21,9 +21,9 @@ export function ContactExploreSection() {
     <section
       id="contact-explore"
       aria-labelledby="contact-explore-heading"
-      className="border-t border-border/60 px-6 pb-24 pt-10 md:pb-28 md:pt-14"
+      className="border-t border-border/60 px-4 pb-24 pt-10 sm:px-6 md:pb-28 md:pt-14"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full min-w-0 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}

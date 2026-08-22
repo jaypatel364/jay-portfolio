@@ -64,15 +64,15 @@ export function ContactQuickPanel({ variant = "full", className }: ContactQuickP
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.55 }}
-      className={cn("space-y-6", className)}
+      className={cn("min-w-0 space-y-6", className)}
       aria-label="Quick contact"
     >
       {isFull ? (
         <p className="text-base leading-relaxed text-muted-foreground">{copy.intro}</p>
       ) : (
         <p className="text-muted-foreground">
-          Open to full-time roles and freelance — remote or hybrid from India. Email or book a call.
-          I reply to every message.
+          Open to freelance and collaboration — remote or hybrid from India. Email or book a call. I
+          reply to every message.
         </p>
       )}
 

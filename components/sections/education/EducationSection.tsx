@@ -7,8 +7,8 @@ import { EDUCATION } from "@/lib/resume-data";
 
 export function EducationSection() {
   return (
-    <section id="education" className="px-6 py-14 md:py-28">
-      <div className="mx-auto max-w-4xl">
+    <section id="education" className="px-4 py-14 sm:px-6 md:py-28">
+      <div className="mx-auto w-full min-w-0 max-w-4xl">
         <SectionHeading label="Background" title="Education" />
         {/* <SectionHeading label="Background" title="Education & Certifications" /> */}
 

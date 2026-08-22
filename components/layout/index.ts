@@ -1,3 +1,5 @@
+export { AccentBoot } from "./AccentBoot";
+export { AccentProvider } from "@/hooks/use-accent";
 export { Navbar } from "./Navbar";
 export { Footer } from "./Footer";
 export { PageTransition, PageTransitionItem } from "./PageTransition";

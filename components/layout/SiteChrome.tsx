@@ -11,7 +11,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider>
       <PageReveal />
-      <div className="site-shell relative min-h-screen bg-background text-foreground">
+      <div className="site-shell relative min-h-screen w-full min-w-0 overflow-x-clip bg-background text-foreground">
         <Navbar />
         {children}
         <GlobalCtaGate />

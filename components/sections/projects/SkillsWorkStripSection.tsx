@@ -19,9 +19,9 @@ export function SkillsWorkStripSection() {
     <section
       id="skills-work-strip"
       aria-labelledby="skills-work-strip-heading"
-      className="relative border-t border-border/60 py-10 md:py-16"
+      className="relative min-w-0 border-t border-border/60 py-10 md:py-16"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full min-w-0 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}

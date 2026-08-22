@@ -119,7 +119,7 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
             type="button"
             onClick={openResumeViewer}
             title="View Jay Patel's resume"
-            className="inline-flex items-center gap-2 rounded-xl gradient-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-colors hover:opacity-95"
+            className="cursor-pointer inline-flex items-center gap-2 rounded-xl gradient-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-colors hover:opacity-95"
           >
             <Download className="h-4 w-4" aria-hidden />
             View Resume
@@ -128,7 +128,7 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
             href="/contact"
             className="rounded-xl border border-border bg-card px-7 py-3.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary/30 hover:bg-muted/50"
           >
-            Work with Jay
+            Let's Work Together
           </a>
         </div>
 

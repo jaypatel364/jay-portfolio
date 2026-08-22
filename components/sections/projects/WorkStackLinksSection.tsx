@@ -129,11 +129,11 @@ export function WorkStackLinksSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.4, delay: 0.05 }}
-        className="mt-8 flex justify-center sm:mt-10"
+        className="mt-8 flex w-full min-w-0 justify-center sm:mt-10"
       >
         <div
           className={cn(
-            "flex max-w-full items-center gap-0.5 overflow-x-auto rounded-2xl border border-border/70 bg-card/90 p-1.5 shadow-sm backdrop-blur-md",
+            "flex w-full min-w-0 max-w-full items-center gap-0.5 overflow-x-auto rounded-2xl border border-border/70 bg-card/90 p-1.5 shadow-sm backdrop-blur-md",
             "scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
           )}
           role="tablist"

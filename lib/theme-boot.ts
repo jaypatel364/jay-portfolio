@@ -1,13 +1,20 @@
-import { ACCENT_PRESETS, ACCENT_STORAGE_KEY, DEFAULT_ACCENT_ID } from "@/lib/accent-colors";
+import {
+  ACCENT_PRESETS,
+  ACCENT_STORAGE_KEY,
+  DEFAULT_ACCENT_ID,
+  buildAccentBootCss,
+  resolveAccentId,
+} from "@/lib/accent-colors";
 import { features } from "@/settings/features";
 
-const ACCENT_MAP = Object.fromEntries(
-  ACCENT_PRESETS.map((p) => [p.id, { light: p.light, dark: p.dark }]),
-);
+/** Inlined in <head> so accent vars exist before globals paint. */
+export const ACCENT_BOOT_CSS = buildAccentBootCss();
+
+const ACCENT_IDS = ACCENT_PRESETS.map((p) => p.id);
 
 /**
- * Runs in <head> before first paint: theme class, accent CSS vars, optional boot cover,
- * and unregisters any leftover PWA service worker from older deploys.
+ * Runs in <head> before first paint: theme class, accent data attribute + cookie sync,
+ * optional boot cover, and unregisters any leftover PWA service worker from older deploys.
  */
 export function getThemeBootScript(): string {
   const showBoot = features.showLoadingScreen;
@@ -21,13 +28,18 @@ export function getThemeBootScript(): string {
       (stored !== "light" && window.matchMedia("(prefers-color-scheme: dark)").matches);
     root.classList.toggle("dark", !!dark);
 
-    var presets = ${JSON.stringify(ACCENT_MAP)};
-    var accentId = localStorage.getItem(${JSON.stringify(ACCENT_STORAGE_KEY)}) || ${JSON.stringify(DEFAULT_ACCENT_ID)};
-    var preset = presets[accentId] || presets[${JSON.stringify(DEFAULT_ACCENT_ID)}];
-    var vars = dark ? preset.dark : preset.light;
-    for (var k in vars) root.style.setProperty(k, vars[k]);
+    var valid = ${JSON.stringify(ACCENT_IDS)};
+    var fallback = ${JSON.stringify(DEFAULT_ACCENT_ID)};
+    var accentId = fallback;
+    try {
+      accentId = localStorage.getItem(${JSON.stringify(ACCENT_STORAGE_KEY)}) || root.getAttribute("data-accent") || fallback;
+    } catch (e) {}
+    if (valid.indexOf(accentId) === -1) accentId = fallback;
+    root.setAttribute("data-accent", accentId);
+    document.cookie = ${JSON.stringify(ACCENT_STORAGE_KEY)} + "=" + encodeURIComponent(accentId) + ";path=/;max-age=31536000;SameSite=Lax";
   } catch (e) {
     root.classList.add("dark");
+    root.setAttribute("data-accent", ${JSON.stringify(DEFAULT_ACCENT_ID)});
   }
 
   try {
@@ -56,6 +68,11 @@ export function getThemeBootScript(): string {
   } catch (e) {}
 })();
 `.trim();
+}
+
+/** Server-side accent id from cookie (matches ACCENT_STORAGE_KEY). */
+export function getServerAccentId(cookieValue: string | undefined): string {
+  return resolveAccentId(cookieValue);
 }
 
 export const PAGE_REVEAL_CSS = `

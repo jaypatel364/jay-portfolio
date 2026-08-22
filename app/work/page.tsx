@@ -31,7 +31,7 @@ export default function WorkPage() {
           chips={page.hero.chips}
           visual={<WorkHeroVisual />}
         />
-        <div className="mx-auto max-w-6xl px-6 pb-24">
+        <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
           <WorkStatsBar />
           <WorkProjectsSection />
           <WorkStackLinksSection />

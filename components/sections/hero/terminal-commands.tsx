@@ -258,7 +258,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             <span className="text-green-400 font-semibold">OPEN TO WORK</span>
           </span>,
           <span key="d" className="block text-muted-foreground/60 text-xs mt-1">
-            Remote · Full-time · {siteConfig.location}
+            Remote · Freelance · {siteConfig.location}
           </span>,
         ],
       },
@@ -354,7 +354,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             x-stack: React · Node.js · MongoDB
           </span>,
           <span key="h5" className="block text-muted-foreground/60">
-            x-available-for: remote-work · contracts · full-time
+            x-available-for: remote-work · contracts · collaboration
           </span>,
           <span key="h6" className="block text-muted-foreground/60">
             cache-control: public, max-age=31536000

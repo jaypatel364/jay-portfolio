@@ -59,11 +59,10 @@ export const LAST_UPDATED = "2026-08-21";
 // Change these to adjust the text that appears in Google results and link previews.
 
 export const SEO_TITLE_TEMPLATE = `%s | ${siteConfig.fullName}`;
-export const SEO_TITLE_DEFAULT = `${siteConfig.fullName} | Full Stack Developer in India`;
+export const SEO_TITLE_DEFAULT = `${siteConfig.fullName} | Full Stack Developer | React, Next.js & Node.js`;
 
 export const SEO_DESCRIPTION =
-  "Jay Patel is a full-stack developer in India. React, Next.js, and Node.js for real-time apps, " +
-  "form platforms, and production MERN products. Open to full-time roles and freelance builds.";
+  "Jay Patel is a Full Stack Developer specializing in React, Next.js, Node.js, TypeScript and the MERN stack, building scalable and modern web applications. Open to freelance builds and collaboration.";
 
 // ─── Keywords ──────────────────────────────────────────────────────────────────
 // Google ignores <meta name="keywords">. Keep a short identity list for Bing / tools.
@@ -73,7 +72,6 @@ export const SEO_KEYWORDS: string[] = [
   "full stack developer India",
   "MERN stack developer",
   "React Next.js Node.js developer",
-  "hire full stack developer India",
 ];
 
 // ─── Open Graph image ──────────────────────────────────────────────────────────
@@ -282,7 +280,7 @@ export const workPageMetadata = innerPageMetadata(
 export const contactPageMetadata = innerPageMetadata(
   "contact",
   `Hire Jay Patel | Full Stack Developer Contact`,
-  "Contact Jay Patel to hire a full-stack developer in India. Full-time roles, freelance MERN work, or a 15-minute intro call — remote-friendly, replies within 24 hours.",
+  "Contact Jay Patel for freelance full-stack development in India. MERN builds, collaboration, or a 15-minute intro call — remote-friendly, replies within 24 hours.",
   [
     "hire Jay Patel",
     "hire full stack developer India",

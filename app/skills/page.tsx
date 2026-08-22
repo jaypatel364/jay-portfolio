@@ -47,7 +47,7 @@ export default function SkillsPage() {
           chips={page.hero.chips}
           visual={<SkillsHeroVisual />}
         />
-        <div className="mx-auto max-w-6xl px-6 pb-24">
+        <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
           <SkillsCatalogSection />
           <ServicesSection />
           <SkillsWorkStripSection />

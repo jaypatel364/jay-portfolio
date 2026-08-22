@@ -65,7 +65,7 @@ export function getCannedAnswers(): CannedAnswer[] {
     },
     {
       patterns: [/available/i, /hire/i, /freelance/i, /open to work/i, /looking for work/i],
-      reply: `Yes — I'm open to full-time roles and select freelance projects! 🟢\n\nBest way to reach me:\n📧 ${siteConfig.email}\n📅 Book a call: ${siteConfig.bookingUrl}\n💼 LinkedIn: ${siteConfig.linkedin}`,
+      reply: `Yes — I'm open to freelance projects and collaboration! 🟢\n\nBest way to reach me:\n📧 ${siteConfig.email}\n📅 Book a call: ${siteConfig.bookingUrl}\n💼 LinkedIn: ${siteConfig.linkedin}`,
     },
     {
       patterns: [/contact/i, /reach/i, /email/i, /get in touch/i],

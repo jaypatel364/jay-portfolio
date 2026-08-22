@@ -8,14 +8,15 @@ import { cn } from "@/lib/utils";
  *
  * Anatomy:
  *
- *   JAY          ← large gradient-text name, Space Grotesk, tight tracking
+ *   JAY          ← large name, Space Grotesk, tight tracking
  *    ▔▔▔ ·dev   ← glowing underline bar + floating accent pill
  *
- * The underline uses a shimmer animation so it always looks alive.
- * The ·dev pill floats above the baseline, rotated -2° for energy.
- * Every colour follows the active accent via CSS vars — no hardcoding.
+ * Colors mix primary toward foreground so contrast stays WCAG-safe
+ * across accents and light/dark, while still reading as brand.
  */
 export function Brand({ className }: { className?: string }) {
+  const name = siteConfig.name.toUpperCase();
+
   return (
     <span
       className={cn(
@@ -25,27 +26,27 @@ export function Brand({ className }: { className?: string }) {
     >
       {/* ── Name block ───────────────────────────────────────────── */}
       <span className="relative inline-flex flex-col items-start leading-none">
-        {/* The name itself */}
         <span
-          className="font-heading font-black tracking-[-0.04em] text-[1.35em] gradient-text"
-          style={{ letterSpacing: "-0.04em" }}
+          className="font-heading font-black tracking-[-0.04em] text-[1.35em]"
+          style={{
+            letterSpacing: "-0.04em",
+            // Mix toward foreground so light-mode accents clear WCAG on white
+            color: "color-mix(in oklch, var(--primary) 50%, var(--foreground))",
+          }}
         >
-          {siteConfig.name.toUpperCase()}
+          {name}
         </span>
 
-        {/* Glowing shimmer underline */}
+        {/* Glowing shimmer underline (decorative) */}
         <span
           className="absolute -bottom-[3px] left-0 h-[2.5px] w-full rounded-full overflow-hidden"
           aria-hidden="true"
         >
-          {/* Base track */}
-          <span className="absolute inset-0 rounded-full bg-primary/25" />
-          {/* Shimmer sweep */}
+          <span className="absolute inset-0 rounded-full bg-primary/30" />
           <span
-            className="absolute inset-y-0 w-1/2 rounded-full"
+            className="brand-shimmer absolute inset-y-0 w-1/2 rounded-full motion-reduce:hidden"
             style={{
               background: "linear-gradient(90deg, transparent, var(--glow), transparent)",
-              animation: "brand-shimmer 2.4s ease-in-out infinite",
             }}
           />
         </span>
@@ -53,24 +54,31 @@ export function Brand({ className }: { className?: string }) {
 
       {/* ── .dev floating pill ────────────────────────────────────── */}
       <span
-        className="relative -top-[4px] inline-flex items-center rounded-md px-[5px] py-[2px] text-[0.52em] font-bold tracking-wide leading-none font-mono text-primary"
+        className="relative -top-[4px] inline-flex items-center rounded-md px-[5px] py-[2px] text-[0.58em] font-bold tracking-wide leading-none font-mono"
         style={{
-          background: "color-mix(in oklch, var(--primary) 18%, var(--card))",
-          border: "1px solid color-mix(in oklch, var(--primary) 45%, transparent)",
+          // Soft tint kept; text leans on foreground so small type clears 4.5:1
+          background: "color-mix(in oklch, var(--primary) 14%, var(--card))",
+          color: "color-mix(in oklch, var(--primary) 32%, var(--foreground))",
+          border: "1px solid color-mix(in oklch, var(--primary) 38%, transparent)",
           transform: "rotate(-1.5deg)",
-          boxShadow: "0 0 8px -2px color-mix(in oklch, var(--glow) 40%, transparent)",
-          transition: "box-shadow 0.2s ease, background 0.2s ease",
+          boxShadow: "0 0 8px -2px color-mix(in oklch, var(--glow) 32%, transparent)",
+          transition: "box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease",
         }}
       >
         .dev
       </span>
 
-      {/* Keyframe injected inline — avoids globals.css coupling */}
       <style>{`
         @keyframes brand-shimmer {
           0%   { transform: translateX(-120%); }
           60%  { transform: translateX(220%); }
           100% { transform: translateX(220%); }
+        }
+        .brand-shimmer {
+          animation: brand-shimmer 2.4s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .brand-shimmer { animation: none; }
         }
       `}</style>
     </span>

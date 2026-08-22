@@ -31,7 +31,7 @@ export function InnerPageHero({
   return (
     <section
       className={cn(
-        "relative overflow-hidden border-b border-border/60 px-6 pb-14 pt-28 md:pb-20 md:pt-32",
+        "relative overflow-hidden border-b border-border/60 px-4 pb-14 pt-28 sm:px-6 md:pb-20 md:pt-32",
         className,
       )}
     >
@@ -45,32 +45,32 @@ export function InnerPageHero({
         style={{ animation: "aurora-2 16s ease-in-out infinite" }}
       />
 
-      <div className="relative mx-auto max-w-6xl">
-        <Link
+      <div className="relative mx-auto w-full min-w-0 max-w-6xl">
+        {/* <Link
           href={backHref}
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden />
           {backLabel}
-        </Link>
+        </Link> */}
 
         <div
           className={cn(
-            "mt-8",
+            // "mt-8",
             visual &&
-              "grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(300px,440px)] lg:gap-14",
+              "grid min-w-0 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(300px,440px)] lg:gap-14",
           )}
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className={cn(!visual && "max-w-3xl")}
+            className={cn("min-w-0", !visual && "max-w-3xl")}
           >
             <span className="text-sm font-semibold uppercase tracking-widest text-primary">
               {label}
             </span>
-            <h1 className="font-heading mt-3 text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
+            <h1 className="font-heading mt-3 break-words text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
               {title}
             </h1>
             <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -96,7 +96,7 @@ export function InnerPageHero({
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="mx-auto w-full max-w-md lg:mx-0 lg:max-w-none"
+              className="mx-auto w-full min-w-0 max-w-md lg:mx-0 lg:max-w-none"
             >
               {visual}
             </motion.div>

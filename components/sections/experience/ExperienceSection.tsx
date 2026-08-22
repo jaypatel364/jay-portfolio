@@ -46,7 +46,7 @@ function CardView() {
             <motion.div
               whileHover={{ x: 4 }}
               transition={{ duration: 0.2 }}
-              className="group ml-0 md:ml-20"
+              className="group ml-0 max-w-full md:ml-20"
             >
               <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all duration-300 hover:border-primary/40 hover:shadow-glow md:p-8">
                 <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-primary to-primary/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
@@ -244,8 +244,8 @@ export function ExperienceSection() {
   const [view, setView] = useState<ViewMode>("cards");
 
   return (
-    <section id="experience" className="px-6 py-14 md:py-28">
-      <div className="mx-auto max-w-5xl">
+    <section id="experience" className="px-4 py-14 sm:px-6 md:py-28">
+      <div className="mx-auto w-full min-w-0 max-w-5xl">
         <SectionHeading label="Career" title="Work experience" />
 
         {/* View toggle — solid segmented control */}

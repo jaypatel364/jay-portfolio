@@ -14,10 +14,10 @@ import type { BuildingItem } from "@/settings/types";
 // ── Focus areas ───────────────────────────────────────────────────────────────
 
 const FOCUS_AREAS = [
-  { icon: Code2, title: "Frontend", desc: "React · Next.js · TypeScript" },
-  { icon: Server, title: "Backend", desc: "Node.js · Express · GraphQL" },
-  { icon: Database, title: "Database", desc: "MongoDB · PostgreSQL · Redis" },
-  { icon: Zap, title: "DevOps", desc: "Docker · AWS · CI/CD" },
+  { icon: Code2, title: "Frontend Development", desc: "React · Next.js · TypeScript" },
+  { icon: Server, title: "Backend Development", desc: "Node.js · Express · GraphQL" },
+  { icon: Database, title: "Databases", desc: "MongoDB · PostgreSQL · Redis" },
+  { icon: Zap, title: "DevOps & Infrastructure", desc: "Docker · AWS · CI/CD" },
 ];
 
 // ── Currently-building sub-component ─────────────────────────────────────────
@@ -59,7 +59,7 @@ export function AboutSectionClient({
   return (
     <section id="about" className="px-6 py-14 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading label="About" title="Full-stack developer in India" />
+        <SectionHeading label="About" title="About Jay Patel" />
 
         {/* ── Story + focus — one aligned composition ── */}
         <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-12 lg:items-stretch">
@@ -201,7 +201,7 @@ export function AboutSectionClient({
                       <Icon className="h-4 w-4" />
                     </span>
                     <div className="min-w-0">
-                      <p className="font-heading text-sm font-bold">{title}</p>
+                      <h3 className="font-bold">{title}</h3>
                       <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
                     </div>
                   </motion.li>

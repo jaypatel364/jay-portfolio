@@ -25,14 +25,6 @@ const SkillsSection = dynamic(
   () => import("@/components/sections/skills").then((m) => ({ default: m.SkillsSection })),
   { loading: sectionFallback },
 );
-const ExperienceSection = dynamic(
-  () => import("@/components/sections/experience").then((m) => ({ default: m.ExperienceSection })),
-  { loading: sectionFallback },
-);
-const EducationSection = dynamic(
-  () => import("@/components/sections/education").then((m) => ({ default: m.EducationSection })),
-  { loading: sectionFallback },
-);
 const ProjectsSection = dynamic(
   () => import("@/components/sections/projects").then((m) => ({ default: m.ProjectsSection })),
   { loading: sectionFallback },
@@ -68,7 +60,7 @@ export default function Home() {
        *   - Overlays the boot UI; page HTML is always in the document (SEO)
        */}
       <LoadingScreenWrapper>
-        <div className="site-shell relative min-h-screen bg-background text-foreground">
+        <div className="site-shell relative min-h-screen w-full min-w-0 overflow-x-clip bg-background text-foreground">
           <ScrollProgressBar />
           <Suspense fallback={null}>
             <HomeOverlays />
@@ -89,12 +81,6 @@ export default function Home() {
                 </SectionErrorBoundary>
                 <SectionErrorBoundary section="Skills">
                   <SkillsSection />
-                </SectionErrorBoundary>
-                <SectionErrorBoundary section="Experience">
-                  <ExperienceSection />
-                </SectionErrorBoundary>
-                <SectionErrorBoundary section="Education">
-                  <EducationSection />
                 </SectionErrorBoundary>
                 <SectionErrorBoundary section="Projects">
                   <ProjectsSection />

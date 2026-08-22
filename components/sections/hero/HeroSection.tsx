@@ -23,12 +23,12 @@ export function HeroSection() {
           <h1 className="font-heading text-6xl font-bold tracking-tight sm:text-7xl lg:text-8xl [text-wrap:balance]">
             <span className="gradient-text-animated">{siteConfig.fullName}</span>
           </h1>
-          <p className="mt-3 text-base font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          <h2 className="mt-3 uppercase tracking-[0.2em] text-muted-foreground">
             Full Stack Developer · India
-          </p>
+          </h2>
           <p className="mt-6 text-base leading-relaxed text-muted-foreground mx-auto max-w-lg lg:mx-0">
             {expLabel} years with React, Next.js, and Node.js — real-time apps, large form systems,
-            and production MERN work. Open to full-time and freelance.
+            and production MERN work. Open to freelance and collaboration.
           </p>
         </header>
         <HeroInteractive expLabel={expLabel} withTerminal={withTerminal} />

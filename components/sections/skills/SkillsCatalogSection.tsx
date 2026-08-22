@@ -31,7 +31,11 @@ export function SkillsCatalogSection() {
   const allSkillNames = SKILL_GROUPS.flatMap((g) => g.skills.map((s) => s.name));
 
   return (
-    <section id="stack-catalog" aria-labelledby="stack-catalog-heading" className="py-10 md:py-16">
+    <section
+      id="stack-catalog"
+      aria-labelledby="stack-catalog-heading"
+      className="min-w-0 py-10 md:py-16"
+    >
       {/* ── Header ── */}
       <motion.div
         initial={{ opacity: 0, y: 18 }}

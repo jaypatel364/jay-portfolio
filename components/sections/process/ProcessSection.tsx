@@ -57,7 +57,7 @@ export function ProcessSection() {
       aria-labelledby="process-heading"
       className="relative border-t border-border/60 py-10 md:py-16"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full min-w-0 max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -83,9 +83,9 @@ export function ProcessSection() {
           Rail: node — connector — node — … so the progress line never runs under icons.
           Click to select (no hover-jump). Past steps show a check on solid background.
         */}
-        <div className="mx-auto mt-12 max-w-3xl px-1 sm:px-2">
+        <div className="mx-auto mt-12 w-full min-w-0 max-w-3xl overflow-x-auto px-1 sm:px-2">
           <ol
-            className="flex list-none items-start"
+            className="flex w-full min-w-0 list-none items-start"
             role="tablist"
             aria-label="Delivery process steps"
           >
@@ -117,7 +117,7 @@ export function ProcessSection() {
                     </div>
                   )}
 
-                  <div className="flex w-[4.25rem] shrink-0 flex-col items-center sm:w-[5.5rem]">
+                  <div className="flex w-14 shrink-0 flex-col items-center sm:w-[5.5rem]">
                     <button
                       type="button"
                       role="tab"
@@ -159,7 +159,7 @@ export function ProcessSection() {
                         </span>
                         <span
                           className={cn(
-                            "text-[11px] font-semibold leading-tight transition-colors sm:text-sm",
+                            "max-w-full text-center text-[10px] font-semibold leading-tight transition-colors sm:text-sm",
                             isActive
                               ? "text-foreground"
                               : isDone

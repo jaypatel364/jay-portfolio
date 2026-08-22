@@ -47,7 +47,7 @@ export const content = {
       category: "work" as const,
       question: "Are you available to hire as a full-stack developer?",
       answer:
-        "Yes — full-time roles and select freelance builds. I work remotely from India " +
+        "Yes — freelance builds and long-term collaboration. I work remotely from India " +
         "(hybrid when it fits). Use the contact form or book a 15-minute call.",
     },
     {
@@ -139,7 +139,7 @@ export const content = {
       { label: "Based in", value: "India · remote-friendly" },
       { label: "Focus", value: "React · Next.js · Node.js · MERN" },
       { label: "Known for", value: "Real-time systems & complex forms" },
-      { label: "Open to", value: "Full-time & select freelance" },
+      { label: "Open to", value: "Freelance & collaboration" },
     ],
   },
 
@@ -165,10 +165,10 @@ export const content = {
       "From sketch to production — products that feel fast, stay reliable, and don't surprise you at deploy time.",
     cta: {
       title: "Ready to talk about",
-      titleHighlight: "your next hire",
-      titleSuffix: "or build?",
+      titleHighlight: "your next project",
+      titleSuffix: "or collaboration?",
       description:
-        "Full-time roles and freelance scopes — intro call or a short written brief. I reply to every message.",
+        "Freelance scopes and collaborations — intro call or a short written brief. I reply to every message.",
       button: "Contact Jay",
     },
   },
@@ -244,29 +244,29 @@ export const content = {
   /** Global pre-footer CTA — all pages except contact. On home this block is #contact. */
   globalCta: {
     label: "Start a project",
-    availability: "Open to full-time & freelance",
+    availability: "Open to freelance & collaboration",
     responseTime: "Replies within 24 hours",
     intents: [
       {
-        id: "fulltime",
-        label: "Full-time",
-        emoji: "💼",
-        headlineBefore: "Let's find",
-        highlight: "the right hire",
-        headlineAfter: "for your product team",
+        id: "collab",
+        label: "Collaboration",
+        emoji: "🤝",
+        headlineBefore: "Let's build",
+        highlight: "together",
+        headlineAfter: "on your product",
         description:
-          "You need a full-stack dev who ships MERN apps without hand-holding — from schema design to deploy.",
-        command: "hire jay --role=fullstack --stack=mern",
-        primaryCta: "Discuss a role",
+          "Long-term collaboration on MERN products — from schema design to deploy, with clear milestones and ownership.",
+        command: "jay collab --stack=mern --mode=remote",
+        primaryCta: "Discuss a collaboration",
         primaryHref: "/contact/",
       },
       {
         id: "freelance",
         label: "Freelance",
         emoji: "🚀",
-        headlineBefore: "Let's ship your",
-        highlight: "next build",
-        headlineAfter: "",
+        headlineBefore: "Let's Build",
+        highlight: "Something Great",
+        headlineAfter: "Together",
         description:
           "Scoped freelance work — MVPs, feature sprints, or rescuing a stuck codebase. Clear milestones, no fluff.",
         command: "jay ship --mode=freelance --deadline=asap",
@@ -308,7 +308,7 @@ export const content = {
   /** Dedicated /contact page — quick panel + form intro. */
   contactPage: {
     intro:
-      "Tell me about the role, product, or freelance scope. I read every message and reply within a day — " +
+      "Tell me about the project, freelance scope, or collaboration idea. I read every message and reply within a day — " +
       "usually sooner on weekdays.",
     quickContactTitle: "Quick contact",
     profilesTitle: "Find me online",
@@ -318,7 +318,7 @@ export const content = {
     availability: [
       { icon: "clock", text: "Replies within 24 hours" },
       { icon: "globe", text: "Remote from India" },
-      { icon: "briefcase", text: "Full-time & freelance" },
+      { icon: "briefcase", text: "Freelance & collaboration" },
     ] as { icon: string; text: string }[],
     trust: {
       label: "Background",

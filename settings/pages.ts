@@ -12,7 +12,7 @@ export const innerPages = {
     description:
       "Jay Patel is a full-stack developer in India (since 2022). React, Next.js, and Node.js — " +
       "real-time systems, large form platforms, and production MERN apps built end to end.",
-    homeCta: "More about Jay Patel",
+    homeCta: "Read More About Me",
     placeholder: null,
     hero: {
       label: "About",
@@ -24,14 +24,14 @@ export const innerPages = {
       chips: [
         "India · remote-friendly",
         "React · Next.js · Node.js",
-        "Open to full-time & freelance",
+        "Open to freelance & collaboration",
       ],
     },
     contactSection: {
       label: "Contact",
       title: "Want to work together?",
       description:
-        "Role, freelance scope, or a quick question — send a message. I reply to every one.",
+        "Freelance scope, collaboration, or a quick question — send a message. I reply to every one.",
     },
   },
   skills: {
@@ -82,17 +82,17 @@ export const innerPages = {
     label: "Contact",
     title: "Hire Jay Patel | Full Stack Developer Contact",
     description:
-      "Contact Jay Patel to hire a full-stack developer in India. Full-time roles, freelance MERN " +
-      "work, or a 15-minute intro call — remote-friendly, replies within 24 hours.",
+      "Contact Jay Patel for freelance full-stack development in India. MERN builds, collaboration, " +
+      "or a 15-minute intro call — remote-friendly, replies within 24 hours.",
     homeCta: "Go to contact",
     placeholder: null,
     hero: {
       label: "Contact",
       title: "Hire a full-stack developer — contact Jay Patel",
       description:
-        "Full-time hire, freelance sprint, or a short intro call. Use the form, email, or book " +
+        "Freelance sprint, collaboration, or a short intro call. Use the form, email, or book " +
         "15 minutes on Calendly. Based in India, open to remote and hybrid — I reply within a day.",
-      chips: ["Replies within 24 hours", "Remote from India", "Full-time & freelance"],
+      chips: ["Replies within 24 hours", "Remote from India", "Freelance & collaboration"],
     },
   },
 } as const;

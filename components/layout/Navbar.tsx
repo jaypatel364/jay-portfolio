@@ -264,11 +264,11 @@ export function Navbar() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6">
+      <nav className="mx-auto flex w-full min-w-0 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6">
         <button
           onClick={() => goTo(NAV_ITEMS[0])}
           aria-label={`${siteConfig.fullName} — home`}
-          className="font-heading text-xl font-bold tracking-tight"
+          className="min-w-0 shrink font-heading text-xl font-bold tracking-tight"
         >
           <Brand />
         </button>
@@ -345,7 +345,7 @@ export function Navbar() {
           )}
         </AnimatePresence>
 
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {/* ⌘K search trigger — visible on md+ as a pill, icon-only on mobile */}
           <button
             onClick={() => setPaletteOpen(true)}

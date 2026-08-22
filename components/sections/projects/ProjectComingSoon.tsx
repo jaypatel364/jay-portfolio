@@ -21,16 +21,16 @@ export function ProjectComingSoon({ project }: { project: Project }) {
         <div className="absolute bottom-0 right-0 h-64 w-64 rounded-full bg-glow/20 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-28">
-        <Link
+      <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-28 sm:px-6">
+        {/* <Link
           href="/work/"
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden />
           {copy.back}
-        </Link>
+        </Link> */}
 
-        <div className="mt-10 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Copy column */}
           <motion.div
             initial={{ opacity: 0, y: 22 }}

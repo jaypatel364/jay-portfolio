@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 type Intent = (typeof siteConfig.globalCta.intents)[number];
 
 const INTENT_ICONS: Record<string, LucideIcon> = {
-  fulltime: Briefcase,
+  collab: Briefcase,
   freelance: Rocket,
   call: Phone,
 };
@@ -178,9 +178,9 @@ export function GlobalCta() {
     <section
       id="contact"
       aria-labelledby="global-cta-heading"
-      className="relative scroll-mt-24 px-6 pb-4 pt-16 md:pb-6 md:pt-24"
+      className="relative scroll-mt-24 px-4 pb-4 pt-16 sm:px-6 md:pb-6 md:pt-24"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full min-w-0 max-w-6xl">
         <motion.div
           ref={cardRef}
           onPointerMove={handlePointerMove}

@@ -16,19 +16,19 @@ export function WhoAmISection() {
     <section
       id="who-am-i"
       aria-labelledby="who-am-i-heading"
-      className="relative px-6 py-14 md:py-24"
+      className="relative px-4 py-14 sm:px-6 md:py-24"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-      <div className="mx-auto max-w-6xl">
-        <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+      <div className="mx-auto w-full min-w-0 max-w-6xl">
+        <div className="grid min-w-0 items-start gap-12 lg:grid-cols-12 lg:gap-16">
           {/* ── Editorial column ── */}
           <motion.div
             initial={{ opacity: 0, y: 22 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.35 }}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-7"
+            className="min-w-0 lg:col-span-7"
           >
             <span className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary">
               $ whoami
@@ -68,7 +68,7 @@ export function WhoAmISection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5 lg:sticky lg:top-28"
+            className="min-w-0 lg:col-span-5 lg:sticky lg:top-28"
           >
             <div className="rounded-2xl border border-border/80 bg-card/40 p-6 sm:p-7">
               <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
