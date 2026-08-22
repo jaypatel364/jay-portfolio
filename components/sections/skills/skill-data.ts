@@ -51,7 +51,7 @@ interface SkillGroup {
 
 const SKILL_GROUPS: SkillGroup[] = [
   {
-    category: "Frontend",
+    category: "Frontend Development",
     icon: MonitorSmartphone,
     description: "Crafting pixel-perfect, responsive interfaces",
     previewCount: siteConfig.skillPreviewCounts["Frontend"] ?? 8,
@@ -67,7 +67,7 @@ const SKILL_GROUPS: SkillGroup[] = [
     ],
   },
   {
-    category: "Backend",
+    category: "Backend Development",
     icon: Server,
     description: "Building robust, scalable server-side systems",
     previewCount: siteConfig.skillPreviewCounts["Backend"] ?? 8,
@@ -83,7 +83,7 @@ const SKILL_GROUPS: SkillGroup[] = [
     ],
   },
   {
-    category: "Tools & DevOps",
+    category: "DevOps & Infrastructure",
     icon: Wrench,
     description: "Streamlining workflows and deployments",
     previewCount: siteConfig.skillPreviewCounts["Tools & DevOps"] ?? 8,
