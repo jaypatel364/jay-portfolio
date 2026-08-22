@@ -14,10 +14,10 @@ import type { BuildingItem } from "@/settings/types";
 // ── Focus areas ───────────────────────────────────────────────────────────────
 
 const FOCUS_AREAS = [
-  { icon: Code2, title: "Frontend Development", desc: "React · Next.js · TypeScript" },
-  { icon: Server, title: "Backend Development", desc: "Node.js · Express · GraphQL" },
-  { icon: Database, title: "Databases", desc: "MongoDB · PostgreSQL · Redis" },
-  { icon: Zap, title: "DevOps & Infrastructure", desc: "Docker · AWS · CI/CD" },
+  { icon: Code2, title: "Frontend", desc: "React · Next.js · TypeScript" },
+  { icon: Server, title: "Backend", desc: "Node.js · Express · GraphQL" },
+  { icon: Database, title: "Database", desc: "MongoDB · PostgreSQL · Redis" },
+  { icon: Zap, title: "DevOps", desc: "Docker · AWS · CI/CD" },
 ];
 
 // ── Currently-building sub-component ─────────────────────────────────────────
@@ -201,7 +201,7 @@ export function AboutSectionClient({
                       <Icon className="h-4 w-4" />
                     </span>
                     <div className="min-w-0">
-                      <h3 className="font-bold">{title}</h3>
+                      <p className="font-heading text-sm font-bold">{title}</p>
                       <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
                     </div>
                   </motion.li>

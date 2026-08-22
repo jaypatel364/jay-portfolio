@@ -63,7 +63,7 @@ export function SkillsSection() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl">
-        <SectionHeading label="Skills" title="React, Next.js, and Node.js stack" />
+        <SectionHeading label="Skills" title="Full Stack Development Skills" />
 
         {/* Stats bar */}
         <motion.div
