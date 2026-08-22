@@ -362,7 +362,7 @@ function SkillSphere({ skills, isDark }: { skills: Skill[]; isDark: boolean }) {
 
       {/* Drag hint */}
       <div className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2">
-        <span className="text-[10px] text-muted-foreground/70 tracking-wide">
+        <span className="text-[10px] text-muted-foreground tracking-wide">
           drag to rotate · hover to explore
         </span>
       </div>

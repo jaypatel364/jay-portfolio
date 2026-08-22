@@ -15,7 +15,8 @@ mkdir -p "$ROOT/public/icons" /tmp/jay-favicon
 
 sips -z 16 16 "$SRC" --out "$ROOT/public/icons/icon-16.png" >/dev/null
 sips -z 32 32 "$SRC" --out "$ROOT/public/icons/icon-32.png" >/dev/null
-sips -z 180 180 "$SRC" --out "$ROOT/app/apple-icon.png" >/dev/null
+sips -z 180 180 "$SRC" --out "$ROOT/public/icons/apple-touch-icon.png" >/dev/null
+cp "$ROOT/public/icons/apple-touch-icon.png" "$ROOT/app/apple-icon.png"
 sips -z 192 192 "$SRC" --out "$ROOT/public/icons/icon-192.png" >/dev/null
 cp "$SRC" "$ROOT/public/icons/icon-512.png"
 
