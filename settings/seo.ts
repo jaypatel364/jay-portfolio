@@ -84,6 +84,26 @@ export const OG_IMAGE = {
   type: "image/png",
 } as const;
 
+/** Square brand mark for og:logo (validators / some platforms). */
+export const OG_LOGO = {
+  url: "/icons/icon-512.png",
+  width: 512,
+  height: 512,
+  alt: `${siteConfig.fullName} logo`,
+  type: "image/png",
+} as const;
+
+export const OG_LOGO_URL = `${BASE_URL}${OG_LOGO.url}`;
+
+/** X / Twitter large card — separate route with tighter layout for crop safe zone. */
+export const TWITTER_IMAGE = {
+  url: "/twitter-image",
+  width: 1200,
+  height: 630,
+  alt: `${siteConfig.fullName} — Full Stack Developer in India`,
+  type: "image/png",
+} as const;
+
 // ─── Twitter handle ────────────────────────────────────────────────────────────
 // Update this if Jay has a Twitter / X account, otherwise keep it undefined.
 export const TWITTER_HANDLE: string | undefined = undefined;
@@ -167,7 +187,7 @@ export const rootMetadata: Metadata = {
     card: "summary_large_image",
     title: SEO_TITLE_DEFAULT,
     description: SEO_DESCRIPTION,
-    images: [OG_IMAGE.url],
+    images: [TWITTER_IMAGE],
     // Uncomment and set TWITTER_HANDLE (e.g. "@jaypatel_dev") to populate these:
     // site: TWITTER_HANDLE,
     // creator: TWITTER_HANDLE,
@@ -243,7 +263,7 @@ function innerPageMetadata(
       card: "summary_large_image",
       title,
       description,
-      images: [OG_IMAGE.url],
+      images: [TWITTER_IMAGE],
     },
   };
 }
@@ -453,6 +473,12 @@ export function projectPageMetadata(project: {
       title: `${project.title} — ${project.tagline}`,
       description,
       images: [OG_IMAGE],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} — ${project.tagline}`,
+      description,
+      images: [TWITTER_IMAGE],
     },
   };
 }

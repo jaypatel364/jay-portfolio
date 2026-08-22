@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { rootMetadata, rootViewport } from "@/lib/seo";
+import { rootMetadata, rootViewport, OG_LOGO, OG_LOGO_URL } from "@/lib/seo";
 import { features } from "@/settings/features";
 import {
   ACCENT_BOOT_CSS,
@@ -46,6 +46,11 @@ export default async function RootLayout({
         <noscript>
           <style>{`html[data-page-pending="true"] .site-shell { opacity: 1 !important; transform: none !important; }`}</style>
         </noscript>
+        <meta property="og:logo" content={OG_LOGO_URL} />
+        <meta property="og:logo:alt" content={OG_LOGO.alt} />
+        <meta property="og:logo:type" content={OG_LOGO.type} />
+        <meta property="og:logo:width" content={String(OG_LOGO.width)} />
+        <meta property="og:logo:height" content={String(OG_LOGO.height)} />
       </head>
       <body className={cn("antialiased", inter.className)}>
         <AccentProvider initialAccentId={accentId}>
