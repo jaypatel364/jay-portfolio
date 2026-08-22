@@ -104,9 +104,13 @@ export const TWITTER_IMAGE = {
   type: "image/png",
 } as const;
 
-// ─── Twitter handle ────────────────────────────────────────────────────────────
-// Update this if Jay has a Twitter / X account, otherwise keep it undefined.
-export const TWITTER_HANDLE: string | undefined = undefined;
+// ─── Twitter / X handle ────────────────────────────────────────────────────────
+export const TWITTER_HANDLE = "@PatelPjay99909";
+
+const TWITTER_ACCOUNT = {
+  site: TWITTER_HANDLE,
+  creator: TWITTER_HANDLE,
+} as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Root Metadata  (used in app/layout.tsx)
@@ -188,9 +192,7 @@ export const rootMetadata: Metadata = {
     title: SEO_TITLE_DEFAULT,
     description: SEO_DESCRIPTION,
     images: [TWITTER_IMAGE],
-    // Uncomment and set TWITTER_HANDLE (e.g. "@jaypatel_dev") to populate these:
-    // site: TWITTER_HANDLE,
-    // creator: TWITTER_HANDLE,
+    ...TWITTER_ACCOUNT,
   },
 
   // ── App ────────────────────────────────────────────────────────────────────
@@ -264,6 +266,7 @@ function innerPageMetadata(
       title,
       description,
       images: [TWITTER_IMAGE],
+      ...TWITTER_ACCOUNT,
     },
   };
 }
@@ -479,6 +482,7 @@ export function projectPageMetadata(project: {
       title: `${project.title} — ${project.tagline}`,
       description,
       images: [TWITTER_IMAGE],
+      ...TWITTER_ACCOUNT,
     },
   };
 }

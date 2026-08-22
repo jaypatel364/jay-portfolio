@@ -5,6 +5,9 @@
 
 import type { ProfileLink } from "./types";
 
+/** Set your Instagram profile URL to show the Contact badge (e.g. https://www.instagram.com/yourhandle). */
+const instagram = "https://www.instagram.com/jay__patel.2000";
+
 export const identity = {
   name: "Jay",
   fullName: "Jay Patel",
@@ -18,6 +21,9 @@ export const identity = {
   github: "https://github.com/jaypatel364",
   githubUsername: "jaypatel364",
   linkedin: "https://www.linkedin.com/in/jaypatelfullstack",
+  twitter: "https://x.com/PatelPjay99909",
+  twitterUsername: "PatelPjay99909",
+  instagram,
 
   location: "India",
 
@@ -30,25 +36,37 @@ export const identity = {
       id: "linkedin",
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/jaypatelfullstack",
-      tagline: "Professional network & recommendations",
+      tagline: "Network",
     },
     {
       id: "github",
       label: "GitHub",
       href: "https://github.com/jaypatel364",
-      tagline: "Open source & project code",
+      tagline: "Code",
+    },
+    {
+      id: "twitter",
+      label: "X",
+      href: "https://x.com/PatelPjay99909",
+      tagline: "Posts",
+    },
+    {
+      id: "instagram",
+      label: "Instagram",
+      href: instagram,
+      tagline: "Photos",
     },
     {
       id: "upwork",
       label: "Upwork",
       href: null,
-      tagline: "Freelance MERN projects",
+      tagline: "Freelance",
     },
     {
       id: "freelancer",
       label: "Freelancer",
       href: null,
-      tagline: "Fixed-price & hourly builds",
+      tagline: "Gigs",
     },
   ] as ProfileLink[],
 

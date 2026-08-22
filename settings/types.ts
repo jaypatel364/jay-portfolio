@@ -25,5 +25,6 @@ export interface ProfileLink {
   id: string;
   label: string;
   href: string | null;
+  /** Short subtitle on Contact badges — keep to 1–2 words. */
   tagline: string;
 }
