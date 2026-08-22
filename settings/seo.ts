@@ -188,8 +188,17 @@ export const rootMetadata: Metadata = {
       : {}),
   },
 
-  // Favicon / Apple icon: app/icon.png, app/apple-icon.png, app/favicon.ico
-  // (Next.js file-based metadata — do not override `icons` here).
+  // Explicit favicon PNG sizes (16/32) + manifest link for favicon auditors / Android.
+  icons: {
+    icon: [
+      { url: "/icons/icon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

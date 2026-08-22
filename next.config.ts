@@ -94,6 +94,7 @@ const nextConfig: NextConfig = {
       { source: "/projects/", destination: "/work/", permanent: true },
       { source: "/projects/:slug", destination: "/work/:slug/", permanent: true },
       { source: "/projects/:slug/", destination: "/work/:slug/", permanent: true },
+      { source: "/manifest.json", destination: "/manifest.webmanifest", permanent: true },
       ...hosts.flatMap((host) => [
         {
           source: "/",

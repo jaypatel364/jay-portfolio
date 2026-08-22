@@ -68,9 +68,8 @@ export const identity = {
 
   /**
    * Profile photo — path from site root (NOT /public/…).
-   * File lives at public/images/jay-patel.png → use "/images/jay-patel.png"
-   * null = styled placeholder until you add a real photo.
+   * Square avatar: public/images/avatar.png (512) — favicon + OG.
+   * Portrait: public/images/jay-patel.png — About section (higher detail).
    */
-  // profileImage: "/images/jay-patel.png",
-  profileImage: null as string | null,
+  profileImage: "/images/jay-patel.png",
 } as const;

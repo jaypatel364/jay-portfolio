@@ -2,11 +2,14 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { siteConfig } from "@/settings";
+import { BASE_URL } from "@/settings/seo";
 
 export const runtime = "nodejs";
-export const alt = `${siteConfig.fullName} — Full Stack Developer in India`;
+export const alt = `${siteConfig.fullName} — Full Stack Developer`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+const DOMAIN = new URL(BASE_URL).hostname;
 
 export default async function OpenGraphImage() {
   const photo = await readFile(join(process.cwd(), "public/images/avatar.png"));
@@ -21,61 +24,80 @@ export default async function OpenGraphImage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          background: "#0e0f17",
-          padding: "72px 80px",
+          background: "linear-gradient(135deg, #0e0f17 0%, #141622 55%, #0e0f17 100%)",
+          padding: "64px 72px",
           position: "relative",
+          overflow: "hidden",
         }}
       >
+        {/* Ambient glow */}
         <div
           style={{
             position: "absolute",
-            top: -140,
-            right: -60,
-            width: 480,
-            height: 480,
+            top: -160,
+            right: 80,
+            width: 520,
+            height: 520,
             borderRadius: 999,
-            background: "rgba(224, 138, 44, 0.16)",
+            background: "rgba(224, 138, 44, 0.14)",
             display: "flex",
           }}
         />
+        <div
+          style={{
+            position: "absolute",
+            bottom: -120,
+            left: -80,
+            width: 360,
+            height: 360,
+            borderRadius: 999,
+            background: "rgba(224, 138, 44, 0.06)",
+            display: "flex",
+          }}
+        />
+
+        {/* Copy block */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
             height: "100%",
-            maxWidth: 620,
+            flex: 1,
+            maxWidth: 640,
+            zIndex: 1,
           }}
         >
           <div
             style={{
               display: "flex",
-              fontSize: 22,
-              letterSpacing: "0.28em",
+              fontSize: 20,
+              letterSpacing: "0.32em",
               textTransform: "uppercase",
               color: "#e08a2c",
-              fontWeight: 600,
+              fontWeight: 700,
             }}
           >
-            JAY.DEV
+            {siteConfig.title.toUpperCase()}
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <div
               style={{
                 display: "flex",
-                fontSize: 80,
+                fontSize: 76,
                 fontWeight: 800,
                 color: "#fafaf8",
                 letterSpacing: "-0.04em",
-                lineHeight: 1.05,
+                lineHeight: 1.02,
               }}
             >
-              Jay Patel
+              {siteConfig.fullName}
             </div>
             <div
               style={{
                 display: "flex",
-                width: 120,
+                width: 96,
                 height: 4,
                 borderRadius: 4,
                 background: "#e08a2c",
@@ -84,35 +106,62 @@ export default async function OpenGraphImage() {
             <div
               style={{
                 display: "flex",
-                fontSize: 30,
+                fontSize: 28,
                 color: "#c4c6ce",
-                marginTop: 8,
+                lineHeight: 1.35,
+                maxWidth: 520,
               }}
             >
-              Full Stack Developer in India
+              Full Stack Developer · {siteConfig.location}
             </div>
           </div>
+
           <div
             style={{
               display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
               color: "#8b8e99",
-              fontSize: 22,
+              fontSize: 20,
+              width: "100%",
             }}
           >
-            React · Next.js · Node.js · TypeScript
+            <span>React · Next.js · Node.js · TypeScript</span>
+            <span style={{ color: "#e08a2c", fontWeight: 600 }}>{DOMAIN}</span>
           </div>
         </div>
-        <img
-          src={photoSrc}
-          width={400}
-          height={400}
-          alt=""
+
+        {/* Portrait — soft rounded rect (matches site rounded-3xl), not a circle */}
+        <div
           style={{
-            borderRadius: 28,
-            objectFit: "cover",
-            border: "3px solid rgba(224, 138, 44, 0.55)",
+            display: "flex",
+            position: "relative",
+            marginLeft: 48,
+            zIndex: 1,
           }}
-        />
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: -12,
+              borderRadius: 36,
+              background: "rgba(224, 138, 44, 0.22)",
+              display: "flex",
+            }}
+          />
+          <img
+            src={photoSrc}
+            width={420}
+            height={420}
+            alt=""
+            style={{
+              borderRadius: 28,
+              objectFit: "cover",
+              border: "3px solid rgba(224, 138, 44, 0.45)",
+              boxShadow: "0 24px 64px rgba(0, 0, 0, 0.45)",
+            }}
+          />
+        </div>
       </div>
     ),
     { ...size },

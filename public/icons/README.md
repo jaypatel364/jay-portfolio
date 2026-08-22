@@ -1,13 +1,14 @@
 # Icons
 
-Use the square headshot (`public/images/avatar.png`, 512×512). Do **not** export 16×16 or 32×32 sources — a photo cannot stay sharp at those sizes. Keep the 512 file and let browsers downscale.
+Generated from `public/images/avatar.png` via `scripts/sync-brand-icons.sh`.
 
-| File                      | Size     | Used for                             |
-| ------------------------- | -------- | ------------------------------------ |
-| `app/icon.png`            | 512×512  | Browser tab / PWA favicon            |
-| `app/apple-icon.png`      | 180×180  | iOS home screen                      |
-| `app/favicon.ico`         | 32 + 48  | Legacy `/favicon.ico` requests       |
-| `app/opengraph-image.tsx` | 1200×630 | LinkedIn / Facebook / WhatsApp cards |
-| `app/twitter-image.tsx`   | 1200×630 | X / Twitter cards                    |
+| File                    | Size         | Used for                          |
+| ----------------------- | ------------ | --------------------------------- |
+| `icon-16.png`           | 16×16        | `<link rel="icon" sizes="16x16">` |
+| `icon-32.png`           | 32×32        | `<link rel="icon" sizes="32x32">` |
+| `icon-192.png`          | 192×192      | Web manifest (Android)            |
+| `icon-512.png`          | 512×512      | Web manifest (Android)            |
+| `../app/apple-icon.png` | 180×180      | iOS home screen                   |
+| `../app/favicon.ico`    | 16 + 32 + 48 | Legacy `/favicon.ico`             |
 
-Replace `public/images/avatar.png`, then copy it to `app/icon.png` and resize to 180 for `app/apple-icon.png`.
+Metadata in `settings/seo.ts` references these paths. `app/manifest.ts` serves `/manifest.webmanifest`.
