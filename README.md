@@ -140,6 +140,5 @@ Deploys on Vercel via git push. Set `NEXT_PUBLIC_SITE_URL` and other env vars in
 
 | Doc                                          | Contents                   |
 | -------------------------------------------- | -------------------------- |
-| [STRUCTURE.md](./STRUCTURE.md)               | Architecture & conventions |
-| [INFRA.md](./INFRA.md)                       | Cloud services & env vars  |
-| [PRODUCTION-AUDIT.md](./PRODUCTION-AUDIT.md) | Launch audit / roadmap     |
+| [STRUCTURE.md](./STRUCTURE.md) | Architecture & conventions |
+| [INFRA.md](./INFRA.md)         | Cloud services & env vars  |
