@@ -36,36 +36,47 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
-    slug: "real-time-chat-application",
-    title: "Real-Time Chat Application",
-    tagline: "Real-Time Group Chat",
-    desc: "A lightweight real-time group chat application built with WebSockets, featuring instant messaging, chat rooms, typing indicators, and seen status. Built as a Turborepo monorepo with a Next.js frontend and Node.js backend, delivering a clean, responsive, and modern chat experience.",
-    tags: ["Next.js", "Node.js", "TypeScript", "WebSockets", "Express.js", "Tailwind CSS"],
+    slug: "spendly-personal-expense-tracker",
+    title: "Spendly",
+    tagline: "Personal Expense Tracker",
+    desc: "A premium personal expense tracker that turns everyday spending into clear insight. Log expenses in seconds, set monthly budgets, import CSV/Excel history, and see totals and category breakdowns in a calm, private dashboard. Built with TanStack Start, React, and Supabase with row-level security.",
+    tags: [
+      "TanStack Start",
+      "React",
+      "TypeScript",
+      "Supabase",
+      "Tailwind CSS",
+      "TanStack Query",
+      "Recharts",
+      "Zod",
+    ],
     category: "fullstack",
-    color: "from-sky-500/20 to-cyan-500/20",
-    iconColor: "oklch(0.72 0.17 240)",
-    demoUrl: "https://chat-app-web-eta.vercel.app/",
+    color: "from-emerald-500/20 to-teal-500/20",
+    iconColor: "oklch(0.72 0.14 165)",
+    wip: true,
+    demoUrl: "https://pocket-wise-tracker-88.lovable.app/",
     highlights: [
-      "Instant rooms, typing indicators, and seen receipts over WebSockets",
-      "Turborepo split — Next.js client + Node.js socket server",
-      "Shared TypeScript types so message shapes cannot drift",
+      "Live dashboard with totals, 6-month trends, and category charts",
+      "CSV & Excel import with column mapping, plus one-click filtered export",
+      "Supabase Auth + Postgres RLS so each user’s expenses stay private",
     ],
     caseStudy: {
       problem:
-        "Build a group chat that feels instant without dragging in a heavy real-time SaaS. Rooms, typing, and seen status had to work on a small Node process.",
-      role: "Solo: architecture, WebSocket protocol, Next.js UI, Turborepo split, Vercel deploy.",
+        "People lose track of spending in stale spreadsheets. They need fast expense logging, budgets that warn early, and a way to backfill years of bank exports without a heavy finance SaaS.",
+      role: "Solo: product UI, TanStack Start app, Supabase schema/RLS, import pipeline, auth flows.",
       sections: [
         {
           heading: "Approach",
-          body: "A Turborepo holds a Next.js client and an Express + WebSocket server. The socket layer owns rooms, presence, typing indicators, and seen receipts so the UI stays a thin subscriber. TypeScript is shared across packages so message shapes cannot drift.",
+          body: "TanStack Start + React powers a file-based app: landing, auth, and an authenticated shell for dashboard, expenses, and profile. Supabase handles Auth and Postgres; expenses and profiles use RLS so rows are scoped to the signed-in user. TanStack Query feeds Recharts; React Hook Form + Zod validate entries. CSV/Excel import uses xlsx with preview-before-commit; monthly budget lives in localStorage for a light client-side target.",
         },
         {
           heading: "Trade-offs",
-          body: "Sockets over a hosted realtime product kept the stack learnable and cheap. The cost is that horizontal scale needs sticky sessions or a pub/sub bus — not required for this demo. Source is not public yet; the live demo is the artifact.",
+          body: "Supabase kept auth, DB, and security in one place without a custom API. Budget is local-only for speed—multi-device sync would need a profiles/settings table. Import is optimistic and client-driven, which fits a personal demo but would need stronger server validation at scale.",
         },
       ],
     },
   },
+
   {
     slug: "social-media-backend-api",
     title: "Social Media Backend API",
@@ -124,6 +135,37 @@ export const PROJECTS: Project[] = [
         {
           heading: "Trade-offs",
           body: "Two runtimes (Next + Nest) is more moving parts than a single Next app, but it matches how a CMS is actually deployed: dashboard and API scale independently. Source is not public yet; the hosted admin is.",
+        },
+      ],
+    },
+  },
+  {
+    slug: "real-time-chat-application",
+    title: "Real-Time Chat Application",
+    tagline: "Real-Time Group Chat",
+    desc: "A lightweight real-time group chat application built with WebSockets, featuring instant messaging, chat rooms, typing indicators, and seen status. Built as a Turborepo monorepo with a Next.js frontend and Node.js backend, delivering a clean, responsive, and modern chat experience.",
+    tags: ["Next.js", "Node.js", "TypeScript", "WebSockets", "Express.js", "Tailwind CSS"],
+    category: "fullstack",
+    color: "from-sky-500/20 to-cyan-500/20",
+    iconColor: "oklch(0.72 0.17 240)",
+    demoUrl: "https://chat-app-web-eta.vercel.app/",
+    highlights: [
+      "Instant rooms, typing indicators, and seen receipts over WebSockets",
+      "Turborepo split — Next.js client + Node.js socket server",
+      "Shared TypeScript types so message shapes cannot drift",
+    ],
+    caseStudy: {
+      problem:
+        "Build a group chat that feels instant without dragging in a heavy real-time SaaS. Rooms, typing, and seen status had to work on a small Node process.",
+      role: "Solo: architecture, WebSocket protocol, Next.js UI, Turborepo split, Vercel deploy.",
+      sections: [
+        {
+          heading: "Approach",
+          body: "A Turborepo holds a Next.js client and an Express + WebSocket server. The socket layer owns rooms, presence, typing indicators, and seen receipts so the UI stays a thin subscriber. TypeScript is shared across packages so message shapes cannot drift.",
+        },
+        {
+          heading: "Trade-offs",
+          body: "Sockets over a hosted realtime product kept the stack learnable and cheap. The cost is that horizontal scale needs sticky sessions or a pub/sub bus — not required for this demo. Source is not public yet; the live demo is the artifact.",
         },
       ],
     },
