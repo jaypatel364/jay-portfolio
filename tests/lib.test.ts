@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { getExperienceLabel } from "@/lib/utils";
 import { hashClientIp } from "@/lib/client-ip";
 import { isAllowedRequestOrigin } from "@/lib/request-origin";
-import { contactSchema } from "@/lib/contact-schema";
 
 describe("getExperienceLabel", () => {
   it("returns < 1 under six months", () => {

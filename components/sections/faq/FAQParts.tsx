@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useId, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, PartyPopper } from "lucide-react";
 import type { FAQCategory } from "@/lib/site-config";
@@ -68,7 +68,11 @@ function FAQCard({
   onToggle: () => void;
   reduced: boolean;
 }) {
-  const id = useId();
+  const id = question
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 48);
   const meta = CATEGORY_META[category];
   const num = String(index + 1).padStart(2, "0");
 
@@ -373,10 +377,10 @@ function AllDoneBanner({ reduced }: { reduced: boolean }) {
 
         <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
           <span className="font-heading text-sm font-bold text-foreground">
-            You&apos;ve read everything.
+            You've made it to the end.
           </span>
           <span className="text-xs text-muted-foreground">
-            Still curious? Drop me a message — I&apos;d love to chat.
+            Still curious? Let's talk about your project.
           </span>
         </div>
 
@@ -384,7 +388,7 @@ function AllDoneBanner({ reduced }: { reduced: boolean }) {
           href="/contact"
           className="ml-auto shrink-0 rounded-lg border border-primary/30 bg-primary/8 px-3 py-1.5 font-mono text-[11px] font-semibold text-primary transition-all hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         >
-          say hi →
+          Ask a question →
         </a>
       </div>
     </motion.div>

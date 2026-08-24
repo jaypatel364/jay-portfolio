@@ -280,7 +280,13 @@ html[data-page-ready="true"] .site-shell {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradient-shift 6s ease infinite;
+  /* Only animate when the user hasn't requested reduced motion */
+  animation: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .gradient-text-animated {
+    animation: gradient-shift 6s ease infinite;
+  }
 }
 
 @keyframes gradient-shift {
@@ -360,12 +366,19 @@ html[data-page-ready="true"] .site-shell {
 .aurora-blob {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(110px);
+  filter: blur(80px);
   opacity: 0.18;
   will-change: transform;
 }
 .dark .aurora-blob {
   opacity: 0.22;
+}
+/* Pause aurora animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob {
+    animation: none !important;
+    will-change: auto;
+  }
 }
 
 /* Animated grid */

@@ -1,39 +1,30 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Mail, Download, ArrowUpRight } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import { openResumeViewer } from "@/components/features/resume";
 import { GithubIcon, LinkedinIcon } from "./SocialIcons";
 
-const TerminalBlock = dynamic(
-  () => import("./TerminalBlock").then((m) => ({ default: m.TerminalBlock })),
-  {
-    ssr: false,
-    loading: () => (
-      <div
-        className="h-64 w-full rounded-2xl border border-border bg-card lg:h-80"
-        aria-hidden="true"
-      />
-    ),
-  },
+const TerminalBlockLazy = lazy(() =>
+  import("./TerminalBlock").then((m) => ({ default: m.TerminalBlock })),
 );
 
 const SWAP_INTERVAL = 2800;
 
 interface HeroInteractiveProps {
-  expLabel: string;
   withTerminal: boolean;
 }
 
 /** Client island — terminal, CTAs. Static SEO copy lives in server HeroSection. */
-export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps) {
+export function HeroInteractive({ withTerminal }: HeroInteractiveProps) {
   const words = siteConfig.headlineWords;
   const [index, setIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => setIndex((i) => (i + 1) % words.length), SWAP_INTERVAL);
     return () => clearInterval(id);
@@ -99,16 +90,6 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
           <span>people actually use.</span>
         </div>
 
-        <p className="sr-only">
-          Full stack developer in India. {expLabel} years with React, Next.js, and Node.js.
-        </p>
-
-        {withTerminal && (
-          <div className="mt-8 lg:hidden">
-            <TerminalBlock />
-          </div>
-        )}
-
         <div
           className={cn(
             "mt-10 flex flex-wrap gap-4",
@@ -157,7 +138,23 @@ export function HeroInteractive({ expLabel, withTerminal }: HeroInteractiveProps
       {withTerminal && (
         <div className="hidden lg:flex lg:items-center lg:justify-end">
           <div className="w-full max-w-[540px] h-[391px]">
-            <TerminalBlock />
+            {mounted ? (
+              <Suspense
+                fallback={
+                  <div
+                    className="h-64 w-full rounded-2xl border border-border bg-card lg:h-80"
+                    aria-hidden="true"
+                  />
+                }
+              >
+                <TerminalBlockLazy />
+              </Suspense>
+            ) : (
+              <div
+                className="h-64 w-full rounded-2xl border border-border bg-card lg:h-80"
+                aria-hidden="true"
+              />
+            )}
           </div>
         </div>
       )}

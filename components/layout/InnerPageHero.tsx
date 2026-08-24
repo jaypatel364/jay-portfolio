@@ -1,9 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface InnerPageHeroProps {
@@ -23,8 +21,6 @@ export function InnerPageHero({
   title,
   description,
   chips = [],
-  backHref = "/",
-  backLabel = "Back to home",
   className,
   visual,
 }: InnerPageHeroProps) {
