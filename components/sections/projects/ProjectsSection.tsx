@@ -86,7 +86,7 @@ export function ProjectsSection() {
   return (
     <section id="work" className="px-6 py-14 md:py-28">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading label="Work" title="Selected full-stack projects" />
+        <SectionHeading label="Work" title="Featured Full Stack Projects" />
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {preview.map((project, i) => (

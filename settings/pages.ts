@@ -61,7 +61,7 @@ export const innerPages = {
     description:
       "Selected projects by Jay Patel — real-time chat, headless CMS, social APIs, and production " +
       "MERN apps. Case studies and NDA-friendly summaries from shipped work.",
-    homeCta: "Browse selected work",
+    homeCta: "Browse Featured Projects",
     placeholder: null,
     hero: {
       label: "Work",

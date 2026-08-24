@@ -62,7 +62,7 @@ export function AboutSectionClient({
         <SectionHeading label="About" title="About Jay Patel" />
 
         {/* ── Story + focus — one aligned composition ── */}
-        <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-12 lg:items-stretch">
+        <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-12 lg:items-start">
           {/* Narrative */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -71,21 +71,12 @@ export function AboutSectionClient({
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col lg:col-span-7"
           >
-            <div className="space-y-4">
-              <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl sm:leading-relaxed">
-                I build scalable web applications using{" "}
-                <span className="font-semibold text-foreground">React, Next.js, Node.js</span> and
-                modern databases — helping startups and businesses ship faster from{" "}
-                <span className="font-semibold text-foreground">{siteConfig.location}</span> with{" "}
-                <span className="font-semibold text-foreground">{expLabel} years</span> of hands-on
-                experience.
-              </p>
-              <p className="text-base leading-relaxed text-muted-foreground sm:text-lg sm:leading-relaxed">
-                From real-time chat to configurable form systems and production MERN apps, I own the
-                work end to end — architecture, UI, APIs, and deploy — so teams get something that
-                holds up under real users, not just a demo that looks good once.
-              </p>
-            </div>
+            <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl sm:leading-relaxed">
+              I&apos;m a Full Stack Developer with {expLabel} years of experience building modern
+              web applications and scalable software solutions. I specialize in React, Next.js,
+              Node.js, TypeScript and the MERN stack, with experience across frontend development,
+              backend systems, APIs and real-time applications.
+            </p>
 
             {/* Meta strip — solid, not pill soup */}
             <div
@@ -159,7 +150,7 @@ export function AboutSectionClient({
 
             {/* CTA sits with the story — not orphaned under the grid */}
             {showPageCta && (
-              <div className="mt-auto pt-8">
+              <div className="mt-0 pt-8">
                 <SectionPageCta href={aboutHref}>{innerPages.about.homeCta}</SectionPageCta>
               </div>
             )}

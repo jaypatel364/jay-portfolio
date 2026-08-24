@@ -6,23 +6,35 @@ import { siteConfig } from "@/lib/site-config";
 
 /**
  * Overlays stay code-split and mount after first paint to reduce Total Blocking Time.
- * SSR is kept so the homepage HTML is never skipped.
+ *
+ * Each effect is imported from its own file path (not the barrel) so the bundler
+ * can assign each a separate chunk. Importing via the barrel would merge all
+ * effects — including the 400-line CursorTrail — into one chunk regardless of
+ * which features are actually enabled.
+ *
+ * CursorTrail's dynamic() is only created when cursorEffect is active, so the
+ * chunk is never downloaded when the feature is off (currently "none").
  */
 const ChatBot = dynamic(() =>
   import("@/components/features/chatbot").then((m) => ({ default: m.ChatBot })),
 );
 const CursorSpotlight = dynamic(() =>
-  import("@/components/effects").then((m) => ({ default: m.CursorSpotlight })),
+  import("@/components/effects/CursorSpotlight").then((m) => ({ default: m.CursorSpotlight })),
 );
 const KonamiEasterEgg = dynamic(() =>
-  import("@/components/effects").then((m) => ({ default: m.KonamiEasterEgg })),
+  import("@/components/effects/KonamiEasterEgg").then((m) => ({ default: m.KonamiEasterEgg })),
 );
-const CatchTheBug = dynamic(() =>
-  import("@/components/effects").then((m) => ({ default: m.CatchTheBug })),
-);
-const CursorTrail = dynamic(() =>
-  import("@/components/effects").then((m) => ({ default: m.CursorTrail })),
-);
+const CatchTheBug = siteConfig.showCatchTheBug
+  ? dynamic(() =>
+      import("@/components/effects/CatchTheBug").then((m) => ({ default: m.CatchTheBug })),
+    )
+  : null;
+const CursorTrail =
+  siteConfig.cursorEffect !== "none"
+    ? dynamic(() =>
+        import("@/components/effects/CursorTrail").then((m) => ({ default: m.CursorTrail })),
+      )
+    : null;
 
 export function HomeOverlays() {
   const [ready, setReady] = useState(false);
@@ -44,8 +56,8 @@ export function HomeOverlays() {
     <>
       <CursorSpotlight />
       <KonamiEasterEgg />
-      {siteConfig.showCatchTheBug && <CatchTheBug />}
-      {siteConfig.cursorEffect !== "none" && <CursorTrail mode={siteConfig.cursorEffect} />}
+      {CatchTheBug && <CatchTheBug />}
+      {CursorTrail && <CursorTrail mode={siteConfig.cursorEffect} />}
       <ChatBot />
     </>
   );

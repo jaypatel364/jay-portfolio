@@ -149,6 +149,9 @@ export function Navbar() {
   const [chromeReady, setChromeReady] = useState(false);
 
   useEffect(() => {
+    // Sync initial state immediately — handles page refresh while already scrolled
+    setScrolled(window.scrollY > 20);
+
     let raf = 0;
     const onScroll = () => {
       if (raf) return;

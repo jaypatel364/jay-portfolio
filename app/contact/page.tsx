@@ -1,9 +1,5 @@
 import { SiteChrome, InnerPageHero, ContactHeroVisual } from "@/components/layout";
-import {
-  ContactExploreSection,
-  ContactPageSection,
-  ContactTrustStrip,
-} from "@/components/sections/contact";
+import { ContactExploreSection, ContactPageSection } from "@/components/sections/contact";
 import { contactPageJsonLd, contactPageMetadata, innerPageBreadcrumbJsonLd } from "@/settings/seo";
 import { innerPages } from "@/settings/pages";
 

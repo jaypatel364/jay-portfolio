@@ -20,18 +20,11 @@ import { siteConfig } from "@/lib/site-config";
 import { innerPages } from "@/settings/pages";
 import { cn } from "@/lib/utils";
 
-type Intent = (typeof siteConfig.globalCta.intents)[number];
-
 const INTENT_ICONS: Record<string, LucideIcon> = {
   collab: Briefcase,
   freelance: Rocket,
   call: Phone,
 };
-
-function resolveHref(intent: Intent): string {
-  if (intent.primaryHref === "booking") return siteConfig.bookingUrl;
-  return intent.primaryHref;
-}
 
 function CommandLine({ command }: { command: string }) {
   const [display, setDisplay] = useState("");
@@ -127,7 +120,7 @@ function ActionTile({
 
 export function GlobalCta() {
   const { globalCta } = siteConfig;
-  const [activeId, setActiveId] = useState(globalCta.intents[1]?.id ?? globalCta.intents[0].id);
+  const [activeId, setActiveId] = useState(globalCta.intents[0]?.id ?? globalCta.intents[1].id);
   const [emailCopied, setEmailCopied] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
@@ -139,8 +132,6 @@ export function GlobalCta() {
 
   const active = globalCta.intents.find((i) => i.id === activeId) ?? globalCta.intents[0];
   const contactHref = `${innerPages.contact.path}/`;
-  const primaryHref = resolveHref(active);
-  const primaryExternal = active.primaryHref === "booking";
 
   useEffect(() => {
     const scrollToContact = () => {

@@ -6,7 +6,7 @@
 import type { ProfileLink } from "./types";
 
 /** Set your Instagram profile URL to show the Contact badge (e.g. https://www.instagram.com/yourhandle). */
-const instagram = "https://www.instagram.com/jay__patel.2000";
+const instagram = "https://www.instagram.com/jaypateldev";
 
 export const identity = {
   name: "Jay",

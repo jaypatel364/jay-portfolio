@@ -9,12 +9,11 @@ import { useTheme } from "@/hooks/use-theme";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
 import { useCountUp } from "@/hooks/use-count-up";
-import { cn } from "@/lib/utils";
 import { GameZoneTrigger } from "@/components/features/games";
 import { SKILL_GROUPS } from "./skill-data";
 import { SkillSphere } from "./SkillSphere";
 import { OverflowPill, SkillPill, CategoryCard } from "./SkillPills";
-import { FILTERS, ViewToggle, type FilterKey, type SkillView } from "./ViewToggle";
+import { ViewToggle, type FilterKey, type SkillView } from "./ViewToggle";
 
 // ── Main section ──────────────────────────────────────────────────────────────
 

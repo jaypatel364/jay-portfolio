@@ -3,11 +3,15 @@
  * FAQ, headline words, marquee stack, learning badges, etc.
  */
 
+import { getExperienceLabel } from "@/lib/utils";
+import { identity } from "./identity";
 import type { BuildingItem, FAQItem, LearningItem } from "./types";
+
+const expLabel = getExperienceLabel(identity.careerStartDate);
 
 export const content = {
   /** Words that cycle in the hero headline. Keep short (1–3 words). */
-  headlineWords: ["clean UIs", "scalable apps", "robust APIs", "real products", "great UX"],
+  headlineWords: ["scalable apps", "robust APIs", "clean UIs", "real products", "great UX"],
 
   /** How many skills to show per category in the Skills "All" grid. */
   skillPreviewCounts: {
@@ -44,61 +48,96 @@ export const content = {
   /** FAQ accordion items. category: "work" | "tech" | "personal" | "process" */
   faqItems: [
     {
-      category: "work" as const,
-      question: "Are you available to hire as a full-stack developer?",
+      category: "tech" as const,
+      question: "What does Jay Patel specialize in as a Full Stack Developer?",
       answer:
-        "Yes — freelance builds and long-term collaboration. I work remotely from India " +
-        "(hybrid when it fits). Use the contact form or book a 15-minute call.",
+        "Jay Patel specializes in full-stack web development using React, Next.js, Node.js, " +
+        "TypeScript and the MERN stack. His experience includes building scalable web applications, " +
+        "REST and GraphQL APIs, real-time features, enterprise systems, SaaS platforms, complex " +
+        "forms and backend services using technologies such as MongoDB and PostgreSQL.",
     },
     {
       category: "tech" as const,
-      question: "What tech stack do you use day to day?",
+      question: "What technologies does Jay Patel use for full-stack development?",
       answer:
-        "React and Next.js with TypeScript on the frontend, Node.js and Express on the backend, " +
-        "MongoDB or PostgreSQL for data. Tailwind, Docker, and AWS or Vercel for shipping. " +
-        "Same stack behind MiniList CMS and the Chat App on this site.",
-    },
-    {
-      category: "process" as const,
-      question: "How do you start a new full-stack project?",
-      answer:
-        "Problem first: users, constraints, success criteria. Then data model and API contract, " +
-        "scaffold with CI from day one, and ship in small vertical slices with regular feedback.",
-    },
-    {
-      category: "work" as const,
-      question: "Do you work remotely or on-site?",
-      answer:
-        "Mostly remote from India since late 2022. Hybrid is fine when the team and the work " +
-        "make that worthwhile.",
+        "Jay Patel works primarily with React, Next.js, JavaScript, TypeScript, Node.js, " +
+        "Express.js, NestJS, MongoDB and PostgreSQL. His broader toolkit also includes REST APIs, " +
+        "GraphQL, Prisma, WebSockets, Docker, AWS, Git and modern testing tools such as Jest and Vitest.",
     },
     {
       category: "tech" as const,
-      question: "Can you build real-time features and complex forms?",
+      question: "Does Jay Patel work with the MERN stack?",
       answer:
-        "Yes. I've shipped WebSocket chat (rooms, typing, seen) and configurable form platforms " +
-        "with 100+ flows — the kind of UI that has to feel instant and stay maintainable.",
+        "Yes, Jay Patel specializes in MERN stack development using MongoDB, Express.js, React " +
+        "and Node.js to build modern full-stack web applications. He also works with TypeScript, " +
+        "Next.js, PostgreSQL and other technologies when a project's architecture or requirements " +
+        "call for them.",
     },
     {
-      category: "personal" as const,
-      question: "What kind of product work do you want next?",
+      category: "work" as const,
+      question: "Can Jay Patel build a full-stack web application from scratch?",
       answer:
-        "Products where latency and clarity matter — real-time tools, heavy form systems, " +
-        "internal platforms teams use every day. Complex under the hood, quiet on the surface.",
+        "Yes, Jay Patel can work across the full application lifecycle, from frontend development " +
+        "and backend architecture to APIs, databases and deployment. His portfolio demonstrates " +
+        "experience building complete applications with React, Next.js, Node.js, TypeScript, " +
+        "MongoDB, PostgreSQL and related technologies.",
+    },
+    {
+      category: "work" as const,
+      question: "What types of web applications has Jay Patel built?",
+      answer:
+        "Jay Patel has worked on real-time chat applications, social media backend systems, " +
+        "headless CMS platforms, HR and business management systems, configurable form systems " +
+        "and identity-verification solutions. His projects cover frontend applications, backend " +
+        "APIs, real-time functionality, data management and integrations with external services.",
+    },
+    {
+      category: "tech" as const,
+      question: "Can Jay Patel build real-time web applications?",
+      answer:
+        "Yes, Jay Patel has experience building real-time web applications using WebSockets and " +
+        "Node.js. His portfolio includes a real-time group chat application with instant messaging, " +
+        "chat rooms, typing indicators and seen status, demonstrating practical experience with " +
+        "real-time communication rather than only conventional request-and-response applications.",
     },
     {
       category: "process" as const,
-      question: "How do you handle tight deadlines and changing scope?",
+      question: "How does Jay Patel approach a new full-stack development project?",
       answer:
-        "I write the scope down. When it moves, I say what slips, cut features, keep quality. " +
-        "A smaller honest release beats silence or a broken launch.",
+        "Jay Patel approaches a new project by first understanding the product requirements, " +
+        "technical goals and expected user experience, then translating them into an appropriate " +
+        "application architecture and development plan. His work spans frontend, backend, APIs, " +
+        "databases and deployment, allowing him to consider the complete system rather than only " +
+        "one layer.",
     },
     {
-      category: "personal" as const,
-      question: "What's something about you that isn't on a resume?",
+      category: "tech" as const,
+      question: "Can Jay Patel develop scalable APIs and backend systems?",
       answer:
-        "I'll spend an afternoon on a hover nobody names but everyone feels. " +
-        "An internal HR tool I built saved the team hours every week — quiet wins still beat loud demos.",
+        "Yes, Jay Patel has professional experience developing backend systems and APIs with " +
+        "Node.js, Express.js and NestJS, including REST and GraphQL APIs. His portfolio also " +
+        "includes MongoDB, PostgreSQL, Prisma and authentication-related work, giving him " +
+        "experience across application logic, data management and backend architecture.",
+    },
+    {
+      category: "work" as const,
+      question: "What experience does Jay Patel have as a Full Stack Developer?",
+      answer:
+        `Jay Patel has ${expLabel} years of professional experience in web development, working ` +
+        "across frontend and backend systems. His experience includes React and Node.js " +
+        "development, API integrations, enterprise applications, configurable forms, mentoring " +
+        "developers and performance improvements, alongside independent projects involving " +
+        "Next.js, TypeScript, WebSockets and modern backend technologies.",
+    },
+    {
+      category: "work" as const,
+      question: "Can I hire Jay Patel for freelance full-stack development?",
+      answer:
+        "Yes, Jay Patel is available for freelance projects and collaboration. He can contribute " +
+        "to new web applications, MVPs, feature development and existing codebases, with " +
+        "experience across React, Next.js, Node.js, TypeScript and the MERN stack. Visitors can " +
+        "use the contact page to discuss their project requirements and determine whether the " +
+        "collaboration is a good fit.",
     },
   ] as FAQItem[],
 
@@ -245,17 +284,17 @@ export const content = {
   globalCta: {
     label: "Start a project",
     availability: "Open to freelance & collaboration",
-    responseTime: "Replies within 24 hours",
+    responseTime: "Usually replies within 24 hours",
     intents: [
       {
         id: "collab",
         label: "Collaboration",
         emoji: "🤝",
-        headlineBefore: "Let's build",
-        highlight: "together",
-        headlineAfter: "on your product",
+        headlineBefore: "Let's Build",
+        highlight: "Something Great",
+        headlineAfter: "Together",
         description:
-          "Long-term collaboration on MERN products — from schema design to deploy, with clear milestones and ownership.",
+          "Have a project, product idea or development challenge? Let's discuss how I can help turn it into a reliable, scalable web application.",
         command: "jay collab --stack=mern --mode=remote",
         primaryCta: "Discuss a collaboration",
         primaryHref: "/contact/",
@@ -279,9 +318,9 @@ export const content = {
         emoji: "📞",
         headlineBefore: "Let's talk for",
         highlight: "15 minutes",
-        headlineAfter: "— no pitch deck needed",
+        headlineAfter: "about your project",
         description:
-          "Tell me what you're building and I'll say honestly if I'm the right fit. Quick intro, zero pressure.",
+          "Tell me what you're building, what you're trying to solve, and where you need help. I'll give you an honest assessment of how I can contribute.",
         command: "calendly book --with=jay --duration=15m",
         primaryCta: "Book a call",
         primaryHref: "booking",

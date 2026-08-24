@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, Code2, ExternalLink, Lock, Sparkles } from "lucide-react";
+import { Code2, ExternalLink, Lock, Sparkles } from "lucide-react";
 import { ProjectVisual } from "./ProjectVisual";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";

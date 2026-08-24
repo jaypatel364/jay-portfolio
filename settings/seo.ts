@@ -62,7 +62,7 @@ export const SEO_TITLE_TEMPLATE = `%s | ${siteConfig.fullName}`;
 export const SEO_TITLE_DEFAULT = `${siteConfig.fullName} | Full Stack Developer | React, Next.js & Node.js`;
 
 export const SEO_DESCRIPTION =
-  "Jay Patel is a Full Stack Developer specializing in React, Next.js, Node.js, TypeScript and the MERN stack, building scalable and modern web applications. Open to freelance builds and collaboration.";
+  "Jay Patel is a Full Stack Developer specializing in React, Next.js, Node.js, TypeScript and the MERN stack, available for freelance projects and collaboration.";
 
 // ─── Keywords ──────────────────────────────────────────────────────────────────
 // Google ignores <meta name="keywords">. Keep a short identity list for Bing / tools.

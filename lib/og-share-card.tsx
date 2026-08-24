@@ -19,7 +19,6 @@ export function OgShareCard({
   const titleSize = compact ? 62 : 76;
   const subtitleSize = compact ? 24 : 28;
   const footerSize = compact ? 18 : 20;
-  const ctaSize = compact ? 18 : 20;
   const photoGap = compact ? 32 : 48;
 
   return (

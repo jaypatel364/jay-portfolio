@@ -20,11 +20,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: [
-        "/api/",
-        // Legacy path (redirects to /work/)
-        "/projects/",
-      ],
+      disallow: ["/api/"],
     },
     sitemap: `${BASE_URL}/sitemap.xml`,
   };

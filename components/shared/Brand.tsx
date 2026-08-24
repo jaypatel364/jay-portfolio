@@ -31,7 +31,7 @@ export function Brand({ className }: { className?: string }) {
           style={{
             letterSpacing: "-0.04em",
             // Mix toward foreground so light-mode accents clear WCAG on white
-            color: "color-mix(in oklch, var(--primary) 50%, var(--foreground))",
+            color: "color-mix(in srgb, var(--primary) 50%, var(--foreground))",
           }}
         >
           {name}
@@ -57,9 +57,9 @@ export function Brand({ className }: { className?: string }) {
         className="relative -top-[4px] inline-flex items-center rounded-md px-[5px] py-[2px] text-[0.58em] font-bold tracking-wide leading-none font-mono"
         style={{
           // Soft tint kept; text leans on foreground so small type clears 4.5:1
-          background: "color-mix(in oklch, var(--primary) 14%, var(--card))",
-          color: "color-mix(in oklch, var(--primary) 32%, var(--foreground))",
-          border: "1px solid color-mix(in oklch, var(--primary) 38%, transparent)",
+          background: "color-mix(in srgb, var(--primary) 14%, var(--card))",
+          color: "color-mix(in srgb, var(--primary) 32%, var(--foreground))",
+          border: "1px solid color-mix(in srgb, var(--primary) 38%, transparent)",
           transform: "rotate(-1.5deg)",
           boxShadow: "0 0 8px -2px color-mix(in oklch, var(--glow) 32%, transparent)",
           transition: "box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease",

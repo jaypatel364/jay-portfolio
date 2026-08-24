@@ -68,7 +68,7 @@ export function FAQSection() {
             <span className="h-px w-12 bg-border" />
           </motion.div> */}
 
-          <SectionHeading label="FAQ" title="Hiring a full-stack developer — FAQ" />
+          <SectionHeading label="FAQ" title="Full Stack Developer FAQ" />
 
           <motion.p
             initial={reduced ? false : { opacity: 0, y: 12 }}
@@ -77,8 +77,8 @@ export function FAQSection() {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="max-w-md text-sm leading-relaxed text-muted-foreground"
           >
-            Honest answers to the questions I get asked most often — about my work, my stack, and
-            how I think.
+            Honest answers about my experience, technology stack, development process, and how I
+            work.
           </motion.p>
         </div>
 
@@ -157,7 +157,8 @@ export function FAQSection() {
                 Still have a question?
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                If something isn&apos;t covered above, just ask directly — I reply to every message.
+                If you&apos;re unsure whether I&apos;m the right fit for your project, feel free to
+                reach out. I&apos;ll get back to you within 24 hours.
               </p>
             </div>
             <a
@@ -165,7 +166,7 @@ export function FAQSection() {
               className="group inline-flex shrink-0 items-center gap-2 rounded-xl gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <Sparkles className="h-4 w-4" />
-              Let&apos;s Talk
+              Get in Touch
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
             </a>
           </div>
