@@ -36,8 +36,8 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
-    slug: "chat-app",
-    title: "Chat App",
+    slug: "real-time-chat-application",
+    title: "Real-Time Chat Application",
     tagline: "Real-Time Group Chat",
     desc: "A lightweight real-time group chat application built with WebSockets, featuring instant messaging, chat rooms, typing indicators, and seen status. Built as a Turborepo monorepo with a Next.js frontend and Node.js backend, delivering a clean, responsive, and modern chat experience.",
     tags: ["Next.js", "Node.js", "TypeScript", "WebSockets", "Express.js", "Tailwind CSS"],
@@ -67,8 +67,8 @@ export const PROJECTS: Project[] = [
     },
   },
   {
-    slug: "social-media-backend",
-    title: "Social Media Backend",
+    slug: "social-media-backend-api",
+    title: "Social Media Backend API",
     tagline: "Instagram-Style Backend API",
     desc: "A modular social media backend built with NestJS, GraphQL, and Prisma, implementing core social networking features like posts, likes, follows, notifications, JWT authentication, and feed ranking using a hotScore algorithm. Designed with a clean modular monolith architecture for scalability and maintainability.",
     tags: ["NestJS", "GraphQL", "Prisma", "PostgreSQL", "JWT", "TypeScript"],
@@ -98,8 +98,8 @@ export const PROJECTS: Project[] = [
     },
   },
   {
-    slug: "minilist-cms",
-    title: "MiniList CMS",
+    slug: "minilist-headless-cms",
+    title: "MiniList — Headless CMS",
     tagline: "Headless Content Management System",
     desc: "A full-stack headless CMS featuring a modern Next.js admin dashboard and a scalable NestJS backend. It provides rich text editing, blog and author management, API key generation, analytics, Google OAuth authentication, SEO tools, and a REST API for seamless content delivery. Built with Prisma and PostgreSQL for a clean, scalable, and self-hostable content management experience.",
     tags: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Prisma", "Tailwind CSS", "GraphQL"],
@@ -128,36 +128,9 @@ export const PROJECTS: Project[] = [
       ],
     },
   },
-  // {
-  //   slug: "jay-portfolio",
-  //   title: "jaypateldev.com",
-  //   tagline: "This portfolio",
-  //   desc: "The site you are on. Next.js 15 App Router, settings-driven copy, Groq chat, contact APIs with Upstash rate limits, CSP, CI, and a print resume. Built to be indexed and operated like a small production app.",
-  //   tags: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Groq", "Upstash"],
-  //   category: "fullstack",
-  //   color: "from-cyan-500/20 to-sky-500/20",
-  //   iconColor: "oklch(0.65 0.16 215)",
-  //   codeUrl: "https://github.com/jaypatel364/jay-portfolio",
-  //   demoUrl: "https://jaypateldev.com",
-  //   caseStudy: {
-  //     problem:
-  //       "A personal site that is actually operable: crawlers see real HTML, APIs fail closed, secrets stay out of git, and the homepage is not a 4k-line client blob.",
-  //     role: "Solo: product, architecture, security headers, APIs, CI, SEO, and the public write-up on /engineering.",
-  //     sections: [
-  //       {
-  //         heading: "Approach",
-  //         body: "App Router with a settings/ layer for identity, flags, FAQ, and SEO. Chat and contact are Node routes with Zod, origin checks, and hashed rate-limit keys. Games and overlays load with next/dynamic. Resume is first-party (/resume + print). The public repo is this site.",
-  //       },
-  //       {
-  //         heading: "Trade-offs",
-  //         body: "Feature surface (games, chat, heatmap) is larger than a static brochure. Code-splitting and fail-closed APIs are how that stays honest in production. Details live on /engineering.",
-  //       },
-  //     ],
-  //   },
-  // },
   {
-    slug: "pms",
-    title: "PMS",
+    slug: "pms-hr-management-system",
+    title: "PMS - HR Management System",
     tagline: "HR Management System",
     desc: "Built a full-cycle HR platform for a mid-sized enterprise covering attendance, leave, payroll processing, and role-based access control, integrated with an existing ERP system.",
     tags: ["React", "Node.js", "PostgreSQL", "REST API"],
@@ -172,8 +145,8 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    slug: "philantro-ai",
-    title: "Philantro AI",
+    slug: "philantro-ai-ngo-management-platform",
+    title: "Philantro AI - NGO Management Platform",
     tagline: "AI-Powered NGO Management Platform",
     desc: "Built a full-stack NGO management platform with configurable modules including a custom form builder, dynamic report generation, customizable chart builder, and milestone tracking. Collaborated on AI-assisted UI prototyping using Visily, transforming concepts into Figma designs and production-ready React components with server-side rendering.",
     tags: ["React", "Node.js", "Express.js", "MongoDB", "SSR", "Tailwind CSS", "Visily", "Figma"],
@@ -188,8 +161,8 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    slug: "verify-360",
-    title: "Verify 360",
+    slug: "verify-360-kyc-platform",
+    title: "Verify 360 — KYC & Identity Verification Platform",
     tagline: "Digital Identity Verification & KYC Platform",
     desc: "Engineered an enterprise KYC verification platform supporting secure document verification, 3D liveness detection, real-time geolocation tracking, and third-party identity verification APIs. Implemented an intelligent risk-scoring system to detect suspicious users and streamline compliance workflows for 100+ client verifications.",
     tags: [

@@ -147,15 +147,13 @@ export const content = {
    */
   whoAmI: {
     label: "Who I am",
-    title: "Full-stack developer who owns the product path",
-    lead:
-      "I'm Jay Patel — a full-stack developer in India. I care about how a product feels and whether " +
-      "the API holds up. Most of my work is MERN: React, Next.js, Node.js, MongoDB or PostgreSQL.",
+    title: "Full Stack Developer who owns the product path",
+    lead: "I'm Jay Patel, a Full Stack Developer based in India. I care about how a product feels and whether the systems behind it hold up. Most of my work involves React, Next.js, Node.js, TypeScript, MongoDB and PostgreSQL.",
     body: [
-      "I started professionally in late {year}. Since then I've lived in production systems — " +
-        "real-time chat, configurable form platforms with 100+ flows, HR and KYC tools, and mentoring juniors on the same codebases.",
-      "I prefer work where the hard part stays invisible: latency that disappears, forms that don't fight the user, " +
-        "deploys that don't wake anyone up. Reliability over demos.",
+      "I started professionally in 2022. Since then, I've worked on production systems including " +
+        "real-time chat, configurable form platforms with 100+ flows, HR and KYC tools, and have mentored junior developers working on the same codebases.",
+      "I prefer work where the hard part stays invisible — latency that disappears, forms that don't fight the user, " +
+        "deployments that don't create unnecessary problems. Reliability over demos.",
     ],
     principles: [
       {
@@ -166,16 +164,16 @@ export const content = {
       {
         title: "Own the whole path",
         description:
-          "Architecture, UI, API, and deploy — one person accountable from sketch to production.",
+          "One person accountable for architecture, UI, API, and deployment from sketch to production.",
       },
       {
-        title: "Ship in honest slices",
+        title: "Build in honest slices",
         description:
           "Small vertical releases, clear scope, and no surprise quality cuts when deadlines move.",
       },
     ],
     snapshot: [
-      { label: "Based in", value: "India · remote-friendly" },
+      { label: "Based in", value: "India" },
       { label: "Focus", value: "React · Next.js · Node.js · MERN" },
       { label: "Known for", value: "Real-time systems & complex forms" },
       { label: "Open to", value: "Freelance & collaboration" },
@@ -184,30 +182,29 @@ export const content = {
 
   /** Why Choose section — about page proof points + CTA. */
   whyChoose: {
-    label: "Why hire Jay",
-    title: "What you get with a full-stack hire who ships",
+    label: "$ whyme",
+    title: "Why Hire Jay?",
     intro:
-      "Production MERN work from India — real-time features, heavy form flows, and frontends that " +
-      "stay fast with real users. One person owns architecture through deploy.",
+      "I build production web applications across the frontend, backend, and deployment layers, " +
+      "with experience in MERN applications, real-time features, complex form workflows, and performance-focused interfaces.",
     points: [
       { icon: "briefcase", text: "Production full-stack experience since 2022" },
-      { icon: "rocket", text: "MERN apps shipped end-to-end" },
-      { icon: "zap", text: "Real-time systems & 100+ form flows built" },
+      { icon: "rocket", text: "MERN applications built end-to-end" },
       { icon: "shield", text: "TypeScript-first, tested, maintainable code" },
       { icon: "layers", text: "Owns architecture, API, UI, and deployment" },
-      { icon: "users", text: "Clear updates — scope, risks, and trade-offs named early" },
-      { icon: "globe", text: "Remote from India · open to hybrid" },
-      { icon: "graduation", text: "Mentored juniors on real production code" },
-      { icon: "clock", text: "On-time delivery with scope you can trust" },
+      { icon: "users", text: "Clear updates, scope, risks, and trade-offs named early" },
+      { icon: "globe", text: "Based in India · open to remote collaboration" },
+      { icon: "graduation", text: "Mentored junior developers on production codebases" },
+      { icon: "clock", text: "Clear scope, milestones, and delivery expectations" },
     ] as { icon: string; text: string }[],
     visualCaption:
-      "From sketch to production — products that feel fast, stay reliable, and don't surprise you at deploy time.",
+      "From sketch to production — products that feel fast, stay reliable, and don't surprise you at deployment time.",
     cta: {
-      title: "Ready to talk about",
+      title: "Ready to discuss",
       titleHighlight: "your next project",
       titleSuffix: "or collaboration?",
       description:
-        "Freelance scopes and collaborations — intro call or a short written brief. I reply to every message.",
+        "Have a project in mind? Send a short brief or book an intro call. I'll get back to you within 24 hours.",
       button: "Contact Jay",
     },
   },
@@ -218,64 +215,74 @@ export const content = {
    */
   services: {
     label: "Services",
-    title: "Full-stack development services for product teams",
+
+    title: "Full Stack Development Services for Product Teams",
+
     intro:
-      "React and Next.js on the frontend, Node.js APIs, real-time features, databases, and deploys — " +
-      "how I help teams turn a brief into software people can use.",
+      "I help startups, SaaS companies, agencies, and product teams build production web applications from the first feature through deployment. My work covers product development, frontend and backend engineering, real-time systems, complex workflows, and ongoing improvements.",
+
     items: [
       {
         icon: "layout",
-        title: "Full-Stack Web Application Development",
+        title: "Full Stack Product Development",
         description:
-          "End-to-end MERN apps — React/Next.js UI, Node.js APIs, and databases — shipped as one coherent product.",
+          "Build complete web products across the frontend, backend, database, APIs, and deployment. I work with React, Next.js, TypeScript, Node.js, and modern databases to turn product requirements into working software.",
       },
+
       {
         icon: "monitor",
-        title: "React & Next.js Frontend Development",
+        title: "SaaS & Web Application Development",
         description:
-          "Fast, accessible interfaces with TypeScript, Tailwind, and App Router patterns that feel instant to use.",
+          "Build customer-facing SaaS products and web applications with a strong focus on usability, maintainability, and a solid technical foundation. I handle the interface, application logic, data layer, and core product workflows.",
       },
+
+      {
+        icon: "rocket",
+        title: "MVP Development & Launch",
+        description:
+          "Turn a defined product idea into a focused MVP with the essential features, backend, data model, and deployment in place. The goal is to get a useful product into users' hands without overbuilding the first release.",
+      },
+
       {
         icon: "server",
-        title: "Node.js API & Backend Engineering",
+        title: "Scalable API & Backend Engineering",
         description:
-          "REST and GraphQL services with clear contracts, auth, validation, and logging ready for production traffic.",
+          "Design and build structured backend systems with Node.js, Express.js, REST, GraphQL, and modern data layers. I focus on clear API contracts, authentication, validation, data modeling, and backend code that is easier to extend.",
       },
+
       {
         icon: "zap",
-        title: "Real-Time Systems & Messaging",
+        title: "Real Time Application Development",
         description:
-          "Chat, live updates, and presence with WebSockets or similar — low latency UX without fragile hacks.",
+          "Build applications that need live communication, instant updates, presence, or messaging. WebSockets, Node.js, React, and Redis can be combined to create responsive real time experiences.",
       },
+
       {
         icon: "forms",
-        title: "Complex Forms & Workflow Platforms",
+        title: "Workflow & Form Platform Development",
         description:
-          "Configurable form engines, multi-step flows, and admin tooling — built for scale (100+ forms shipped).",
+          "Build complex forms, configurable workflows, multi step processes, and administrative tools for products with detailed business rules. My experience includes platforms supporting more than 100 configurable form flows.",
       },
-      {
-        icon: "database",
-        title: "Database Design (MongoDB & PostgreSQL)",
-        description:
-          "Schemas that match the product, indexes that stay fast, and migrations you can trust as data grows.",
-      },
+
       {
         icon: "plug",
-        title: "API Integrations & Third-Party Systems",
+        title: "Third Party API Integrations",
         description:
-          "Payments, email, CRM, auth providers, and internal tools wired cleanly with retries and error handling.",
+          "Connect your application with external APIs and services using reliable authentication, validation, error handling, and data flows. The focus is on integrations that are maintainable as the product evolves.",
       },
+
       {
         icon: "gauge",
-        title: "Performance, SEO & Accessibility",
+        title: "Performance & Frontend Optimization",
         description:
-          "Core Web Vitals, semantic HTML, metadata, and UX polish so the product ranks and feels premium.",
+          "Improve React and Next.js applications that need better performance, accessibility, or frontend maintainability. I work with rendering patterns, Core Web Vitals, semantic HTML, component structure, and technical SEO fundamentals.",
       },
+
       {
         icon: "wrench",
-        title: "Maintenance, Mentorship & Handover",
+        title: "Product Maintenance & Modernization",
         description:
-          "Ongoing fixes, refactors, and clear docs — plus mentoring juniors so the codebase stays healthy.",
+          "Improve existing applications through bug fixes, refactoring, performance work, documentation, and incremental feature development. The goal is to make an existing codebase easier to maintain and safer to extend.",
       },
     ] as { icon: string; title: string; description: string }[],
   },
@@ -307,9 +314,9 @@ export const content = {
         highlight: "Something Great",
         headlineAfter: "Together",
         description:
-          "Scoped freelance work — MVPs, feature sprints, or rescuing a stuck codebase. Clear milestones, no fluff.",
+          "Need help building a new product, adding a feature, or improving an existing codebase? Send me the scope and I'll help you plan the next step.",
         command: "jay ship --mode=freelance --deadline=asap",
-        primaryCta: "Scope a project",
+        primaryCta: "Discuss a project",
         primaryHref: "/contact/",
       },
       {
@@ -340,48 +347,55 @@ export const content = {
     actions: {
       book: { label: "Book a call", hint: "15 min intro" },
       email: { label: "Copy email", hint: "Direct line" },
-      message: { label: "Send a message", hint: "Contact form" },
+      message: { label: "Contact Jay", hint: "Send a message" },
     },
   },
 
   /** Dedicated /contact page — quick panel + form intro. */
   contactPage: {
     intro:
-      "Tell me about the project, freelance scope, or collaboration idea. I read every message and reply within a day — " +
-      "usually sooner on weekdays.",
+      "Tell me what you're building, what you need help with, or where you're stuck. " +
+      "A short overview is enough to start the conversation.",
     quickContactTitle: "Quick contact",
-    profilesTitle: "Find me online",
-    profilesIntro: "Prefer LinkedIn or GitHub? Connect there, or book a short intro call.",
+    profilesTitle: "Connect with Jay",
+    profilesIntro:
+      "You can also find me on LinkedIn or GitHub, or book a short intro call if you'd rather talk.",
     formTitle: "Send a message",
-    formIntro: "A few details is enough — I’ll reply with next steps, not an auto-reply.",
+    formIntro:
+      "Tell me a little about the project, your goals, and what you need help with. " +
+      "I'll get back to you with the next step.",
     availability: [
       { icon: "clock", text: "Replies within 24 hours" },
-      { icon: "globe", text: "Remote from India" },
-      { icon: "briefcase", text: "Freelance & collaboration" },
+      { icon: "globe", text: "Based in India · open to remote work" },
+      { icon: "briefcase", text: "Available for freelance & collaboration" },
     ] as { icon: string; text: string }[],
     trust: {
       label: "Background",
-      title: "Teams I've shipped with",
+      title: "Built in real production environments",
       intro:
-        "Production MERN work for product teams — day-to-day experience comes from these environments.",
+        "My experience comes from building and maintaining real products, including " +
+        "MERN applications, real-time systems, workflow platforms, and API-driven products.",
     },
     explore: {
-      label: "Before you write",
-      title: "Want context before you reach out?",
-      intro: "Browse work, skills, or background — then come back when you're ready to talk.",
+      label: "Before you reach out",
+      title: "Want to see more of my work?",
+      intro:
+        "Take a look at my projects, technical skills, or background before starting a conversation.",
+
       items: [
         {
           page: "work",
           description:
-            "Selected builds — real-time chat, form platforms, and production MERN apps with case-study depth.",
+            "See selected projects, including real-time applications, APIs, CMS platforms, and production systems.",
         },
         {
           page: "skills",
-          description: "Full stack breakdown, services, and the process behind each delivery.",
+          description:
+            "Explore the technologies I use, the services I offer, and how I approach building software.",
         },
         {
           page: "about",
-          description: "Experience, education, GitHub activity, and how I work with teams.",
+          description: "Learn about my experience, education, and how I work with product teams.",
         },
       ] as { page: "work" | "skills" | "about"; description: string }[],
     },
@@ -389,60 +403,72 @@ export const content = {
 
   /** Skills page — full catalog copy (SEO). Homepage keeps the interactive preview. */
   skillsPage: {
-    catalogLabel: "Tech stack",
-    catalogTitle: "Full tech stack — frontend, backend, and DevOps",
+    catalogLabel: "Tech Stack",
+    catalogTitle: "Full Tech Stack — Frontend, Backend & DevOps",
     catalogIntro:
       "Tools I've used in production, grouped by layer: React and Next.js on the client, " +
-      "Node.js APIs, MongoDB or PostgreSQL, Redis when latency matters, Docker and AWS to ship.",
+      "Node.js APIs, MongoDB or PostgreSQL, Redis when latency matters, Docker and AWS for deploy.",
     /** Short pipeline labels — how a request moves through the stack. */
     pipeline: [
       { id: "client", label: "Interface", detail: "React · Next.js" },
       { id: "api", label: "API", detail: "Node · Express" },
-      { id: "data", label: "Data", detail: "Mongo · Postgres · Redis" },
-      { id: "ship", label: "Ship", detail: "Docker · AWS · CI" },
+      { id: "data", label: "Database", detail: "Mongo · Postgres · Redis" },
+      { id: "ship", label: "Deployment", detail: "Docker · AWS · CI" },
     ] as { id: string; label: string; detail: string }[],
     /** Per-layer narrative: SEO body + user / builder / shipping angles. */
     layers: {
       Frontend: {
         summary:
-          "React and Next.js with TypeScript for UIs that feel instant — App Router, server components where they help, and Tailwind for consistent design systems.",
+          "React and Next.js with TypeScript for responsive, maintainable interfaces, using App Router, server rendering where appropriate, and Tailwind for consistent UI systems.",
+
         userLens:
-          "Pages load fast, layouts stay consistent, and interactions feel immediate — forms, dashboards, and chat UIs that don’t fight the user.",
+          "Interfaces should feel clear and responsive, whether the user is working through a form, managing a dashboard, or using a real-time feature.",
+
         builderLens:
-          "Component-driven React, typed props, and Next.js routing so features ship as vertical slices instead of fragile page rewrites.",
+          "I use component-driven React, typed props, and clear application structure so new features can be added without rewriting unrelated parts of the interface.",
+
         shippingLens:
-          "Accessible markup, Core Web Vitals awareness, and design-system tokens so the UI stays maintainable as the product grows.",
+          "Accessibility, semantic HTML, rendering behavior, and Core Web Vitals are considered as part of frontend implementation rather than treated as separate cleanup work.",
+
         highlights: [
-          "TypeScript-first components",
-          "App Router & SSR where it helps",
-          "Design-system friendly Tailwind",
+          "React · Next.js · TypeScript",
+          "App Router & server rendering",
+          "Tailwind CSS & component systems",
         ],
       },
       Backend: {
         summary:
-          "Node.js and Express (or NestJS) for APIs that stay predictable under load — REST, GraphQL, WebSockets, and clear auth boundaries.",
+          "Node.js with Express.js or NestJS for structured backend services, including REST APIs, GraphQL, WebSockets, authentication, and data access.",
+
         userLens:
-          "Actions complete reliably — saves stick, live updates arrive, and errors are honest instead of silent failures.",
+          "The backend should make product behavior predictable: requests are validated, failures are handled clearly, and important operations produce the expected result.",
+
         builderLens:
-          "Clear API contracts, validation at the edge, and data models that match the product — MongoDB or PostgreSQL by use case, Redis when latency matters.",
+          "I define API contracts, validation, business logic, and data models around the product requirements, using MongoDB or PostgreSQL based on the problem.",
+
         shippingLens:
-          "Auth boundaries, logging, and retries so third-party integrations and real-time channels hold up in production.",
+          "Authentication, authorization, logging, error handling, and integration failures are treated as part of the backend design rather than added after the main functionality is finished.",
+
         highlights: [
-          "REST, GraphQL & WebSockets",
+          "Node.js · Express.js · NestJS",
+          "REST · GraphQL · WebSockets",
           "MongoDB · PostgreSQL · Redis",
-          "Auth, validation & contracts",
         ],
       },
       "Tools & DevOps": {
         summary:
-          "Git, Docker, AWS, and CI habits that get code live without drama — plus testing and design tools that keep quality high.",
+          "Docker, AWS, GitHub, CI workflows, and testing practices that keep development, testing, and deployment consistent.",
+
         userLens:
-          "Releases show up when promised. Fewer regressions, clearer handovers, and a product that keeps working after launch day.",
+          "The application should be straightforward to test, deploy, update, and hand over without depending on undocumented steps.",
+
         builderLens:
-          "Dockerised environments, GitHub workflows, and tests around the risky paths — so the team can move without fear of the deploy button.",
+          "I use Dockerized environments, Git-based workflows, automated checks, and tests around important application paths to keep development predictable.",
+
         shippingLens:
-          "From local `docker compose` to AWS or Vercel — monitoring-minded deploys and docs so the next person isn’t guessing.",
-        highlights: ["Docker & cloud deploys", "GitHub · CI habits", "Jest · Vitest · Figma"],
+          "Deployment is treated as part of the application lifecycle. The goal is a repeatable process with clear configuration, useful logs, and enough documentation for the next developer.",
+
+        highlights: ["Docker · AWS · Vercel", "Git · GitHub · CI", "Jest · Vitest · Testing"],
       },
     } as Record<
       string,
@@ -456,86 +482,128 @@ export const content = {
     >,
     /** Always-visible principles — crawlable + trust. */
     approach: {
-      title: "How I pick and use this stack",
+      title: "How I Build Software",
       items: [
         {
           title: "Product first, tools second",
           description:
-            "I pick React, Next.js, Node.js, and the database that fits the problem — not the trend of the week.",
+            "I start with the product requirements, users, constraints, and expected behavior. The technology comes after the problem is clear.",
         },
         {
-          title: "One coherent system",
+          title: "Keep architecture simple",
           description:
-            "Frontend, API, and data are designed together so features ship as full slices users can actually try.",
+            "I prefer straightforward architecture that solves the current problem well. I add complexity when the product actually needs it.",
         },
         {
-          title: "Production from day one",
+          title: "Design the system together",
           description:
-            "Types, tests on critical paths, and deployable scaffolding early — so “almost done” means “ready to ship.”",
+            "The interface, API, business logic, and database should support the same product model. I design these parts together instead of treating them as separate layers.",
         },
         {
-          title: "Clear enough to hand over",
+          title: "Build for production",
           description:
-            "Readable contracts, sensible structure, and docs so another engineer can extend the work without archaeology.",
+            "Validation, authentication, error handling, testing, and deployment are part of the feature, not tasks left until the end.",
+        },
+      ] as { title: string; description: string }[],
+    },
+    featureProcess: {
+      title: "How I build a feature",
+      intro:
+        "A feature is more than a UI component. I work through the user behavior, application logic, data model, and production requirements together.",
+
+      steps: [
+        {
+          title: "Understand the requirement",
+          description:
+            "Clarify the user, expected behavior, constraints, edge cases, and what success looks like before implementation begins.",
+        },
+        {
+          title: "Design the interface",
+          description:
+            "Define the user flow and interface states, including loading, validation, empty, error, and success states.",
+        },
+        {
+          title: "Define the application contract",
+          description:
+            "Decide how the frontend, API, business logic, and database need to communicate before writing the implementation.",
+        },
+        {
+          title: "Build the data and business logic",
+          description:
+            "Create the data model, validation, authorization, and application logic required to support the feature correctly.",
+        },
+        {
+          title: "Connect and test",
+          description:
+            "Integrate the frontend and backend, test important paths, and verify failure cases instead of testing only the happy path.",
+        },
+        {
+          title: "Deploy and observe",
+          description:
+            "Deploy the feature through the existing workflow, check its behavior in the real environment, and use feedback or measurements to improve it.",
         },
       ] as { title: string; description: string }[],
     },
     workStrip: {
-      label: "In production",
-      title: "Projects that use this stack",
+      label: "Selected work",
+      title: "Projects built with this stack",
       intro:
-        "MERN builds already live — a quick look at work that put these skills into production, not tutorials.",
+        "A selection of full-stack projects that show how I apply these technologies to real product features, backend systems, and user workflows.",
     },
   },
 
-  /** Skills page — delivery process (SEO + trust). */
+  /** Process page — delivery process. */
   process: {
     label: "Process",
-    title: "How a project moves from idea to production",
+    title: "How I build a feature",
     intro:
-      "Written scope, small releases, and honest status — so you always know what’s shipping next.",
+      "A feature is more than a UI component. I work through the user behavior, application logic, data model, and production requirements together.",
+
     steps: [
       {
         icon: "compass",
         title: "Discover",
         description:
-          "Users, constraints, and success criteria before code. Edge cases and scope get written down first.",
+          "We clarify the product requirements, users, constraints, priorities, and edge cases before development begins.",
       },
+
       {
         icon: "layers",
-        title: "Architect",
+        title: "Plan",
         description:
-          "Data model, API contracts, and UI flows in vertical slices. CI and scaffold go up on day one.",
+          "I define the main user flows, data model, API structure, and technical approach so the implementation has a clear direction.",
       },
+
       {
         icon: "rocket",
-        title: "Ship",
+        title: "Build & Deploy",
         description:
-          "Small demoable increments with feedback. Each slice is tested, reviewed, and ready to deploy.",
+          "I develop the product in focused increments, test important paths, review the results, and deploy working features as they are completed.",
       },
+
       {
         icon: "life-buoy",
-        title: "Support",
+        title: "Improve",
         description:
-          "Handover docs, monitoring, and fixes after launch. Refactors and mentoring so the codebase stays healthy.",
+          "After deployment, I use feedback, real usage, and technical findings to fix issues, refine features, and keep the product maintainable.",
       },
     ] as { icon: string; title: string; description: string }[],
   },
 
   /** Work page — stats bar labels + catalog + stack link strip. */
   workPage: {
-    statsLabel: "At a glance",
+    statsLabel: "Overview",
     catalog: {
       label: "Selected work",
-      title: "Full-stack projects and case studies",
+      title: "Projects I've Built",
       intro:
-        "Filter by fullstack, frontend, or backend — then open the builds that shipped to production.",
+        "A selection of full-stack applications, backend systems, and production work. Filter by full-stack, frontend, or backend to explore the projects in more detail.",
     },
     stackLinks: {
       label: "Tech stack",
-      title: "Technologies used across these projects",
+      title: "Technologies Used Across My Work",
       intro:
-        "Click a tool to see which projects used it. Tags come from the builds above — open Skills for the full layer catalog.",
+        "These technologies appear across the projects above, depending on the product requirements and technical constraints.",
       cta: "Explore the full stack",
       hint: "Click a technology",
       usedIn: "Used in",
@@ -544,10 +612,10 @@ export const content = {
     comingSoon: {
       label: "Project page",
       badge: "Coming soon",
-      headline: "Case study in progress",
-      body: "A full write-up — problem, decisions, and screenshots — is on the way. Until then, use the live demo or source when available.",
+      headline: "Detailed case study coming soon",
+      body: "I am preparing a detailed write-up covering the problem, technical decisions, implementation, and results. Until then, you can view the available demo or project summary.",
       back: "Back to all work",
-      statusSteps: ["Brief locked", "Draft in progress", "Polish & publish"],
+      statusSteps: ["Planning", "Writing", "Publishing"],
       activeStep: 1,
     },
   },

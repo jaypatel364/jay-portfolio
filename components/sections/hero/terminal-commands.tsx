@@ -321,7 +321,7 @@ function buildOutput(cmd: string, expLabel: string, onRun: (c: string) => void):
             building production-grade MERN applications.
           </span>,
           <span key="b4" className="block mt-2">
-            Chat App, MiniList CMS, form systems, HR and KYC platforms.
+            Real-Time Chat Application, MiniList — Headless CMS, form systems, HR and KYC platforms.
           </span>,
           <span key="b5" className="block">
             React, Next.js, Node.js — I ship things people use.

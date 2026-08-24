@@ -75,7 +75,7 @@ export function SkillsSection() {
           {[
             { ref: skillRef, val: `${skillCount}+`, label: "Tools & Technologies" },
             { ref: expRef, val: animatedExp, label: "Years Experience" },
-            { ref: projRef, val: `${projCount}+`, label: "Shipped builds" },
+            { ref: projRef, val: `${projCount}+`, label: "Projects built" },
           ].map(({ ref, val, label }, i, arr) => (
             <React.Fragment key={label}>
               <div>

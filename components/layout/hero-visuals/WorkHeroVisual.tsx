@@ -26,7 +26,7 @@ export function WorkHeroVisual() {
     <HeroVisualFrame>
       <div className="flex min-h-[280px] flex-col justify-between p-4 sm:p-5">
         <p className="text-[11px] font-semibold uppercase tracking-widest text-primary">
-          Recently shipped
+          Recent work
         </p>
 
         <div className="relative mx-auto mt-4 h-[196px] w-full max-w-[280px]">

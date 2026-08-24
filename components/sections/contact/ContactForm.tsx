@@ -122,12 +122,6 @@ export function ContactForm({
           aria-hidden="true"
         />
 
-        {showHeader ? (
-          <div className="sr-only">
-            <h2>Send a message</h2>
-          </div>
-        ) : null}
-
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <label htmlFor={`${idPrefix}-firstName`} className="mb-1.5 block text-sm font-medium">
