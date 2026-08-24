@@ -143,14 +143,14 @@ export function ContactQuickPanel({ variant = "full", className }: ContactQuickP
 
       {isFull ? (
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Prefer email?{" "}
+          Prefer email? Drop me a note at{" "}
           <Link
             href={`mailto:${siteConfig.email}`}
             className="font-medium text-primary hover:underline"
           >
-            {siteConfig.email}
+            {siteConfig.email}.
           </Link>{" "}
-          works too — same inbox as the form.
+          It reaches the same inbox as the contact form.{" "}
         </p>
       ) : null}
     </motion.aside>

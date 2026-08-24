@@ -124,7 +124,7 @@ const ARCHETYPES: Record<Archetype, ArchetypeInfo> = {
   midnight_architect: {
     name: "The Midnight Architect",
     emoji: "🌙",
-    tagline: "Your best code ships when the world sleeps.",
+    tagline: "Your best code is built when the world sleeps.",
     traits: ["Refactors at 2am", "Dark mode evangelist", "Has 47 open tabs", "Comments in verse"],
     color: "oklch(0.60 0.20 260)",
     glow: "rgba(99,102,241,0.4)",

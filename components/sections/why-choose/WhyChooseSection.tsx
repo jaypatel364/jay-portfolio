@@ -128,11 +128,11 @@ export function WhyChooseSection({ showBottomCta = true }: { showBottomCta?: boo
 
               {showBottomCta ? (
                 <div className="rounded-2xl border border-border bg-card/80 p-6 text-center backdrop-blur-sm sm:p-8">
-                  <h3 className="font-heading text-xl font-bold tracking-tight sm:text-2xl">
+                  <p className="font-heading text-xl font-bold tracking-tight sm:text-2xl">
                     {whyChoose.cta.title}{" "}
                     <span className="gradient-text">{whyChoose.cta.titleHighlight}</span>{" "}
                     {whyChoose.cta.titleSuffix}
-                  </h3>
+                  </p>
                   <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
                     {whyChoose.cta.description}
                   </p>

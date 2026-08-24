@@ -75,7 +75,7 @@ export function WhoAmISection() {
                 Snapshot
               </p>
               <p className="mt-1 font-heading text-lg font-bold tracking-tight">
-                {expLabel} years in production
+                {expLabel} years of experience
               </p>
 
               <dl className="mt-6 space-y-0 divide-y divide-border/70">

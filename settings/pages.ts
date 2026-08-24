@@ -16,16 +16,10 @@ export const innerPages = {
     placeholder: null,
     hero: {
       label: "About",
-      title: "Jay Patel — full-stack developer in India",
+      title: "About Jay Patel",
       description:
-        "Based in India, building with React, Next.js, and Node.js since late 2022. " +
-        "I ship real-time features, configurable form platforms (100+ flows), and MERN apps — " +
-        "owning the path from architecture through deploy.",
-      chips: [
-        "India · remote-friendly",
-        "React · Next.js · Node.js",
-        "Open to freelance & collaboration",
-      ],
+        "I'm Jay Patel, a Full Stack Developer with {expLabel} years of professional experience building modern web applications with React, Next.js, Node.js, TypeScript and the MERN stack.",
+      chips: ["Remote-friendly", "React · Next.js · Node.js", "Open to freelance & collaboration"],
     },
     contactSection: {
       label: "Contact",
@@ -41,12 +35,12 @@ export const innerPages = {
     title: "Full Stack Skills & Services | React, Next.js, Node.js",
     description:
       "React and Next.js frontends, Node.js APIs, real-time features, MongoDB/PostgreSQL, and " +
-      "production MERN apps — the full-stack skills and services Jay Patel ships with.",
+      "production MERN apps — the full-stack skills and services Jay Patel builds projects with.",
     homeCta: "See skills & services",
     placeholder: null,
     hero: {
       label: "Skills & services",
-      title: "React, Next.js, and Node.js — skills I use in production",
+      title: "Full Stack Development Skills",
       description:
         "Not a buzzword list. Every layer below shows up in shipped work: frontends people use, " +
         "APIs that stay predictable, databases that match the product, and deploys that don't panic.",
@@ -65,13 +59,12 @@ export const innerPages = {
     placeholder: null,
     hero: {
       label: "Work",
-      title: "Projects I've shipped — MERN apps and case studies",
+      title: "Full Stack Projects and Production Work",
       description:
-        "Real-time chat, a headless CMS, GraphQL social APIs, plus NDA work in HR, NGO tooling, " +
-        "and KYC. Filter by layer, skim the highlights, open a write-up when one exists.",
+        "A selection of applications and systems I have built across real-time communication, APIs, content management, HR workflows, NGO platforms, and identity verification.",
       chips: [
-        "Full-stack · frontend · backend",
-        "Live demos where possible",
+        "Full-stack applications",
+        "Production Ready · Live Demos Available",
         "NDA summaries included",
       ],
     },
@@ -88,11 +81,15 @@ export const innerPages = {
     placeholder: null,
     hero: {
       label: "Contact",
-      title: "Hire a full-stack developer — contact Jay Patel",
+      title: "Let's talk about your project",
       description:
-        "Freelance sprint, collaboration, or a short intro call. Use the form, email, or book " +
-        "15 minutes on Calendly. Based in India, open to remote and hybrid — I reply within a day.",
-      chips: ["Replies within 24 hours", "Remote from India", "Freelance & collaboration"],
+        "Have a project in mind, need help with an existing product, or looking for a developer to join the work? " +
+        "Send me a few details and I'll get back to you within 24 hours.",
+      chips: [
+        "Usually replies within 24 hours",
+        "Based in India · remote-friendly",
+        "Freelance & collaboration",
+      ],
     },
   },
 } as const;

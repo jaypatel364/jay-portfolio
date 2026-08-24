@@ -17,7 +17,7 @@ const TYPED_LINES: CodeLine[] = [
   { kind: "field", key: "role", value: '"Full Stack Developer"' },
   { kind: "field", key: "stack", value: '["React", "Next.js", "Node"]' },
   { kind: "field", key: "location", value: `"${siteConfig.location}"` },
-  { kind: "field", key: "ships", value: '"real products"' },
+  { kind: "field", key: "projects", value: '"real products"' },
   { kind: "end", punct: "};" },
 ];
 

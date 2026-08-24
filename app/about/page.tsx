@@ -5,10 +5,13 @@ import { ExperienceSection } from "@/components/sections/experience";
 import { EducationSection } from "@/components/sections/education";
 import { aboutPageMetadata, innerPageBreadcrumbJsonLd, personJsonLd } from "@/settings/seo";
 import { innerPages } from "@/settings/pages";
+import { siteConfig } from "@/settings";
+import { getExperienceLabel } from "@/lib/utils";
 
 export const metadata = aboutPageMetadata;
 
 const page = innerPages.about;
+const expLabel = getExperienceLabel(siteConfig.careerStartDate);
 
 export default function AboutPage() {
   return (
@@ -32,7 +35,7 @@ export default function AboutPage() {
         <InnerPageHero
           label={page.hero.label}
           title={page.hero.title}
-          description={page.hero.description}
+          description={page.hero.description.replace("{expLabel}", expLabel)}
           chips={page.hero.chips}
           visual={<AboutHeroVisual />}
         />

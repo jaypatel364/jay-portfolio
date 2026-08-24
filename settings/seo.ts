@@ -274,15 +274,15 @@ function innerPageMetadata(
 
 export const aboutPageMetadata = innerPageMetadata(
   "about",
-  `About Jay Patel | Full Stack Developer in India`,
-  "Jay Patel is a full-stack developer in India (since 2022). React, Next.js, and Node.js — real-time systems, large form platforms, and production MERN apps built end to end.",
-  ["about Jay Patel", "Jay Patel developer", "full stack developer Ahmedabad", ...SEO_KEYWORDS],
+  `About Jay Patel | Full Stack Developer`,
+  "Learn about Jay Patel, a Full Stack Developer building React, Next.js, Node.js and MERN applications, real-time systems and production web platforms since 2022.",
+  ["about Jay Patel", "Jay Patel developer", ...SEO_KEYWORDS],
 );
 
 export const skillsPageMetadata = innerPageMetadata(
   "skills",
   `Full Stack Skills & Services | React, Next.js, Node.js`,
-  "React and Next.js frontends, Node.js APIs, real-time features, MongoDB/PostgreSQL, and production MERN apps — the full-stack skills and services Jay Patel ships with.",
+  "Explore Jay Patel's full-stack development skills and services, including React, Next.js, Node.js, TypeScript, MERN, MongoDB, PostgreSQL and DevOps.",
   [
     "full stack development services",
     "React Next.js developer",
@@ -296,20 +296,14 @@ export const skillsPageMetadata = innerPageMetadata(
 export const workPageMetadata = innerPageMetadata(
   "work",
   `Work & Projects | Jay Patel Full Stack Portfolio`,
-  "Selected projects by Jay Patel — real-time chat, headless CMS, social APIs, and production MERN apps. Case studies and NDA-friendly summaries from shipped work.",
-  [
-    "Jay Patel portfolio",
-    "full stack developer projects",
-    "MERN stack projects",
-    "Next.js case studies",
-    ...SEO_KEYWORDS,
-  ],
+  "Explore Jay Patel's Full Stack development work, including Third-Party APIs, SaaS platforms, and production web applications built with React, Next.js, Node.js, and TypeScript.",
+  ["Jay Patel portfolio", "full stack developer projects", "Next.js case studies", ...SEO_KEYWORDS],
 );
 
 export const contactPageMetadata = innerPageMetadata(
   "contact",
-  `Hire Jay Patel | Full Stack Developer Contact`,
-  "Contact Jay Patel for freelance full-stack development in India. MERN builds, collaboration, or a 15-minute intro call — remote-friendly, replies within 24 hours.",
+  `Hire Jay Patel | Full Stack Developer in India`,
+  "Contact Jay Patel for full-stack development, freelance projects, or product collaboration. Based in India, available for remote work.",
   [
     "hire Jay Patel",
     "hire full stack developer India",

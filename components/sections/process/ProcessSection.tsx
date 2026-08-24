@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Check,
   ChevronLeft,
@@ -30,8 +30,6 @@ export function ProcessSection() {
 
   const steps = process.steps;
   const lastIndex = steps.length - 1;
-  const activeStep = steps[active] ?? steps[0];
-  const ActiveIcon = ICON_MAP[activeStep.icon] ?? Compass;
   const nextStep = active < lastIndex ? steps[active + 1] : null;
   const prevStep = active > 0 ? steps[active - 1] : null;
 
@@ -122,7 +120,7 @@ export function ProcessSection() {
                       type="button"
                       role="tab"
                       aria-selected={isActive}
-                      aria-controls={`${baseId}-panel`}
+                      aria-controls={`${baseId}-panel-${i}`}
                       id={`${baseId}-tab-${i}`}
                       onClick={() => setActive(i)}
                       className={cn(
@@ -178,96 +176,104 @@ export function ProcessSection() {
           </ol>
         </div>
 
+        {/*
+          All step panels stay in the DOM for SEO; only the active one is visible.
+          Inactive panels use the HTML `hidden` attribute (display:none) — still crawlable source.
+        */}
         <div className="mx-auto mt-10 max-w-3xl">
-          <AnimatePresence mode="wait">
-            <motion.article
-              key={activeStep.title}
-              id={`${baseId}-panel`}
-              role="tabpanel"
-              aria-labelledby={`${baseId}-tab-${active}`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              className="relative overflow-hidden rounded-3xl border border-border/70 bg-card p-6 shadow-premium sm:p-8"
-            >
-              <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
+          <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card p-6 shadow-premium sm:p-8">
+            <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
 
-              <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
-                <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl gradient-primary text-primary-foreground shadow-glow">
-                  <ActiveIcon className="h-6 w-6" strokeWidth={2.1} aria-hidden />
-                </span>
+            {steps.map((step, i) => {
+              const isActive = active === i;
+              const Icon = ICON_MAP[step.icon] ?? Compass;
 
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <span className="font-mono text-xs font-semibold tabular-nums text-primary">
-                      Step {String(active + 1).padStart(2, "0")}
+              return (
+                <article
+                  key={step.title}
+                  id={`${baseId}-panel-${i}`}
+                  role="tabpanel"
+                  aria-labelledby={`${baseId}-tab-${i}`}
+                  hidden={!isActive}
+                  className="relative"
+                >
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
+                    <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl gradient-primary text-primary-foreground shadow-glow">
+                      <Icon className="h-6 w-6" strokeWidth={2.1} aria-hidden />
                     </span>
-                    <span className="text-xs text-muted-foreground">
-                      of {String(steps.length).padStart(2, "0")}
-                    </span>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <span className="font-mono text-xs font-semibold tabular-nums text-primary">
+                          Step {String(i + 1).padStart(2, "0")}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          of {String(steps.length).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <h3 className="font-heading mt-1.5 text-2xl font-bold tracking-tight">
+                        {step.title}
+                      </h3>
+                      <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                        {step.description}
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="font-heading mt-1.5 text-2xl font-bold tracking-tight">
-                    {activeStep.title}
-                  </h3>
-                  <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                    {activeStep.description}
-                  </p>
-                </div>
+                </article>
+              );
+            })}
+
+            <div className="relative mt-7 flex items-center justify-between gap-3 border-t border-border/60 pt-5">
+              <button
+                type="button"
+                onClick={() => setActive((v) => Math.max(0, v - 1))}
+                disabled={!prevStep}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors",
+                  "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+                  "disabled:pointer-events-none disabled:opacity-35",
+                )}
+              >
+                <ChevronLeft className="h-4 w-4" aria-hidden />
+                <span className="hidden sm:inline">{prevStep ? prevStep.title : "Previous"}</span>
+                <span className="sm:hidden">Prev</span>
+              </button>
+
+              <div className="flex items-center gap-1.5">
+                {steps.map((step, i) => (
+                  <button
+                    key={step.title}
+                    type="button"
+                    onClick={() => setActive(i)}
+                    aria-label={`Go to step ${i + 1}: ${step.title}`}
+                    className={cn(
+                      "h-1.5 rounded-full transition-all duration-300",
+                      i === active
+                        ? "w-5 bg-primary"
+                        : i < active
+                          ? "w-1.5 bg-primary/45"
+                          : "w-1.5 bg-border hover:bg-muted-foreground/40",
+                    )}
+                  />
+                ))}
               </div>
 
-              <div className="relative mt-7 flex items-center justify-between gap-3 border-t border-border/60 pt-5">
-                <button
-                  type="button"
-                  onClick={() => setActive((v) => Math.max(0, v - 1))}
-                  disabled={!prevStep}
-                  className={cn(
-                    "inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors",
-                    "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
-                    "disabled:pointer-events-none disabled:opacity-35",
-                  )}
-                >
-                  <ChevronLeft className="h-4 w-4" aria-hidden />
-                  <span className="hidden sm:inline">{prevStep ? prevStep.title : "Previous"}</span>
-                  <span className="sm:hidden">Prev</span>
-                </button>
-
-                <div className="flex items-center gap-1.5">
-                  {steps.map((_, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => setActive(i)}
-                      aria-label={`Go to step ${i + 1}: ${steps[i].title}`}
-                      className={cn(
-                        "h-1.5 rounded-full transition-all duration-300",
-                        i === active
-                          ? "w-5 bg-primary"
-                          : i < active
-                            ? "w-1.5 bg-primary/45"
-                            : "w-1.5 bg-border hover:bg-muted-foreground/40",
-                      )}
-                    />
-                  ))}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setActive((v) => Math.min(lastIndex, v + 1))}
-                  disabled={!nextStep}
-                  className={cn(
-                    "inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors",
-                    "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
-                    "disabled:pointer-events-none disabled:opacity-35",
-                  )}
-                >
-                  <span className="hidden sm:inline">{nextStep ? nextStep.title : "Next"}</span>
-                  <span className="sm:hidden">Next</span>
-                  <ChevronRight className="h-4 w-4" aria-hidden />
-                </button>
-              </div>
-            </motion.article>
-          </AnimatePresence>
+              <button
+                type="button"
+                onClick={() => setActive((v) => Math.min(lastIndex, v + 1))}
+                disabled={!nextStep}
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors",
+                  "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+                  "disabled:pointer-events-none disabled:opacity-35",
+                )}
+              >
+                <span className="hidden sm:inline">{nextStep ? nextStep.title : "Next"}</span>
+                <span className="sm:hidden">Next</span>
+                <ChevronRight className="h-4 w-4" aria-hidden />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -84,7 +84,7 @@ export function WorkStatsBar() {
       label: "Production builds",
       value: stats.productionCount,
       icon: Rocket,
-      hint: "Shipped",
+      hint: "Deployed",
     },
     {
       label: "Technologies",
@@ -111,7 +111,7 @@ export function WorkStatsBar() {
     <section
       id="work-stats"
       aria-label="Work overview stats"
-      className="relative pt-2 pb-2 md:pb-4"
+      className="relative pt-4 pb-2 md:pb-4"
     >
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute left-1/2 top-0 h-40 w-[min(100%,28rem)] -translate-x-1/2 rounded-full bg-primary/8 blur-3xl" />

@@ -91,7 +91,8 @@ export function AboutSectionClient({
               </span>
               <span className="hidden h-3 w-px bg-border sm:block" aria-hidden />
               <span>
-                <span className="font-semibold text-foreground">{expLabel}</span> years shipping
+                <span className="font-semibold text-foreground">{expLabel}</span> years of
+                experience
               </span>
               <span className="hidden h-3 w-px bg-border sm:block" aria-hidden />
               <span className="inline-flex items-center gap-2">

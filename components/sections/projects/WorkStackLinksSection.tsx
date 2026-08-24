@@ -23,6 +23,13 @@ type StackItem = {
   layer: Exclude<StackLayer, "all">;
 };
 
+/** skill-data categories → short layer keys used by the filter tabs. */
+const CATEGORY_TO_LAYER: Record<string, Exclude<StackLayer, "all" | "Other">> = {
+  "Frontend Development": "Frontend",
+  "Backend Development": "Backend",
+  "DevOps & Infrastructure": "Tools & DevOps",
+};
+
 /** Map project tags → skill-catalog names when wording differs. */
 const TAG_ALIASES: Record<string, string> = {
   "Tailwind CSS": "Tailwind",
@@ -44,10 +51,12 @@ function buildStackItems(): StackItem[] {
     { skill: Skill; layer: Exclude<StackLayer, "all" | "Other"> }
   >();
   for (const group of SKILL_GROUPS) {
+    const layer = CATEGORY_TO_LAYER[group.category];
+    if (!layer) continue;
     for (const skill of group.skills) {
       skillByName.set(skill.name.toLowerCase(), {
         skill,
-        layer: group.category as Exclude<StackLayer, "all" | "Other">,
+        layer,
       });
     }
   }

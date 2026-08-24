@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowRight, Code2, Package, Rocket, Users, type LucideIcon } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { siteConfig } from "@/lib/site-config";
@@ -16,8 +16,19 @@ const LENS: {
 }[] = [
   { key: "userLens", label: "For users", icon: Users },
   { key: "builderLens", label: "How I build", icon: Code2 },
-  { key: "shippingLens", label: "How it ships", icon: Rocket },
+  { key: "shippingLens", label: "How it is deployed", icon: Rocket },
 ];
+
+/** skill-data categories → skillsPage.layers keys in content.ts */
+const LAYER_KEY: Record<string, string> = {
+  "Frontend Development": "Frontend",
+  "Backend Development": "Backend",
+  "DevOps & Infrastructure": "Tools & DevOps",
+};
+
+function layerFor(category: string) {
+  return siteConfig.skillsPage.layers[LAYER_KEY[category] ?? category];
+}
 
 export function SkillsCatalogSection() {
   const { skillsPage } = siteConfig;
@@ -26,8 +37,6 @@ export function SkillsCatalogSection() {
   const baseId = useId();
   const [activeCategory, setActiveCategory] = useState(SKILL_GROUPS[0].category);
 
-  const activeGroup = SKILL_GROUPS.find((g) => g.category === activeCategory) ?? SKILL_GROUPS[0];
-  const activeLayer = skillsPage.layers[activeGroup.category];
   const allSkillNames = SKILL_GROUPS.flatMap((g) => g.skills.map((s) => s.name));
 
   return (
@@ -106,7 +115,7 @@ export function SkillsCatalogSection() {
         aria-label="Stack layers"
       >
         {SKILL_GROUPS.map((group, i) => {
-          const layer = skillsPage.layers[group.category];
+          const layer = layerFor(group.category);
           const Icon = group.icon;
           const selected = group.category === activeCategory;
 
@@ -126,7 +135,7 @@ export function SkillsCatalogSection() {
                 type="button"
                 role="tab"
                 aria-selected={selected}
-                aria-controls={`${baseId}-panel`}
+                aria-controls={`${baseId}-panel-${i}`}
                 id={`${baseId}-tab-${i}`}
                 onClick={() => setActiveCategory(group.category)}
                 className={cn(
@@ -194,70 +203,84 @@ export function SkillsCatalogSection() {
         })}
       </div>
 
-      {/* ── Active layer deep-dive ── */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeGroup.category}
-          id={`${baseId}-panel`}
-          role="tabpanel"
-          aria-labelledby={`${baseId}-tab-${SKILL_GROUPS.findIndex((g) => g.category === activeCategory)}`}
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-6 overflow-hidden rounded-3xl border border-border/70 bg-card shadow-premium"
-        >
-          <div className="border-b border-border/70 px-5 py-5 sm:px-8 sm:py-6">
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <activeGroup.icon className="h-5 w-5" aria-hidden />
-              </span>
-              <div>
-                <h3 className="font-heading text-xl font-bold tracking-tight">
-                  {activeGroup.category}
-                </h3>
-                <p className="text-sm text-muted-foreground">{activeGroup.description}</p>
-              </div>
-            </div>
+      {/*
+        All layer deep-dives stay in the DOM for SEO; only the active one is visible.
+        Inactive panels use the HTML `hidden` attribute (display:none) — still crawlable source.
+      */}
+      <div className="mt-6">
+        {SKILL_GROUPS.map((group, i) => {
+          const isActive = group.category === activeCategory;
+          const layer = layerFor(group.category);
+          const Icon = group.icon;
 
-            {/* Three perspectives */}
-            {activeLayer && (
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {LENS.map(({ key, label, icon: LensIcon }) => (
-                  <div key={key} className="rounded-2xl border border-border/60 bg-muted/25 p-4">
-                    <div className="flex items-center gap-2 text-primary">
-                      <LensIcon className="h-4 w-4" aria-hidden />
-                      <span className="text-xs font-semibold uppercase tracking-wider">
-                        {label}
-                      </span>
-                    </div>
-                    <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
-                      {activeLayer[key]}
+          return (
+            <div
+              key={group.category}
+              id={`${baseId}-panel-${i}`}
+              role="tabpanel"
+              aria-labelledby={`${baseId}-tab-${i}`}
+              hidden={!isActive}
+              className="overflow-hidden rounded-3xl border border-border/70 bg-card shadow-premium"
+            >
+              <div className="border-b border-border/70 px-5 py-5 sm:px-8 sm:py-6">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Icon className="h-5 w-5" aria-hidden />
+                  </span>
+                  <div>
+                    <p className="font-heading text-xl font-bold tracking-tight">
+                      {group.category}
                     </p>
+                    <p className="text-sm text-muted-foreground">{group.description}</p>
                   </div>
-                ))}
-              </div>
-            )}
-          </div>
+                </div>
 
-          <div className="px-5 py-6 sm:px-8 sm:py-7">
-            <div className="mb-4 flex items-center gap-2">
-              <Package className="h-4 w-4 text-primary" aria-hidden />
-              <h4 className="text-sm font-semibold text-foreground">Tools in this layer</h4>
-              <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
-                {activeGroup.skills.length}
-              </span>
+                {layer && (
+                  <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                    {LENS.map(({ key, label, icon: LensIcon }) => (
+                      <div
+                        key={key}
+                        className="rounded-2xl border border-border/60 bg-muted/25 p-4"
+                      >
+                        <div className="flex items-center gap-2 text-primary">
+                          <LensIcon className="h-4 w-4" aria-hidden />
+                          <span className="text-xs font-semibold uppercase tracking-wider">
+                            {label}
+                          </span>
+                        </div>
+                        <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
+                          {layer[key]}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="px-5 py-6 sm:px-8 sm:py-7">
+                <div className="mb-4 flex items-center gap-2">
+                  <Package className="h-4 w-4 text-primary" aria-hidden />
+                  <p className="text-sm font-semibold text-foreground">Tools in this layer</p>
+                  <span className="font-mono text-[11px] tabular-nums text-muted-foreground">
+                    {group.skills.length}
+                  </span>
+                </div>
+                <ul className="flex flex-wrap gap-3">
+                  {group.skills.map((skill, skillIndex) => (
+                    <li key={skill.name}>
+                      <OverflowPill
+                        skill={skill}
+                        isDark={isDark}
+                        delay={isActive ? Math.min(skillIndex * 0.03, 0.2) : 0}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <ul className="flex flex-wrap gap-3">
-              {activeGroup.skills.map((skill, i) => (
-                <li key={skill.name}>
-                  <OverflowPill skill={skill} isDark={isDark} delay={Math.min(i * 0.03, 0.2)} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+          );
+        })}
+      </div>
 
       {/* ── Approach principles — always crawlable ── */}
       <motion.div
