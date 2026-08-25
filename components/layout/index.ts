@@ -7,6 +7,7 @@ export { PageReveal } from "./PageReveal";
 export { LoadingScreenWrapper } from "./LoadingScreenWrapper";
 export { ScrollProgressBar } from "./ScrollProgressBar";
 export { BackToTop } from "./BackToTop";
+export { GlobalFloatingUI } from "./GlobalFloatingUI";
 export { HomeOverlays } from "./HomeOverlays";
 export { SiteChrome } from "./SiteChrome";
 export { InnerPageHero } from "./InnerPageHero";

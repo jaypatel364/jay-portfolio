@@ -77,7 +77,7 @@ export function ContactProfileBadges({
     <div className={cn("space-y-3", className)}>
       {title ? (
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-primary">{title}</h2>
+          <h2 className="text-sm font-semibold tracking-widest text-primary">{title}</h2>
           {intro ? (
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{intro}</p>
           ) : null}

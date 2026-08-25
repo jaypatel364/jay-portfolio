@@ -360,7 +360,7 @@ export const content = {
     profilesTitle: "Connect with Jay",
     profilesIntro:
       "You can also find me on LinkedIn or GitHub, or book a short intro call if you'd rather talk.",
-    formTitle: "Send a message",
+    formTitle: "Start the conversation",
     formIntro:
       "Tell me a little about the project, your goals, and what you need help with. " +
       "I'll get back to you with the next step.",

@@ -21,6 +21,8 @@ export {
   formatRatesReply,
   buildChatSystemPrompt,
   getCannedAnswers,
+  randomOffTopicReply,
+  OFF_TOPIC_REPLIES,
 } from "./chat";
 export type { CannedAnswer } from "./chat";
 

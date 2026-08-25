@@ -78,9 +78,9 @@ export function ContactQuickPanel({ variant = "full", className }: ContactQuickP
 
       <div className="space-y-4 rounded-2xl border border-border bg-card/60 p-5 backdrop-blur-sm">
         {isFull ? (
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-primary">
+          <p className="text-sm font-semibold uppercase tracking-widest text-primary">
             {copy.quickContactTitle}
-          </h2>
+          </p>
         ) : null}
 
         <div className="space-y-4">

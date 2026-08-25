@@ -11,7 +11,7 @@ export const features = {
 
   // ── SEO indexing ──────────────────────────────────────────────────────────
   // true = allow Google/Bing. Keep Search Console verified on jaypateldev.com.
-  allowIndexing: false,
+  allowIndexing: true,
 
   // ── Extra routes ──────────────────────────────────────────────────────────
   showCaseStudies: false,

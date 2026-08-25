@@ -9,10 +9,9 @@
  *    • Twitter / X cards
  *    • Robots directives
  *    • JSON-LD structured data:
- *        – Person schema          (who Jay is)
- *        – WebSite schema         (site identity — no fake SearchAction)
- *        – ProfilePage schema     (portfolio page)
- *        – FAQ schema             (only when showFAQ is true)
+ *        – Person / WebSite / ProfilePage / FAQ  (home — revisit with the home rewrite)
+ *        – AboutPage, CollectionPage (work), WebPage (skills), ContactPage
+ *        – Project CreativeWork / SoftwareSourceCode + breadcrumbs
  *    • Per-page metadata helpers  (about / skills / work / contact)
  *
  *  Usage in app/layout.tsx:
@@ -33,6 +32,7 @@
 
 import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/settings";
+import { PROJECTS, projectHref, type Project } from "@/settings/projects";
 // ─── Base URL ──────────────────────────────────────────────────────────────────
 // Canonical / OG / sitemap must be the public domain — never VERCEL_URL.
 // VERCEL_URL is a unique deploy host (e.g. jay-portfolio-xxxx.vercel.app).
@@ -53,7 +53,7 @@ export function pageUrl(path: string): string {
 }
 
 /** Real content date — do not use `new Date()` in JSON-LD or sitemap. */
-export const LAST_UPDATED = "2026-08-21";
+export const LAST_UPDATED = "2026-08-25";
 
 // ─── Core copy ─────────────────────────────────────────────────────────────────
 // Change these to adjust the text that appears in Google results and link previews.
@@ -333,6 +333,88 @@ export function innerPageBreadcrumbJsonLd(pageName: string, slug: string) {
   ]);
 }
 
+export function projectBreadcrumbJsonLd(project: Pick<Project, "slug" | "title">) {
+  return breadcrumbJsonLd([
+    { name: "Home", url: HOME_URL },
+    { name: "Work", url: pageUrl("work") },
+    { name: project.title, url: pageUrl(`work/${project.slug}`) },
+  ]);
+}
+
+/** About page — AboutPage pointing at the same Person entity as home. */
+export const aboutPageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "@id": `${pageUrl("about")}#aboutpage`,
+  url: pageUrl("about"),
+  name: "About Jay Patel | Full Stack Developer",
+  description: aboutPageMetadata.description,
+  inLanguage: "en-US",
+  isPartOf: { "@id": `${HOME_URL}#website` },
+  about: { "@id": `${HOME_URL}#person` },
+  mainEntity: { "@id": `${HOME_URL}#person` },
+};
+
+/** Skills page — WebPage wrapper; ItemLists are injected separately. */
+export function skillsPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${pageUrl("skills")}#webpage`,
+    url: pageUrl("skills"),
+    name: "Full Stack Skills & Services | React, Next.js, Node.js",
+    description: skillsPageMetadata.description,
+    inLanguage: "en-US",
+    isPartOf: { "@id": `${HOME_URL}#website` },
+    about: { "@id": `${HOME_URL}#person` },
+    mainEntity: { "@id": `${HOME_URL}#person` },
+  };
+}
+
+/** Work index — CollectionPage + ItemList of every project card on the page. */
+export function workPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${pageUrl("work")}#collection`,
+    url: pageUrl("work"),
+    name: "Work & Projects | Jay Patel Full Stack Portfolio",
+    description: workPageMetadata.description,
+    inLanguage: "en-US",
+    isPartOf: { "@id": `${HOME_URL}#website` },
+    about: { "@id": `${HOME_URL}#person` },
+    mainEntity: {
+      "@type": "ItemList",
+      name: "Selected projects",
+      numberOfItems: PROJECTS.length,
+      itemListElement: PROJECTS.map((project, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: project.title,
+        url: `${BASE_URL}${projectHref(project)}`,
+      })),
+    },
+  };
+}
+
+/** Public `/work/<slug>/` pages (currently noindex). */
+export function projectJsonLd(project: Project) {
+  return {
+    "@context": "https://schema.org",
+    "@type": project.codeUrl ? "SoftwareSourceCode" : "CreativeWork",
+    "@id": `${pageUrl(`work/${project.slug}`)}#work`,
+    name: project.title,
+    description: project.desc,
+    url: pageUrl(`work/${project.slug}`),
+    inLanguage: "en-US",
+    author: { "@id": `${HOME_URL}#person` },
+    creator: { "@id": `${HOME_URL}#person` },
+    keywords: project.tags.join(", "),
+    ...(project.codeUrl ? { codeRepository: project.codeUrl } : {}),
+    ...(project.demoUrl ? { sameAs: project.demoUrl } : {}),
+  };
+}
+
 /** Contact page — ContactPage + ContactPoint for rich results. */
 export const contactPageJsonLd = {
   "@context": "https://schema.org",
@@ -515,21 +597,27 @@ export const personJsonLd = {
     ),
   ],
   knowsAbout: [
+    "Full Stack Web Development",
     "React",
     "Next.js",
-    "TypeScript",
     "Node.js",
-    "Express.js",
-    "MongoDB",
-    "PostgreSQL",
-    "REST APIs",
-    "GraphQL",
-    "Tailwind CSS",
-    "Docker",
-    "AWS",
-    "Full Stack Development",
+    "TypeScript",
     "MERN Stack",
     "Web Application Development",
+    "SaaS Development",
+    "REST API Development",
+    "GraphQL API Development",
+    "Real-Time Web Applications",
+    "WebSocket Applications",
+    "Database Design",
+    "MongoDB",
+    "PostgreSQL",
+    "Prisma",
+    "Third-Party API Integrations",
+    "Performance Optimization",
+    "SEO",
+    "Web Accessibility",
+    "Production Deployment",
   ],
   alumniOf: [
     {

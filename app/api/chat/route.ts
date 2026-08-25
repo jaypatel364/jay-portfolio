@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Groq from "groq-sdk";
 import { z } from "zod";
-import { buildChatSystemPrompt, getCannedAnswers } from "@/settings/chat";
+import { buildChatSystemPrompt, getCannedAnswers, randomOffTopicReply } from "@/settings/chat";
 import { rateLimitChat, getClientIp } from "@/lib/rate-limit";
 import { isAllowedRequestOrigin } from "@/lib/request-origin";
 import { captureServerError } from "@/lib/sentry";
@@ -37,15 +37,13 @@ function hasInjection(text: string): boolean {
   return INJECTION_PATTERNS.some((re) => re.test(text));
 }
 
-// ── Off-topic guard — zero tokens spent on irrelevant queries ─────────────────
+// ── Off-topic guard — zero tokens spent on clearly irrelevant queries ─────────
 //
-// Rules for a pattern to be here:
-//   1. It must clearly be about something OTHER than Jay/his work
-//   2. It must NOT accidentally catch questions like "introduce yourself",
-//      "what's your stack", "how did you build this", "explain your experience"
+// Only block asks that are unambiguously NOT about Jay / his work.
+// Borderline or Jay-adjacent questions go to Groq — the system prompt answers
+// fully when relevant, and redirects gently when not.
 //
-// Strategy: only block things that are unambiguously not about Jay.
-// When in doubt, let Groq handle it — the system prompt will redirect anyway.
+// Strategy: when in doubt, let it through. Polite copy lives in settings/chat.ts.
 
 const OFF_TOPIC_PATTERNS: RegExp[] = [
   // Asking to WRITE code for them (not asking about Jay's code)
@@ -60,9 +58,10 @@ const OFF_TOPIC_PATTERNS: RegExp[] = [
   /\b(recipe for|how to cook|calories in|workout plan|diet plan|best restaurant|hotel in|flight to)\b/i,
   // Pure math homework
   /\b(solve this equation|calculate the integral|find the derivative|math homework|algebra problem)\b/i,
-  // Asking about other AI chatbots
+  // Asking about other AI chatbots / general AI tooling
   /\bcompare (chatgpt|gpt-?4|claude|gemini) (to|with|vs)\b/i,
   /\bwhich (ai|llm|model) is (better|best|smarter)\b/i,
+  /\b(write|generate|summarize|explain)\b.{0,40}\b(essay|homework|thesis|cover letter)\b/i,
 ];
 
 // JAY_CONTEXT — if the message contains these words, never block it regardless
@@ -92,18 +91,6 @@ function isOffTopic(text: string): boolean {
   // If it clearly mentions Jay or is about the person → always let it through
   if (JAY_CONTEXT_WORDS.some((w) => lower.includes(w))) return false;
   return OFF_TOPIC_PATTERNS.some((re) => re.test(text));
-}
-
-function randomOffTopicReply(): string {
-  const OFF_TOPIC_REPLIES = [
-    "Haha nice try 😄 I'm strictly Jay's assistant — I only know about him and his work. ChatGPT is just a tab away!",
-    "I'm a one-developer AI — I only talk about Jay Patel. For the big questions, Google's got you covered 😄",
-    "That's outside my jurisdiction 🙈 I'm trained exclusively on Jay lore. Try Claude or ChatGPT for that one!",
-    "My entire knowledge base is just... Jay. Ask me about his stack, portfolio, or availability instead!",
-    "Error 403: Topic not found in Jay's brain 😂 I can only help with questions about Jay and his work.",
-    "Hardcoded to Jay-mode only. Gemini would love that question though 👀",
-  ];
-  return OFF_TOPIC_REPLIES[Math.floor(Math.random() * OFF_TOPIC_REPLIES.length)];
 }
 
 function getCannedAnswer(text: string): string | null {
@@ -174,7 +161,7 @@ export async function POST(req: NextRequest) {
   const { limited, retryAfter } = await rateLimitChat(ip);
   if (limited) {
     return NextResponse.json(
-      { error: "Too many messages. Please slow down a little 😄" },
+      { error: "Sorry — too many messages just now. Please try again in a moment." },
       { status: 429, headers: { "Retry-After": String(retryAfter) } },
     );
   }
@@ -198,7 +185,10 @@ export async function POST(req: NextRequest) {
   const lastUserMsg = [...messages].reverse().find((m) => m.role === "user");
   if (lastUserMsg && hasInjection(lastUserMsg.content)) {
     return NextResponse.json(
-      { error: "I'm only here to answer questions about Jay and his work." },
+      {
+        error:
+          "Happy to chat about Jay's work, stack, and availability — what would you like to know?",
+      },
       { status: 400 },
     );
   }
@@ -222,7 +212,10 @@ export async function POST(req: NextRequest) {
     groq = getGroq();
   } catch {
     return NextResponse.json(
-      { error: "Chat is temporarily unavailable. Please use the contact form instead." },
+      {
+        error:
+          "Sorry, chat isn't available right now. Please use the contact form or email Jay directly.",
+      },
       { status: 503 },
     );
   }
@@ -268,14 +261,20 @@ export async function POST(req: NextRequest) {
     const msg = err instanceof Error ? err.message : "";
     if (msg.includes("429") || msg.toLowerCase().includes("rate limit")) {
       return NextResponse.json(
-        { error: "Getting lots of questions right now — try again in a few seconds 🙏" },
+        {
+          error:
+            "Sorry — I'm getting a lot of questions right now. Please try again in a few seconds.",
+        },
         { status: 429 },
       );
     }
     captureServerError(err, { route: "chat" });
     console.error("[Chat] Groq error:", msg);
     return NextResponse.json(
-      { error: "Something went wrong. Please use the contact form to reach Jay directly." },
+      {
+        error:
+          "Sorry about that — something went wrong. Please try again, or use the contact form to reach Jay.",
+      },
       { status: 500 },
     );
   }

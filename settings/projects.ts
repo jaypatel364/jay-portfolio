@@ -37,8 +37,8 @@ export interface Project {
 export const PROJECTS: Project[] = [
   {
     slug: "spendly-personal-expense-tracker",
-    title: "Spendly",
-    tagline: "Personal Expense Tracker",
+    title: "Spendly - Expense Tracker",
+    tagline: "Premium Personal Expense Tracker",
     desc: "A premium personal expense tracker that turns everyday spending into clear insight. Log expenses in seconds, set monthly budgets, import CSV/Excel history, and see totals and category breakdowns in a calm, private dashboard. Built with TanStack Start, React, and Supabase with row-level security.",
     tags: [
       "TanStack Start",
