@@ -30,7 +30,7 @@ export function ContactPageSection({ className }: ContactPageSectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.55, delay: 0.05 }}
-            className="min-w-0 rounded-2xl border border-border bg-card/50 p-6 backdrop-blur-sm sm:p-8 lg:col-span-3"
+            className="min-w-0 rounded-2xl border border-border bg-card/50 p-4 backdrop-blur-sm sm:p-8 lg:col-span-3"
           >
             <div className="mb-6 max-w-lg">
               <h2 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl">

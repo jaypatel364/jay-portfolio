@@ -152,7 +152,7 @@ export const content = {
     body: [
       "I started professionally in 2022. Since then, I've worked on production systems including " +
         "real-time chat, configurable form platforms with 100+ flows, HR and KYC tools, and have mentored junior developers working on the same codebases.",
-      "I prefer work where the hard part stays invisible — latency that disappears, forms that don't fight the user, " +
+      "I prefer work where the hard part stays invisible, latency that disappears, forms that don't fight the user, " +
         "deployments that don't create unnecessary problems. Reliability over demos.",
     ],
     principles: [

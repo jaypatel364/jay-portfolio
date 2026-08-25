@@ -109,7 +109,7 @@ export function WhyChooseVisual() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 rounded-xl border border-border/70 bg-background/50 px-3 py-2.5 font-mono text-[11px] text-muted-foreground backdrop-blur-sm">
+        <div className="mt-2 flex items-center gap-2 rounded-xl border border-border/70 bg-background/50 px-3 py-2.5 font-mono text-[11px] text-muted-foreground backdrop-blur-sm">
           <GitBranch className="h-3.5 w-3.5 shrink-0 text-primary" />
           <span className="truncate">git commit -m &quot;ship clean UI + robust API&quot;</span>
           <Code2 className="ml-auto h-3.5 w-3.5 shrink-0 text-primary/70" />
