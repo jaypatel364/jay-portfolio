@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
+import { siteConfig } from "@/settings";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -37,18 +38,18 @@ const CHIP_GROUPS = [
 ];
 
 // ── User-facing error messages — never show raw API strings ──────────────────
-// Maps internal error patterns to friendly messages the user can understand.
+// Maps internal error patterns to polite, humble copy.
 
 function toFriendlyError(raw: string): string {
   const s = raw.toLowerCase();
   if (s.includes("rate limit") || s.includes("429") || s.includes("slow down"))
-    return "Getting a lot of questions right now — give me a second and try again 😄";
+    return "Sorry — things are a bit busy right now. Please try again in a moment.";
   if (s.includes("unavailable") || s.includes("503"))
-    return "I'm taking a quick break — try again in a moment, or reach Jay directly at pjay99909@gmail.com";
+    return `Sorry, chat isn't available at the moment. You're welcome to email Jay at ${siteConfig.email}.`;
   if (s.includes("too many messages"))
-    return "Too many messages in a short time — wait a moment and try again 🙏";
+    return "Sorry for the wait — please send a little less often and try again shortly.";
   // Generic fallback — never expose internal details
-  return "Something hiccuped on my end 🙈 Try again, or reach Jay at pjay99909@gmail.com";
+  return `Sorry about that — I couldn't complete that reply. Please try again, or email Jay at ${siteConfig.email}.`;
 }
 // Known domains get a short human label. Nothing long ever renders in a bubble.
 

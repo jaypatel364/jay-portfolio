@@ -6,10 +6,10 @@ import { Suspense } from "react";
 import { PageTransition, PageTransitionItem } from "@/components/layout/PageTransition";
 import { Navbar } from "@/components/layout/Navbar";
 import { ScrollProgressBar } from "@/components/layout/ScrollProgressBar";
-import { BackToTop } from "@/components/layout/BackToTop";
 import { LoadingScreenWrapper } from "@/components/layout/LoadingScreenWrapper";
 import { Footer } from "@/components/layout/Footer";
 import { GlobalCtaGate } from "@/components/layout/GlobalCtaGate";
+import { GlobalFloatingUI } from "@/components/layout/GlobalFloatingUI";
 import { HomeOverlays } from "@/components/layout/HomeOverlays";
 import { SectionErrorBoundary } from "@/components/shared";
 import { HeroSection } from "@/components/sections/hero";
@@ -99,7 +99,7 @@ export default function Home() {
             </PageTransitionItem>
           </PageTransition>
 
-          <BackToTop />
+          <GlobalFloatingUI />
         </div>
       </LoadingScreenWrapper>
     </ThemeProvider>

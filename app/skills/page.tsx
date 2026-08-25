@@ -8,6 +8,7 @@ import {
   innerPageBreadcrumbJsonLd,
   servicesItemListJsonLd,
   skillsCatalogJsonLd,
+  skillsPageJsonLd,
 } from "@/settings/seo";
 import { innerPages } from "@/settings/pages";
 
@@ -25,6 +26,12 @@ export default function SkillsPage() {
             /</g,
             "\\u003c",
           ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(skillsPageJsonLd()).replace(/</g, "\\u003c"),
         }}
       />
       <script

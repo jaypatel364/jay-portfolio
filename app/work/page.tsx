@@ -4,7 +4,7 @@ import {
   WorkStackLinksSection,
   WorkStatsBar,
 } from "@/components/sections/projects";
-import { workPageMetadata, innerPageBreadcrumbJsonLd } from "@/settings/seo";
+import { workPageMetadata, innerPageBreadcrumbJsonLd, workPageJsonLd } from "@/settings/seo";
 import { innerPages } from "@/settings/pages";
 
 export const metadata = workPageMetadata;
@@ -21,6 +21,12 @@ export default function WorkPage() {
             /</g,
             "\\u003c",
           ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(workPageJsonLd()).replace(/</g, "\\u003c"),
         }}
       />
       <main id="main">

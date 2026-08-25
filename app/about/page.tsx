@@ -3,7 +3,12 @@ import { WhoAmISection } from "@/components/sections/who-am-i";
 import { WhyChooseSection } from "@/components/sections/why-choose";
 import { ExperienceSection } from "@/components/sections/experience";
 import { EducationSection } from "@/components/sections/education";
-import { aboutPageMetadata, innerPageBreadcrumbJsonLd, personJsonLd } from "@/settings/seo";
+import {
+  aboutPageJsonLd,
+  aboutPageMetadata,
+  innerPageBreadcrumbJsonLd,
+  personJsonLd,
+} from "@/settings/seo";
 import { innerPages } from "@/settings/pages";
 import { siteConfig } from "@/settings";
 import { getExperienceLabel } from "@/lib/utils";
@@ -23,6 +28,12 @@ export default function AboutPage() {
             /</g,
             "\\u003c",
           ),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(aboutPageJsonLd).replace(/</g, "\\u003c"),
         }}
       />
       <script

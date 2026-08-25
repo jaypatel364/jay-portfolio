@@ -15,9 +15,6 @@ import { siteConfig } from "@/lib/site-config";
  * CursorTrail's dynamic() is only created when cursorEffect is active, so the
  * chunk is never downloaded when the feature is off (currently "none").
  */
-const ChatBot = dynamic(() =>
-  import("@/components/features/chatbot").then((m) => ({ default: m.ChatBot })),
-);
 const CursorSpotlight = dynamic(() =>
   import("@/components/effects/CursorSpotlight").then((m) => ({ default: m.CursorSpotlight })),
 );
@@ -58,7 +55,6 @@ export function HomeOverlays() {
       <KonamiEasterEgg />
       {CatchTheBug && <CatchTheBug />}
       {CursorTrail && <CursorTrail mode={siteConfig.cursorEffect} />}
-      <ChatBot />
     </>
   );
 }

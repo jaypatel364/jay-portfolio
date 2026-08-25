@@ -9,14 +9,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: HOME_URL,
       lastModified,
-      changeFrequency: "monthly",
-      priority: 1,
     },
     ...(["about", "skills", "work", "contact"] as const).map((slug) => ({
       url: pageUrl(slug),
       lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.85,
     })),
   ];
 }
