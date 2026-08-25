@@ -47,6 +47,10 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
   // Required so Next.js metadata keeps https://jaypateldev.com/ (not …com).
   trailingSlash: true,
+  // Keep <title>, meta description/robots, and canonical in <head> for every UA.
+  // Default streaming metadata can place those tags in <body>, which SEO tools flag.
+  // Docs: https://nextjs.org/docs/app/api-reference/config/next-config-js/htmlLimitedBots
+  htmlLimitedBots: /.*/,
   experimental: {
     optimizePackageImports: [
       "lucide-react",
