@@ -200,7 +200,7 @@ If you are unsure: **if changing it changes what visitors see about Jay without 
 | Feature           | Location                                                      |
 | ----------------- | ------------------------------------------------------------- |
 | Home composition  | `app/page.tsx`                                                |
-| Inner routes      | `app/about`, `app/skills`, `app/work`, `app/contact`          |
+| Inner routes      | `app/about`, `app/skills`, `app/work`, `app/contact/`         |
 | Sections          | `components/sections/<name>/`                                 |
 | Chatbot / games   | `components/features/chatbot/`, `…/games/`                    |
 | Command palette   | `components/features/command-palette/`                        |

@@ -106,7 +106,7 @@ export function HeroInteractive({ withTerminal }: HeroInteractiveProps) {
             View Resume
           </button>
           <a
-            href="/contact"
+            href="/contact/"
             className="rounded-xl border border-border bg-card px-7 py-3.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-primary/30 hover:bg-muted/50"
           >
             Let's Work Together

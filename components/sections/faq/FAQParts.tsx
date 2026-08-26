@@ -385,7 +385,7 @@ function AllDoneBanner({ reduced }: { reduced: boolean }) {
         </div>
 
         <a
-          href="/contact"
+          href="/contact/"
           className="ml-auto shrink-0 rounded-lg border border-primary/30 bg-primary/8 px-3 py-1.5 font-mono text-[11px] font-semibold text-primary transition-all hover:bg-primary/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         >
           Ask a question →

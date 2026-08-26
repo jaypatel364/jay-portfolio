@@ -72,7 +72,7 @@ function TerminalBlock() {
       (sideEffect as { type: "output"; nodes: React.ReactNode[]; _sideEffect?: string })
         ._sideEffect === "contact"
     ) {
-      setTimeout(() => window.location.assign("/contact"), 800);
+      setTimeout(() => window.location.assign("/contact/"), 800);
     }
   };
 
