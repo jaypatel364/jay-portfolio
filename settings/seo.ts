@@ -316,32 +316,87 @@ export const contactPageMetadata = innerPageMetadata(
   ],
 );
 
-export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
+/** Named Person node — bare `@id` refs show as “Unnamed item” in Rich Results. */
+function personRef() {
   return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
+    "@type": "Person" as const,
+    "@id": `${HOME_URL}#person`,
+    name: siteConfig.fullName,
+  };
+}
+
+/** Named WebSite node for `isPartOf` links. */
+function websiteRef() {
+  return {
+    "@type": "WebSite" as const,
+    "@id": `${HOME_URL}#website`,
+    name: `${siteConfig.fullName} — Portfolio`,
+  };
+}
+
+/**
+ * BreadcrumbList with a list `name` and nested WebPage `item` objects.
+ * Plain URL `item` strings often render as “Unnamed item” in validators.
+ */
+function breadcrumbListFields(
+  items: { name: string; url: string }[],
+  opts?: { id?: string; name?: string },
+) {
+  const last = items[items.length - 1];
+  const listId = opts?.id ?? `${last?.url ?? HOME_URL}#breadcrumb`;
+  const listName = opts?.name ?? (last ? `${last.name} breadcrumb` : "Breadcrumb");
+
+  return {
+    "@type": "BreadcrumbList" as const,
+    "@id": listId,
+    name: listName,
+    numberOfItems: items.length,
     itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
+      "@type": "ListItem" as const,
+      "@id": `${listId}/item-${i + 1}`,
       position: i + 1,
       name: item.name,
-      item: item.url,
+      item: {
+        "@type": "WebPage" as const,
+        "@id": item.url,
+        name: item.name,
+        url: item.url,
+      },
     })),
   };
 }
 
+export function breadcrumbJsonLd(
+  items: { name: string; url: string }[],
+  opts?: { id?: string; name?: string },
+) {
+  return {
+    "@context": "https://schema.org",
+    ...breadcrumbListFields(items, opts),
+  };
+}
+
 export function innerPageBreadcrumbJsonLd(pageName: string, slug: string) {
-  return breadcrumbJsonLd([
-    { name: "Home", url: HOME_URL },
-    { name: pageName, url: pageUrl(slug) },
-  ]);
+  const url = pageUrl(slug);
+  return breadcrumbJsonLd(
+    [
+      { name: "Home", url: HOME_URL },
+      { name: pageName, url },
+    ],
+    { id: `${url}#breadcrumb`, name: `${pageName} breadcrumb` },
+  );
 }
 
 export function projectBreadcrumbJsonLd(project: Pick<Project, "slug" | "title">) {
-  return breadcrumbJsonLd([
-    { name: "Home", url: HOME_URL },
-    { name: "Work", url: pageUrl("work") },
-    { name: project.title, url: pageUrl(`work/${project.slug}`) },
-  ]);
+  const url = pageUrl(`work/${project.slug}`);
+  return breadcrumbJsonLd(
+    [
+      { name: "Home", url: HOME_URL },
+      { name: "Work", url: pageUrl("work") },
+      { name: project.title, url },
+    ],
+    { id: `${url}#breadcrumb`, name: `${project.title} breadcrumb` },
+  );
 }
 
 /** About page — AboutPage pointing at the same Person entity as home. */
@@ -353,12 +408,12 @@ export const aboutPageJsonLd = {
   name: "About Jay Patel | Full Stack Developer",
   description: aboutPageMetadata.description,
   inLanguage: "en-US",
-  isPartOf: { "@id": `${HOME_URL}#website` },
-  about: { "@id": `${HOME_URL}#person` },
-  mainEntity: { "@id": `${HOME_URL}#person` },
+  isPartOf: websiteRef(),
+  about: personRef(),
+  mainEntity: personRef(),
 };
 
-/** Skills page — WebPage wrapper; ItemLists are injected separately. */
+/** Skills page — WebPage wrapper; catalog schemas are injected separately. */
 export function skillsPageJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -368,14 +423,24 @@ export function skillsPageJsonLd() {
     name: "Full Stack Skills & Services | React, Next.js, Node.js",
     description: skillsPageMetadata.description,
     inLanguage: "en-US",
-    isPartOf: { "@id": `${HOME_URL}#website` },
-    about: { "@id": `${HOME_URL}#person` },
-    mainEntity: { "@id": `${HOME_URL}#person` },
+    isPartOf: websiteRef(),
+    about: personRef(),
+    mainEntity: personRef(),
   };
+}
+
+/** URL-safe fragment for JSON-LD `@id` / `url` values. */
+function schemaFragment(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 64);
 }
 
 /** Work index — CollectionPage + ItemList of every project card on the page. */
 export function workPageJsonLd() {
+  const listId = `${pageUrl("work")}#project-list`;
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -384,18 +449,28 @@ export function workPageJsonLd() {
     name: "Work & Projects | Jay Patel Full Stack Portfolio",
     description: workPageMetadata.description,
     inLanguage: "en-US",
-    isPartOf: { "@id": `${HOME_URL}#website` },
-    about: { "@id": `${HOME_URL}#person` },
+    isPartOf: websiteRef(),
+    about: personRef(),
     mainEntity: {
       "@type": "ItemList",
+      "@id": listId,
       name: "Selected projects",
       numberOfItems: PROJECTS.length,
-      itemListElement: PROJECTS.map((project, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        name: project.title,
-        url: `${BASE_URL}${projectHref(project)}`,
-      })),
+      itemListElement: PROJECTS.map((project, i) => {
+        const url = `${BASE_URL}${projectHref(project)}`;
+        return {
+          "@type": "ListItem",
+          "@id": `${listId}/item-${i + 1}`,
+          position: i + 1,
+          name: project.title,
+          item: {
+            "@type": "CreativeWork",
+            "@id": url,
+            name: project.title,
+            url,
+          },
+        };
+      }),
     },
   };
 }
@@ -410,15 +485,15 @@ export function projectJsonLd(project: Project) {
     description: project.desc,
     url: pageUrl(`work/${project.slug}`),
     inLanguage: "en-US",
-    author: { "@id": `${HOME_URL}#person` },
-    creator: { "@id": `${HOME_URL}#person` },
+    author: personRef(),
+    creator: personRef(),
     keywords: project.tags.join(", "),
     ...(project.codeUrl ? { codeRepository: project.codeUrl } : {}),
     ...(project.demoUrl ? { sameAs: project.demoUrl } : {}),
   };
 }
 
-/** Contact page — ContactPage + ContactPoint for rich results. */
+/** Contact page — ContactPage + ContactPoint (breadcrumb is a separate script). */
 export const contactPageJsonLd = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
@@ -427,34 +502,24 @@ export const contactPageJsonLd = {
   name: `Contact ${siteConfig.fullName}`,
   description: contactPageMetadata.description,
   inLanguage: "en-US",
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: HOME_URL },
-      { "@type": "ListItem", position: 2, name: "Contact", item: pageUrl("contact") },
-    ],
-  },
-  mainEntity: {
-    "@type": "Person",
-    "@id": `${HOME_URL}#person`,
-    name: siteConfig.fullName,
-  },
+  isPartOf: websiteRef(),
+  mainEntity: personRef(),
   about: {
-    "@type": "Person",
-    "@id": `${HOME_URL}#person`,
-    name: siteConfig.fullName,
+    ...personRef(),
     email: `mailto:${siteConfig.email}`,
     ...(siteConfig.phone ? { telephone: siteConfig.phone } : {}),
     url: HOME_URL,
     jobTitle: "Full Stack Developer",
     address: {
       "@type": "PostalAddress",
+      name: "Ahmedabad, India",
       addressLocality: "Ahmedabad",
       addressCountry: "IN",
     },
     contactPoint: [
       {
         "@type": "ContactPoint",
+        name: "Professional inquiries",
         contactType: "professional inquiries",
         email: siteConfig.email,
         ...(siteConfig.phone ? { telephone: siteConfig.phone } : {}),
@@ -470,26 +535,47 @@ export const contactPageJsonLd = {
   },
 };
 
-/** ItemList of development services for the skills page (SEO). */
+/**
+ * Services catalog for the skills page.
+ * Use OfferCatalog (not ItemList) — top-level ItemList triggers Google Carousel
+ * validation ("Multiple ListItem elements" / duplicate urls).
+ */
 export function servicesItemListJsonLd() {
   const items = siteConfig.services.items;
+  const catalogId = `${pageUrl("skills")}#services`;
   return {
     "@context": "https://schema.org",
-    "@type": "ItemList",
+    "@type": "OfferCatalog",
+    "@id": catalogId,
     name: siteConfig.services.title,
     description: siteConfig.services.intro,
+    url: catalogId,
     numberOfItems: items.length,
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.title,
-      description: item.description,
-      url: `${pageUrl("skills")}#services`,
-    })),
+    itemListElement: items.map((item, i) => {
+      const slug = schemaFragment(item.title);
+      const itemUrl = `${pageUrl("skills")}#service-${slug}`;
+      return {
+        "@type": "Offer",
+        "@id": itemUrl,
+        position: i + 1,
+        name: item.title,
+        description: item.description,
+        url: itemUrl,
+        itemOffered: {
+          "@type": "Service",
+          name: item.title,
+          description: item.description,
+          provider: personRef(),
+        },
+      };
+    }),
   };
 }
 
-/** DefinedTermSet-style skill catalog for the skills page (SEO). */
+/**
+ * Tech stack catalog for the skills page.
+ * DefinedTermSet (not ItemList) — avoids Carousel rich-result checks.
+ */
 export function skillsCatalogJsonLd() {
   const groups = [
     {
@@ -523,20 +609,28 @@ export function skillsCatalogJsonLd() {
       skills: ["Git", "GitHub", "Docker", "AWS", "Jest", "Vitest", "Figma", "Linux"],
     },
   ];
-  const allSkills = groups.flatMap((g) => g.skills);
+  const allSkills = groups.flatMap((g) => g.skills.map((name) => ({ name, group: g.name })));
+  const catalogId = `${pageUrl("skills")}#stack-catalog`;
 
   return {
     "@context": "https://schema.org",
-    "@type": "ItemList",
+    "@type": "DefinedTermSet",
+    "@id": catalogId,
     name: siteConfig.skillsPage.catalogTitle,
     description: siteConfig.skillsPage.catalogIntro,
-    numberOfItems: allSkills.length,
-    itemListElement: allSkills.map((name, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name,
-      url: `${pageUrl("skills")}#stack-catalog`,
-    })),
+    url: catalogId,
+    hasDefinedTerm: allSkills.map(({ name, group }) => {
+      const termId = `${pageUrl("skills")}#skill-${schemaFragment(name)}`;
+      return {
+        "@type": "DefinedTerm",
+        "@id": termId,
+        name,
+        termCode: name,
+        description: `${name} (${group})`,
+        url: termId,
+        inDefinedTermSet: catalogId,
+      };
+    }),
   };
 }
 
@@ -593,6 +687,7 @@ export const personJsonLd = {
   description: SEO_DESCRIPTION,
   address: {
     "@type": "PostalAddress",
+    name: "Ahmedabad, India",
     addressLocality: "Ahmedabad",
     addressCountry: "IN",
   },
@@ -648,11 +743,7 @@ export const webSiteJsonLd = {
   name: `${siteConfig.fullName} — Portfolio`,
   url: HOME_URL,
   description: SEO_DESCRIPTION,
-  author: {
-    "@type": "Person",
-    "@id": `${HOME_URL}#person`,
-    name: siteConfig.fullName,
-  },
+  author: personRef(),
   inLanguage: "en-US",
 };
 
@@ -666,27 +757,12 @@ export const profilePageJsonLd = {
   url: HOME_URL,
   name: SEO_TITLE_DEFAULT,
   description: SEO_DESCRIPTION,
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: HOME_URL,
-      },
-    ],
-  },
-  mainEntity: {
-    "@type": "Person",
-    "@id": `${HOME_URL}#person`,
-    name: siteConfig.fullName,
-  },
-  about: {
-    "@type": "Person",
-    "@id": `${HOME_URL}#person`,
-    name: siteConfig.fullName,
-  },
+  breadcrumb: breadcrumbListFields([{ name: "Home", url: HOME_URL }], {
+    id: `${HOME_URL}#breadcrumb`,
+    name: "Home breadcrumb",
+  }),
+  mainEntity: personRef(),
+  about: personRef(),
   dateModified: LAST_UPDATED_ISO,
 };
 
@@ -702,13 +778,9 @@ export const faqJsonLd = {
   name: "Full Stack Developer FAQ",
   url: `${HOME_URL}#faq`,
   inLanguage: "en-US",
-  isPartOf: { "@id": `${HOME_URL}#website` },
+  isPartOf: websiteRef(),
   mainEntity: siteConfig.faqItems.map((item, index) => {
-    const slug = item.question
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "")
-      .slice(0, 64);
+    const slug = schemaFragment(item.question);
     const questionId = `${HOME_URL}#faq-q-${index + 1}-${slug}`;
     return {
       "@type": "Question",
