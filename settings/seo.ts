@@ -432,7 +432,9 @@ export const contactPageJsonLd = {
     ],
   },
   mainEntity: {
+    "@type": "Person",
     "@id": `${HOME_URL}#person`,
+    name: siteConfig.fullName,
   },
   about: {
     "@type": "Person",
@@ -644,7 +646,9 @@ export const webSiteJsonLd = {
   url: HOME_URL,
   description: SEO_DESCRIPTION,
   author: {
+    "@type": "Person",
     "@id": `${HOME_URL}#person`,
+    name: siteConfig.fullName,
   },
   inLanguage: "en-US",
 };
@@ -671,10 +675,14 @@ export const profilePageJsonLd = {
     ],
   },
   mainEntity: {
+    "@type": "Person",
     "@id": `${HOME_URL}#person`,
+    name: siteConfig.fullName,
   },
   about: {
+    "@type": "Person",
     "@id": `${HOME_URL}#person`,
+    name: siteConfig.fullName,
   },
   dateModified: LAST_UPDATED,
 };
@@ -682,19 +690,36 @@ export const profilePageJsonLd = {
 /**
  * FAQ structured data — generated from siteConfig.faqItems.
  * Only injected when showFAQ is true (markup must match visible content).
+ * Each Question/Answer gets an explicit name so validators don’t show “Unnamed item”.
  */
 export const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "@id": `${HOME_URL}#faq`,
-  mainEntity: siteConfig.faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
+  name: "Full Stack Developer FAQ",
+  url: `${HOME_URL}#faq`,
+  inLanguage: "en-US",
+  isPartOf: { "@id": `${HOME_URL}#website` },
+  mainEntity: siteConfig.faqItems.map((item, index) => {
+    const slug = item.question
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 64);
+    const questionId = `${HOME_URL}#faq-q-${index + 1}-${slug}`;
+    return {
+      "@type": "Question",
+      "@id": questionId,
+      name: item.question,
+      url: questionId,
+      acceptedAnswer: {
+        "@type": "Answer",
+        "@id": `${questionId}-answer`,
+        name: item.question,
+        text: item.answer,
+      },
+    };
+  }),
 };
 
 /**
