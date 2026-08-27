@@ -36,6 +36,12 @@ export const PRIMARY_NAV: NavItem[] = [
     isRoute: true,
   },
   {
+    id: "services",
+    label: "Services",
+    href: "/services/",
+    isRoute: true,
+  },
+  {
     id: innerPages.contact.navId,
     label: innerPages.contact.label,
     href: `${innerPages.contact.path}/`,
@@ -77,5 +83,6 @@ export const PATH_TO_NAV_ID: Record<string, string> = {
   [`${innerPages.about.path}/`]: innerPages.about.navId,
   [`${innerPages.skills.path}/`]: innerPages.skills.navId,
   [`${innerPages.work.path}/`]: innerPages.work.navId,
+  "/services/": "services",
   [`${innerPages.contact.path}/`]: innerPages.contact.navId,
 };
