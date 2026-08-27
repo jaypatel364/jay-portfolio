@@ -3,12 +3,11 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ExternalLink, Code2, Lock, Hammer, ChevronDown } from "lucide-react";
+import { ExternalLink, Code2, Lock, Hammer, ChevronDown, Info } from "lucide-react";
 import { SectionHeading, SectionPageCta } from "@/components/shared";
 import { innerPages } from "@/settings/pages";
 import { cn } from "@/lib/utils";
 import { PROJECTS, HOME_PROJECT_COUNT, projectHref } from "@/settings/projects";
-import { features } from "@/settings/features";
 import { ProjectVisual } from "./ProjectVisual";
 
 function ExpandableDesc({ text }: { text: string }) {
@@ -182,14 +181,15 @@ export function ProjectsSection() {
                         href={projectHref(project)}
                         className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
                       >
-                        {features.showCaseStudies && project.caseStudy ? "Case study" : "Details"}
+                        <Info className="h-4 w-4" aria-hidden />
+                        Project info
                       </Link>
-                      {project.wip && (
+                      {/* {project.wip && (
                         <span className="inline-flex items-center gap-1 text-xs text-primary/70">
                           <Hammer className="h-3 w-3" />
                           Building
                         </span>
-                      )}
+                      )} */}
                     </div>
                   )}
 

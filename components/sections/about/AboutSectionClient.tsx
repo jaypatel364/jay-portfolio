@@ -73,9 +73,12 @@ export function AboutSectionClient({
           >
             <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl sm:leading-relaxed">
               I&apos;m a Full Stack Developer with {expLabel} years of experience building modern
-              web applications and scalable software solutions. I specialize in React, Next.js,
-              Node.js, TypeScript and the MERN stack, with experience across frontend development,
-              backend systems, APIs and real-time applications.
+              web applications and scalable software solutions. I specialize in{" "}
+              <strong className="font-semibold text-foreground">
+                React, Next.js, Node.js, TypeScript and the MERN stack
+              </strong>
+              , with experience across frontend development, backend systems, APIs and{" "}
+              <strong className="font-semibold text-foreground">real-time applications</strong>.
             </p>
 
             {/* Meta strip — solid, not pill soup */}
