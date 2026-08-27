@@ -13,9 +13,6 @@ export const features = {
   // true = allow Google/Bing. Keep Search Console verified on jaypateldev.com.
   allowIndexing: true,
 
-  // ── Extra routes ──────────────────────────────────────────────────────────
-  showCaseStudies: false,
-
   // ── Game Zone ─────────────────────────────────────────────────────────────
   showGameZone: true,
   showBrainGame: true,

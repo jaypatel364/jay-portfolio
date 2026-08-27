@@ -610,10 +610,10 @@ export const content = {
       idle: "Pick a technology on the left to see where it shipped.",
     },
     comingSoon: {
-      label: "Project page",
+      label: "Project info",
       badge: "Coming soon",
-      headline: "Detailed case study coming soon",
-      body: "I am preparing a detailed write-up covering the problem, technical decisions, implementation, and results. Until then, you can view the available demo or project summary.",
+      headline: "Full project write-up coming soon",
+      body: "I am preparing a developer-focused breakdown — stack choices, architecture, and what shipped. Until then, you can view the available demo or project summary.",
       back: "Back to all work",
       statusSteps: ["Planning", "Writing", "Publishing"],
       activeStep: 1,

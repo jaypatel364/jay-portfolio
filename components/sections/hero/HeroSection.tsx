@@ -27,8 +27,12 @@ export function HeroSection() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-muted-foreground lg:mx-0">
-            I build custom web applications with JavaScript, React, Next.js and Node.js, focusing on
-            scalable architecture, reliable backend systems and great user experiences.
+            I build custom web applications with{" "}
+            <strong className="font-semibold text-foreground">
+              JavaScript, React, Next.js and Node.js
+            </strong>
+            , focusing on scalable architecture, reliable backend systems and great user
+            experiences.
           </p>
         </header>
         <HeroInteractive withTerminal={withTerminal} />

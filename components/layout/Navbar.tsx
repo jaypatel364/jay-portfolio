@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Search, Palette, Check } from "lucide-react";
@@ -267,20 +268,31 @@ export function Navbar() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <nav className="mx-auto flex w-full min-w-0 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6">
-        <button
-          onClick={() => goTo(NAV_ITEMS[0])}
+      <nav
+        className="mx-auto flex w-full min-w-0 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6"
+        aria-label="Primary"
+      >
+        <Link
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            goTo(NAV_ITEMS[0]);
+          }}
           aria-label={`${siteConfig.fullName} — home`}
           className="min-w-0 shrink font-heading text-xl font-bold tracking-tight"
         >
           <Brand />
-        </button>
+        </Link>
 
         <div className="hidden items-center gap-1 lg:flex">
           {NAV_ITEMS.map((item) => (
-            <button
+            <Link
               key={item.id}
-              onClick={() => goTo(item)}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                goTo(item);
+              }}
               className={cn(
                 "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 active === item.id ? "text-primary" : "text-muted-foreground hover:text-foreground",
@@ -294,7 +306,7 @@ export function Navbar() {
                 />
               )}
               <span className="relative z-10">{item.label}</span>
-            </button>
+            </Link>
           ))}
         </div>
 
@@ -404,9 +416,13 @@ export function Navbar() {
           >
             <div className="flex flex-col gap-1 p-4">
               {NAV_ITEMS.map((item) => (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => goTo(item)}
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    goTo(item);
+                  }}
                   className={cn(
                     "relative rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors",
                     active === item.id
@@ -415,7 +431,7 @@ export function Navbar() {
                   )}
                 >
                   <span className="relative z-10">{item.label}</span>
-                </button>
+                </Link>
               ))}
 
               {/* Divider */}

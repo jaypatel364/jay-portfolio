@@ -158,7 +158,8 @@ export function FAQSection() {
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 If you&apos;re unsure whether I&apos;m the right fit for your project, feel free to
-                reach out. I&apos;ll get back to you within 24 hours.
+                reach out. I&apos;ll get back to you within{" "}
+                <strong className="font-semibold text-foreground">24 hours</strong>.
               </p>
             </div>
             <a

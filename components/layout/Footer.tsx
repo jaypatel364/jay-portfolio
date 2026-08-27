@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Mail, Zap } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
@@ -49,15 +50,19 @@ export function Footer() {
           {/* Quick Links */}
           <div className="space-y-3">
             <p className="text-sm font-semibold text-foreground">Quick Links</p>
-            <nav className="flex flex-col gap-2">
+            <nav className="flex flex-col gap-2" aria-label="Footer quick links">
               {FOOTER_NAV.map((link) => (
-                <button
+                <Link
                   key={link.id}
-                  onClick={() => navigateToNavItem(link, { pathname, router })}
+                  href={link.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateToNavItem(link, { pathname, router });
+                  }}
                   className="w-fit text-sm text-muted-foreground transition-colors hover:text-primary"
                 >
                   {link.label}
-                </button>
+                </Link>
               ))}
             </nav>
           </div>

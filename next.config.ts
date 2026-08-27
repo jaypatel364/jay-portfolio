@@ -91,9 +91,7 @@ const nextConfig: NextConfig = {
     // www is also redirected in Vercel Domains; this is a backup.
     const hosts = ["www.jaypateldev.com", "jay-patel-dev.vercel.app"];
     return [
-      { source: "/resume", destination: "/", permanent: true },
-      { source: "/engineering", destination: "/", permanent: true },
-      // Legacy project / case-study URLs → canonical /work/…
+      // Legacy project URLs → canonical /work/…
       { source: "/projects", destination: "/work/", permanent: true },
       { source: "/projects/", destination: "/work/", permanent: true },
       { source: "/projects/:slug", destination: "/work/:slug/", permanent: true },
