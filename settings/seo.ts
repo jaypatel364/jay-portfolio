@@ -53,7 +53,7 @@ export function pageUrl(path: string): string {
 }
 
 /** Real content date — do not use `new Date()` in JSON-LD or sitemap. */
-export const LAST_UPDATED = "2026-08-25";
+export const LAST_UPDATED = "2026-08-28";
 
 /** ISO-8601 DateTime for schema.org `dateModified` (date-only fails validators). */
 export const LAST_UPDATED_ISO = `${LAST_UPDATED}T00:00:00+05:30`;
