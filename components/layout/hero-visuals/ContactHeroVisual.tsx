@@ -30,15 +30,14 @@ function istHour(date: Date) {
 
 /** Contact hero — live IST clock plus the fastest ways to reach out. */
 export function ContactHeroVisual() {
-  const [now, setNow] = useState<Date | null>(null);
+  const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
-    setNow(new Date());
     const id = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(id);
   }, []);
 
-  const hour = now ? istHour(now) : 12;
+  const hour = istHour(now);
   const typicallyOnline = hour >= 9 && hour < 22;
 
   return (
@@ -50,7 +49,7 @@ export function ContactHeroVisual() {
               India Standard Time
             </p>
             <p className="font-heading mt-1 text-3xl font-bold tabular-nums tracking-tight">
-              {now ? formatIst(now) : "—:—:—"}
+              {formatIst(now)}
             </p>
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary">
@@ -58,11 +57,7 @@ export function ContactHeroVisual() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
             </span>
-            {now
-              ? typicallyOnline
-                ? "Usually online"
-                : "Replies next morning"
-              : "Replies within 24h"}
+            {typicallyOnline ? "Usually online" : "Replies next morning"}
           </span>
         </div>
 

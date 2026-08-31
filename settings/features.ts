@@ -5,7 +5,8 @@
 
 export const features = {
   // ── Sections / chrome ─────────────────────────────────────────────────────
-  showTerminalHero: true,
+  showTerminal: true, // interactive terminal — lives in the About section (desktop only)
+  showHeroAvailability: true, // "Available for freelance work" pill above the hero headline
   showLoadingScreen: false, // off for production: overlay does not help SEO and delays LCP
   showFAQ: true, // keep visible — FAQ JSON-LD is only injected when this is true
 

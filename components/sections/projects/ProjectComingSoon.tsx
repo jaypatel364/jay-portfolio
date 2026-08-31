@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Code2, ExternalLink, Lock, Sparkles } from "lucide-react";
+import { SiteButton } from "@/components/shared";
 import { ProjectVisual } from "./ProjectVisual";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
@@ -153,35 +154,22 @@ export function ProjectComingSoon({ project }: { project: Project }) {
               ) : (
                 <>
                   {project.codeUrl && (
-                    <a
-                      href={project.codeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-sm font-semibold text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
-                    >
+                    <SiteButton href={project.codeUrl} external variant="secondary" size="sm">
                       <Code2 className="h-4 w-4" />
                       Code
-                    </a>
+                    </SiteButton>
                   )}
                   {project.demoUrl && (
-                    <a
-                      href={project.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
-                    >
+                    <SiteButton href={project.demoUrl} external variant="primary" size="sm">
                       <ExternalLink className="h-4 w-4" />
                       Live demo
-                    </a>
+                    </SiteButton>
                   )}
                 </>
               )}
-              <Link
-                href="/work/"
-                className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-sm font-semibold transition-all hover:border-primary/30 hover:text-primary"
-              >
+              <SiteButton href="/work/" variant="secondary" size="sm">
                 {copy.back}
-              </Link>
+              </SiteButton>
             </div>
           </motion.div>
 

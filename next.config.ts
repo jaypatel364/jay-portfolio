@@ -73,18 +73,7 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
   async headers() {
-    return [
-      { source: "/(.*)", headers: securityHeaders },
-      // Project slug pages are always noindex (coming-soon placeholders)
-      {
-        source: "/work/:slug",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }],
-      },
-      {
-        source: "/work/:slug/",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }],
-      },
-    ];
+    return [{ source: "/(.*)", headers: securityHeaders }];
   },
   async redirects() {
     // Preview deployments (unique *.vercel.app URLs) are not redirected.

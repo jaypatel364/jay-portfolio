@@ -48,7 +48,7 @@ function StatCell({ item, index, isLast }: { item: StatItem; index: number; isLa
           >
             <Icon className="h-4 w-4" strokeWidth={2.1} aria-hidden />
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/80">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             {item.hint}
           </span>
         </div>

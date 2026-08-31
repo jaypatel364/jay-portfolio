@@ -10,8 +10,32 @@ import type { BuildingItem, FAQItem, LearningItem } from "./types";
 const expLabel = getExperienceLabel(identity.careerStartDate);
 
 export const content = {
-  /** Words that cycle in the hero headline. Keep short (1–3 words). */
-  headlineWords: ["scalable apps", "robust APIs", "clean UIs", "real products", "great UX"],
+  /**
+   * Home hero banner — the SEO-critical block. Every string here renders in the
+   * initial HTML. `lead` is segmented so keyword phrases can be wrapped in
+   * <strong> without putting markup in this file.
+   */
+  hero: {
+    availability: "Available for freelance work",
+    availabilityCta: "Book a call",
+    headline: "I'm a Full Stack Developer Specializing in the MERN Stack",
+    lead: [
+      { text: "I build custom web applications with " },
+      { text: "JavaScript, React, Next.js and Node.js", strong: true },
+      {
+        text:
+          ", focusing on scalable architecture, reliable backend systems and great user " +
+          "experiences. I work across the frontend, backend and database to turn product ideas into software that is ready for real users.",
+      },
+    ] as { text: string; strong?: boolean }[],
+    /** Proof strip under the CTAs. Keep to 4 short pairs. */
+    highlights: [
+      { value: `${expLabel} years`, label: "Production experience" },
+      { value: `${identity.projectCount}+ projects`, label: "Delivered end to end" },
+      { value: "MERN · TypeScript", label: "Core stack" },
+      { value: `${identity.location} · Remote`, label: "Available worldwide" },
+    ] as { value: string; label: string }[],
+  },
 
   /** How many skills to show per category in the Skills "All" grid. */
   skillPreviewCounts: {
@@ -616,7 +640,11 @@ export const content = {
       body: "I am preparing a developer-focused breakdown — stack choices, architecture, and what shipped. Until then, you can view the available demo or project summary.",
       back: "Back to all work",
       statusSteps: ["Planning", "Writing", "Publishing"],
-      activeStep: 1,
+      activeStep: 2,
+    },
+    detail: {
+      moreProjects: "Related Projects",
+      ndaLabel: "NDA protected",
     },
   },
 };

@@ -381,6 +381,31 @@ html[data-page-ready="true"] .site-shell {
   }
 }
 
+/* ── Home hero banner backdrop ─────────────────────────────────────────────
+   Layered by HeroBackground.tsx. All colours derive from theme tokens, so
+   light and dark modes stay in sync. */
+
+/* The web thins out behind the copy so the headline stays crisp. */
+.hero-web {
+  mask-image: radial-gradient(
+    ellipse 56% 48% at 50% 42%,
+    transparent 18%,
+    rgb(0 0 0 / 0.4) 58%,
+    black 92%
+  );
+}
+
+/* Film grain — the layer that stops flat fills from looking synthetic. */
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+.dark .hero-grain {
+  opacity: 0.28;
+  mix-blend-mode: overlay;
+}
+
 /* Animated grid */
 .bg-grid {
   background-image:

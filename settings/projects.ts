@@ -1,7 +1,10 @@
 /**
  * Project cards + detail-page data.
  * NDA work has no public `/work/<slug>/` page.
+ * Published write-ups: see `settings/project-details` (`PUBLISHED_PROJECT_SLUGS`).
  */
+
+import { getProjectDetail, hasPublishedDetail } from "@/settings/project-details";
 
 export type ProjectCategory = "fullstack" | "frontend" | "backend";
 
@@ -19,6 +22,11 @@ export interface Project {
   wip?: true;
   codeUrl?: string;
   demoUrl?: string;
+  /**
+   * Cover screenshot — defaults to `/images/projects/<slug>.png` (SEO filename).
+   * Override only if the file uses a different path.
+   */
+  image?: string;
   /** Bullet highlights for the work-page zigzag layout. */
   highlights?: string[];
 }
@@ -61,6 +69,7 @@ export const PROJECTS: Project[] = [
     color: "from-violet-500/20 to-fuchsia-500/20",
     iconColor: "oklch(0.72 0.22 305)",
     demoUrl: "https://nestjs-graphql-social.onrender.com/graphql",
+    codeUrl: "https://github.com/jaypatel364/nestjs-graphql-social-backend",
     highlights: [
       "Modular NestJS monolith with GraphQL + Prisma",
       "Posts, likes, follows, notifications, and JWT auth",
@@ -69,7 +78,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "minilist-headless-cms",
-    title: "MiniList — Headless CMS",
+    title: "MiniList - Headless CMS",
     tagline: "Headless Content Management System",
     desc: "A full-stack headless CMS featuring a modern Next.js admin dashboard and a scalable NestJS backend. It provides rich text editing, blog and author management, API key generation, analytics, Google OAuth authentication, SEO tools, and a REST API for seamless content delivery. Built with Prisma and PostgreSQL for a clean, scalable, and self-hostable content management experience.",
     tags: ["Next.js", "NestJS", "TypeScript", "PostgreSQL", "Prisma", "Tailwind CSS", "GraphQL"],
@@ -77,6 +86,7 @@ export const PROJECTS: Project[] = [
     color: "from-emerald-500/20 to-teal-500/20",
     iconColor: "oklch(0.74 0.16 165)",
     demoUrl: "https://minilist-cms.vercel.app/",
+    codeUrl: "https://github.com/jaypatel364/minilist-cms-frontend",
     highlights: [
       "Next.js admin + NestJS API as a self-hostable headless CMS",
       "Rich text, authors, SEO fields, API keys, and Google OAuth",
@@ -93,9 +103,10 @@ export const PROJECTS: Project[] = [
     color: "from-sky-500/20 to-cyan-500/20",
     iconColor: "oklch(0.72 0.17 240)",
     demoUrl: "https://chat-app-web-eta.vercel.app/",
+    codeUrl: "https://github.com/jaypatel364/chat-app",
     highlights: [
       "Instant rooms, typing indicators, and seen receipts over WebSockets",
-      "Turborepo split — Next.js client + Node.js socket server",
+      "Turborepo split with a Next.js client and Node.js socket server",
       "Shared TypeScript types so message shapes cannot drift",
     ],
   },
@@ -133,7 +144,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "verify-360-kyc-platform",
-    title: "Verify 360 — KYC & Identity Verification Platform",
+    title: "Verify 360 - KYC & Identity Verification Platform",
     tagline: "Digital Identity Verification & KYC Platform",
     desc: "Engineered an enterprise KYC verification platform supporting secure document verification, 3D liveness detection, real-time geolocation tracking, and third-party identity verification APIs. Implemented an intelligent risk-scoring system to detect suspicious users and streamline compliance workflows for 100+ client verifications.",
     tags: [
@@ -168,6 +179,16 @@ export function publicProjects(): Project[] {
   return PROJECTS.filter((p) => !p.nda);
 }
 
+/** Projects with a published full write-up (indexed, full detail UI). */
+export function publishedProjects(): Project[] {
+  return PROJECTS.filter((p) => hasPublishedDetail(p.slug));
+}
+
+/** Whether this project has a published detail page (vs coming-soon placeholder). */
+export function isProjectPublished(slug: string): boolean {
+  return hasPublishedDetail(slug);
+}
+
 export function getProjectBySlug(slug: string): Project | undefined {
   return PROJECTS.find((p) => p.slug === slug);
 }
@@ -177,13 +198,42 @@ export function projectPath(slug: string): string {
   return `/work/${slug}/`;
 }
 
+/** Cover image — `/images/projects/<slug>.png` (filename matches project slug / SEO). */
+export function projectImageSrc(project: Pick<Project, "slug" | "image">): string {
+  return project.image ?? `/images/projects/${project.slug}.png`;
+}
+
+/** Shared dimensions for project cover PNGs (all exports are 1672×941). */
+export const PROJECT_COVER_IMAGE = {
+  width: 1672,
+  height: 941,
+  type: "image/png" as const,
+};
+
+/** Alt text — descriptive text from the write-up, falling back to the title. */
+export function projectImageAlt(project: Pick<Project, "slug" | "title">): string {
+  return getProjectDetail(project.slug)?.imageAlt ?? project.title;
+}
+
+/** HTML title attribute + image SEO name — matches project title. */
+export function projectImageTitle(project: Pick<Project, "title">): string {
+  return project.title;
+}
+
 /**
  * Where UI should send users for a project.
- * Public → `/work/<slug>/`. NDA → catalog anchor on `/work/` (no detail page).
+ * Published (including NDA write-ups) → `/work/<slug>/`.
+ * Unpublished NDA work has no detail page → catalog anchor on `/work/`.
  */
 export function projectHref(project: Pick<Project, "slug" | "nda">): string {
+  if (hasPublishedDetail(project.slug)) return projectPath(project.slug);
   if (project.nda) return `/work/#project-${project.slug}`;
   return projectPath(project.slug);
+}
+
+/** Projects that have a `/work/<slug>/` route (published, or public coming-soon). */
+export function routableProjects(): Project[] {
+  return PROJECTS.filter((p) => !p.nda || hasPublishedDetail(p.slug));
 }
 
 /** Unique tech tags across all projects — for work-page stack links. */

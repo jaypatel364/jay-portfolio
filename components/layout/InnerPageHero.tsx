@@ -1,7 +1,4 @@
-"use client";
-
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export interface InnerPageHeroProps {
@@ -16,6 +13,7 @@ export interface InnerPageHeroProps {
   visual?: ReactNode;
 }
 
+/** Server-rendered inner-page hero — SEO copy and LCP text paint in the initial HTML. */
 export function InnerPageHero({
   label,
   title,
@@ -42,27 +40,13 @@ export function InnerPageHero({
       />
 
       <div className="relative mx-auto w-full min-w-0 max-w-6xl">
-        {/* <Link
-          href={backHref}
-          className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4 shrink-0" aria-hidden />
-          {backLabel}
-        </Link> */}
-
         <div
           className={cn(
-            // "mt-8",
             visual &&
               "grid min-w-0 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(300px,440px)] lg:gap-14",
           )}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className={cn("min-w-0", !visual && "max-w-3xl")}
-          >
+          <div className={cn("min-w-0", !visual && "max-w-3xl")}>
             <span className="text-sm font-semibold uppercase tracking-widest text-primary">
               {label}
             </span>
@@ -85,17 +69,10 @@ export function InnerPageHero({
                 ))}
               </div>
             )}
-          </motion.div>
+          </div>
 
           {visual ? (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="mx-auto w-full min-w-0 max-w-md lg:mx-0 lg:max-w-none"
-            >
-              {visual}
-            </motion.div>
+            <div className="mx-auto w-full min-w-0 max-w-md lg:mx-0 lg:max-w-none">{visual}</div>
           ) : null}
         </div>
       </div>
