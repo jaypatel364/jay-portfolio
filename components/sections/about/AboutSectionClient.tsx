@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code2, Server, Database, Zap, Hammer, ArrowUpRight, BookOpen, MapPin } from "lucide-react";
+import { Hammer, ArrowUpRight, BookOpen, MapPin } from "lucide-react";
 import { SectionHeading, SectionPageCta } from "@/components/shared";
+import { TerminalPanel } from "@/components/features/terminal";
 import { innerPages } from "@/settings/pages";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel, cn } from "@/lib/utils";
@@ -10,15 +11,6 @@ import { TechMarquee } from "./TechMarquee";
 import { GitHubGraph } from "./GitHubGraph";
 import type { ContributionDay } from "@/lib/github-contributions";
 import type { BuildingItem } from "@/settings/types";
-
-// ── Focus areas ───────────────────────────────────────────────────────────────
-
-const FOCUS_AREAS = [
-  { icon: Code2, title: "Frontend", desc: "React · Next.js · TypeScript" },
-  { icon: Server, title: "Backend", desc: "Node.js · Express · GraphQL" },
-  { icon: Database, title: "Database", desc: "MongoDB · PostgreSQL · Redis" },
-  { icon: Zap, title: "DevOps", desc: "Docker · AWS · CI/CD" },
-];
 
 // ── Currently-building sub-component ─────────────────────────────────────────
 
@@ -55,23 +47,29 @@ export function AboutSectionClient({
   const building = siteConfig.currentlyBuilding;
   const learning = siteConfig.currentlyLearning;
   const aboutHref = `${innerPages.about.path}/`;
+  const withTerminal = siteConfig.showTerminal;
 
   return (
     <section id="about" className="px-6 py-14 md:py-28">
       <div className="mx-auto max-w-6xl">
         <SectionHeading label="About" title="About Jay Patel" />
 
-        {/* ── Story + focus — one aligned composition ── */}
-        <div className="mt-14 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-12 lg:items-start">
+        {/* ── Story + terminal — one aligned composition ── */}
+        <div
+          className={cn(
+            "mt-14 grid gap-10 lg:mt-16 lg:items-start lg:gap-12",
+            withTerminal && "lg:grid-cols-[minmax(0,9fr)_minmax(0,11fr)]",
+          )}
+        >
           {/* Narrative */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col lg:col-span-7"
+            className="flex flex-col"
           >
-            <p className="text-lg leading-relaxed text-muted-foreground sm:text-xl sm:leading-relaxed">
+            <p className="text-base leading-relaxed text-muted-foreground sm:text-lg sm:leading-relaxed">
               I&apos;m a Full Stack Developer with {expLabel} years of experience building modern
               web applications and scalable software solutions. I specialize in{" "}
               <strong className="font-semibold text-foreground">
@@ -84,8 +82,8 @@ export function AboutSectionClient({
             {/* Meta strip — solid, not pill soup */}
             <div
               className={cn(
-                "mt-8 flex flex-wrap items-center gap-x-5 gap-y-2",
-                "border-y border-border/80 py-4 text-sm text-muted-foreground",
+                "mt-7 flex flex-wrap items-center gap-x-5 gap-y-2",
+                "border-y border-border/80 py-3.5 text-sm text-muted-foreground",
               )}
             >
               <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
@@ -154,56 +152,24 @@ export function AboutSectionClient({
 
             {/* CTA sits with the story — not orphaned under the grid */}
             {showPageCta && (
-              <div className="mt-0 pt-8">
+              <div className="mt-0 pt-7">
                 <SectionPageCta href={aboutHref}>{innerPages.about.homeCta}</SectionPageCta>
               </div>
             )}
           </motion.div>
 
-          {/* Focus panel — one unit, aligned edges */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5"
-          >
-            <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/50">
-              <div className="border-b border-border/80 px-5 py-4 sm:px-6">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-                  Where I spend my time
-                </p>
-                <p className="mt-1 font-heading text-lg font-bold tracking-tight">Focus areas</p>
-              </div>
-
-              <ul className="flex flex-1 flex-col divide-y divide-border/70">
-                {FOCUS_AREAS.map(({ icon: Icon, title, desc }, i) => (
-                  <motion.li
-                    key={title}
-                    initial={{ opacity: 0, x: 12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: 0.1 + i * 0.05 }}
-                    className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-primary/[0.03] sm:px-6"
-                  >
-                    <span
-                      className={cn(
-                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-                        "bg-primary/10 text-primary transition-colors",
-                        "group-hover:bg-primary group-hover:text-primary-foreground",
-                      )}
-                    >
-                      <Icon className="h-4 w-4" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="font-heading text-sm font-bold">{title}</p>
-                      <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{desc}</p>
-                    </div>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
+          {/* Interactive terminal — desktop only; the hidden input misbehaves on mobile keyboards */}
+          {withTerminal && (
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="hidden lg:block"
+            >
+              <TerminalPanel />
+            </motion.div>
+          )}
         </div>
 
         <TechMarquee />

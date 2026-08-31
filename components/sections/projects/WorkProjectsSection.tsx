@@ -280,7 +280,10 @@ function ZigzagRow({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, delay: Math.min(index * 0.04, 0.16), ease: [0.22, 1, 0.36, 1] }}
-      className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14"
+      className={cn(
+        "grid items-center gap-8 lg:gap-14",
+        reverse ? "lg:grid-cols-[1.2fr_1fr]" : "lg:grid-cols-[1fr_1.2fr]",
+      )}
       id={`project-${project.slug}`}
     >
       <div className={cn(reverse && "lg:order-2")}>{copy}</div>

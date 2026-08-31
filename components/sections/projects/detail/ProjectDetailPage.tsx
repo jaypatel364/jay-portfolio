@@ -66,9 +66,9 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
       <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-28 sm:px-6">
         <ProjectBreadcrumb project={project} />
 
-        {/* Hero */}
-        <header className="grid items-start gap-10 lg:grid-cols-[1fr_minmax(0,24rem)] lg:gap-14">
-          <div>
+        {/* Hero — copy first, full-width cover below for a larger showcase */}
+        <header className="space-y-10 sm:space-y-12">
+          <div className="max-w-3xl">
             <div className="flex flex-wrap items-center gap-2">
               <span className="text-sm font-semibold uppercase tracking-widest text-primary">
                 Project
@@ -87,7 +87,7 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
             <h1 className="font-heading mt-2 text-4xl font-bold tracking-tight text-balance sm:text-5xl">
               {project.title}
             </h1>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
               {detail.intro}
             </p>
 
@@ -120,9 +120,7 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
             </div>
           </div>
 
-          <div className="relative lg:pt-6">
-            <ProjectVisual project={project} size="feature" priority />
-          </div>
+          <ProjectVisual project={project} size="hero" priority />
         </header>
 
         {/* Case study */}

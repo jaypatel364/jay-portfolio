@@ -94,8 +94,10 @@ import { features } from "@/settings/features";
 components/sections/hero/
   index.ts              # public barrel — export the section
   HeroSection.tsx       # orchestrator (keep relatively thin)
-  TerminalBlock.tsx     # extracted UI
-  terminal-commands.tsx # command data / helpers
+  HeroBackground.tsx    # extracted UI — backdrop layers
+  HeroWeb.tsx           # client island — interactive web
+  HeroActions.tsx       # client island — CTAs
+  HeroSocials.tsx       # extracted UI
   SocialIcons.tsx
 ```
 

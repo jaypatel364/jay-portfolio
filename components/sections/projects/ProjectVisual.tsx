@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
+  PROJECT_COVER_IMAGE,
   projectImageAlt,
   projectImageSrc,
   projectImageTitle,
@@ -14,8 +15,8 @@ import {
 interface ProjectVisualProps {
   project: Project;
   className?: string;
-  /** Larger cover for the work-page zigzag and project detail hero. */
-  size?: "card" | "feature";
+  /** card = homepage grid; feature = work zigzag; hero = full-width detail cover. */
+  size?: "card" | "feature" | "hero";
   /** LCP hint for hero / detail cover images. */
   priority?: boolean;
 }
@@ -77,7 +78,8 @@ export function ProjectVisual({
   size = "card",
   priority = false,
 }: ProjectVisualProps) {
-  const feature = size === "feature";
+  const hero = size === "hero";
+  const feature = size === "feature" || hero;
   const [imageError, setImageError] = useState(false);
   const imageSrc = projectImageSrc(project);
   const imageAlt = projectImageAlt(project);
@@ -90,26 +92,41 @@ export function ProjectVisual({
         "relative m-0 overflow-hidden",
         !showImage && cn("bg-gradient-to-br", project.color),
         project.nda && !showImage && "opacity-90",
-        "aspect-video w-full",
+        hero && showImage ? "w-full" : "aspect-video w-full",
         feature && "rounded-2xl shadow-premium",
+        hero && "border border-border/60 bg-muted/20",
         className,
       )}
     >
       {showImage ? (
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          title={imageTitle}
-          fill
-          className="object-cover object-center"
-          sizes={
-            feature
-              ? "(max-width: 1024px) 100vw, 560px"
-              : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
-          }
-          priority={priority || feature}
-          onError={() => setImageError(true)}
-        />
+        hero ? (
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            title={imageTitle}
+            width={PROJECT_COVER_IMAGE.width}
+            height={PROJECT_COVER_IMAGE.height}
+            className="h-auto w-full"
+            sizes="(max-width: 1024px) 100vw, 1152px"
+            priority={priority || feature}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            title={imageTitle}
+            fill
+            className="object-cover object-center"
+            sizes={
+              feature
+                ? "(max-width: 1024px) 100vw, 720px"
+                : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+            }
+            priority={priority || feature}
+            onError={() => setImageError(true)}
+          />
+        )
       ) : (
         <GradientFallback project={project} feature={feature} />
       )}
