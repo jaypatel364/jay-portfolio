@@ -32,7 +32,15 @@
 
 import type { Metadata, Viewport } from "next";
 import { siteConfig } from "@/settings";
-import { PROJECTS, projectHref, type Project } from "@/settings/projects";
+import {
+  PROJECTS,
+  PROJECT_COVER_IMAGE,
+  projectHref,
+  projectImageAlt,
+  projectImageSrc,
+  projectImageTitle,
+  type Project,
+} from "@/settings/projects";
 // ─── Base URL ──────────────────────────────────────────────────────────────────
 // Canonical / OG / sitemap must be the public domain — never VERCEL_URL.
 // VERCEL_URL is a unique deploy host (e.g. jay-portfolio-xxxx.vercel.app).
@@ -458,6 +466,7 @@ export function workPageJsonLd() {
       numberOfItems: PROJECTS.length,
       itemListElement: PROJECTS.map((project, i) => {
         const url = `${BASE_URL}${projectHref(project)}`;
+        const img = projectImageMetadata(project);
         return {
           "@type": "ListItem",
           "@id": `${listId}/item-${i + 1}`,
@@ -468,6 +477,15 @@ export function workPageJsonLd() {
             "@id": url,
             name: project.title,
             url,
+            image: {
+              "@type": "ImageObject",
+              url: img.url,
+              name: img.title,
+              caption: img.title,
+              width: img.width,
+              height: img.height,
+              encodingFormat: img.type,
+            },
           },
         };
       }),
@@ -475,8 +493,58 @@ export function workPageJsonLd() {
   };
 }
 
-/** Public `/work/<slug>/` pages (currently noindex). */
+/** Absolute URL for a project cover image. */
+export function projectImageAbsoluteUrl(project: Pick<Project, "slug" | "image">): string {
+  return `${BASE_URL}${projectImageSrc(project)}`;
+}
+
+/** Open Graph / Twitter / metadata fields for a project screenshot. */
+export function projectImageMetadata(
+  project: Pick<Project, "slug" | "title" | "image" | "tagline">,
+) {
+  return {
+    url: projectImageAbsoluteUrl(project),
+    width: PROJECT_COVER_IMAGE.width,
+    height: PROJECT_COVER_IMAGE.height,
+    alt: projectImageAlt(project),
+    title: projectImageTitle(project),
+    type: PROJECT_COVER_IMAGE.type,
+  };
+}
+
+/** ImageObject JSON-LD for project cover screenshots. */
+export function projectImageJsonLd(project: Project) {
+  const img = projectImageMetadata(project);
+  const workUrl = pageUrl(`work/${project.slug}`);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "@id": `${workUrl}#cover-image`,
+    url: img.url,
+    contentUrl: img.url,
+    name: img.title,
+    caption: img.title,
+    description: project.tagline,
+    width: img.width,
+    height: img.height,
+    encodingFormat: img.type,
+    representativeOfPage: true,
+    inLanguage: "en-US",
+    creator: personRef(),
+    isPartOf: {
+      "@type": "CreativeWork",
+      "@id": `${workUrl}#work`,
+      name: project.title,
+      url: workUrl,
+    },
+  };
+}
+
+/** Public `/work/<slug>/` pages — indexed only when published. */
 export function projectJsonLd(project: Project) {
+  const img = projectImageMetadata(project);
+
   return {
     "@context": "https://schema.org",
     "@type": project.codeUrl ? "SoftwareSourceCode" : "CreativeWork",
@@ -484,6 +552,17 @@ export function projectJsonLd(project: Project) {
     name: project.title,
     description: project.desc,
     url: pageUrl(`work/${project.slug}`),
+    image: {
+      "@type": "ImageObject",
+      "@id": `${pageUrl(`work/${project.slug}`)}#cover-image`,
+      url: img.url,
+      contentUrl: img.url,
+      name: img.title,
+      caption: img.title,
+      width: img.width,
+      height: img.height,
+      encodingFormat: img.type,
+    },
     inLanguage: "en-US",
     author: personRef(),
     creator: personRef(),
@@ -634,30 +713,65 @@ export function skillsCatalogJsonLd() {
   };
 }
 
-export function projectPageMetadata(project: {
-  slug: string;
-  title: string;
-  tagline: string;
-  desc: string;
-}): Metadata {
-  const title = `${project.title} — ${project.tagline} | Jay Patel`;
-  const description = project.desc.slice(0, 160);
+export function projectPageMetadata(
+  project: {
+    slug: string;
+    title: string;
+    tagline: string;
+    desc: string;
+  },
+  opts?: {
+    published?: boolean;
+    seoTitle?: string;
+    seoDescription?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    keywords?: string[];
+  },
+): Metadata {
+  const title = opts?.seoTitle ?? `${project.title} | ${project.tagline} | Jay Patel`;
+  const description = (opts?.seoDescription ?? project.desc).slice(0, 160);
+  const indexable = Boolean(opts?.published) && siteConfig.allowIndexing;
+  const cover = projectImageMetadata(project);
+  const socialTitle = opts?.ogTitle ?? opts?.seoTitle ?? `${project.title}: ${project.tagline}`;
+  const socialDescription = opts?.ogDescription ?? description;
+
   return {
     title: { absolute: title },
     description,
+    ...(opts?.keywords?.length ? { keywords: opts.keywords } : {}),
     alternates: { canonical: pageUrl(`work/${project.slug}`) },
-    robots: { index: false, follow: true },
+    robots: indexable
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large" as const,
+          },
+        }
+      : { index: false, follow: true },
     openGraph: {
+      type: "website",
       url: pageUrl(`work/${project.slug}`),
-      title: `${project.title} — ${project.tagline}`,
-      description,
-      images: [OG_IMAGE],
+      title: socialTitle,
+      description: socialDescription,
+      images: [
+        {
+          url: cover.url,
+          width: cover.width,
+          height: cover.height,
+          alt: cover.alt,
+          type: cover.type,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} — ${project.tagline}`,
-      description,
-      images: [TWITTER_IMAGE],
+      title: socialTitle,
+      description: socialDescription,
+      images: [{ url: cover.url, alt: cover.alt }],
       ...TWITTER_ACCOUNT,
     },
   };

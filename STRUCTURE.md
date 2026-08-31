@@ -54,7 +54,8 @@ settings/
   content.ts    → FAQ, headline words, marquee, badges
   pages.ts      → inner-route titles, heroes, CTAs
   chat.ts       → chatbot rates, system prompt, canned answers
-  projects.ts   → project catalog + detail-page data
+  projects.ts   → project catalog + card data
+  project-details/ → long-form write-ups + publish list
   types.ts      → shared TS types
   seo.ts        → metadata + JSON-LD
   index.ts      → merges into `siteConfig`

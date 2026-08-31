@@ -1,30 +1,28 @@
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
 import { Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Project } from "@/settings/projects";
+import {
+  projectImageAlt,
+  projectImageSrc,
+  projectImageTitle,
+  type Project,
+} from "@/settings/projects";
 
 interface ProjectVisualProps {
   project: Project;
   className?: string;
-  /** Larger cover for the work-page zigzag. */
+  /** Larger cover for the work-page zigzag and project detail hero. */
   size?: "card" | "feature";
+  /** LCP hint for hero / detail cover images. */
+  priority?: boolean;
 }
 
-/** Shared project cover — gradient panel until real screenshots land. */
-export function ProjectVisual({ project, className, size = "card" }: ProjectVisualProps) {
-  const feature = size === "feature";
-
+function GradientFallback({ project, feature }: { project: Project; feature: boolean }) {
   return (
-    <div
-      className={cn(
-        "relative overflow-hidden bg-gradient-to-br",
-        project.color,
-        project.nda && "opacity-90",
-        feature
-          ? "aspect-[16/11] w-full rounded-2xl border-2 border-primary/20 shadow-premium"
-          : "h-32",
-        className,
-      )}
-    >
+    <>
       <div
         className="absolute inset-0 opacity-[0.07]"
         style={{
@@ -68,15 +66,65 @@ export function ProjectVisual({ project, className, size = "card" }: ProjectVisu
           </span>
         )}
       </div>
+    </>
+  );
+}
+
+/** Full-bleed project cover with SEO-friendly alt, title, and semantic figure markup. */
+export function ProjectVisual({
+  project,
+  className,
+  size = "card",
+  priority = false,
+}: ProjectVisualProps) {
+  const feature = size === "feature";
+  const [imageError, setImageError] = useState(false);
+  const imageSrc = projectImageSrc(project);
+  const imageAlt = projectImageAlt(project);
+  const imageTitle = projectImageTitle(project);
+  const showImage = !imageError;
+
+  return (
+    <figure
+      className={cn(
+        "relative m-0 overflow-hidden",
+        !showImage && cn("bg-gradient-to-br", project.color),
+        project.nda && !showImage && "opacity-90",
+        "aspect-video w-full",
+        feature && "rounded-2xl shadow-premium",
+        className,
+      )}
+    >
+      {showImage ? (
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          title={imageTitle}
+          fill
+          className="object-cover object-center"
+          sizes={
+            feature
+              ? "(max-width: 1024px) 100vw, 560px"
+              : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+          }
+          priority={priority || feature}
+          onError={() => setImageError(true)}
+        />
+      ) : (
+        <GradientFallback project={project} feature={feature} />
+      )}
+
+      {/* Semantic caption — matches alt/title for crawlers and screen readers */}
+      <figcaption className="sr-only">{imageTitle}</figcaption>
 
       {project.nda && (
-        <span className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-border/80 bg-background/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
+        <span className="absolute right-3 top-3 z-10 inline-flex items-center gap-1 rounded-full border border-border/80 bg-background/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
           <Lock className="h-2.5 w-2.5" />
           NDA
         </span>
       )}
       {project.wip && !project.nda && (
-        <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary backdrop-blur-sm">
+        <span className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary backdrop-blur-sm">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
@@ -84,6 +132,6 @@ export function ProjectVisual({ project, className, size = "card" }: ProjectVisu
           In Progress
         </span>
       )}
-    </div>
+    </figure>
   );
 }

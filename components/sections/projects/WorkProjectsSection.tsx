@@ -15,7 +15,13 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
-import { PROJECTS, PROJECT_FILTERS, projectHref, type Project } from "@/settings/projects";
+import {
+  PROJECTS,
+  PROJECT_FILTERS,
+  isProjectPublished,
+  projectHref,
+  type Project,
+} from "@/settings/projects";
 import { ProjectVisual } from "./ProjectVisual";
 
 type Filter = (typeof PROJECT_FILTERS)[number];
@@ -187,6 +193,8 @@ function ZigzagRow({
   reverse: boolean;
   index: number;
 }) {
+  const hasDetailPage = !project.nda || isProjectPublished(project.slug);
+
   const copy = (
     <div className="flex min-w-0 flex-col justify-center">
       <div className="flex flex-wrap gap-1.5">
@@ -209,15 +217,15 @@ function ZigzagRow({
         {project.tagline}
       </p>
       <h3 className="font-heading mt-1.5 text-2xl font-bold tracking-tight sm:text-3xl">
-        {project.nda ? (
-          project.title
-        ) : (
+        {hasDetailPage ? (
           <Link
             href={projectHref(project)}
             className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             {project.title}
           </Link>
+        ) : (
+          project.title
         )}
       </h3>
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
@@ -237,10 +245,21 @@ function ZigzagRow({
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
         {project.nda ? (
-          <p className="flex select-none items-center gap-1.5 rounded-xl border border-border/80 bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
-            <Lock className="h-3.5 w-3.5 shrink-0" />
-            Code &amp; demo unavailable under NDA
-          </p>
+          <>
+            <p className="flex select-none items-center gap-1.5 rounded-xl border border-border/80 bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+              <Lock className="h-3.5 w-3.5 shrink-0" />
+              Code &amp; demo unavailable under NDA
+            </p>
+            {hasDetailPage && (
+              <Link
+                href={projectHref(project)}
+                className="inline-flex items-center gap-1.5 rounded-full gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
+              >
+                View project
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
+          </>
         ) : (
           <>
             {project.codeUrl && (
@@ -275,7 +294,7 @@ function ZigzagRow({
               href={projectHref(project)}
               className="inline-flex items-center gap-1.5 rounded-full gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
             >
-              View project
+              {isProjectPublished(project.slug) ? "View project" : "Project info"}
               <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
           </>
@@ -287,7 +306,7 @@ function ZigzagRow({
     </div>
   );
 
-  const visual = project.nda ? (
+  const visual = !hasDetailPage ? (
     <div className="group relative">
       <ProjectVisual
         project={project}

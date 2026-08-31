@@ -79,3 +79,17 @@ export const PATH_TO_NAV_ID: Record<string, string> = {
   [`${innerPages.work.path}/`]: innerPages.work.navId,
   [`${innerPages.contact.path}/`]: innerPages.contact.navId,
 };
+
+/** Resolve active nav id — exact routes first, then nested paths (e.g. `/work/<slug>/`). */
+export function resolveNavId(pathname: string): string {
+  if (PATH_TO_NAV_ID[pathname]) return PATH_TO_NAV_ID[pathname];
+
+  if (
+    pathname.startsWith(`${innerPages.work.path}/`) &&
+    pathname.length > innerPages.work.path.length + 1
+  ) {
+    return innerPages.work.navId;
+  }
+
+  return "home";
+}

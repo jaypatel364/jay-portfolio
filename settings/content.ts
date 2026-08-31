@@ -616,7 +616,11 @@ export const content = {
       body: "I am preparing a developer-focused breakdown — stack choices, architecture, and what shipped. Until then, you can view the available demo or project summary.",
       back: "Back to all work",
       statusSteps: ["Planning", "Writing", "Publishing"],
-      activeStep: 1,
+      activeStep: 2,
+    },
+    detail: {
+      moreProjects: "Related Projects",
+      ndaLabel: "NDA protected",
     },
   },
 };
