@@ -6,6 +6,7 @@ import { getProjectDetail } from "@/settings/project-details";
 import { getProjectBySlug, isProjectPublished, routableProjects } from "@/settings/projects";
 import {
   projectBreadcrumbJsonLd,
+  projectDetailPageJsonLd,
   projectImageJsonLd,
   projectJsonLd,
   projectPageMetadata,
@@ -53,6 +54,7 @@ export default async function WorkProjectPage({ params }: { params: Promise<{ sl
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   const published = isProjectPublished(slug);
+  const detail = getProjectDetail(slug);
 
   if (!project || (project.nda && !published)) notFound();
 
@@ -64,18 +66,31 @@ export default async function WorkProjectPage({ params }: { params: Promise<{ sl
           __html: JSON.stringify(projectBreadcrumbJsonLd(project)).replace(/</g, "\\u003c"),
         }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(projectJsonLd(project)).replace(/</g, "\\u003c"),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(projectImageJsonLd(project)).replace(/</g, "\\u003c"),
-        }}
-      />
+      {published && detail && (
+        <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(projectDetailPageJsonLd(project, detail)).replace(
+                /</g,
+                "\\u003c",
+              ),
+            }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(projectJsonLd(project, detail)).replace(/</g, "\\u003c"),
+            }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(projectImageJsonLd(project)).replace(/</g, "\\u003c"),
+            }}
+          />
+        </>
+      )}
       {published ? (
         <ProjectDetailPage project={project} />
       ) : (

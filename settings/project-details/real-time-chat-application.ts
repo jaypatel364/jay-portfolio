@@ -3,9 +3,9 @@ import type { ProjectDetail } from "./types";
 export const realTimeChatApplicationDetail: ProjectDetail = {
   slug: "real-time-chat-application",
   intro:
-    "This is a group chat application where messages appear instantly, without anyone needing to refresh the page. People join a room, type, and everyone else in that room sees the message right away. I built the interface in Next.js and the WebSocket server in Node.js, and kept them in one Turborepo monorepo so the two sides share the same TypeScript types.",
+    "This is a real-time chat application where messages land instantly, with nobody refreshing the page. People join a room, type, and everyone else in that room sees the message right away. I built the interface in Next.js and the WebSocket server in Node.js, then kept both in one Turborepo monorepo so the two sides share the same TypeScript types.",
   overview:
-    "The application handles the parts of chat that people notice most: messages arriving immediately, a small indicator when someone is typing, and a marker showing when a message has been seen. Rooms keep conversations separate, so a message sent in one room does not reach people in another.\n\nWhat made this interesting to build was the synchronization. A chat app is easy to fake with polling, but doing it properly means the server has to track who is connected, who is in which room, and push updates the moment something changes. I used raw WebSockets rather than a hosted realtime service, which meant writing that connection and room logic myself.",
+    "The app handles the parts of chat people notice most: messages arriving at once, a small indicator when someone is typing, and a marker once a message has been seen. Rooms keep conversations apart, so a message sent in one room never reaches people in another.\n\nSynchronization is what made this interesting to build. You can fake a chat app with polling. Doing it properly means the server tracks who is connected, who is in which room, and pushes updates the second something changes. I used raw WebSockets, not a hosted realtime service, so all of that connection and room logic was mine to write.",
   role: [
     "Built the chat interface in Next.js and React",
     "Wrote the WebSocket server on Node.js and Express",
@@ -15,24 +15,24 @@ export const realTimeChatApplicationDetail: ProjectDetail = {
     "Deployed the client and the socket server separately",
   ],
   problem:
-    "Several people in the same room needed to stay in sync without refreshing. That sounds simple, but it means the server has to know who is currently connected, which room each person is in, and push every new message, typing signal, and seen update to exactly the right people. The other constraint was that I wanted to do this without a hosted realtime service, so all of that connection handling had to be written and reasoned about directly.",
+    "Several people in one room needed to stay in sync without refreshing. That sounds simple. In practice the server has to know who is connected right now, which room each person sits in, and then push every new message, typing signal, and seen update to exactly the right people. I also wanted to do it without a hosted realtime service. So every bit of that connection handling had to be written and reasoned about by hand.",
   build:
-    "The repo is split into three parts: a Next.js app for the interface, a Node.js server for the sockets, and a small shared package that holds the TypeScript types both sides use.\n\nWhen the client loads, it opens one WebSocket connection and joins a room. From then on, everything travels over that connection. Sending a message emits an event; the server receives it, works out who else is in that room, and pushes it to them. Typing indicators and seen status work the same way, as small events rather than full page updates.\n\nThe server keeps room state in memory: who is connected, who is in which room, and the messages from the current session. React state on the client mirrors whatever the server last sent. New messages get appended to the transcript, and typing or seen events update just that piece of the UI instead of re-rendering everything.\n\nHTTP is only used for loading the Next.js app itself. None of the chat traffic goes through REST.",
+    "The repo splits into three parts: a Next.js app for the interface, a Node.js server for the sockets, and a small shared package holding the TypeScript types both sides use.\n\nWhen the client loads, it opens one WebSocket connection and joins a room. From then on, everything travels over that connection. Sending a message emits an event. The server receives it, works out who else is in that room, and pushes it to them. Typing indicators and seen status ride along as small events of their own.\n\nThe server keeps room state in memory: who is connected, who is in which room, and the messages from the current session. React state on the client mirrors whatever the server last sent. New messages get appended to the transcript, while typing and seen events update one small piece of the UI.\n\nHTTP is only used to load the Next.js app itself. None of the chat traffic goes through REST.",
   features: [
     {
       title: "Real-Time Messaging",
       description:
-        "Messages are delivered over WebSockets, so they show up for everyone in the room as soon as they are sent. There is no polling and no refresh.",
+        "Messages travel over WebSockets, so they show up for everyone in the room the moment they are sent. No polling, no refresh.",
     },
     {
       title: "Chat Rooms",
       description:
-        "Conversations are scoped to a room. The server tracks who is in each room and only sends events to the people who belong there.",
+        "Conversations are scoped to a room. The server tracks who is in each room and sends events only to the people who belong there.",
     },
     {
       title: "Typing Indicators",
       description:
-        "When someone starts typing, the server tells the other people in that room. It is a small signal, but it is the kind of thing that makes a chat feel live rather than delayed.",
+        "When someone starts typing, the server tells everyone else in that room. It is a small signal that does a lot of work. Without it, a chat feels laggy even when it is not.",
     },
     {
       title: "Seen Status",
@@ -42,12 +42,12 @@ export const realTimeChatApplicationDetail: ProjectDetail = {
     {
       title: "Shared Message Types",
       description:
-        "The event names and message shapes live in one shared package used by both the client and the server. If one side changes a payload, the other side fails to compile instead of failing silently in production.",
+        "Event names and message shapes live in one shared package that the client and the server both import. Change a payload on one side and the other side stops compiling. Nothing fails quietly in production.",
     },
     {
       title: "Responsive Interface",
       description:
-        "The interface is built with Tailwind CSS and works on both desktop and mobile without a separate app.",
+        "The interface is built with Tailwind CSS and works on desktop and mobile without a separate app.",
     },
   ],
   architecture: {
@@ -59,38 +59,38 @@ export const realTimeChatApplicationDetail: ProjectDetail = {
       "In-Memory Session State",
     ],
     explanation:
-      "The frontend and backend run as two separate applications. The Next.js client renders the interface and holds local React state. It keeps one open WebSocket connection to the Node.js server. The server is responsible for connections, room membership, and passing events to the right people. Session data lives in the server's memory: who is connected, and what has been sent in this session. That keeps the system easy to follow, with the known limit that it belongs to a single server process.",
+      "The frontend and backend run as two separate apps. The Next.js client renders the interface and holds local React state. It keeps one open WebSocket connection to the Node.js server. That server owns connections, room membership, and routing events to the right people. Session data lives in the server's memory: who is connected, and what has been sent so far. It keeps the system easy to follow, with one known limit. All of it belongs to a single server process.",
   },
   decisions: [
     {
-      title: "WebSockets instead of a hosted realtime service",
-      why: "The feature set here is small: messages, typing, and seen status. I wanted to understand the connection handling rather than hand it to a vendor SDK. Writing it directly meant I controlled the event names, the payloads, and what happens when someone joins or leaves.",
+      title: "Raw WebSockets over a hosted realtime service",
+      why: "The feature set here is small: messages, typing, and seen status. I wanted to understand connection handling myself, not hand it to a vendor SDK. Writing it directly left me in charge of the event names, the payloads, and what happens when someone joins or leaves.",
       tradeoff:
-        "A hosted service would have handled reconnection and scaling for me. With this setup, running more than one server instance would need shared state or a pub/sub layer between them.",
+        "A hosted service would have handled reconnection and scaling for me. In this setup, running a second server instance would need shared state or a pub/sub layer between them.",
     },
     {
       title: "A monorepo with shared types",
-      why: "The client and the server talk constantly, so their message shapes have to match. Putting those types in one shared package means a change on one side is checked against the other at compile time.",
+      why: "The client and the server talk constantly, so their message shapes have to match. One shared types package means a change on either side gets checked against the other at compile time.",
       tradeoff:
-        "Slightly more setup than two separate repos, and Turborepo is one more tool to learn. It was worth it. Mismatched payloads between a client and a socket server are painful to debug once they are live.",
+        "A little more setup than two separate repos, and Turborepo is one more tool to learn. Still worth it. Mismatched payloads between a client and a socket server are miserable to debug once they are live.",
     },
     {
       title: "Keeping room state in memory",
-      why: "Chat events happen constantly. Writing every message and typing signal to a database would have added a round trip to something that needs to feel instant, and this project did not need message history to survive.",
+      why: "Chat events fire constantly. Writing every message and typing signal to a database adds a round trip to something that has to feel instant. This project also never needed history to survive a restart.",
       tradeoff:
-        "Restarting the server clears the rooms. For a demo that is fine, but adding persistence would mean a database write on send and loading history on join.",
+        "Restart the server and the rooms are empty. Fine for a demo. Real persistence would mean a database write on every send and a history load on every join.",
     },
     {
-      title: "A display name instead of full authentication",
-      why: "The interesting problem in this project is synchronization, not accounts. Asking for a name and a room keeps the focus there and lets anyone try the demo immediately.",
+      title: "A display name in place of full authentication",
+      why: "The interesting problem here is synchronization, not accounts. Asking for a name and a room keeps the focus where it belongs and lets anyone open the demo straight away.",
       tradeoff:
-        "It is not something you would put in front of real users without an auth layer on top, since there is nothing verifying who someone claims to be.",
+        "Nothing verifies who a person claims to be, so this would need an auth layer before it went anywhere near real users.",
     },
   ],
   tradeoffs: [
-    "Connection lifecycle took the most care. People open second tabs, close them, and lose network, so join and leave events have to be handled properly or rooms end up showing people who already left.",
-    "In-memory state made development fast but means nothing survives a restart. That was an accepted limit rather than an oversight.",
-    "There is one WebSocket connection per client with no reconnection backoff. On a flaky network a real deployment would need to retry with increasing delays instead of hammering the server.",
+    "The connection lifecycle took the most care. People open second tabs, close them, and drop off wifi. Handle join and leave sloppily and rooms fill up with people who already left.",
+    "In-memory state made development fast and means nothing survives a restart. That was a deliberate limit, not an oversight.",
+    "There is one WebSocket connection per client and no reconnection backoff. On a flaky network, a real deployment would need to retry with growing delays so it does not hammer the server.",
   ],
   stack: [
     { group: "Frontend", items: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
@@ -100,14 +100,14 @@ export const realTimeChatApplicationDetail: ProjectDetail = {
   ],
   outcome: [
     "A working chat application with rooms, typing indicators, and seen status",
-    "A live demo that can be opened without any local setup",
+    "A public demo running the Next.js client against the deployed socket server",
     "A defined socket event contract shared between the client and server packages",
-    "An architecture that stays readable, with two applications and one shared types package",
+    "An architecture that stays readable: two apps and one shared types package",
   ],
   learned: [
-    "Realtime bugs are usually connection bugs. Most of the issues I hit were not about messages but about what happens when someone disconnects unexpectedly.",
-    "Sharing types between a client and a server catches an entire category of mistakes before the code ever runs.",
-    "Keeping state in memory is a legitimate choice when you are honest about what it costs you. In this case, that means history which does not survive a restart.",
+    "Realtime bugs are usually connection bugs. Almost nothing I hit was about messages. It was about what happens when someone drops off without warning.",
+    "Sharing types between a client and a server catches an entire category of mistake before the code ever runs.",
+    "Keeping state in memory is a fair choice as long as you are honest about the cost. Here the cost is history that does not survive a restart.",
   ],
   imageAlt:
     "Real-time chat application interface showing a group chat room with messages and typing status",
@@ -115,18 +115,18 @@ export const realTimeChatApplicationDetail: ProjectDetail = {
   internalLinks: [
     {
       sentence:
-        "Next.js, TypeScript, Node.js, and WebSockets are part of the stack I work with across projects.",
-      anchor: "See the full stack I build with",
+        "Next.js, TypeScript, Node.js, and WebSockets turn up across most of the work I take on.",
+      anchor: "Check my Node.js and TypeScript experience",
       href: "/skills/",
     },
     {
-      sentence: "This is one of several full-stack and backend projects I have built.",
-      anchor: "Browse all of my work",
+      sentence: "This is one of several full-stack and backend builds in the portfolio.",
+      anchor: "See what else I have worked on",
       href: "/work/",
     },
   ],
   seo: {
-    title: "Real-Time Chat Application | Next.js & WebSockets | Jay Patel",
+    title: "Real-Time Chat Application | WebSockets | Jay Patel",
     description:
       "A real-time group chat app built with Next.js, Node.js, TypeScript and WebSockets, with chat rooms, typing indicators and seen status in a Turborepo monorepo.",
     ogTitle: "Real-Time Chat Application | Next.js & WebSockets",

@@ -3,11 +3,11 @@ import type { ProjectDetail } from "./types";
 export const verify360KycPlatformDetail: ProjectDetail = {
   slug: "verify-360-kyc-platform",
   intro:
-    "Verify 360 is a KYC platform, the system a business uses to confirm that someone is who they claim to be before opening an account. It handles document verification, 3D liveness checks, and location tracking during verification, and it scores each attempt for risk so that suspicious cases get flagged for review. It was built with React and React Native on the front, and Node.js with MongoDB behind it.",
+    "Verify 360 is a KYC and identity verification platform. It is what a business uses to confirm someone is who they say they are before opening an account. It runs document checks, 3D liveness detection, and location tracking. Each attempt then gets a risk score, so doubtful cases go to a person for review. React and React Native cover the front end. Node.js and MongoDB sit behind them.",
   ndaNotice:
-    "This project was built for a production environment and cannot be documented publicly in full. What follows covers my responsibilities and the general engineering approach, without client details, internal data, or proprietary verification logic.",
+    "A client owns this work, and the contract limits what I can share. So I have kept this to my own role and the shape of the system. The client, their data, and the exact rules behind the risk scoring are all left out.",
   overview:
-    "Identity verification is a sequence of checks rather than one action. A user submits an identity document, then completes a liveness check to prove a real person is present rather than a photo or a recording. Location is captured during the process, and third-party identity verification services are called to validate the details supplied.\n\nEach of those checks produces a signal, and on its own no single signal is conclusive. The platform combines them into a risk score, so a compliance team can concentrate on the cases that need a human decision instead of reviewing everything equally.\n\nThere are two clients, a React web application and a React Native mobile app, because liveness detection needs a camera and mobile is where most people complete that step.",
+    "Identity verification is a sequence of checks, not one action. A user submits an ID document. Then a liveness check proves a real person is there, not a photo or a screen recording. Location is captured along the way. Third-party identity services get called to confirm the details supplied.\n\nEach check gives off a signal, and no single signal settles anything on its own. The platform folds them into one risk score. A compliance team can then spend its time on the cases that need a human, and leave the clear ones alone.\n\nThere are two clients: a React web app and a React Native mobile app. Liveness detection needs a camera, and mobile is where most people finish that step.",
   role: [
     "Built the React web application and worked on the React Native mobile client",
     "Developed REST APIs on Node.js and Express for the verification flow",
@@ -17,39 +17,39 @@ export const verify360KycPlatformDetail: ProjectDetail = {
     "Implemented the risk-scoring logic that flags suspicious verification attempts",
   ],
   problem:
-    "Verification has to be strict enough to catch fraud and smooth enough that genuine users finish it. Every extra step loses real applicants, but a weak check lets bad ones through. The technical difficulty is that no individual signal settles it. A document can look valid, a face can match a photo, a location can be plausible, and the attempt can still be fraudulent. The system needed to combine several independent checks into one assessment, and do it while the user was waiting.",
+    "Verification has to be strict enough to catch fraud and smooth enough that real users finish it. Every extra step costs you genuine applicants. Every weak check lets a bad one through. The hard part is that no single signal settles the question. A document can look valid, a face can match its photo, a location can seem fine, and the attempt can still be fake. So the system had to weigh several separate checks into one answer, and do it while the user sat waiting.",
   build:
-    "Verification runs as a sequence of steps, each producing a result the next stage can use. Users start on either the React web app or the React Native mobile app; mobile matters here because liveness detection needs camera access and a guided capture flow.\n\nThe Node.js and Express backend coordinates the process. It handles document submission, calls AWS Rekognition for the face and document checks, and calls third-party identity verification services to validate the supplied details. Geolocation is captured as the user moves through the flow, giving another signal alongside the document and liveness results.\n\nMongoDB stores verification records. Different verification types and different third-party services return differently shaped responses, and a document store handles that variation without forcing every provider's output into one rigid schema.\n\nRisk scoring runs once the checks have completed. Rather than a single pass-or-fail, the signals are combined into a score that determines whether an attempt clears automatically or goes to a compliance reviewer.",
+    "Verification runs as a series of steps. Each one produces a result the next step can use. Users start on the React web app or the React Native mobile app. Mobile carries real weight here, because liveness detection needs camera access and a guided capture flow.\n\nThe Node.js and Express backend runs the whole process. It takes the document, calls AWS Rekognition for the face and document checks, then calls third-party identity services to confirm the details supplied. Location is captured as the user moves through the flow, which gives one more signal to weigh.\n\nMongoDB stores the verification records. Every check type and every outside service hands back a different response shape. A document store holds that variation as it arrives, with no rigid schema to squeeze it into.\n\nRisk scoring runs once the checks are done. There is no plain pass or fail. The signals combine into a score, and that score decides whether an attempt clears on its own or lands with a compliance reviewer.",
   features: [
     {
       title: "Document Verification",
       description:
-        "Identity documents are submitted and checked as the first stage of verification. Everything after this point builds on whether the document itself holds up.",
+        "An ID document is submitted and checked as the first stage. Everything after this leans on whether that document holds up.",
     },
     {
       title: "3D Liveness Detection",
       description:
-        "A liveness check confirms a real person is present rather than a photo, a screen, or a recording. This is what makes face matching meaningful, because without it a printed photograph could pass.",
+        "A liveness check confirms a real person is there, not a photo, a screen, or a recording. It is what gives face matching any meaning. Without it, a printed photo could walk right through.",
     },
     {
       title: "Real-Time Geolocation",
       description:
-        "Location is captured while the verification is happening, adding a signal that a document check alone cannot provide.",
+        "Location is captured while the check is running. It adds a signal that no document check can give you on its own.",
     },
     {
       title: "Third-Party Identity Verification",
       description:
-        "External identity services are called to validate the details a user supplies against sources outside the platform, so verification does not rest only on what was submitted.",
+        "Outside identity services check the details a user gives against sources beyond the platform. The result never rests on the submitted files alone.",
     },
     {
       title: "Risk Scoring",
       description:
-        "The signals from each check are combined into a score rather than a simple pass or fail. Suspicious attempts get flagged for human review while straightforward ones clear without it.",
+        "Signals from each check combine into a score, not a simple pass or fail. Odd attempts get flagged for human review. Clean ones clear on their own.",
     },
     {
       title: "Web and Mobile Clients",
       description:
-        "A React web application and a React Native mobile app both connect to the same APIs. Mobile carries the liveness step, since that is where camera-based capture works best.",
+        "A React web app and a React Native mobile app both talk to the same APIs. Mobile carries the liveness step, because camera capture works best on a phone.",
     },
   ],
   architecture: {
@@ -61,38 +61,38 @@ export const verify360KycPlatformDetail: ProjectDetail = {
       "Risk Scoring & MongoDB",
     ],
     explanation:
-      "Both clients talk to the same REST API, so verification behaves consistently whether it is started on web or mobile. The backend runs the verification pipeline: it takes the submitted document, calls AWS Rekognition for the face and document checks, calls third-party identity services for the supplied details, and records geolocation along the way. Results are stored in MongoDB, and risk scoring combines the signals into an assessment that decides whether an attempt clears or goes to review.",
+      "Both clients talk to the same REST API, so a check behaves the same whether it starts on web or mobile. The backend runs the pipeline. It takes the submitted document, calls AWS Rekognition for the face and document checks, calls third-party identity services for the supplied details, and records location along the way. Results land in MongoDB. Risk scoring then weighs the signals and decides whether an attempt clears or goes to review.",
   },
   decisions: [
     {
-      title: "Risk scoring instead of a single pass-or-fail check",
-      why: "No individual check is conclusive. A document can look valid while other signals do not add up. Combining the signals into a score keeps genuine users moving while sending the uncertain cases to a person.",
+      title: "Risk scoring over a single pass-or-fail check",
+      why: "No single check settles it. A document can look valid while the other signals do not add up. Rolling them into one score keeps real users moving and sends only the doubtful cases to a person.",
       tradeoff:
-        "A score needs thresholds, and thresholds are a judgement call. Set them too strictly and real users get blocked; too loosely and review queues fill with cases that did not need attention.",
+        "A score needs thresholds, and a threshold is a judgment call. Set it too tight and real users get blocked. Set it too loose and the review queue fills with cases nobody needed to see.",
     },
     {
       title: "React Native alongside the web client",
-      why: "Liveness detection depends on camera access and a guided capture flow, which is far more reliable on a phone than in a browser. Most users complete that step on mobile.",
+      why: "Liveness detection needs camera access and a guided capture flow. Both work far better on a phone than in a browser. Most users finish that step on mobile anyway.",
       tradeoff:
-        "Two clients to build and keep in step. Sharing one REST API between them kept the verification logic in a single place rather than duplicated per platform.",
+        "Two clients to build and keep in step. One shared REST API kept the logic in a single place, so nothing had to be written twice.",
     },
     {
       title: "MongoDB for verification records",
-      why: "Verification types and third-party providers return different response shapes. A document store holds that variation directly instead of flattening every provider's output into one fixed schema.",
+      why: "Check types and outside providers return different response shapes. A document store holds that variation as it is. A fixed schema would have flattened every provider's output to fit.",
       tradeoff:
-        "Consistency has to be maintained by the application. Records need to be written carefully, since the database itself will accept shapes that were never intended.",
+        "The app has to keep records consistent on its own. The database will accept shapes nobody intended, so every write has to be careful.",
     },
     {
       title: "Managed services for face and document checks",
-      why: "AWS Rekognition and established identity providers already do this work at a standard that would take a long time to approach independently, and compliance work benefits from services built for it.",
+      why: "AWS Rekognition and the established identity providers already do this work well. Matching that standard alone would take years. Compliance work also benefits from services built for the job.",
       tradeoff:
-        "It creates a dependency on external services. Their availability, response times, and pricing all become part of the platform's behaviour.",
+        "It creates a dependency on outside services. Their uptime, their speed, and their pricing all become part of how the platform behaves.",
     },
   ],
   tradeoffs: [
-    "Third-party services can be slow or briefly unavailable, and verification happens while a user is waiting. Failures in those calls had to be handled as an expected case rather than an exception.",
-    "Risk thresholds are a balance between fraud and friction. Any change affects both sides, since tightening the score catches more fraud but also stops more genuine users.",
-    "Two clients and several external services means the surface area is wide. Keeping the verification logic in the backend rather than in the clients was what kept that manageable.",
+    "Outside services can be slow or briefly down, and all of this happens while a user waits. Failed calls had to be treated as a normal case, not an exception.",
+    "Risk thresholds balance fraud against friction. Every change hits both sides. Tighten the score and you catch more fraud, but you also stop more real users.",
+    "Two clients and several outside services make for a wide surface area. Keeping the logic in the backend, well away from the clients, is what kept it manageable.",
   ],
   stack: [
     { group: "Frontend", items: ["React", "React Native"] },
@@ -111,9 +111,9 @@ export const verify360KycPlatformDetail: ProjectDetail = {
     "Compliance workflows supporting 100+ client verifications",
   ],
   learned: [
-    "When a decision depends on several independent signals, scoring is more useful than a binary result. It preserves the uncertainty instead of discarding it.",
-    "Depending on external services means their failures become your behaviour. Slow and unavailable responses have to be designed for, not treated as edge cases.",
-    "Keeping shared logic in the backend is what makes multiple clients sustainable. Duplicating verification rules per platform would have guaranteed they drift.",
+    "When a decision rests on several separate signals, a score beats a yes or no. It keeps the uncertainty visible.",
+    "Leaning on outside services means their failures become your behavior. Slow and missing responses need designing for, not filing under edge cases.",
+    "Shared logic in the backend is what makes two clients sustainable. Copy the rules onto each platform and they will drift apart, guaranteed.",
   ],
   imageAlt:
     "KYC and identity verification platform showing document verification and liveness detection steps",
@@ -122,20 +122,19 @@ export const verify360KycPlatformDetail: ProjectDetail = {
     {
       sentence:
         "Third-party integrations, REST APIs, and production React work run through most of what I build.",
-      anchor: "See the technologies I work with",
+      anchor: "See my API and integration experience",
       href: "/skills/",
     },
     {
-      sentence:
-        "There are more production platforms and full-stack applications alongside this one.",
-      anchor: "Browse all of my work",
+      sentence: "Other production platforms and full-stack builds sit next to this one.",
+      anchor: "Open the full list of projects",
       href: "/work/",
     },
   ],
   seo: {
-    title: "Verify 360 - KYC Platform | React Native, Node.js & AWS | Jay Patel",
+    title: "Verify 360 KYC Platform | React Native & Node.js | Jay Patel",
     description:
-      "A KYC and identity verification platform with document checks, 3D liveness detection, geolocation and risk scoring, built with React Native, Node.js and MongoDB.",
+      "A KYC and identity verification platform with document checks, 3D liveness detection, geolocation and risk scoring, built with React Native and Node.js.",
     ogTitle: "Verify 360 - KYC & Identity Verification Platform",
     ogDescription:
       "An identity verification platform with document verification, 3D liveness detection, geolocation tracking and risk scoring, built on React, React Native and Node.js.",

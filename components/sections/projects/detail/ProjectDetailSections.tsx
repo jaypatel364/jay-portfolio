@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowDown, Code2, ExternalLink, Lock } from "lucide-react";
+import { ArrowDown, ArrowLeft, Code2, ExternalLink, Lock } from "lucide-react";
 import { SiteButton } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import type {
@@ -221,29 +221,43 @@ interface ProjectLinksProps {
   codeUrl?: string;
   hideCode?: true;
   nda?: true;
+  /** Hero-only wayfinding; breadcrumb already links to Work. */
+  showBackLink?: boolean;
 }
 
-export function ProjectLinks({ demoUrl, codeUrl, hideCode, nda }: ProjectLinksProps) {
+export function ProjectLinks({
+  demoUrl,
+  codeUrl,
+  hideCode,
+  nda,
+  showBackLink = false,
+}: ProjectLinksProps) {
   const showCode = Boolean(codeUrl) && !hideCode && !nda;
   const showDemo = Boolean(demoUrl) && !nda;
 
   return (
     <div className="flex flex-wrap items-center gap-3">
       {showDemo && (
-        <SiteButton href={demoUrl!} external variant="primary">
+        <SiteButton href={demoUrl!} external variant="primary" size="sm">
           <ExternalLink className="h-4 w-4" aria-hidden />
           View Live Demo
         </SiteButton>
       )}
       {showCode && (
-        <SiteButton href={codeUrl!} external variant="secondary">
+        <SiteButton href={codeUrl!} external variant="secondary" size="sm">
           <Code2 className="h-4 w-4" aria-hidden />
           View Source Code
         </SiteButton>
       )}
-      <SiteButton href="/work/" variant="secondary">
-        Back to Work
-      </SiteButton>
+      {showBackLink && (
+        <Link
+          href="/work/"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+          Back to Work
+        </Link>
+      )}
     </div>
   );
 }

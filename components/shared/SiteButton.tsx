@@ -21,6 +21,7 @@ interface SiteButtonCommonProps {
   size?: SiteButtonSize;
   className?: string;
   children: React.ReactNode;
+  "aria-label"?: string;
 }
 
 type SiteButtonProps = SiteButtonCommonProps &
@@ -45,6 +46,7 @@ export function SiteButton({
   size = "default",
   className,
   children,
+  "aria-label": ariaLabel,
   ...props
 }: SiteButtonProps) {
   const classes = cn(variantClasses[variant], sizeClasses[size], className);
@@ -52,21 +54,32 @@ export function SiteButton({
   if ("href" in props && props.href) {
     if (props.external) {
       return (
-        <a href={props.href} target="_blank" rel="noopener noreferrer" className={classes}>
+        <a
+          href={props.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={classes}
+          aria-label={ariaLabel}
+        >
           {children}
         </a>
       );
     }
 
     return (
-      <Link href={props.href} className={classes}>
+      <Link href={props.href} className={classes} aria-label={ariaLabel}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={props.type ?? "button"} onClick={props.onClick} className={classes}>
+    <button
+      type={props.type ?? "button"}
+      onClick={props.onClick}
+      className={classes}
+      aria-label={ariaLabel}
+    >
       {children}
     </button>
   );

@@ -189,25 +189,6 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
             </DetailSection>
           )}
 
-          {!project.nda && (
-            <section
-              id="links"
-              aria-labelledby="links-heading"
-              className="scroll-mt-28 rounded-2xl border border-border/70 bg-card/50 p-6 sm:p-8"
-            >
-              <h2 id="links-heading" className="font-heading text-xl font-bold tracking-tight">
-                Project Links
-              </h2>
-              <div className="mt-5">
-                <ProjectLinks
-                  demoUrl={project.demoUrl}
-                  codeUrl={project.codeUrl}
-                  hideCode={project.hideCode}
-                />
-              </div>
-            </section>
-          )}
-
           {detail.internalLinks && detail.internalLinks.length > 0 && (
             <InternalLinks links={detail.internalLinks} />
           )}

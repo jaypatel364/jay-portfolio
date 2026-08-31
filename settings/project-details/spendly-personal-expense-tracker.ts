@@ -3,51 +3,51 @@ import type { ProjectDetail } from "./types";
 export const spendlyPersonalExpenseTrackerDetail: ProjectDetail = {
   slug: "spendly-personal-expense-tracker",
   intro:
-    "Spendly is a personal expense tracker. You log what you spend, set a monthly budget, and see where the money actually went. It also imports spending history from CSV and Excel files, so you are not stuck typing in months of past transactions. It is built with TanStack Start and React on the front, and Supabase with PostgreSQL row-level security behind it.",
+    "Spendly is a personal expense tracker. You log what you spend, set a monthly budget, and see where the money went. It also reads spending history straight from CSV and Excel files, so you skip typing in months of old transactions. The front end runs on TanStack Start and React. Supabase sits behind it, with PostgreSQL row-level security keeping each account's data private.",
   overview:
-    "The application is built around a dashboard: totals for the month, a six-month trend, and a breakdown by category. Logging an expense is meant to take a couple of seconds, because a tracker that is slow to use stops getting used.\n\nImport is the other half. Most people already have spending history in a bank export, so Spendly reads CSV and Excel files and lets you map their columns to its own fields. Exports work the other way round, so whatever filter is applied on screen is what gets exported.\n\nThe technically interesting part is privacy. Expense data is personal, so access is enforced by PostgreSQL row-level security rather than by application code. The database itself refuses to return another user's rows.",
+    "The app is built around one dashboard: totals for the month, a six-month trend, and a breakdown by category. Logging an expense takes a couple of seconds. That speed matters, because a tracker that feels slow stops getting used.\n\nImport is the other half of the product. Most people already have their spending history in a bank export. Spendly reads those CSV and Excel files and lets you map their columns onto its own fields. Export runs the same idea backwards: whatever filter is on screen is what lands in the file.\n\nPrivacy is the part I thought hardest about. Expense data is personal, so PostgreSQL row-level security guards it at the database level, not in app code. The database simply will not hand back another user's rows.",
   role: [
     "Built the application with TanStack Start and React",
-    "Designed the dashboard, including the trend and category charts with Recharts",
+    "Designed the dashboard, including the trend and category charts in Recharts",
     "Built the CSV and Excel import flow with column mapping",
     "Set up Supabase Auth and the PostgreSQL row-level security policies",
     "Handled server state and caching with TanStack Query",
-    "Added schema validation with Zod for form input and imported rows",
+    "Added Zod schema validation for form input and imported rows",
   ],
   problem:
-    "Two things usually make expense trackers fail. Logging an expense takes too long, so people stop doing it. And starting from an empty app is discouraging when you already have months of history sitting in a bank export. So the app needed fast entry and a real import path. Underneath both, there was a harder requirement: expense data is private, and a bug in a query should never be able to show one person another person's spending.",
+    "Two things usually kill an expense tracker. The first is friction: if logging a coffee takes half a minute, people quit within a week. The second is the empty start, because opening a blank app is discouraging when months of your history already sit in a bank export. So Spendly needed quick entry and a working import path. Both of those sat on top of a harder rule. Expense data is private, and one careless query should never expose another person's spending.",
   build:
-    "TanStack Start handles the application shell and routing, with React for the interface and Tailwind for styling. TanStack Query manages anything that comes from the server. It caches results and refetches them, so the dashboard does not reload everything after each new expense.\n\nSupabase provides both authentication and the PostgreSQL database. Rather than filtering by user in application queries, access is enforced with row-level security policies on the tables themselves. A query for expenses only ever returns the rows belonging to the signed-in user, because the database applies that rule before the application sees anything.\n\nImport reads CSV and Excel files and asks you to map their columns to Spendly's fields, since no two bank exports use the same headers. Zod validates rows during import and input in the forms, so malformed data is caught before it reaches the database.\n\nCharts are built with Recharts: monthly totals, a six-month trend, and a category breakdown.",
+    "TanStack Start handles the app shell and routing. React builds the interface and Tailwind styles it. TanStack Query owns anything that comes from the server, caching results and refetching on its own. The dashboard picks up a new expense without reloading the whole page.\n\nSupabase covers both sign-in and the PostgreSQL database. Access rules live on the tables themselves as row-level security policies, so app queries never filter by user at all. Ask for expenses and your own rows come back. The database applies that rule first, before any code sees a result.\n\nImport reads CSV and Excel files, then asks you to map their columns onto Spendly's fields. No two banks use the same headers, so a fixed parser would break on the second file you tried. Zod checks form input and imported rows against one schema, which keeps malformed data out of the database.\n\nRecharts draws the three views on the dashboard: monthly totals, the six-month trend, and the category breakdown.",
   features: [
     {
       title: "Fast Expense Logging",
       description:
-        "Adding an expense is a short form that takes a few seconds. This matters more than it sounds, because the main reason people abandon expense trackers is that logging feels like a chore.",
+        "Adding an expense is a short form and a few seconds of typing. That matters more than it sounds. The usual reason people abandon a tracker is that logging starts to feel like a chore.",
     },
     {
       title: "Monthly Budgets",
       description:
-        "You set a budget for the month and the dashboard shows spending against it, so the number has context rather than being a total on its own.",
+        "You set a budget for the month and the dashboard measures spending against it. A total on its own says very little. The same total next to a limit tells you whether to slow down.",
     },
     {
       title: "CSV and Excel Import",
       description:
-        "Existing spending history can be imported from a bank export. Since every bank formats things differently, you map their columns to Spendly's fields during import rather than being forced into one fixed format.",
+        "Bring in existing spending history straight from a bank export. Every bank formats its files differently, so you map their columns onto Spendly's fields as part of the import. No spreadsheet cleanup first.",
     },
     {
       title: "Filtered Export",
       description:
-        "Whatever filter is applied on screen is what gets exported in one click, so you can pull out a single category or date range instead of the whole dataset.",
+        "Whatever filter is on screen is what you get in the file. One click pulls out a single category or a date range, so you are never stuck exporting the whole dataset.",
     },
     {
       title: "Dashboard and Charts",
       description:
-        "Totals, a six-month trend, and a category breakdown, all built with Recharts. The trend is the view that makes patterns visible, since a single month rarely tells you much.",
+        "Totals, a six-month trend, and a category breakdown, all drawn with Recharts. The trend is the view that earns its place. A single month of data rarely tells you much on its own.",
     },
     {
       title: "Private by Default",
       description:
-        "Each user's expenses are isolated by PostgreSQL row-level security. The rule lives in the database, not in application code, so it applies to every query regardless of how the data is requested.",
+        "PostgreSQL row-level security keeps every account's expenses apart. The rule sits in the database itself. It holds for every query, no matter which part of the app is asking.",
     },
   ],
   architecture: {
@@ -59,75 +59,74 @@ export const spendlyPersonalExpenseTrackerDetail: ProjectDetail = {
       "PostgreSQL",
     ],
     explanation:
-      "There is no separate backend service. The TanStack Start application talks to Supabase directly, and TanStack Query sits in between to cache server data and keep the dashboard from refetching everything on every change. Supabase handles sign-in and gives each request the identity of the signed-in user. PostgreSQL row-level security policies then decide which rows that user can see. The security boundary is in the database, which is what makes going without a custom API layer a reasonable choice here.",
+      "There is no separate backend service here. The TanStack Start app talks to Supabase directly, with TanStack Query in between as a cache so the dashboard is not refetching everything on every change. Supabase handles sign-in and tags each request with the identity of the signed-in user. PostgreSQL row-level security policies then decide which rows that user can see. Because the security boundary sits in the database, skipping a custom API layer is a fair trade at this size.",
   },
   decisions: [
     {
-      title: "Row-level security instead of filtering in application code",
-      why: "Every query in an app like this has to be scoped to one user, and doing that in application code means every single query is a chance to get it wrong. Putting the policy on the table means the database enforces it once, for everything.",
+      title: "Row-level security over filtering in application code",
+      why: "Every query in an app like this has to be scoped to one user. Do that in code and each query becomes a fresh chance to get it wrong. Put the policy on the table and the database enforces it once, for everything that touches those rows.",
       tradeoff:
-        "Policies are less obvious than a visible filter in the code, since you have to know to look in the database to understand why a query returns what it does. That is worth it for data this personal.",
+        "A policy is less visible than a filter you can read in the code. You have to know to go look at the table to understand why a query returned what it did. For data this personal, I will take that.",
     },
     {
-      title: "Supabase instead of a custom backend",
-      why: "The application needed authentication, a PostgreSQL database, and per-user access rules. Supabase provides all three, and row-level security meant the access rules could live in the database rather than in an API layer built to enforce them.",
+      title: "Supabase in place of a custom backend",
+      why: "The app needed three things: sign-in, a PostgreSQL database, and per-user access rules. Supabase covers all three. Row-level security let the access rules live in the database, which left no API layer to build.",
       tradeoff:
-        "It ties the project to Supabase's client and its way of doing things. If the logic later needs to grow beyond what policies can express, some of it would have to move into a backend service.",
+        "It ties the project to Supabase's client and its way of working. If the logic outgrows what a policy can express, part of it has to move into a real backend service.",
     },
     {
-      title: "Column mapping on import instead of a fixed format",
-      why: "Bank exports have no shared standard. The same information appears under different headers in different files. Asking the user to map columns once is far more practical than asking them to reformat a spreadsheet.",
+      title: "Column mapping at import time",
+      why: "Bank exports follow no shared standard. The same information turns up under a different header in every file. Mapping it once during import is quick. Asking someone to rewrite a spreadsheet first is not.",
       tradeoff:
-        "The import flow has an extra step, so it is not a single click. Without it, most real bank exports would simply fail to import.",
+        "Import gains a step and stops being a single click. Drop that step and most real bank exports would simply fail.",
     },
     {
       title: "Zod for validation",
-      why: "Data arrives from two directions, typed into forms and pulled from spreadsheets, and imported rows are much less predictable. One schema validates both paths before anything is written.",
+      why: "Data arrives from two directions: typed into a form, or pulled out of a spreadsheet. Spreadsheet rows are far less predictable. One schema checks both paths before anything gets written.",
       tradeoff:
-        "Schemas need to be kept in step with the database structure, since they are defined separately.",
+        "The schemas are defined separately from the database, so the two have to be kept in step by hand.",
     },
   ],
   tradeoffs: [
-    "Imported files are messy in ways forms are not: missing values, unexpected date formats, amounts stored as text. Validating at import instead of at display time keeps bad data out of the database entirely.",
-    "Without a custom backend, business logic that policies cannot express has nowhere to live. That is an accepted limit of this architecture, not something solved by it.",
-    "The project is still in progress, so features are being added and refined rather than being finished and frozen.",
+    "Imported files are messy in ways a form never is: blank cells, odd date formats, amounts stored as text. Catching all of that at import keeps bad rows out of the database, which beats hiding them at display time.",
+    "With no custom backend, any logic a policy cannot express has nowhere to sit. That is a known ceiling of this setup, not a problem it solves.",
+    "Spendly is still in progress. Features are being added and reworked, so nothing here is finished and frozen.",
   ],
   stack: [
     { group: "Frontend", items: ["TanStack Start", "React", "TypeScript", "Tailwind CSS"] },
     { group: "Data & State", items: ["TanStack Query", "Zod"] },
     { group: "Backend", items: ["Supabase", "PostgreSQL", "Row-Level Security"] },
-    { group: "Visualisation", items: ["Recharts"] },
+    { group: "Visualization", items: ["Recharts"] },
   ],
   outcome: [
     "A working expense tracker with fast logging, monthly budgets, and a dashboard",
     "CSV and Excel import with column mapping, plus filtered export",
     "Per-user data isolation enforced by PostgreSQL row-level security",
-    "Totals, a six-month trend, and category breakdowns built with Recharts",
-    "A live demo available to try",
+    "Totals, a six-month trend, and category breakdowns drawn with Recharts",
+    "A live demo available to try in the browser",
   ],
   learned: [
-    "Putting access rules in the database rather than in application code removes a whole class of mistakes. Every query inherits the rule instead of each one having to remember it.",
-    "Import is where real-world data stops being tidy. Handling that properly took more thought than any of the dashboard work.",
-    "Skipping a custom backend is a reasonable choice when the security boundary already lives somewhere solid, but it does set a ceiling on where complex logic can go later.",
+    "Access rules in the database wipe out a whole class of mistake. Every query inherits the rule, so no single query has to remember it.",
+    "Import is where real data stops being tidy. Handling it properly took more thought than the entire dashboard.",
+    "Skipping a custom backend works when the security boundary already sits somewhere solid. It still caps where complex logic can go later.",
   ],
   imageAlt:
     "Spendly expense tracker dashboard showing monthly totals, spending trends and category breakdown charts",
   relatedSlugs: ["minilist-headless-cms", "real-time-chat-application"],
   internalLinks: [
     {
-      sentence:
-        "React, TypeScript, PostgreSQL, and data-heavy interfaces come up across most of what I build.",
-      anchor: "See the technologies I work with",
+      sentence: "Data-heavy React interfaces on a PostgreSQL backend are familiar ground for me.",
+      anchor: "See my React and PostgreSQL skills",
       href: "/skills/",
     },
     {
-      sentence: "This sits alongside several other full-stack applications and APIs.",
-      anchor: "Browse all of my work",
+      sentence: "Spendly sits alongside several other full-stack apps and APIs.",
+      anchor: "Browse the full project archive",
       href: "/work/",
     },
   ],
   seo: {
-    title: "Spendly Expense Tracker | React, TanStack & Supabase | Jay Patel",
+    title: "Spendly Expense Tracker | React & Supabase | Jay Patel",
     description:
       "A personal expense tracker built with TanStack Start, React and Supabase, with budgets, CSV and Excel import, charts and PostgreSQL row-level security.",
     ogTitle: "Spendly Expense Tracker | React, TanStack Start & Supabase",

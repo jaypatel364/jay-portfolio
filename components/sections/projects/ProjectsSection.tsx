@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ExternalLink, Code2, Lock, ChevronDown, Info } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { SectionHeading, SectionPageCta } from "@/components/shared";
 import { innerPages } from "@/settings/pages";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ import {
   type ProjectCategory,
 } from "@/settings/projects";
 import { ProjectVisual } from "./ProjectVisual";
+import { ProjectCardActions } from "./ProjectCardActions";
 
 const CATEGORY_LABEL: Record<ProjectCategory, string> = {
   fullstack: "Full Stack",
@@ -161,59 +162,7 @@ export function ProjectsSection() {
                 </div>
 
                 <div className="mt-5 border-t border-border pt-4">
-                  {project.nda ? (
-                    <div className="flex flex-wrap items-center gap-4">
-                      <p className="flex select-none items-center gap-1.5 text-xs text-muted-foreground/70">
-                        <Lock className="h-3 w-3 shrink-0" />
-                        Code &amp; demo unavailable under NDA
-                      </p>
-                      {isProjectPublished(project.slug) && (
-                        <Link
-                          href={projectHref(project)}
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                        >
-                          <Info className="h-4 w-4" aria-hidden />
-                          View project
-                        </Link>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="flex flex-wrap items-center gap-4">
-                      {project.codeUrl && (
-                        <a
-                          href={project.codeUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                          aria-label={`View source code for ${project.title}`}
-                          title={`View source code for ${project.title}`}
-                        >
-                          <Code2 className="h-4 w-4" aria-hidden />
-                          Code
-                        </a>
-                      )}
-                      {project.demoUrl && (
-                        <a
-                          href={project.demoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                          aria-label={`View live demo for ${project.title}`}
-                          title={`Live demo: ${project.title}`}
-                        >
-                          <ExternalLink className="h-4 w-4" aria-hidden />
-                          Demo
-                        </a>
-                      )}
-                      <Link
-                        href={projectHref(project)}
-                        className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                      >
-                        <Info className="h-4 w-4" aria-hidden />
-                        {isProjectPublished(project.slug) ? "View project" : "Project info"}
-                      </Link>
-                    </div>
-                  )}
+                  <ProjectCardActions project={project} variant="home" />
                 </div>
               </div>
             </motion.div>

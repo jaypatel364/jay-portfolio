@@ -11,8 +11,9 @@
  *    • JSON-LD structured data:
  *        – Person / WebSite / ProfilePage / FAQ  (home — revisit with the home rewrite)
  *        – AboutPage, CollectionPage (work), WebPage (skills), ContactPage
- *        – Project CreativeWork / SoftwareSourceCode + breadcrumbs
+ *        – Project WebPage + CreativeWork / SoftwareSourceCode + breadcrumbs
  *    • Per-page metadata helpers  (about / skills / work / contact)
+ *    • Sitemap registry in `settings/sitemap-urls.json` (per-URL lastModified)
  *
  *  Usage in app/layout.tsx:
  *    import { rootMetadata, rootViewport } from "@/settings/seo";
@@ -31,7 +32,10 @@
  */
 
 import type { Metadata, Viewport } from "next";
+import type { MetadataRoute } from "next";
+import sitemapUrls from "./sitemap-urls.json";
 import { siteConfig } from "@/settings";
+import type { ProjectDetail } from "@/settings/project-details/types";
 import {
   PROJECTS,
   PROJECT_COVER_IMAGE,
@@ -60,11 +64,56 @@ export function pageUrl(path: string): string {
   return slug ? `${BASE_URL}/${slug}/` : HOME_URL;
 }
 
-/** Real content date — do not use `new Date()` in JSON-LD or sitemap. */
-export const LAST_UPDATED = "2026-08-28";
+/** Real content date — fallback when a route is missing from `sitemap-urls.json`. */
+export const LAST_UPDATED = "2026-08-31";
 
 /** ISO-8601 DateTime for schema.org `dateModified` (date-only fails validators). */
 export const LAST_UPDATED_ISO = `${LAST_UPDATED}T00:00:00+05:30`;
+
+// ─── Sitemap registry (`settings/sitemap-urls.json`) ───────────────────────────
+// Edit one entry's lastModified there without changing other pages.
+
+export type SitemapUrlEntry = {
+  /** Route slug — "" for home, "about", "work/spendly-personal-expense-tracker", etc. */
+  path: string;
+  /** YYYY-MM-DD (IST). Do not use `new Date()` in app code. */
+  lastModified: string;
+};
+
+/** Canonical list of indexable routes and their last-modified dates. */
+export const SITEMAP_URLS = sitemapUrls as SitemapUrlEntry[];
+
+/** Normalize a sitemap path or full URL slug to the registry key. */
+export function normalizeSitemapPath(path: string): string {
+  if (path === "/" || path === "") return "";
+  return path.replace(/^\/+|\/+$/g, "");
+}
+
+/** Look up lastModified for a route. Falls back to `LAST_UPDATED` when missing. */
+export function getSitemapLastModified(path: string): string {
+  const key = normalizeSitemapPath(path);
+  const entry = SITEMAP_URLS.find((item) => normalizeSitemapPath(item.path) === key);
+  return entry?.lastModified ?? LAST_UPDATED;
+}
+
+/** ISO-8601 DateTime for schema.org `dateModified`. */
+export function getSitemapLastModifiedIso(path: string): string {
+  return `${getSitemapLastModified(path)}T00:00:00+05:30`;
+}
+
+/** Resolve a registry path to the public absolute URL. */
+export function sitemapEntryUrl(path: string): string {
+  const key = normalizeSitemapPath(path);
+  return key ? pageUrl(key) : HOME_URL;
+}
+
+/** Build the sitemap payload consumed by `app/sitemap.ts`. */
+export function buildSitemap(): MetadataRoute.Sitemap {
+  return SITEMAP_URLS.map(({ path, lastModified }) => ({
+    url: sitemapEntryUrl(path),
+    lastModified,
+  }));
+}
 
 // ─── Core copy ─────────────────────────────────────────────────────────────────
 // Change these to adjust the text that appears in Google results and link previews.
@@ -419,6 +468,7 @@ export const aboutPageJsonLd = {
   isPartOf: websiteRef(),
   about: personRef(),
   mainEntity: personRef(),
+  dateModified: getSitemapLastModifiedIso("about"),
 };
 
 /** Skills page — WebPage wrapper; catalog schemas are injected separately. */
@@ -434,6 +484,7 @@ export function skillsPageJsonLd() {
     isPartOf: websiteRef(),
     about: personRef(),
     mainEntity: personRef(),
+    dateModified: getSitemapLastModifiedIso("skills"),
   };
 }
 
@@ -459,6 +510,7 @@ export function workPageJsonLd() {
     inLanguage: "en-US",
     isPartOf: websiteRef(),
     about: personRef(),
+    dateModified: getSitemapLastModifiedIso("work"),
     mainEntity: {
       "@type": "ItemList",
       "@id": listId,
@@ -541,32 +593,81 @@ export function projectImageJsonLd(project: Project) {
   };
 }
 
+/** WebPage wrapper for a published `/work/<slug>/` case study. */
+export function projectDetailPageJsonLd(project: Project, detail: ProjectDetail) {
+  const slugPath = `work/${project.slug}`;
+  const url = pageUrl(slugPath);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    url,
+    name: detail.seo.title,
+    description: detail.seo.description,
+    inLanguage: "en-US",
+    isPartOf: websiteRef(),
+    about: personRef(),
+    author: personRef(),
+    dateModified: getSitemapLastModifiedIso(slugPath),
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      "@id": `${url}#cover-image`,
+    },
+    breadcrumb: {
+      "@id": `${url}#breadcrumb`,
+    },
+    mainEntity: {
+      "@id": `${url}#work`,
+    },
+  };
+}
+
 /** Public `/work/<slug>/` pages — indexed only when published. */
-export function projectJsonLd(project: Project) {
+export function projectJsonLd(project: Project, detail?: ProjectDetail) {
+  const slugPath = `work/${project.slug}`;
+  const url = pageUrl(slugPath);
   const img = projectImageMetadata(project);
+  const description = detail?.seo.description ?? project.desc;
+  const headline = detail?.seo.ogTitle ?? project.title;
+  const keywords = detail?.seo
+    ? [detail.seo.primaryTopic, ...detail.seo.secondaryTopics].join(", ")
+    : project.tags.join(", ");
 
   return {
     "@context": "https://schema.org",
     "@type": project.codeUrl ? "SoftwareSourceCode" : "CreativeWork",
-    "@id": `${pageUrl(`work/${project.slug}`)}#work`,
+    "@id": `${url}#work`,
     name: project.title,
-    description: project.desc,
-    url: pageUrl(`work/${project.slug}`),
+    headline,
+    description,
+    url,
     image: {
       "@type": "ImageObject",
-      "@id": `${pageUrl(`work/${project.slug}`)}#cover-image`,
+      "@id": `${url}#cover-image`,
       url: img.url,
       contentUrl: img.url,
       name: img.title,
-      caption: img.title,
+      caption: img.alt,
       width: img.width,
       height: img.height,
       encodingFormat: img.type,
     },
     inLanguage: "en-US",
+    isPartOf: websiteRef(),
     author: personRef(),
     creator: personRef(),
-    keywords: project.tags.join(", "),
+    keywords,
+    dateModified: getSitemapLastModifiedIso(slugPath),
+    ...(detail
+      ? {
+          about: {
+            "@type": "Thing",
+            name: detail.seo.primaryTopic,
+          },
+        }
+      : {}),
+    ...(detail ? { mainEntityOfPage: { "@id": `${url}#webpage` } } : {}),
     ...(project.codeUrl ? { codeRepository: project.codeUrl } : {}),
     ...(project.demoUrl ? { sameAs: project.demoUrl } : {}),
   };
@@ -583,6 +684,7 @@ export const contactPageJsonLd = {
   inLanguage: "en-US",
   isPartOf: websiteRef(),
   mainEntity: personRef(),
+  dateModified: getSitemapLastModifiedIso("contact"),
   about: {
     ...personRef(),
     email: `mailto:${siteConfig.email}`,
@@ -877,7 +979,7 @@ export const profilePageJsonLd = {
   }),
   mainEntity: personRef(),
   about: personRef(),
-  dateModified: LAST_UPDATED_ISO,
+  dateModified: getSitemapLastModifiedIso(""),
 };
 
 /**

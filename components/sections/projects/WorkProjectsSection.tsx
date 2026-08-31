@@ -3,16 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Boxes,
-  Code2,
-  ExternalLink,
-  Layout,
-  Lock,
-  Server,
-  ArrowUpRight,
-  type LucideIcon,
-} from "lucide-react";
+import { Boxes, Code2, Layout, Server, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 import {
@@ -21,10 +12,18 @@ import {
   isProjectPublished,
   projectHref,
   type Project,
+  type ProjectCategory,
 } from "@/settings/projects";
 import { ProjectVisual } from "./ProjectVisual";
+import { ProjectCardActions } from "./ProjectCardActions";
 
 type Filter = (typeof PROJECT_FILTERS)[number];
+
+const CATEGORY_LABEL: Record<ProjectCategory, string> = {
+  fullstack: "Full Stack",
+  frontend: "Frontend",
+  backend: "Backend",
+};
 
 const FILTER_META: Record<Filter, { label: string; icon: LucideIcon }> = {
   all: { label: "All", icon: Boxes },
@@ -175,7 +174,7 @@ export function WorkProjectsSection() {
       )}
 
       {filtered.some((p) => p.nda) && (
-        <p className="mt-14 text-center text-xs text-muted-foreground/75">
+        <p className="mt-14 text-center text-xs text-muted-foreground">
           Projects marked NDA were built professionally. Descriptions and tech stacks are shared
           with permission; code and demos cannot be disclosed.
         </p>
@@ -197,25 +196,20 @@ function ZigzagRow({
 
   const copy = (
     <div className="flex min-w-0 flex-col justify-center">
-      <div className="flex flex-wrap gap-1.5">
-        {project.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full border border-primary/15 bg-primary/5 px-2.5 py-1 text-[11px] font-medium text-primary transition-colors"
-          >
-            {tag}
-          </span>
-        ))}
+      <div className="flex items-start justify-between gap-3">
+        <p
+          className={cn(
+            "min-w-0 text-xs font-semibold uppercase tracking-wider",
+            project.nda ? "text-muted-foreground" : "text-primary",
+          )}
+        >
+          {project.tagline}
+        </p>
+        <span className="shrink-0 rounded-full border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          {CATEGORY_LABEL[project.category]}
+        </span>
       </div>
 
-      <p
-        className={cn(
-          "mt-4 text-xs font-semibold uppercase tracking-wider",
-          project.nda ? "text-muted-foreground" : "text-primary",
-        )}
-      >
-        {project.tagline}
-      </p>
       <h3 className="font-heading mt-1.5 text-2xl font-bold tracking-tight sm:text-3xl">
         {hasDetailPage ? (
           <Link
@@ -228,6 +222,7 @@ function ZigzagRow({
           project.title
         )}
       </h3>
+
       <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
         {project.desc}
       </p>
@@ -243,65 +238,19 @@ function ZigzagRow({
         </ul>
       )}
 
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        {project.nda ? (
-          <>
-            <p className="flex select-none items-center gap-1.5 rounded-xl border border-border/80 bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
-              <Lock className="h-3.5 w-3.5 shrink-0" />
-              Code &amp; demo unavailable under NDA
-            </p>
-            {hasDetailPage && (
-              <Link
-                href={projectHref(project)}
-                className="inline-flex items-center gap-1.5 rounded-full gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
-              >
-                View project
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
-            )}
-          </>
-        ) : (
-          <>
-            {project.codeUrl && (
-              <a
-                href={project.codeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-sm font-semibold text-muted-foreground",
-                  "transition-all hover:border-primary/30 hover:text-primary hover:shadow-sm",
-                )}
-              >
-                <Code2 className="h-4 w-4" />
-                Code
-              </a>
-            )}
-            {project.demoUrl && (
-              <a
-                href={project.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3.5 py-2 text-sm font-semibold text-muted-foreground",
-                  "transition-all hover:border-primary/30 hover:text-primary hover:shadow-sm",
-                )}
-              >
-                <ExternalLink className="h-4 w-4" />
-                Live demo
-              </a>
-            )}
-            <Link
-              href={projectHref(project)}
-              className="inline-flex items-center gap-1.5 rounded-full gradient-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
-            >
-              {isProjectPublished(project.slug) ? "View project" : "Project info"}
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </Link>
-          </>
-        )}
-        <span className="rounded-full border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-          {FILTER_META[project.category]?.label ?? project.category}
-        </span>
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {project.tags.map((tag) => (
+          <span
+            key={tag}
+            className="rounded-md border border-border bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <div className="mt-6 border-t border-border pt-5">
+        <ProjectCardActions project={project} variant="work" />
       </div>
     </div>
   );
