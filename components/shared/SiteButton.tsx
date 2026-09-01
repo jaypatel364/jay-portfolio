@@ -8,7 +8,7 @@ const variantClasses: Record<SiteButtonVariant, string> = {
   primary:
     "btn-shine group inline-flex items-center justify-center gap-2 rounded-full gradient-primary font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
   secondary:
-    "inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card font-semibold text-foreground transition-colors duration-200 hover:border-primary/30 hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+    "inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card font-semibold text-foreground transition-all duration-200 hover:border-primary/35 hover:bg-primary/[0.06] hover:text-primary hover:shadow-glow dark:hover:border-primary/45 dark:hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
 };
 
 const sizeClasses: Record<SiteButtonSize, string> = {
