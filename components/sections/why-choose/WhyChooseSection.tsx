@@ -39,7 +39,7 @@ function interpolateExperience(text: string, expLabel: string) {
 export function WhyChooseSection({ showBottomCta = true }: { showBottomCta?: boolean }) {
   const { whyChoose } = siteConfig;
   const expLabel = getExperienceLabel(siteConfig.careerStartDate);
-  const contactHref = `${innerPages.contact.path}/`;
+  const contactHref = `${innerPages.contact.path}`;
 
   return (
     <section id="why-choose" className="relative px-4 py-14 sm:px-6 md:py-28">

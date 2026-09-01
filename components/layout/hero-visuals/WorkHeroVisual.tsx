@@ -37,6 +37,7 @@ export function WorkHeroVisual() {
               <motion.div
                 key={project.slug}
                 className="absolute inset-x-0 top-0"
+                initial={false}
                 animate={{
                   y: offset * 14,
                   scale: 1 - offset * 0.06,

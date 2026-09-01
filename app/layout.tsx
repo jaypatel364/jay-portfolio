@@ -1,14 +1,12 @@
-import { cookies } from "next/headers";
 import { rootMetadata, rootViewport, OG_LOGO, OG_LOGO_URL } from "@/lib/seo";
 import { features } from "@/settings/features";
 import {
   ACCENT_BOOT_CSS,
   BOOT_COVER_CSS,
-  getServerAccentId,
   getThemeBootScript,
   PAGE_REVEAL_CSS,
 } from "@/lib/theme-boot";
-import { ACCENT_STORAGE_KEY } from "@/lib/accent-colors";
+import { DEFAULT_ACCENT_ID } from "@/lib/accent-colors";
 import { fontVariables, inter } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
 import { AccentBoot } from "@/components/layout/AccentBoot";
@@ -21,18 +19,15 @@ import "./globals.css";
 export const metadata = rootMetadata;
 export const viewport = rootViewport;
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const accentId = getServerAccentId(cookieStore.get(ACCENT_STORAGE_KEY)?.value);
-
   return (
     <html
       lang="en"
-      data-accent={accentId}
+      data-accent={DEFAULT_ACCENT_ID}
       className={cn("bg-background", fontVariables)}
       suppressHydrationWarning
     >
@@ -53,7 +48,7 @@ export default async function RootLayout({
         <meta property="og:logo:height" content={String(OG_LOGO.height)} />
       </head>
       <body className={cn("antialiased", inter.className)}>
-        <AccentProvider initialAccentId={accentId}>
+        <AccentProvider initialAccentId={DEFAULT_ACCENT_ID}>
           <AccentBoot />
           {features.showLoadingScreen ? (
             <div id="site-boot-cover" className="site-boot-cover" aria-hidden="true" />

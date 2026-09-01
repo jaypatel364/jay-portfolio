@@ -131,13 +131,12 @@ export function GitHubGraph({ initialDays = [] }: GitHubGraphProps) {
   const windowLabel = `${start.toLocaleDateString("en-US", { month: "short", year: "numeric" })} – ${end.toLocaleDateString("en-US", { month: "short", year: "numeric" })}`;
 
   const handleCellHover = (e: React.MouseEvent, day: Day) => {
-    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const { year, month, day: dayNum } = parseDateLocal(day.date);
     const localDate = new Date(year, month, dayNum);
     setTooltip({
       text: `${day.count} contribution${day.count !== 1 ? "s" : ""} · ${localDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" })}`,
-      x: r.left + r.width / 2,
-      y: r.top,
+      x: e.clientX,
+      y: e.clientY,
     });
   };
 

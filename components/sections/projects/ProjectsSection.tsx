@@ -3,13 +3,25 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ExternalLink, Code2, Lock, Hammer, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { SectionHeading, SectionPageCta } from "@/components/shared";
 import { innerPages } from "@/settings/pages";
 import { cn } from "@/lib/utils";
-import { PROJECTS, HOME_PROJECT_COUNT, projectHref } from "@/settings/projects";
-import { features } from "@/settings/features";
+import {
+  PROJECTS,
+  HOME_PROJECT_COUNT,
+  isProjectPublished,
+  projectHref,
+  type ProjectCategory,
+} from "@/settings/projects";
 import { ProjectVisual } from "./ProjectVisual";
+import { ProjectCardActions } from "./ProjectCardActions";
+
+const CATEGORY_LABEL: Record<ProjectCategory, string> = {
+  fullstack: "Full Stack",
+  frontend: "Frontend",
+  backend: "Backend",
+};
 
 function ExpandableDesc({ text }: { text: string }) {
   const [expanded, setExpanded] = useState(false);
@@ -109,24 +121,29 @@ export function ProjectsSection() {
               <ProjectVisual project={project} />
 
               <div className="flex flex-1 flex-col p-6">
-                <p
-                  className={cn(
-                    "text-xs font-semibold uppercase tracking-wider",
-                    project.nda ? "text-muted-foreground" : "text-primary",
-                  )}
-                >
-                  {project.tagline}
-                </p>
+                <div className="flex items-start justify-between gap-3">
+                  <p
+                    className={cn(
+                      "min-w-0 text-xs font-semibold uppercase tracking-wider",
+                      project.nda ? "text-muted-foreground" : "text-primary",
+                    )}
+                  >
+                    {project.tagline}
+                  </p>
+                  <span className="shrink-0 rounded-full border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {CATEGORY_LABEL[project.category]}
+                  </span>
+                </div>
                 <h3 className="font-heading mt-1 text-lg font-bold leading-snug">
-                  {project.nda ? (
-                    project.title
-                  ) : (
+                  {!project.nda || isProjectPublished(project.slug) ? (
                     <Link
                       href={projectHref(project)}
                       className="transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     >
                       {project.title}
                     </Link>
+                  ) : (
+                    project.title
                   )}
                 </h3>
                 <div className="mt-2.5 flex flex-1 flex-col">
@@ -144,58 +161,8 @@ export function ProjectsSection() {
                   ))}
                 </div>
 
-                <div className="mt-5 flex items-center gap-4 border-t border-border pt-4">
-                  {project.nda ? (
-                    <p className="flex select-none items-center gap-1.5 text-xs text-muted-foreground/70">
-                      <Lock className="h-3 w-3 shrink-0" />
-                      Code &amp; demo unavailable under NDA
-                    </p>
-                  ) : (
-                    <div className="flex flex-wrap items-center gap-4">
-                      {project.codeUrl && (
-                        <a
-                          href={project.codeUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                          aria-label={`View source code for ${project.title}`}
-                          title={`View source code for ${project.title}`}
-                        >
-                          <Code2 className="h-4 w-4" aria-hidden />
-                          Code
-                        </a>
-                      )}
-                      {project.demoUrl && (
-                        <a
-                          href={project.demoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                          aria-label={`View live demo for ${project.title}`}
-                          title={`Live demo: ${project.title}`}
-                        >
-                          <ExternalLink className="h-4 w-4" aria-hidden />
-                          Demo
-                        </a>
-                      )}
-                      <Link
-                        href={projectHref(project)}
-                        className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-                      >
-                        {features.showCaseStudies && project.caseStudy ? "Case study" : "Details"}
-                      </Link>
-                      {project.wip && (
-                        <span className="inline-flex items-center gap-1 text-xs text-primary/70">
-                          <Hammer className="h-3 w-3" />
-                          Building
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  <span className="ml-auto rounded-full border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    {project.category}
-                  </span>
+                <div className="mt-5 border-t border-border pt-4">
+                  <ProjectCardActions project={project} variant="home" />
                 </div>
               </div>
             </motion.div>

@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel } from "@/lib/utils";
 import { HeroVisualFrame } from "./HeroVisualFrame";
@@ -29,32 +25,9 @@ function lineText(line: CodeLine) {
 
 const FULL_SOURCE = TYPED_LINES.map(lineText).join("\n");
 
-/** About hero — a live snippet that types who Jay is. */
+/** About hero — static code snapshot (SSR-friendly, no entrance animation). */
 export function AboutHeroVisual() {
-  const reducedMotion = useReducedMotion();
   const expLabel = getExperienceLabel(siteConfig.careerStartDate);
-  const [chars, setChars] = useState(0);
-
-  useEffect(() => {
-    if (reducedMotion) {
-      setChars(FULL_SOURCE.length);
-      return;
-    }
-    setChars(0);
-    const id = window.setInterval(() => {
-      setChars((n) => {
-        if (n >= FULL_SOURCE.length) {
-          window.clearInterval(id);
-          return n;
-        }
-        return n + 1;
-      });
-    }, 22);
-    return () => window.clearInterval(id);
-  }, [reducedMotion]);
-
-  const visible = FULL_SOURCE.slice(0, chars);
-  const done = chars >= FULL_SOURCE.length;
 
   return (
     <HeroVisualFrame
@@ -69,22 +42,14 @@ export function AboutHeroVisual() {
         </div>
 
         <pre className="mt-4 flex-1 overflow-x-auto font-mono text-[11px] leading-6 sm:text-[13px]">
-          {visible.split("\n").map((row, i) => (
+          {FULL_SOURCE.split("\n").map((row, i) => (
             <div key={i} className="whitespace-pre-wrap break-all sm:whitespace-pre">
               {colorize(row)}
-              {i === visible.split("\n").length - 1 && !done ? (
-                <span className="ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 bg-primary align-middle" />
-              ) : null}
             </div>
           ))}
         </pre>
 
-        <motion.div
-          initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mt-3 grid grid-cols-3 gap-2"
-        >
+        <div className="mt-3 grid grid-cols-3 gap-2">
           {[
             { value: `${expLabel}y`, label: "Experience" },
             { value: siteConfig.location, label: "Based" },
@@ -98,7 +63,7 @@ export function AboutHeroVisual() {
               <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">{stat.label}</p>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </HeroVisualFrame>
   );

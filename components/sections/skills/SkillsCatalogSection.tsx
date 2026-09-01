@@ -108,11 +108,21 @@ export function SkillsCatalogSection() {
         </ol>
       </motion.div>
 
-      {/* ── Layer cards — always in the DOM for SEO ── */}
+      {/* ── Layer cards — tabs are direct children of tablist for valid ARIA ── */}
       <div
         className="mt-12 grid gap-4 lg:grid-cols-3 lg:gap-5"
         role="tablist"
         aria-label="Stack layers"
+        onKeyDown={(e) => {
+          const index = SKILL_GROUPS.findIndex((g) => g.category === activeCategory);
+          if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+            e.preventDefault();
+            setActiveCategory(SKILL_GROUPS[Math.min(index + 1, SKILL_GROUPS.length - 1)].category);
+          } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+            e.preventDefault();
+            setActiveCategory(SKILL_GROUPS[Math.max(index - 1, 0)].category);
+          }
+        }}
       >
         {SKILL_GROUPS.map((group, i) => {
           const layer = layerFor(group.category);
@@ -120,8 +130,15 @@ export function SkillsCatalogSection() {
           const selected = group.category === activeCategory;
 
           return (
-            <motion.article
+            <motion.button
               key={group.category}
+              type="button"
+              role="tab"
+              aria-selected={selected}
+              tabIndex={selected ? 0 : -1}
+              aria-controls={`${baseId}-panel-${i}`}
+              id={`${baseId}-tab-${i}`}
+              onClick={() => setActiveCategory(group.category)}
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.25 }}
@@ -130,75 +147,66 @@ export function SkillsCatalogSection() {
                 delay: Math.min(i * 0.06, 0.2),
                 ease: [0.22, 1, 0.36, 1],
               }}
+              className={cn(
+                "group flex h-full w-full flex-col rounded-2xl border p-5 text-left transition-all duration-300 sm:p-6",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                selected
+                  ? "border-primary/40 bg-card shadow-glow"
+                  : "border-border/70 bg-card/60 hover:border-primary/25 hover:bg-card",
+              )}
             >
-              <button
-                type="button"
-                role="tab"
-                aria-selected={selected}
-                aria-controls={`${baseId}-panel-${i}`}
-                id={`${baseId}-tab-${i}`}
-                onClick={() => setActiveCategory(group.category)}
-                className={cn(
-                  "group flex h-full w-full flex-col rounded-2xl border p-5 text-left transition-all duration-300 sm:p-6",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                  selected
-                    ? "border-primary/40 bg-card shadow-glow"
-                    : "border-border/70 bg-card/60 hover:border-primary/25 hover:bg-card",
-                )}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <span
-                    className={cn(
-                      "inline-flex h-11 w-11 items-center justify-center rounded-xl border transition-colors",
-                      selected
-                        ? "border-primary/40 bg-primary text-primary-foreground"
-                        : "border-primary/15 bg-primary/10 text-primary",
-                    )}
-                  >
-                    <Icon className="h-5 w-5" aria-hidden />
-                  </span>
-                  <span className="font-mono text-[11px] font-semibold tabular-nums text-muted-foreground">
-                    {String(group.skills.length).padStart(2, "0")} tools
-                  </span>
-                </div>
-
-                <h3 className="font-heading mt-4 text-lg font-bold tracking-tight">
-                  {group.category}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {layer?.summary ?? group.description}
-                </p>
-
-                {layer?.highlights && (
-                  <ul className="mt-4 space-y-1.5">
-                    {layer.highlights.map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-start gap-2 text-xs leading-snug text-muted-foreground"
-                      >
-                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                {/* Always-visible skill names for crawlers + scanability */}
-                <p className="mt-4 border-t border-border/60 pt-3 text-[11px] leading-relaxed text-muted-foreground/90">
-                  <span className="font-semibold text-foreground/70">Includes: </span>
-                  {group.skills.map((s) => s.name).join(" · ")}
-                </p>
-
+              <div className="flex items-start justify-between gap-3">
                 <span
                   className={cn(
-                    "mt-4 text-xs font-semibold transition-colors",
-                    selected ? "text-primary" : "text-muted-foreground group-hover:text-primary",
+                    "inline-flex h-11 w-11 items-center justify-center rounded-xl border transition-colors",
+                    selected
+                      ? "border-primary/40 bg-primary text-primary-foreground"
+                      : "border-primary/15 bg-primary/10 text-primary",
                   )}
                 >
-                  {selected ? "Viewing details ↓" : "Explore layer →"}
+                  <Icon className="h-5 w-5" aria-hidden />
                 </span>
-              </button>
-            </motion.article>
+                <span className="font-mono text-[11px] font-semibold tabular-nums text-muted-foreground">
+                  {String(group.skills.length).padStart(2, "0")} tools
+                </span>
+              </div>
+
+              <h3 className="font-heading mt-4 text-lg font-bold tracking-tight">
+                {group.category}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {layer?.summary ?? group.description}
+              </p>
+
+              {layer?.highlights && (
+                <ul className="mt-4 space-y-1.5">
+                  {layer.highlights.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-2 text-xs leading-snug text-muted-foreground"
+                    >
+                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Always-visible skill names for crawlers + scanability */}
+              <p className="mt-4 border-t border-border/60 pt-3 text-[11px] leading-relaxed text-muted-foreground/90">
+                <span className="font-semibold text-foreground/70">Includes: </span>
+                {group.skills.map((s) => s.name).join(" · ")}
+              </p>
+
+              <span
+                className={cn(
+                  "mt-4 text-xs font-semibold transition-colors",
+                  selected ? "text-primary" : "text-muted-foreground group-hover:text-primary",
+                )}
+              >
+                {selected ? "Viewing details ↓" : "Explore layer →"}
+              </span>
+            </motion.button>
           );
         })}
       </div>

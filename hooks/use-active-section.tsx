@@ -26,7 +26,9 @@ const SECTION_LABELS: Record<string, string> = {
   "contact-explore": "Explore",
 };
 
-function formatSectionId(id: string): string {
+function formatSectionId(id: string | undefined | null): string {
+  if (!id) return "Page";
+
   return (
     SECTION_LABELS[id] ??
     id
@@ -53,7 +55,7 @@ export function useActiveSection() {
       return;
     }
 
-    setActive(formatSectionId(nodes[0].id));
+    setActive(formatSectionId(nodes[0]?.id));
 
     const observer = new IntersectionObserver(
       (entries) => {

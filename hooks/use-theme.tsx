@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 type Theme = "light" | "dark" | "system";
 type ResolvedTheme = "light" | "dark";
@@ -8,6 +15,8 @@ type ResolvedTheme = "light" | "dark";
 interface ThemeContextType {
   theme: Theme;
   resolvedTheme: ResolvedTheme;
+  /** True after localStorage preference is read on the client. */
+  mounted: boolean;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 }
@@ -31,8 +40,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("dark");
   const [mounted, setMounted] = useState(false);
 
-  // Initialize theme from localStorage or system preference
-  useEffect(() => {
+  // Read saved preference before paint so chrome (theme toggle icon) matches storage.
+  useLayoutEffect(() => {
     const saved = localStorage.getItem("portfolio-theme") as Theme | null;
     const initialTheme = saved || "system";
     setThemeState(initialTheme);
@@ -82,7 +91,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme, mounted, setTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

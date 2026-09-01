@@ -11,8 +11,9 @@
  *    • JSON-LD structured data:
  *        – Person / WebSite / ProfilePage / FAQ  (home — revisit with the home rewrite)
  *        – AboutPage, CollectionPage (work), WebPage (skills), ContactPage
- *        – Project CreativeWork / SoftwareSourceCode + breadcrumbs
+ *        – Project WebPage + CreativeWork / SoftwareSourceCode + breadcrumbs
  *    • Per-page metadata helpers  (about / skills / work / contact)
+ *    • Sitemap registry in `settings/sitemap-urls.json` (per-URL lastModified)
  *
  *  Usage in app/layout.tsx:
  *    import { rootMetadata, rootViewport } from "@/settings/seo";
@@ -31,8 +32,19 @@
  */
 
 import type { Metadata, Viewport } from "next";
+import type { MetadataRoute } from "next";
+import sitemapUrls from "./sitemap-urls.json";
 import { siteConfig } from "@/settings";
-import { PROJECTS, projectHref, type Project } from "@/settings/projects";
+import type { ProjectDetail } from "@/settings/project-details/types";
+import {
+  PROJECTS,
+  PROJECT_COVER_IMAGE,
+  projectHref,
+  projectImageAlt,
+  projectImageSrc,
+  projectImageTitle,
+  type Project,
+} from "@/settings/projects";
 // ─── Base URL ──────────────────────────────────────────────────────────────────
 // Canonical / OG / sitemap must be the public domain — never VERCEL_URL.
 // VERCEL_URL is a unique deploy host (e.g. jay-portfolio-xxxx.vercel.app).
@@ -52,8 +64,56 @@ export function pageUrl(path: string): string {
   return slug ? `${BASE_URL}/${slug}/` : HOME_URL;
 }
 
-/** Real content date — do not use `new Date()` in JSON-LD or sitemap. */
-export const LAST_UPDATED = "2026-08-25";
+/** Real content date — fallback when a route is missing from `sitemap-urls.json`. */
+export const LAST_UPDATED = "2026-08-31";
+
+/** ISO-8601 DateTime for schema.org `dateModified` (date-only fails validators). */
+export const LAST_UPDATED_ISO = `${LAST_UPDATED}T00:00:00+05:30`;
+
+// ─── Sitemap registry (`settings/sitemap-urls.json`) ───────────────────────────
+// Edit one entry's lastModified there without changing other pages.
+
+export type SitemapUrlEntry = {
+  /** Route slug — "" for home, "about", "work/spendly-personal-expense-tracker", etc. */
+  path: string;
+  /** YYYY-MM-DD (IST). Do not use `new Date()` in app code. */
+  lastModified: string;
+};
+
+/** Canonical list of indexable routes and their last-modified dates. */
+export const SITEMAP_URLS = sitemapUrls as SitemapUrlEntry[];
+
+/** Normalize a sitemap path or full URL slug to the registry key. */
+export function normalizeSitemapPath(path: string): string {
+  if (path === "/" || path === "") return "";
+  return path.replace(/^\/+|\/+$/g, "");
+}
+
+/** Look up lastModified for a route. Falls back to `LAST_UPDATED` when missing. */
+export function getSitemapLastModified(path: string): string {
+  const key = normalizeSitemapPath(path);
+  const entry = SITEMAP_URLS.find((item) => normalizeSitemapPath(item.path) === key);
+  return entry?.lastModified ?? LAST_UPDATED;
+}
+
+/** ISO-8601 DateTime for schema.org `dateModified`. */
+export function getSitemapLastModifiedIso(path: string): string {
+  return `${getSitemapLastModified(path)}T00:00:00+05:30`;
+}
+
+/** Resolve a registry path to the public absolute URL. */
+export function sitemapEntryUrl(path: string): string {
+  const key = normalizeSitemapPath(path);
+  return key ? pageUrl(key) : HOME_URL;
+}
+
+/** Build the sitemap payload consumed by `app/sitemap.ts`. */
+export function buildSitemap(): MetadataRoute.Sitemap {
+  return SITEMAP_URLS.map(({ path, lastModified }) => ({
+    url: sitemapEntryUrl(path),
+    lastModified,
+  }));
+}
 
 // ─── Core copy ─────────────────────────────────────────────────────────────────
 // Change these to adjust the text that appears in Google results and link previews.
@@ -313,32 +373,87 @@ export const contactPageMetadata = innerPageMetadata(
   ],
 );
 
-export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
+/** Named Person node — bare `@id` refs show as “Unnamed item” in Rich Results. */
+function personRef() {
   return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
+    "@type": "Person" as const,
+    "@id": `${HOME_URL}#person`,
+    name: siteConfig.fullName,
+  };
+}
+
+/** Named WebSite node for `isPartOf` links. */
+function websiteRef() {
+  return {
+    "@type": "WebSite" as const,
+    "@id": `${HOME_URL}#website`,
+    name: `${siteConfig.fullName} — Portfolio`,
+  };
+}
+
+/**
+ * BreadcrumbList with a list `name` and nested WebPage `item` objects.
+ * Plain URL `item` strings often render as “Unnamed item” in validators.
+ */
+function breadcrumbListFields(
+  items: { name: string; url: string }[],
+  opts?: { id?: string; name?: string },
+) {
+  const last = items[items.length - 1];
+  const listId = opts?.id ?? `${last?.url ?? HOME_URL}#breadcrumb`;
+  const listName = opts?.name ?? (last ? `${last.name} breadcrumb` : "Breadcrumb");
+
+  return {
+    "@type": "BreadcrumbList" as const,
+    "@id": listId,
+    name: listName,
+    numberOfItems: items.length,
     itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
+      "@type": "ListItem" as const,
+      "@id": `${listId}/item-${i + 1}`,
       position: i + 1,
       name: item.name,
-      item: item.url,
+      item: {
+        "@type": "WebPage" as const,
+        "@id": item.url,
+        name: item.name,
+        url: item.url,
+      },
     })),
   };
 }
 
+export function breadcrumbJsonLd(
+  items: { name: string; url: string }[],
+  opts?: { id?: string; name?: string },
+) {
+  return {
+    "@context": "https://schema.org",
+    ...breadcrumbListFields(items, opts),
+  };
+}
+
 export function innerPageBreadcrumbJsonLd(pageName: string, slug: string) {
-  return breadcrumbJsonLd([
-    { name: "Home", url: HOME_URL },
-    { name: pageName, url: pageUrl(slug) },
-  ]);
+  const url = pageUrl(slug);
+  return breadcrumbJsonLd(
+    [
+      { name: "Home", url: HOME_URL },
+      { name: pageName, url },
+    ],
+    { id: `${url}#breadcrumb`, name: `${pageName} breadcrumb` },
+  );
 }
 
 export function projectBreadcrumbJsonLd(project: Pick<Project, "slug" | "title">) {
-  return breadcrumbJsonLd([
-    { name: "Home", url: HOME_URL },
-    { name: "Work", url: pageUrl("work") },
-    { name: project.title, url: pageUrl(`work/${project.slug}`) },
-  ]);
+  const url = pageUrl(`work/${project.slug}`);
+  return breadcrumbJsonLd(
+    [
+      { name: "Home", url: HOME_URL },
+      { name: "Work", url: pageUrl("work") },
+      { name: project.title, url },
+    ],
+    { id: `${url}#breadcrumb`, name: `${project.title} breadcrumb` },
+  );
 }
 
 /** About page — AboutPage pointing at the same Person entity as home. */
@@ -350,12 +465,13 @@ export const aboutPageJsonLd = {
   name: "About Jay Patel | Full Stack Developer",
   description: aboutPageMetadata.description,
   inLanguage: "en-US",
-  isPartOf: { "@id": `${HOME_URL}#website` },
-  about: { "@id": `${HOME_URL}#person` },
-  mainEntity: { "@id": `${HOME_URL}#person` },
+  isPartOf: websiteRef(),
+  about: personRef(),
+  mainEntity: personRef(),
+  dateModified: getSitemapLastModifiedIso("about"),
 };
 
-/** Skills page — WebPage wrapper; ItemLists are injected separately. */
+/** Skills page — WebPage wrapper; catalog schemas are injected separately. */
 export function skillsPageJsonLd() {
   return {
     "@context": "https://schema.org",
@@ -365,14 +481,25 @@ export function skillsPageJsonLd() {
     name: "Full Stack Skills & Services | React, Next.js, Node.js",
     description: skillsPageMetadata.description,
     inLanguage: "en-US",
-    isPartOf: { "@id": `${HOME_URL}#website` },
-    about: { "@id": `${HOME_URL}#person` },
-    mainEntity: { "@id": `${HOME_URL}#person` },
+    isPartOf: websiteRef(),
+    about: personRef(),
+    mainEntity: personRef(),
+    dateModified: getSitemapLastModifiedIso("skills"),
   };
+}
+
+/** URL-safe fragment for JSON-LD `@id` / `url` values. */
+function schemaFragment(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 64);
 }
 
 /** Work index — CollectionPage + ItemList of every project card on the page. */
 export function workPageJsonLd() {
+  const listId = `${pageUrl("work")}#project-list`;
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -381,41 +508,172 @@ export function workPageJsonLd() {
     name: "Work & Projects | Jay Patel Full Stack Portfolio",
     description: workPageMetadata.description,
     inLanguage: "en-US",
-    isPartOf: { "@id": `${HOME_URL}#website` },
-    about: { "@id": `${HOME_URL}#person` },
+    isPartOf: websiteRef(),
+    about: personRef(),
+    dateModified: getSitemapLastModifiedIso("work"),
     mainEntity: {
       "@type": "ItemList",
+      "@id": listId,
       name: "Selected projects",
       numberOfItems: PROJECTS.length,
-      itemListElement: PROJECTS.map((project, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        name: project.title,
-        url: `${BASE_URL}${projectHref(project)}`,
-      })),
+      itemListElement: PROJECTS.map((project, i) => {
+        const url = `${BASE_URL}${projectHref(project)}`;
+        const img = projectImageMetadata(project);
+        return {
+          "@type": "ListItem",
+          "@id": `${listId}/item-${i + 1}`,
+          position: i + 1,
+          name: project.title,
+          item: {
+            "@type": "CreativeWork",
+            "@id": url,
+            name: project.title,
+            url,
+            image: {
+              "@type": "ImageObject",
+              url: img.url,
+              name: img.title,
+              caption: img.title,
+              width: img.width,
+              height: img.height,
+              encodingFormat: img.type,
+            },
+          },
+        };
+      }),
     },
   };
 }
 
-/** Public `/work/<slug>/` pages (currently noindex). */
-export function projectJsonLd(project: Project) {
+/** Absolute URL for a project cover image. */
+export function projectImageAbsoluteUrl(project: Pick<Project, "slug" | "image">): string {
+  return `${BASE_URL}${projectImageSrc(project)}`;
+}
+
+/** Open Graph / Twitter / metadata fields for a project screenshot. */
+export function projectImageMetadata(
+  project: Pick<Project, "slug" | "title" | "image" | "tagline">,
+) {
+  return {
+    url: projectImageAbsoluteUrl(project),
+    width: PROJECT_COVER_IMAGE.width,
+    height: PROJECT_COVER_IMAGE.height,
+    alt: projectImageAlt(project),
+    title: projectImageTitle(project),
+    type: PROJECT_COVER_IMAGE.type,
+  };
+}
+
+/** ImageObject JSON-LD for project cover screenshots. */
+export function projectImageJsonLd(project: Project) {
+  const img = projectImageMetadata(project);
+  const workUrl = pageUrl(`work/${project.slug}`);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    "@id": `${workUrl}#cover-image`,
+    url: img.url,
+    contentUrl: img.url,
+    name: img.title,
+    caption: img.title,
+    description: project.tagline,
+    width: img.width,
+    height: img.height,
+    encodingFormat: img.type,
+    representativeOfPage: true,
+    inLanguage: "en-US",
+    creator: personRef(),
+    isPartOf: {
+      "@type": "CreativeWork",
+      "@id": `${workUrl}#work`,
+      name: project.title,
+      url: workUrl,
+    },
+  };
+}
+
+/** WebPage wrapper for a published `/work/<slug>/` case study. */
+export function projectDetailPageJsonLd(project: Project, detail: ProjectDetail) {
+  const slugPath = `work/${project.slug}`;
+  const url = pageUrl(slugPath);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${url}#webpage`,
+    url,
+    name: detail.seo.title,
+    description: detail.seo.description,
+    inLanguage: "en-US",
+    isPartOf: websiteRef(),
+    about: personRef(),
+    author: personRef(),
+    dateModified: getSitemapLastModifiedIso(slugPath),
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      "@id": `${url}#cover-image`,
+    },
+    breadcrumb: {
+      "@id": `${url}#breadcrumb`,
+    },
+    mainEntity: {
+      "@id": `${url}#work`,
+    },
+  };
+}
+
+/** Public `/work/<slug>/` pages — indexed only when published. */
+export function projectJsonLd(project: Project, detail?: ProjectDetail) {
+  const slugPath = `work/${project.slug}`;
+  const url = pageUrl(slugPath);
+  const img = projectImageMetadata(project);
+  const description = detail?.seo.description ?? project.desc;
+  const headline = detail?.seo.ogTitle ?? project.title;
+  const keywords = detail?.seo
+    ? [detail.seo.primaryTopic, ...detail.seo.secondaryTopics].join(", ")
+    : project.tags.join(", ");
+
   return {
     "@context": "https://schema.org",
     "@type": project.codeUrl ? "SoftwareSourceCode" : "CreativeWork",
-    "@id": `${pageUrl(`work/${project.slug}`)}#work`,
+    "@id": `${url}#work`,
     name: project.title,
-    description: project.desc,
-    url: pageUrl(`work/${project.slug}`),
+    headline,
+    description,
+    url,
+    image: {
+      "@type": "ImageObject",
+      "@id": `${url}#cover-image`,
+      url: img.url,
+      contentUrl: img.url,
+      name: img.title,
+      caption: img.alt,
+      width: img.width,
+      height: img.height,
+      encodingFormat: img.type,
+    },
     inLanguage: "en-US",
-    author: { "@id": `${HOME_URL}#person` },
-    creator: { "@id": `${HOME_URL}#person` },
-    keywords: project.tags.join(", "),
+    isPartOf: websiteRef(),
+    author: personRef(),
+    creator: personRef(),
+    keywords,
+    dateModified: getSitemapLastModifiedIso(slugPath),
+    ...(detail
+      ? {
+          about: {
+            "@type": "Thing",
+            name: detail.seo.primaryTopic,
+          },
+        }
+      : {}),
+    ...(detail ? { mainEntityOfPage: { "@id": `${url}#webpage` } } : {}),
     ...(project.codeUrl ? { codeRepository: project.codeUrl } : {}),
     ...(project.demoUrl ? { sameAs: project.demoUrl } : {}),
   };
 }
 
-/** Contact page — ContactPage + ContactPoint for rich results. */
+/** Contact page — ContactPage + ContactPoint (breadcrumb is a separate script). */
 export const contactPageJsonLd = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
@@ -424,32 +682,25 @@ export const contactPageJsonLd = {
   name: `Contact ${siteConfig.fullName}`,
   description: contactPageMetadata.description,
   inLanguage: "en-US",
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: HOME_URL },
-      { "@type": "ListItem", position: 2, name: "Contact", item: pageUrl("contact") },
-    ],
-  },
-  mainEntity: {
-    "@id": `${HOME_URL}#person`,
-  },
+  isPartOf: websiteRef(),
+  mainEntity: personRef(),
+  dateModified: getSitemapLastModifiedIso("contact"),
   about: {
-    "@type": "Person",
-    "@id": `${HOME_URL}#person`,
-    name: siteConfig.fullName,
+    ...personRef(),
     email: `mailto:${siteConfig.email}`,
     ...(siteConfig.phone ? { telephone: siteConfig.phone } : {}),
     url: HOME_URL,
     jobTitle: "Full Stack Developer",
     address: {
       "@type": "PostalAddress",
+      name: "Ahmedabad, India",
       addressLocality: "Ahmedabad",
       addressCountry: "IN",
     },
     contactPoint: [
       {
         "@type": "ContactPoint",
+        name: "Professional inquiries",
         contactType: "professional inquiries",
         email: siteConfig.email,
         ...(siteConfig.phone ? { telephone: siteConfig.phone } : {}),
@@ -465,26 +716,47 @@ export const contactPageJsonLd = {
   },
 };
 
-/** ItemList of development services for the skills page (SEO). */
+/**
+ * Services catalog for the skills page.
+ * Use OfferCatalog (not ItemList) — top-level ItemList triggers Google Carousel
+ * validation ("Multiple ListItem elements" / duplicate urls).
+ */
 export function servicesItemListJsonLd() {
   const items = siteConfig.services.items;
+  const catalogId = `${pageUrl("skills")}#services`;
   return {
     "@context": "https://schema.org",
-    "@type": "ItemList",
+    "@type": "OfferCatalog",
+    "@id": catalogId,
     name: siteConfig.services.title,
     description: siteConfig.services.intro,
+    url: catalogId,
     numberOfItems: items.length,
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.title,
-      description: item.description,
-      url: `${pageUrl("skills")}#services`,
-    })),
+    itemListElement: items.map((item, i) => {
+      const slug = schemaFragment(item.title);
+      const itemUrl = `${pageUrl("skills")}#service-${slug}`;
+      return {
+        "@type": "Offer",
+        "@id": itemUrl,
+        position: i + 1,
+        name: item.title,
+        description: item.description,
+        url: itemUrl,
+        itemOffered: {
+          "@type": "Service",
+          name: item.title,
+          description: item.description,
+          provider: personRef(),
+        },
+      };
+    }),
   };
 }
 
-/** DefinedTermSet-style skill catalog for the skills page (SEO). */
+/**
+ * Tech stack catalog for the skills page.
+ * DefinedTermSet (not ItemList) — avoids Carousel rich-result checks.
+ */
 export function skillsCatalogJsonLd() {
   const groups = [
     {
@@ -518,47 +790,90 @@ export function skillsCatalogJsonLd() {
       skills: ["Git", "GitHub", "Docker", "AWS", "Jest", "Vitest", "Figma", "Linux"],
     },
   ];
-  const allSkills = groups.flatMap((g) => g.skills);
+  const allSkills = groups.flatMap((g) => g.skills.map((name) => ({ name, group: g.name })));
+  const catalogId = `${pageUrl("skills")}#stack-catalog`;
 
   return {
     "@context": "https://schema.org",
-    "@type": "ItemList",
+    "@type": "DefinedTermSet",
+    "@id": catalogId,
     name: siteConfig.skillsPage.catalogTitle,
     description: siteConfig.skillsPage.catalogIntro,
-    numberOfItems: allSkills.length,
-    itemListElement: allSkills.map((name, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name,
-      url: `${pageUrl("skills")}#stack-catalog`,
-    })),
+    url: catalogId,
+    hasDefinedTerm: allSkills.map(({ name, group }) => {
+      const termId = `${pageUrl("skills")}#skill-${schemaFragment(name)}`;
+      return {
+        "@type": "DefinedTerm",
+        "@id": termId,
+        name,
+        termCode: name,
+        description: `${name} (${group})`,
+        url: termId,
+        inDefinedTermSet: catalogId,
+      };
+    }),
   };
 }
 
-export function projectPageMetadata(project: {
-  slug: string;
-  title: string;
-  tagline: string;
-  desc: string;
-}): Metadata {
-  const title = `${project.title} — ${project.tagline} | Jay Patel`;
-  const description = project.desc.slice(0, 160);
+export function projectPageMetadata(
+  project: {
+    slug: string;
+    title: string;
+    tagline: string;
+    desc: string;
+  },
+  opts?: {
+    published?: boolean;
+    seoTitle?: string;
+    seoDescription?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    keywords?: string[];
+  },
+): Metadata {
+  const title = opts?.seoTitle ?? `${project.title} | ${project.tagline} | Jay Patel`;
+  const description = (opts?.seoDescription ?? project.desc).slice(0, 160);
+  const indexable = Boolean(opts?.published) && siteConfig.allowIndexing;
+  const cover = projectImageMetadata(project);
+  const socialTitle = opts?.ogTitle ?? opts?.seoTitle ?? `${project.title}: ${project.tagline}`;
+  const socialDescription = opts?.ogDescription ?? description;
+
   return {
     title: { absolute: title },
     description,
+    ...(opts?.keywords?.length ? { keywords: opts.keywords } : {}),
     alternates: { canonical: pageUrl(`work/${project.slug}`) },
-    robots: { index: false, follow: true },
+    robots: indexable
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large" as const,
+          },
+        }
+      : { index: false, follow: true },
     openGraph: {
+      type: "website",
       url: pageUrl(`work/${project.slug}`),
-      title: `${project.title} — ${project.tagline}`,
-      description,
-      images: [OG_IMAGE],
+      title: socialTitle,
+      description: socialDescription,
+      images: [
+        {
+          url: cover.url,
+          width: cover.width,
+          height: cover.height,
+          alt: cover.alt,
+          type: cover.type,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.title} — ${project.tagline}`,
-      description,
-      images: [TWITTER_IMAGE],
+      title: socialTitle,
+      description: socialDescription,
+      images: [{ url: cover.url, alt: cover.alt }],
       ...TWITTER_ACCOUNT,
     },
   };
@@ -588,6 +903,7 @@ export const personJsonLd = {
   description: SEO_DESCRIPTION,
   address: {
     "@type": "PostalAddress",
+    name: "Ahmedabad, India",
     addressLocality: "Ahmedabad",
     addressCountry: "IN",
   },
@@ -643,9 +959,7 @@ export const webSiteJsonLd = {
   name: `${siteConfig.fullName} — Portfolio`,
   url: HOME_URL,
   description: SEO_DESCRIPTION,
-  author: {
-    "@id": `${HOME_URL}#person`,
-  },
+  author: personRef(),
   inLanguage: "en-US",
 };
 
@@ -659,42 +973,44 @@ export const profilePageJsonLd = {
   url: HOME_URL,
   name: SEO_TITLE_DEFAULT,
   description: SEO_DESCRIPTION,
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: HOME_URL,
-      },
-    ],
-  },
-  mainEntity: {
-    "@id": `${HOME_URL}#person`,
-  },
-  about: {
-    "@id": `${HOME_URL}#person`,
-  },
-  dateModified: LAST_UPDATED,
+  breadcrumb: breadcrumbListFields([{ name: "Home", url: HOME_URL }], {
+    id: `${HOME_URL}#breadcrumb`,
+    name: "Home breadcrumb",
+  }),
+  mainEntity: personRef(),
+  about: personRef(),
+  dateModified: getSitemapLastModifiedIso(""),
 };
 
 /**
  * FAQ structured data — generated from siteConfig.faqItems.
  * Only injected when showFAQ is true (markup must match visible content).
+ * Each Question/Answer gets an explicit name so validators don’t show “Unnamed item”.
  */
 export const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "@id": `${HOME_URL}#faq`,
-  mainEntity: siteConfig.faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
+  name: "Full Stack Developer FAQ",
+  url: `${HOME_URL}#faq`,
+  inLanguage: "en-US",
+  isPartOf: websiteRef(),
+  mainEntity: siteConfig.faqItems.map((item, index) => {
+    const slug = schemaFragment(item.question);
+    const questionId = `${HOME_URL}#faq-q-${index + 1}-${slug}`;
+    return {
+      "@type": "Question",
+      "@id": questionId,
+      name: item.question,
+      url: questionId,
+      acceptedAnswer: {
+        "@type": "Answer",
+        "@id": `${questionId}-answer`,
+        name: item.question,
+        text: item.answer,
+      },
+    };
+  }),
 };
 
 /**

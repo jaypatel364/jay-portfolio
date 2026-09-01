@@ -72,7 +72,7 @@ function TerminalBlock() {
       (sideEffect as { type: "output"; nodes: React.ReactNode[]; _sideEffect?: string })
         ._sideEffect === "contact"
     ) {
-      setTimeout(() => window.location.assign("/contact"), 800);
+      setTimeout(() => window.location.assign("/contact/"), 800);
     }
   };
 
@@ -125,7 +125,7 @@ function TerminalBlock() {
       {/* Body — fixed height prevents layout shift as boot lines appear */}
       <div
         ref={bodyRef}
-        className="h-64 lg:h-80 overflow-y-auto p-4 font-mono text-sm"
+        className="h-64 lg:h-[21rem] overflow-y-auto p-4 font-mono text-sm"
         style={{ scrollbarWidth: "none" }}
         onWheel={(e) => {
           const el = bodyRef.current;
@@ -206,7 +206,7 @@ function TerminalBlock() {
 
       {booted && (
         <div className="border-t border-border/40 px-4 py-2 font-mono text-[10px] text-muted-foreground text-center select-none">
-          click · type a command · try "neofetch" or "sudo hire-me" · ↑↓ history
+          click · type a command · try "neofetch" · ↑↓ history
         </div>
       )}
     </div>

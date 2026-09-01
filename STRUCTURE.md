@@ -54,7 +54,8 @@ settings/
   content.ts    → FAQ, headline words, marquee, badges
   pages.ts      → inner-route titles, heroes, CTAs
   chat.ts       → chatbot rates, system prompt, canned answers
-  projects.ts   → project / case-study data (when used)
+  projects.ts   → project catalog + card data
+  project-details/ → long-form write-ups + publish list
   types.ts      → shared TS types
   seo.ts        → metadata + JSON-LD
   index.ts      → merges into `siteConfig`
@@ -93,8 +94,10 @@ import { features } from "@/settings/features";
 components/sections/hero/
   index.ts              # public barrel — export the section
   HeroSection.tsx       # orchestrator (keep relatively thin)
-  TerminalBlock.tsx     # extracted UI
-  terminal-commands.tsx # command data / helpers
+  HeroBackground.tsx    # extracted UI — backdrop layers
+  HeroWeb.tsx           # client island — interactive web
+  HeroActions.tsx       # client island — CTAs
+  HeroSocials.tsx       # extracted UI
   SocialIcons.tsx
 ```
 
@@ -200,7 +203,7 @@ If you are unsure: **if changing it changes what visitors see about Jay without 
 | Feature           | Location                                                      |
 | ----------------- | ------------------------------------------------------------- |
 | Home composition  | `app/page.tsx`                                                |
-| Inner routes      | `app/about`, `app/skills`, `app/work`, `app/contact`          |
+| Inner routes      | `app/about`, `app/skills`, `app/work`, `app/contact/`         |
 | Sections          | `components/sections/<name>/`                                 |
 | Chatbot / games   | `components/features/chatbot/`, `…/games/`                    |
 | Command palette   | `components/features/command-palette/`                        |

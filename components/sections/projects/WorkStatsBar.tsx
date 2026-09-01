@@ -6,7 +6,6 @@ import { Briefcase, Code2, Layers, Rocket, type LucideIcon } from "lucide-react"
 import { useCountUp } from "@/hooks/use-count-up";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
-import { features } from "@/settings/features";
 import { getWorkPageStats } from "@/settings/projects";
 
 type StatItem = {
@@ -49,7 +48,7 @@ function StatCell({ item, index, isLast }: { item: StatItem; index: number; isLa
           >
             <Icon className="h-4 w-4" strokeWidth={2.1} aria-hidden />
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground/80">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             {item.hint}
           </span>
         </div>
@@ -92,19 +91,12 @@ export function WorkStatsBar() {
       icon: Layers,
       hint: "Stack",
     },
-    features.showCaseStudies && stats.caseStudyCount > 0
-      ? {
-          label: "Case studies",
-          value: stats.caseStudyCount,
-          icon: Code2,
-          hint: "Deep dive",
-        }
-      : {
-          label: "Live demos",
-          value: stats.demoCount,
-          icon: Code2,
-          hint: "Try it",
-        },
+    {
+      label: "Live demos",
+      value: stats.demoCount,
+      icon: Code2,
+      hint: "Try it",
+    },
   ];
 
   return (

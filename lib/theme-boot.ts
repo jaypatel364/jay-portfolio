@@ -3,7 +3,6 @@ import {
   ACCENT_STORAGE_KEY,
   DEFAULT_ACCENT_ID,
   buildAccentBootCss,
-  resolveAccentId,
 } from "@/lib/accent-colors";
 import { features } from "@/settings/features";
 
@@ -32,7 +31,16 @@ export function getThemeBootScript(): string {
     var fallback = ${JSON.stringify(DEFAULT_ACCENT_ID)};
     var accentId = fallback;
     try {
-      accentId = localStorage.getItem(${JSON.stringify(ACCENT_STORAGE_KEY)}) || root.getAttribute("data-accent") || fallback;
+      var storedAccent = localStorage.getItem(${JSON.stringify(ACCENT_STORAGE_KEY)});
+      if (storedAccent) {
+        accentId = storedAccent;
+      } else {
+        var cookieMatch = document.cookie.match(
+          new RegExp("(?:^|;\\\\s*)" + ${JSON.stringify(ACCENT_STORAGE_KEY)} + "=([^;]*)")
+        );
+        if (cookieMatch) accentId = decodeURIComponent(cookieMatch[1]);
+        else accentId = root.getAttribute("data-accent") || fallback;
+      }
     } catch (e) {}
     if (valid.indexOf(accentId) === -1) accentId = fallback;
     root.setAttribute("data-accent", accentId);
@@ -68,11 +76,6 @@ export function getThemeBootScript(): string {
   } catch (e) {}
 })();
 `.trim();
-}
-
-/** Server-side accent id from cookie (matches ACCENT_STORAGE_KEY). */
-export function getServerAccentId(cookieValue: string | undefined): string {
-  return resolveAccentId(cookieValue);
 }
 
 export const PAGE_REVEAL_CSS = `

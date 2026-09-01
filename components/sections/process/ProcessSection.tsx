@@ -84,7 +84,6 @@ export function ProcessSection() {
         <div className="mx-auto mt-12 w-full min-w-0 max-w-3xl overflow-x-auto px-1 sm:px-2">
           <ol
             className="flex w-full min-w-0 list-none items-start"
-            role="tablist"
             aria-label="Delivery process steps"
           >
             {steps.map((step, i) => {
@@ -118,10 +117,10 @@ export function ProcessSection() {
                   <div className="flex w-14 shrink-0 flex-col items-center sm:w-[5.5rem]">
                     <button
                       type="button"
-                      role="tab"
-                      aria-selected={isActive}
+                      aria-current={isActive ? "step" : undefined}
                       aria-controls={`${baseId}-panel-${i}`}
                       id={`${baseId}-tab-${i}`}
+                      aria-label={`Step ${i + 1}: ${step.title}`}
                       onClick={() => setActive(i)}
                       className={cn(
                         "group flex w-full flex-col items-center gap-2.5 rounded-xl text-center",
@@ -192,7 +191,6 @@ export function ProcessSection() {
                 <article
                   key={step.title}
                   id={`${baseId}-panel-${i}`}
-                  role="tabpanel"
                   aria-labelledby={`${baseId}-tab-${i}`}
                   hidden={!isActive}
                   className="relative"
@@ -239,22 +237,32 @@ export function ProcessSection() {
                 <span className="sm:hidden">Prev</span>
               </button>
 
-              <div className="flex items-center gap-1.5">
+              <div
+                className="flex items-center gap-0.5"
+                role="group"
+                aria-label="Jump to process step"
+              >
                 {steps.map((step, i) => (
                   <button
                     key={step.title}
                     type="button"
                     onClick={() => setActive(i)}
                     aria-label={`Go to step ${i + 1}: ${step.title}`}
-                    className={cn(
-                      "h-1.5 rounded-full transition-all duration-300",
-                      i === active
-                        ? "w-5 bg-primary"
-                        : i < active
-                          ? "w-1.5 bg-primary/45"
-                          : "w-1.5 bg-border hover:bg-muted-foreground/40",
-                    )}
-                  />
+                    aria-current={i === active ? "step" : undefined}
+                    className="inline-flex h-11 min-w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+                  >
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "block rounded-full transition-all duration-300",
+                        i === active
+                          ? "h-1.5 w-5 bg-primary"
+                          : i < active
+                            ? "h-1.5 w-1.5 bg-primary/45"
+                            : "h-1.5 w-1.5 bg-border group-hover:bg-muted-foreground/40",
+                      )}
+                    />
+                  </button>
                 ))}
               </div>
 

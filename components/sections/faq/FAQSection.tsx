@@ -158,11 +158,12 @@ export function FAQSection() {
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 If you&apos;re unsure whether I&apos;m the right fit for your project, feel free to
-                reach out. I&apos;ll get back to you within 24 hours.
+                reach out. I&apos;ll get back to you within{" "}
+                <strong className="font-semibold text-foreground">24 hours</strong>.
               </p>
             </div>
             <a
-              href="/contact"
+              href="/contact/"
               className="group inline-flex shrink-0 items-center gap-2 rounded-xl gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <Sparkles className="h-4 w-4" />

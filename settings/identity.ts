@@ -81,7 +81,7 @@ export const identity = {
   careerStartDate: "2022-12",
 
   /** Stats shown on the Skills section. */
-  projectCount: 5,
+  projectCount: 7,
 
   /**
    * Profile photo — path from site root (NOT /public/…).

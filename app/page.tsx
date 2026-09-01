@@ -14,7 +14,10 @@ import { HomeOverlays } from "@/components/layout/HomeOverlays";
 import { SectionErrorBoundary } from "@/components/shared";
 import { HeroSection } from "@/components/sections/hero";
 
-/** Below-fold sections — code-split so hero paints with less JS. SSR kept for SEO. */
+/**
+ * Below-fold sections — code-split for smaller JS chunks but SSR kept for SEO
+ * (full HTML is in view-source; crawlers see all copy without running JS).
+ */
 const sectionFallback = () => <div className="min-h-[32vh]" aria-hidden="true" />;
 
 const AboutSection = dynamic(
@@ -37,12 +40,6 @@ const FAQSection = dynamic(
 export default function Home() {
   return (
     <ThemeProvider>
-      {/*
-       * ── JSON-LD Structured Data ─────────────────────────────────────────
-       * Injected as <script type="application/ld+json"> in the <head>.
-       * Includes: Person, WebSite, ProfilePage, and FAQ schemas.
-       * All schema content is defined in lib/seo.ts — edit it there.
-       */}
       {homePageJsonLdSchemas.map((schema, i) => (
         <script
           key={i}
@@ -53,12 +50,6 @@ export default function Home() {
         />
       ))}
 
-      {/*
-       * LoadingScreenWrapper:
-       *   - Controlled by siteConfig.showLoadingScreen
-       *   - Plays the boot sequence once per session (sessionStorage)
-       *   - Overlays the boot UI; page HTML is always in the document (SEO)
-       */}
       <LoadingScreenWrapper>
         <div className="site-shell relative min-h-screen w-full min-w-0 overflow-x-clip bg-background text-foreground">
           <ScrollProgressBar />
