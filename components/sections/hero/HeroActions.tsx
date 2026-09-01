@@ -10,7 +10,7 @@ export function HeroActions() {
     <div className="flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row sm:gap-4">
       <SiteButton
         onClick={openResumeViewer}
-        className="w-full px-8 py-4 sm:w-auto"
+        className="w-full px-8 py-4 sm:w-auto cursor-pointer"
         aria-label="View Jay Patel's resume"
       >
         <Download className="h-4 w-4" aria-hidden />

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Send, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
-import { ConfettiCanvas } from "@/components/shared";
+import { ConfettiCanvas, SiteButton } from "@/components/shared";
 import { cn } from "@/lib/utils";
 import { RecaptchaCheckbox, isRecaptchaEnabled } from "./RecaptchaCheckbox";
 
@@ -245,10 +245,14 @@ export function ContactForm({
           </motion.div>
         )}
 
-        <button
+        <SiteButton
           type="submit"
-          disabled={state === "loading" || (recaptchaRequired && !recaptchaToken)}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl gradient-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 sm:w-auto"
+          variant="primary"
+          className={cn(
+            "w-full sm:w-auto",
+            (state === "loading" || (recaptchaRequired && !recaptchaToken)) &&
+              "opacity-50 hover:scale-100 pointer-events-none",
+          )}
         >
           {state === "loading" ? (
             <>
@@ -261,7 +265,7 @@ export function ContactForm({
               Send Message
             </>
           )}
-        </button>
+        </SiteButton>
       </motion.form>
     </>
   );

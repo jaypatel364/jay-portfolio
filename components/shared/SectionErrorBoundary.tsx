@@ -1,7 +1,6 @@
 "use client";
 
 import { Component, type ReactNode } from "react";
-import * as Sentry from "@sentry/nextjs";
 import { AlertTriangle } from "lucide-react";
 
 interface Props {
@@ -31,8 +30,10 @@ export class SectionErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
     if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-      Sentry.captureException(error, {
-        extra: { section: this.props.section, componentStack: info.componentStack },
+      void import("@sentry/nextjs").then((Sentry) => {
+        Sentry.captureException(error, {
+          extra: { section: this.props.section, componentStack: info.componentStack },
+        });
       });
     }
     console.error(`[SectionErrorBoundary] ${this.props.section ?? "Unknown"}:`, error, info);

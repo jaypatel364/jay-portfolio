@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Spider web — nodes on a jittered grid, each drifting on its own slow orbit.
@@ -18,13 +18,13 @@ import { useEffect, useRef } from "react";
 
 const VIEW_W = 1000;
 const VIEW_H = 620;
-const COLS = 8;
-const ROWS = 6;
+const COLS = 10;
+const ROWS = 7;
 const NODE_COUNT = COLS * ROWS;
 
 /** Strands form under this length; they fade out as they approach it. */
-const LINK_DIST = 178;
-const POINTER_DIST = 200;
+const LINK_DIST = 198;
+const POINTER_DIST = 210;
 /** How far a node gives way to the pointer, and how lazily it returns. */
 const POINTER_PUSH = 30;
 const SPRING = 0.055;
@@ -64,15 +64,15 @@ const NODES: Node[] = (() => {
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS; col++) {
       nodes.push({
-        homeX: (col + 0.5 + (rand() - 0.5) * 0.62) * cellW,
-        homeY: (row + 0.5 + (rand() - 0.5) * 0.62) * cellH,
-        ampX: 7 + rand() * 15,
-        ampY: 6 + rand() * 13,
+        homeX: (col + 0.5 + (rand() - 0.5) * 0.52) * cellW,
+        homeY: (row + 0.5 + (rand() - 0.5) * 0.52) * cellH,
+        ampX: 5 + rand() * 11,
+        ampY: 4 + rand() * 10,
         rateX: 0.045 + rand() * 0.075,
         rateY: 0.04 + rand() * 0.07,
         phaseX: rand() * TAU,
         phaseY: rand() * TAU,
-        accent: rand() > 0.86,
+        accent: rand() > 0.9,
       });
     }
   }
@@ -148,8 +148,8 @@ function computeFrame(time: number, pointerX: number, pointerY: number, spring: 
 
       const strength = 1 - dist / LINK_DIST;
       const segment = `M${x.toFixed(1)} ${y.toFixed(1)}L${xs[j].toFixed(1)} ${ys[j].toFixed(1)}`;
-      if (strength > 0.62) strong.push(segment);
-      else if (strength > 0.32) mid.push(segment);
+      if (strength > 0.58) strong.push(segment);
+      else if (strength > 0.28) mid.push(segment);
       else faint.push(segment);
     }
 
@@ -190,6 +190,16 @@ export function HeroWeb() {
   const pointerDotRef = useRef<SVGPathElement>(null);
   const nodesRef = useRef<SVGPathElement>(null);
   const accentsRef = useRef<SVGPathElement>(null);
+  /** Tall mobile viewports stretch `none`; slice keeps cell size closer to desktop. */
+  const [preserveAspect, setPreserveAspect] = useState<"none" | "xMidYMid slice">("none");
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const syncAspect = () => setPreserveAspect(mq.matches ? "xMidYMid slice" : "none");
+    syncAspect();
+    mq.addEventListener("change", syncAspect);
+    return () => mq.removeEventListener("change", syncAspect);
+  }, []);
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -203,6 +213,7 @@ export function HeroWeb() {
     let elapsed = 0;
     let last = 0;
     let raf = 0;
+    let cancelled = false;
 
     const step = (now: number) => {
       if (needsMeasure) {
@@ -249,18 +260,42 @@ export function HeroWeb() {
     };
     const onVisibility = () => (document.hidden ? stop() : start());
 
-    const io = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
-    io.observe(svg);
+    let io: IntersectionObserver | undefined;
+    const attach = () => {
+      if (cancelled || !svgRef.current) return;
 
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("scroll", onReflow, { passive: true });
-    window.addEventListener("resize", onReflow);
-    document.addEventListener("pointerleave", onPointerOut);
-    document.addEventListener("visibilitychange", onVisibility);
+      io = new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop()));
+      io.observe(svgRef.current);
 
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+      window.addEventListener("scroll", onReflow, { passive: true });
+      window.addEventListener("resize", onReflow);
+      document.addEventListener("pointerleave", onPointerOut);
+      document.addEventListener("visibilitychange", onVisibility);
+    };
+
+    const ric = window.requestIdleCallback;
+    if (ric) {
+      const idleId = ric(attach, { timeout: 2500 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(idleId);
+        stop();
+        io?.disconnect();
+        window.removeEventListener("pointermove", onPointerMove);
+        window.removeEventListener("scroll", onReflow);
+        window.removeEventListener("resize", onReflow);
+        document.removeEventListener("pointerleave", onPointerOut);
+        document.removeEventListener("visibilitychange", onVisibility);
+      };
+    }
+
+    const timeoutId = window.setTimeout(attach, 120);
     return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
       stop();
-      io.disconnect();
+      io?.disconnect();
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("scroll", onReflow);
       window.removeEventListener("resize", onReflow);
@@ -274,22 +309,22 @@ export function HeroWeb() {
       ref={svgRef}
       className="hero-web absolute inset-0 h-full w-full"
       viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
-      preserveAspectRatio="none"
+      preserveAspectRatio={preserveAspect}
       aria-hidden="true"
       focusable="false"
     >
       {/* Trig can round differently across engines; the paths are decorative. */}
-      {[0.06, 0.13, 0.24].map((opacity, i) => (
+      {[0.07, 0.15, 0.27].map((opacity, i) => (
         <path
           key={opacity}
           ref={(el) => {
             tierRefs.current[i] = el;
           }}
+          className="hero-web-tier"
           d={REST.tiers[i]}
           fill="none"
           stroke="var(--foreground)"
           strokeOpacity={opacity}
-          strokeWidth={0.8}
           vectorEffect="non-scaling-stroke"
           suppressHydrationWarning
         />
@@ -301,11 +336,11 @@ export function HeroWeb() {
           ref={(el) => {
             pointerRefs.current[i] = el;
           }}
+          className="hero-web-pointer"
           d={REST.pointer[i]}
           fill="none"
           stroke="var(--primary)"
           strokeOpacity={opacity}
-          strokeWidth={0.8}
           vectorEffect="non-scaling-stroke"
           suppressHydrationWarning
         />
@@ -313,22 +348,22 @@ export function HeroWeb() {
 
       <path
         ref={nodesRef}
+        className="hero-web-node"
         d={REST.nodes}
         fill="none"
         stroke="var(--foreground)"
         strokeOpacity={0.26}
-        strokeWidth={2.4}
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
         suppressHydrationWarning
       />
       <path
         ref={accentsRef}
+        className="hero-web-accent"
         d={REST.accents}
         fill="none"
         stroke="var(--primary)"
         strokeOpacity={0.6}
-        strokeWidth={3.6}
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
         suppressHydrationWarning
@@ -337,11 +372,11 @@ export function HeroWeb() {
       {/* Where the pointer strands converge */}
       <path
         ref={pointerDotRef}
+        className="hero-web-pointer-dot"
         d={REST.pointerDot}
         fill="none"
         stroke="var(--primary)"
         strokeOpacity={0.55}
-        strokeWidth={5}
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
         suppressHydrationWarning

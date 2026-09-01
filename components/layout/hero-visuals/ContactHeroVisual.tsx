@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { Calendar, Mail, MapPin } from "lucide-react";
-import { CopyEmail } from "@/components/shared";
+import { CopyEmail, SiteButton } from "@/components/shared";
 import { siteConfig } from "@/lib/site-config";
 import { HeroVisualFrame } from "./HeroVisualFrame";
 
@@ -86,15 +85,16 @@ export function ContactHeroVisual() {
           </li>
         </ul>
 
-        <Link
+        <SiteButton
           href={siteConfig.bookingUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center justify-center gap-2 rounded-xl gradient-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02]"
+          external
+          variant="primary"
+          size="sm"
+          className="mt-4 w-full"
         >
           <Calendar className="h-4 w-4" aria-hidden />
           Book a 15-minute call
-        </Link>
+        </SiteButton>
       </div>
     </HeroVisualFrame>
   );

@@ -395,6 +395,50 @@ html[data-page-ready="true"] .site-shell {
   );
 }
 
+.hero-web-tier {
+  stroke-width: 0.8px;
+}
+.hero-web-pointer {
+  stroke-width: 0.8px;
+}
+.hero-web-node {
+  stroke-width: 2.4px;
+}
+.hero-web-accent {
+  stroke-width: 3.6px;
+}
+.hero-web-pointer-dot {
+  stroke-width: 5px;
+}
+
+/* Mobile: avoid stretched cells + chunky strokes — thinner, softer, more fade. */
+@media (max-width: 767px) {
+  .hero-web {
+    opacity: 0.72;
+    mask-image: radial-gradient(
+      ellipse 72% 58% at 50% 36%,
+      transparent 24%,
+      rgb(0 0 0 / 0.45) 62%,
+      black 90%
+    );
+  }
+  .hero-web-tier {
+    stroke-width: 0.45px;
+  }
+  .hero-web-pointer {
+    stroke-width: 0.45px;
+  }
+  .hero-web-node {
+    stroke-width: 1.15px;
+  }
+  .hero-web-accent {
+    stroke-width: 1.6px;
+  }
+  .hero-web-pointer-dot {
+    stroke-width: 2.2px;
+  }
+}
+
 /* Film grain — the layer that stops flat fills from looking synthetic. */
 .hero-grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
