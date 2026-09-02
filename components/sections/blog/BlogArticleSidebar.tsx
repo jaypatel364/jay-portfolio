@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Calendar, Mail } from "lucide-react";
+import { SiteButton } from "@/components/shared";
 import { sanityImageUrl } from "@/lib/sanity/image";
 import type { BlogPostCard } from "@/lib/sanity/types";
 import { siteConfig } from "@/settings";
@@ -68,23 +69,21 @@ export function BlogArticleSidebar({
           Freelance full-stack work — React, Next.js, Node.js. Usually replies within 24 hours.
         </p>
         <div className="mt-3 flex flex-col gap-2">
-          <Link
-            href="/contact/"
-            className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90"
-          >
+          <SiteButton href="/contact/" size="sm" className="w-full">
             <Mail className="h-3.5 w-3.5" aria-hidden />
             Start a project
-          </Link>
+          </SiteButton>
           {siteConfig.bookingUrl ? (
-            <a
+            <SiteButton
               href={siteConfig.bookingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-border/70 bg-background/70 px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:border-primary/35"
+              external
+              variant="secondary"
+              size="sm"
+              className="w-full"
             >
               <Calendar className="h-3.5 w-3.5" aria-hidden />
               Book a call
-            </a>
+            </SiteButton>
           ) : null}
         </div>
       </div>

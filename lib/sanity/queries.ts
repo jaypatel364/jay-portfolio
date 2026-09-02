@@ -29,6 +29,7 @@ const postCardFields = /* groq */ `
 `;
 
 export async function getBlogSettings(): Promise<BlogSettings | null> {
+  const filter = blogListFilter();
   return sanityFetch<BlogSettings>(/* groq */ `*[_type == "blogSettings"][0]{
       title,
       description,
@@ -37,10 +38,97 @@ export async function getBlogSettings(): Promise<BlogSettings | null> {
       noindexUntilReady,
       defaultOgImage ${imageProjection},
       seo,
-      "featuredPosts": featuredPosts[]->{ ${postCardFields} }
+      "featuredPosts": featuredPosts[]->[${filter}]{ ${postCardFields} }
     }`);
 }
 
+export type BlogPostsPageOptions = {
+  page?: number;
+  perPage?: number;
+  category?: string | null;
+  search?: string | null;
+  excludeIds?: string[];
+};
+
+export type BlogPostsPage = {
+  posts: BlogPostCard[];
+  total: number;
+  page: number;
+  perPage: number;
+  totalPages: number;
+};
+
+const DEFAULT_POSTS_PER_PAGE = 12;
+
+function blogListConditions(options: BlogPostsPageOptions = {}): {
+  filter: string;
+  params: Record<string, unknown>;
+} {
+  const filter = blogListFilter();
+  const parts = [filter];
+  const params: Record<string, unknown> = {};
+
+  if (options.category) {
+    parts.push(`$category in categories[]->slug.current`);
+    params.category = options.category;
+  }
+
+  const search = options.search?.trim();
+  if (search) {
+    parts.push(`(
+      title match $searchPattern
+      || excerpt match $searchPattern
+      || count(categories[@->title match $searchPattern]) > 0
+      || count(tags[@->title match $searchPattern]) > 0
+    )`);
+    params.searchPattern = `*${search}*`;
+  }
+
+  if (options.excludeIds?.length) {
+    parts.push(`!(_id in $excludeIds)`);
+    params.excludeIds = options.excludeIds;
+  }
+
+  return { filter: parts.join(" && "), params };
+}
+
+export async function getBlogPostsPage(options: BlogPostsPageOptions = {}): Promise<BlogPostsPage> {
+  const perPage = Math.max(1, options.perPage ?? DEFAULT_POSTS_PER_PAGE);
+  const requestedPage = Math.max(1, options.page ?? 1);
+  const { filter, params } = blogListConditions(options);
+
+  const total = (await sanityFetch<number>(/* groq */ `count(*[${filter}])`, params)) ?? 0;
+  const totalPages = total > 0 ? Math.ceil(total / perPage) : 1;
+  const page = total > 0 ? Math.min(requestedPage, totalPages) : 1;
+
+  const posts = await sanityFetch<BlogPostCard[]>(
+    /* groq */ `*[${filter}] | order(coalesce(publishedAt, _updatedAt) desc) [$start...$end] {
+        ${postCardFields}
+      }`,
+    {
+      ...params,
+      start: (page - 1) * perPage,
+      end: (page - 1) * perPage + perPage,
+    },
+  );
+
+  return {
+    posts: posts ?? [],
+    total,
+    page,
+    perPage,
+    totalPages,
+  };
+}
+
+/** Total published posts (for index metadata and counts). */
+export async function getBlogPostsCount(): Promise<number> {
+  const filter = blogListFilter();
+  const total = await sanityFetch<number>(/* groq */ `count(*[${filter}])`);
+  return total ?? 0;
+}
+
+/** @deprecated Prefer getBlogPostsPage for the index; kept for simple all-posts use. */
 export async function getBlogPosts(): Promise<BlogPostCard[]> {
   const filter = blogListFilter();
   const posts = await sanityFetch<
@@ -78,6 +166,17 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
         _type == "imageBlock" => {
           ...,
           image ${imageProjection}
+        },
+        _type == "galleryBlock" => {
+          ...,
+          images[]{ ..., image ${imageProjection} }
+        },
+        markDefs[]{
+          ...,
+          _type == "internalLink" => {
+            ...,
+            reference->{ _type, title, "slug": slug.current }
+          }
         }
       },
       "authors": authors[]->{
@@ -144,17 +243,26 @@ export async function getBlogSlugs(): Promise<string[]> {
   return (rows ?? []).map((r) => r.slug).filter(Boolean);
 }
 
-/** Resolve featured strip: Blog Settings picks → posts marked featured → newest. */
+/** Posts explicitly marked featured in Sanity (published only). */
+export async function getFeaturedBlogPosts(limit = 2): Promise<BlogPostCard[]> {
+  const filter = blogListFilter();
+  const posts = await sanityFetch<BlogPostCard[]>(
+    /* groq */ `*[${filter} && featured == true]
+      | order(coalesce(publishedAt, _updatedAt) desc) [0...$limit] {
+      ${postCardFields}
+    }`,
+    { limit },
+  );
+  return posts ?? [];
+}
+/** Resolve featured strip: Blog Settings picks → posts marked featured. */
 export function resolveFeaturedPosts(
   settings: BlogSettings | null,
-  posts: BlogPostCard[],
+  flaggedPosts: BlogPostCard[],
   limit = 2,
 ): BlogPostCard[] {
   const fromSettings = (settings?.featuredPosts ?? []).filter(Boolean);
   if (fromSettings.length) return fromSettings.slice(0, limit);
 
-  const flagged = posts.filter((p) => p.featured);
-  if (flagged.length) return flagged.slice(0, limit);
-
-  return posts.slice(0, Math.min(1, posts.length));
+  return flaggedPosts.slice(0, limit);
 }

@@ -4,12 +4,16 @@ export { urlForImage, sanityImageUrl } from "./image";
 export {
   getBlogSettings,
   getBlogPosts,
+  getBlogPostsPage,
+  getBlogPostsCount,
+  getFeaturedBlogPosts,
   getBlogTaxonomy,
   getBlogPostBySlug,
   getMorePostsForArticle,
   getBlogSlugs,
   resolveFeaturedPosts,
 } from "./queries";
+export type { BlogPostsPage, BlogPostsPageOptions } from "./queries";
 export { extractToc, headingIdFromBlock, slugifyHeading } from "./headings";
 export type { TocHeading } from "./headings";
 export type {

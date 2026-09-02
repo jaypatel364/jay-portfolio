@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, FolderOpen } from "lucide-react";
+import { ArrowUpRight, FolderOpen } from "lucide-react";
 import { sanityImageUrl } from "@/lib/sanity/image";
 import { extractToc } from "@/lib/sanity/headings";
 import type { BlogPost, BlogPostCard } from "@/lib/sanity/types";
@@ -13,6 +13,7 @@ import { BlogReadingProgress } from "./BlogReadingProgress";
 import { BlogArticleSidebar } from "./BlogArticleSidebar";
 import { BlogStickyRail } from "./BlogStickyRail";
 import { BlogPublishedDate } from "./BlogPublishedDate";
+import { BlogBreadcrumb } from "./BlogBreadcrumb";
 
 export function BlogPostArticle({
   post,
@@ -49,15 +50,9 @@ export function BlogPostArticle({
           </div>
 
           <div className="relative mx-auto w-full min-w-0 max-w-6xl px-4 pb-14 sm:px-6 md:pb-16">
-            <Link
-              href="/blog/"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <ArrowLeft className="h-4 w-4" aria-hidden />
-              All posts
-            </Link>
+            <BlogBreadcrumb post={post} />
 
-            <div className="mt-8 grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-14">
+            <div className="grid min-w-0 items-center gap-8 lg:grid-cols-2 lg:gap-14">
               {/* Left — category / date / title */}
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">

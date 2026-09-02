@@ -42,6 +42,7 @@ export async function sanityFetch<T>(
   }
 }
 
+/** Public blog listing — published only, not scheduled for the future. */
 export function blogListFilter(): string {
-  return `_type == "post" && defined(slug.current) && defined(publishedAt)`;
+  return `_type == "post" && defined(slug.current) && status == "published" && defined(publishedAt) && publishedAt <= now()`;
 }

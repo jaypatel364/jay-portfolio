@@ -3,7 +3,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 export type TocHeading = {
   id: string;
   text: string;
-  level: 2 | 3;
+  level: 2 | 3 | 4;
 };
 
 function blockPlainText(block: PortableTextBlock): string {
@@ -34,25 +34,33 @@ export function headingIdFromBlock(block: PortableTextBlock): string {
 }
 
 /**
- * Table of contents for developer posts.
- * Only h2/h3 — skip if fewer than 2 headings (short notes don't need a TOC).
+ * All heading blocks for inline TOC blocks (h2–h4).
  */
-export function extractToc(body: PortableTextBlock[] | null | undefined): TocHeading[] {
+export function extractArticleHeadings(body: PortableTextBlock[] | null | undefined): TocHeading[] {
   if (!body?.length) return [];
 
   const headings: TocHeading[] = [];
   for (const block of body) {
     if (block._type !== "block") continue;
     const style = (block as { style?: string }).style;
-    if (style !== "h2" && style !== "h3") continue;
+    if (style !== "h2" && style !== "h3" && style !== "h4") continue;
     const text = blockPlainText(block);
     if (!text) continue;
     headings.push({
       id: headingIdFromBlock(block),
       text,
-      level: style === "h2" ? 2 : 3,
+      level: style === "h2" ? 2 : style === "h3" ? 3 : 4,
     });
   }
 
+  return headings;
+}
+
+/**
+ * Table of contents for developer posts.
+ * Only h2/h3 — skip if fewer than 2 headings (short notes don't need a TOC).
+ */
+export function extractToc(body: PortableTextBlock[] | null | undefined): TocHeading[] {
+  const headings = extractArticleHeadings(body).filter((h) => h.level === 2 || h.level === 3);
   return headings.length >= 2 ? headings : [];
 }
