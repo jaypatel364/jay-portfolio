@@ -77,8 +77,8 @@ export default async function BlogPage({
       <main id="main">
         <InnerPageHero
           label={blogPage.hero.label}
-          title={settings?.title || blogPage.hero.title}
-          description={settings?.description || blogPage.hero.description}
+          title={blogPage.hero.title}
+          description={blogPage.hero.description}
           chips={[...blogPage.hero.chips]}
           visual={<BlogHeroVisual />}
         />

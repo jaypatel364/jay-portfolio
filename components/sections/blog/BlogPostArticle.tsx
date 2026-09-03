@@ -94,24 +94,35 @@ export function BlogPostArticle({
               <div className="min-w-0">
                 {cover ? (
                   <figure>
-                    <div className="relative aspect-[16/11] overflow-hidden rounded-2xl border-2 border-primary/20 bg-muted/30 shadow-premium sm:aspect-[5/4] lg:aspect-[4/3]">
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-muted/30 shadow-premium hover:scale-101 hover:shadow-lg transition-all duration-300">
                       <Image
                         src={cover}
-                        alt={post.coverImage?.alt || post.title}
+                        alt={post.coverImage?.alt || post.coverImage?.title || post.title}
+                        title={post.coverImage?.title?.trim() || undefined}
                         fill
                         priority
-                        className="object-cover"
+                        className="object-contain"
                         sizes="(max-width: 1024px) 100vw, 560px"
                       />
                     </div>
-                    {post.coverImage?.caption ? (
-                      <figcaption className="mt-2 text-center text-sm text-muted-foreground lg:text-left">
-                        {post.coverImage.caption}
+                    {post.coverImage?.title?.trim() || post.coverImage?.caption?.trim() ? (
+                      <figcaption className="mt-2 text-center text-sm lg:text-left">
+                        {post.coverImage?.caption?.trim() ? (
+                          <span
+                            className={
+                              post.coverImage?.title?.trim()
+                                ? "mt-0.5 block text-muted-foreground"
+                                : "block text-muted-foreground"
+                            }
+                          >
+                            {post.coverImage.caption.trim()}
+                          </span>
+                        ) : null}
                       </figcaption>
                     ) : null}
                   </figure>
                 ) : (
-                  <div className="flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-border/70 bg-card/40 text-sm text-muted-foreground">
+                  <div className="flex aspect-[16/10] items-center justify-center rounded-2xl border-2 border-dashed border-border/70 bg-card/40 text-sm text-muted-foreground">
                     No cover image
                   </div>
                 )}

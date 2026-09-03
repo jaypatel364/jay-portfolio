@@ -39,7 +39,7 @@ export function BlogPostCard({ post, variant = "default", className }: BlogPostC
               alt={post.coverImage?.alt || post.title}
               fill
               priority
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              className="object-contain transition-transform duration-700 group-hover:scale-[1.03]"
               sizes="(max-width: 768px) 100vw, 55vw"
             />
           ) : (
@@ -109,7 +109,7 @@ export function BlogPostCard({ post, variant = "default", className }: BlogPostC
             src={imageUrl}
             alt={post.coverImage?.alt || post.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (

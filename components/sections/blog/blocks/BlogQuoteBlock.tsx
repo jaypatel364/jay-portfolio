@@ -31,7 +31,7 @@ export function BlogQuoteBlock({
     >
       <Quote
         className={cn(
-          "absolute opacity-[0.07]",
+          "pointer-events-none absolute z-0 opacity-[0.07]",
           isLarge
             ? "right-8 top-8 h-20 w-20"
             : isPull
@@ -43,19 +43,24 @@ export function BlogQuoteBlock({
 
       <blockquote
         className={cn(
-          "relative font-heading leading-snug text-foreground/90",
+          "relative z-10 font-heading leading-snug text-foreground/90",
           isLarge
-            ? "mx-auto max-w-3xl text-2xl font-bold sm:text-3xl"
+            ? "mx-auto max-w-3xl px-12 text-2xl font-bold sm:px-14 sm:text-3xl"
             : isPull
-              ? "text-xl font-semibold sm:text-2xl"
-              : "text-lg italic",
+              ? "pr-20 text-md font-semibold sm:pr-24 sm:text-lg"
+              : "pr-14 text-lg italic",
         )}
       >
         &ldquo;{text}&rdquo;
       </blockquote>
 
       {(author || source) && (
-        <figcaption className="relative mt-4 flex flex-wrap items-center gap-2 text-sm">
+        <figcaption
+          className={cn(
+            "relative z-10 mt-4 flex flex-wrap items-center gap-2 text-sm",
+            isLarge ? "justify-center px-12 sm:px-14" : isPull ? "pr-20 sm:pr-24" : "pr-14",
+          )}
+        >
           {author ? <span className="font-semibold text-foreground">{author}</span> : null}
           {source ? (
             <>

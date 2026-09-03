@@ -50,6 +50,7 @@ const TOKEN_CLASS: Record<CodeTokenType, string> = {
 
 function HighlightedLine({ line, language }: { line: string; language?: string }) {
   const tokens = useMemo(() => highlightCodeLine(line, language), [line, language]);
+  if (line.length === 0) return "\u00A0";
   return (
     <>
       {tokens.map((token, index) => (
@@ -163,14 +164,14 @@ export function BlogCodeBlock({
                       >
                         {lineNum}
                       </span>
-                      <span className="table-cell whitespace-pre-wrap break-words align-top">
+                      <span className="table-cell whitespace-pre break-words align-top">
                         <HighlightedLine line={line} language={language} />
                       </span>
                     </span>
                   );
                 })
               : lines.map((line, index) => (
-                  <span key={index} className="block whitespace-pre-wrap break-words">
+                  <span key={index} className="block whitespace-pre break-words">
                     <HighlightedLine line={line} language={language} />
                   </span>
                 ))}

@@ -12,9 +12,33 @@ export type SanityImageAsset = {
 export type SanityImage = {
   alt?: string | null;
   caption?: string | null;
+  title?: string | null;
   asset?: SanityImageAsset | null;
   hotspot?: { x: number; y: number; height: number; width: number } | null;
   crop?: { top: number; bottom: number; left: number; right: number } | null;
+};
+
+export type StructuredDataEntry = {
+  _type?: string | null;
+  schemaType?:
+    | "FAQPage"
+    | "HowTo"
+    | "BreadcrumbList"
+    | "Product"
+    | "Review"
+    | "Event"
+    | "Recipe"
+    | "Course"
+    | "SoftwareApplication"
+    | "VideoObject"
+    | "Custom"
+    | string
+    | null;
+  /** When false, frontend must not emit this schema. Defaults to true in Studio. */
+  enabled?: boolean | null;
+  faqItems?: Array<{ question?: string | null; answer?: string | null }> | null;
+  name?: string | null;
+  description?: string | null;
 };
 
 export type SeoFields = {
@@ -36,7 +60,13 @@ export type SeoFields = {
   keywords?: string[] | null;
   articleSection?: string | null;
   articleTags?: string[] | null;
+  /** Preferred Sanity field — article JSON-LD @type. */
+  primarySchemaType?: "BlogPosting" | "NewsArticle" | "TechArticle" | "HowTo" | null;
+  /** @deprecated Prefer primarySchemaType */
   schemaType?: "BlogPosting" | "TechArticle" | "HowTo" | null;
+  /** Extra schemas from Studio (FAQ enable/disable, HowTo, etc.). */
+  structuredData?: StructuredDataEntry[] | null;
+  /** @deprecated Frontend builds JSON-LD; ignored. */
   jsonLdExtra?: string | null;
 };
 

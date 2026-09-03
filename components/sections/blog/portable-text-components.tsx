@@ -218,6 +218,7 @@ export const portableTextComponents: PortableTextComponents = {
           (value?.images as Array<{
             alt?: string;
             caption?: string;
+            title?: string;
             image?: Parameters<typeof BlogImageBlock>[0]["image"];
           }>) ?? []
         }

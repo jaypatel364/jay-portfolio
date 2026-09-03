@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   ArrowRight,
   Bell,
@@ -9,6 +8,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
+import { SiteButton } from "@/components/shared";
 import { cn } from "@/lib/utils";
 
 const TEMPLATE_ICON: Record<string, LucideIcon> = {
@@ -21,6 +21,10 @@ const TEMPLATE_ICON: Record<string, LucideIcon> = {
   announcement: Megaphone,
   custom: Bell,
 };
+
+function isExternalUrl(url: string) {
+  return /^https?:\/\//i.test(url);
+}
 
 export function BlogCtaBlock({
   title,
@@ -76,21 +80,19 @@ export function BlogCtaBlock({
         {(buttonText && buttonUrl) || (secondaryButtonText && secondaryButtonUrl) ? (
           <div className={cn("flex flex-wrap gap-3", isLeft ? "justify-start" : "justify-center")}>
             {buttonText && buttonUrl ? (
-              <Link
-                href={buttonUrl}
-                className="group inline-flex items-center gap-2 rounded-xl gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
-              >
+              <SiteButton href={buttonUrl} external={isExternalUrl(buttonUrl)} variant="primary">
                 {buttonText}
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
+              </SiteButton>
             ) : null}
             {secondaryButtonText && secondaryButtonUrl ? (
-              <Link
+              <SiteButton
                 href={secondaryButtonUrl}
-                className="inline-flex items-center gap-2 rounded-xl border border-border/70 bg-card/70 px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary/30 hover:bg-card"
+                external={isExternalUrl(secondaryButtonUrl)}
+                variant="secondary"
               >
                 {secondaryButtonText}
-              </Link>
+              </SiteButton>
             ) : null}
           </div>
         ) : null}

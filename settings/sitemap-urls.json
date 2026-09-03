@@ -1,8 +1,9 @@
 [
-  { "path": "", "lastModified": "2026-08-31" },
+  { "path": "", "lastModified": "2026-09-03" },
   { "path": "about", "lastModified": "2026-08-28" },
   { "path": "skills", "lastModified": "2026-08-28" },
   { "path": "work", "lastModified": "2026-08-31" },
+  { "path": "blog", "lastModified": "2026-09-03" },
   { "path": "contact", "lastModified": "2026-08-28" },
   { "path": "work/spendly-personal-expense-tracker", "lastModified": "2026-08-31" },
   { "path": "work/social-media-backend-api", "lastModified": "2026-08-31" },

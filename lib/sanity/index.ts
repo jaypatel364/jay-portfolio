@@ -11,6 +11,7 @@ export {
   getBlogPostBySlug,
   getMorePostsForArticle,
   getBlogSlugs,
+  getBlogSitemapEntries,
   resolveFeaturedPosts,
 } from "./queries";
 export type { BlogPostsPage, BlogPostsPageOptions } from "./queries";

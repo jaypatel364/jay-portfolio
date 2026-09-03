@@ -146,11 +146,11 @@ export function BlogIndexSection({
             id="blog-posts-heading"
             className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl"
           >
-            Find your next read
+            Latest Web Development Articles
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {settings?.description ||
-              "Search the archive or filter by topic — engineering notes, deep dives, and production lessons."}
+            Explore practical tutorials, technology comparisons, architecture guides, and
+            engineering insights for building modern web applications.{" "}
           </p>
         </div>
 

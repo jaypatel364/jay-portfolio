@@ -21,6 +21,13 @@ export function BlogImageBlock({
   const url = sanityImageUrl(image, 1400);
   if (!url) return null;
 
+  const displayTitle = title?.trim() || undefined;
+  const displayCaption = caption?.trim() || undefined;
+  // Prefer block-level fields; fall back to values stored on the Sanity image itself.
+  const resolvedTitle = displayTitle || image?.title?.trim() || undefined;
+  const resolvedCaption = displayCaption || image?.caption?.trim() || undefined;
+  const resolvedAlt = alt?.trim() || image?.alt?.trim() || resolvedTitle || "Article image";
+
   const figureClass = cn(
     "mt-10 w-full max-w-full min-w-0",
     alignment === "left" && "float-left mr-6 mb-4 max-w-[min(100%,22rem)] clear-left",
@@ -43,7 +50,8 @@ export function BlogImageBlock({
     >
       <Image
         src={url}
-        alt={alt || title || "Article image"}
+        alt={resolvedAlt}
+        title={resolvedTitle}
         fill
         className="object-cover transition-transform duration-700 hover:scale-[1.02]"
         sizes={
@@ -70,9 +78,13 @@ export function BlogImageBlock({
       ) : (
         imageNode
       )}
-      {caption ? (
-        <figcaption className="mt-3 text-center text-sm leading-relaxed text-muted-foreground">
-          {caption}
+      {resolvedCaption ? (
+        <figcaption className="mt-3 text-center text-sm leading-relaxed">
+          {resolvedCaption ? (
+            <span className={cn("block text-muted-foreground", resolvedTitle && "mt-0.5")}>
+              {resolvedCaption}
+            </span>
+          ) : null}
         </figcaption>
       ) : null}
     </figure>

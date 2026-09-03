@@ -8,7 +8,7 @@ import {
   getBlogSlugs,
   getMorePostsForArticle,
 } from "@/lib/sanity";
-import { blogBreadcrumbJsonLd, blogPostJsonLd, blogPostMetadata } from "@/settings/blog";
+import { blogPostMetadata, blogPostPageJsonLdSchemas } from "@/settings/blog";
 
 export async function generateStaticParams() {
   const slugs = await getBlogSlugs();
@@ -37,27 +37,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound();
 
   const morePosts = await getMorePostsForArticle(post);
+  const jsonLdSchemas = blogPostPageJsonLdSchemas(post, settings);
 
   return (
     <SiteChrome>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            blogBreadcrumbJsonLd([
-              { name: "Home", path: "" },
-              { name: "Blog", path: "blog" },
-              { name: post.title, path: `blog/${post.slug}` },
-            ]),
-          ).replace(/</g, "\\u003c"),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(blogPostJsonLd(post, settings)).replace(/</g, "\\u003c"),
-        }}
-      />
+      {jsonLdSchemas.map((schema, index) => (
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+          }}
+        />
+      ))}
       <main id="main">
         <BlogPostArticle post={post} morePosts={morePosts} />
       </main>

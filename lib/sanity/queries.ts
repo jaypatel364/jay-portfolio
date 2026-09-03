@@ -4,6 +4,7 @@ import type { BlogPost, BlogPostCard, BlogSettings, BlogTaxonomy } from "./types
 const imageProjection = /* groq */ `{
   alt,
   caption,
+  title,
   asset->{
     _id,
     url,
@@ -241,6 +242,23 @@ export async function getBlogSlugs(): Promise<string[]> {
     { next: { revalidate: 300, tags: ["blog"] } },
   );
   return (rows ?? []).map((r) => r.slug).filter(Boolean);
+}
+
+/** Indexable blog URLs for sitemap.xml (skips seo.noIndex posts). */
+export async function getBlogSitemapEntries(): Promise<
+  Array<{ slug: string; lastModified: string }>
+> {
+  const filter = blogListFilter();
+  const rows = await sanityFetch<Array<{ slug: string; lastModified: string }>>(
+    /* groq */ `*[${filter} && seo.noIndex != true]{
+      "slug": slug.current,
+      "lastModified": coalesce(updatedAt, publishedAt, _updatedAt)
+    }`,
+    {},
+    { next: { revalidate: 300, tags: ["blog"] } },
+  );
+
+  return (rows ?? []).filter((row) => Boolean(row.slug));
 }
 
 /** Posts explicitly marked featured in Sanity (published only). */
