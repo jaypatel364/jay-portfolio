@@ -52,15 +52,30 @@ type SanityDocumentType =
  * Minimal shape of the Sanity webhook payload.
  *
  * Sanity sends the full document body, but we only need these fields.
- * The GROQ projection configured on the webhook side should include at least:
- *   { _id, _type, slug, "slug": slug.current }
+ * The GROQ projection configured on the webhook side MUST include:
+ *
+ *   {
+ *     _id,
+ *     _type,
+ *     "slug": slug.current,
+ *     "operation": delta::operation()
+ *   }
+ *
+ * - `_id`       — document id, used for logging/observability.
+ * - `_type`     — document type ("post" | "blogSettings" | "category").
+ * - `slug`      — post slug as a plain string (via slug.current projection).
+ * - `operation` — "create" | "update" | "delete" via delta::operation().
+ *
+ * Without the projection, Sanity sends the full document and operation
+ * is not included — tag selection will fall back to the conservative
+ * "unknown operation" branch, which still works but is less precise.
  */
 interface SanityWebhookPayload {
   _id?: string;
   _type?: SanityDocumentType;
-  /** Slug of a "post" document — populated by the GROQ projection. */
+  /** Post slug — populated by `"slug": slug.current` in the GROQ projection. */
   slug?: string | { current?: string };
-  /** Operation that triggered the webhook: create | update | delete */
+  /** Operation that triggered the webhook — populated by `"operation": delta::operation()`. */
   operation?: "create" | "update" | "delete";
 }
 
@@ -210,6 +225,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // ── 3. Determine tags & revalidate ────────────────────────────────────────
   const tags = tagsToInvalidate(payload);
 
+  // revalidateTag marks data as stale; the next request for that tag will
+  // trigger a background refresh using stale-while-revalidate semantics.
+  // We call it once per tag — Next.js handles deduplication internally.
   try {
     for (const tag of tags) {
       revalidateTag(tag);
@@ -246,4 +264,3 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 export async function GET(): Promise<NextResponse> {
   return NextResponse.json({ error: "Method not allowed." }, { status: 405 });
 }
-// API route for Sanity revalidation
