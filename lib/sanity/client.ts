@@ -6,6 +6,7 @@ import {
   sanityProjectId,
   sanityReadToken,
 } from "./env";
+import { BLOG_TAG, BLOG_TTL } from "./cache-tags";
 
 export const sanityClient = isSanityConfigured()
   ? createClient({
@@ -24,6 +25,27 @@ type FetchOptions = {
   next?: { revalidate?: number | false; tags?: string[] };
 };
 
+/**
+ * Centralised Sanity data fetcher with Next.js ISR cache integration.
+ *
+ * Default cache behaviour (when no `options.next` is provided):
+ *   - revalidate: BLOG_TTL.LISTING (30 min) — a safe fallback for any query
+ *     that does not supply its own TTL.
+ *   - tags: [BLOG_TAG] — broad tag; the Sanity webhook revalidates this on
+ *     any blog document change, so the TTL acts as a backstop only.
+ *
+ * Query-specific overrides are set in lib/sanity/queries.ts using the
+ * constants from lib/sanity/cache-tags.ts for consistent, typo-free tags.
+ *
+ * Caching hierarchy:
+ *   Browser / Vercel Edge
+ *     ↓ miss
+ *   Next.js Data Cache (ISR)
+ *     ↓ miss
+ *   Sanity API CDN  (useCdn: true)
+ *     ↓ miss
+ *   Sanity API
+ */
 export async function sanityFetch<T>(
   query: string,
   params: QueryParams = {},
@@ -34,7 +56,7 @@ export async function sanityFetch<T>(
   try {
     return await sanityClient.fetch<T>(query, params, {
       stega: options.stega ?? false,
-      next: options.next ?? { revalidate: 60, tags: ["blog"] },
+      next: options.next ?? { revalidate: BLOG_TTL.LISTING, tags: [BLOG_TAG] },
     });
   } catch (error) {
     console.error("[sanity] fetch failed", error);
