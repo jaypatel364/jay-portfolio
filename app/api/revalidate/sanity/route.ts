@@ -125,30 +125,25 @@ function extractBearerToken(request: NextRequest): string | null {
 // ─── Tag invalidation logic ───────────────────────────────────────────────────
 
 /**
- * Determines which cache tags to invalidate based on:
- *  - The Sanity document _type
- *  - The operation (create / update / delete)
- *  - The document slug (for per-post tags)
+ * Determines which cache tags to invalidate based on document type and operation.
  *
- * Rules (from implementation checklist §7):
+ * Rules (spec §8):
  *
- *  post  — new:     blog, blog:listing, blog:slugs
- *  post  — update:  blog, blog:post:<slug>, blog:listing
- *  post  — delete:  blog, blog:post:<slug>, blog:listing, blog:slugs
+ *  post — create:           blog, blog:listing, blog:slugs
+ *  post — update:           blog, blog:post:<slug>, blog:listing
+ *  post — delete/unpublish: blog, blog:post:<slug>, blog:listing, blog:slugs
  *
- *  blogSettings:    blog, blog:settings
- *  category:        blog, blog:taxonomy
+ *  blogSettings — any:      blog:settings
+ *  category     — any:      blog:taxonomy
  */
 function tagsToInvalidate(payload: SanityWebhookPayload): string[] {
   const { _type, operation } = payload;
   const slug = extractSlug(payload);
   const tags = new Set<string>();
 
-  // Always invalidate the broad tag so any query that uses only "blog" is
-  // also covered (e.g. sitemap, generateMetadata callers).
-  tags.add(BLOG_TAG);
-
   if (_type === BLOG_POST_TYPE) {
+    // Every post operation refreshes the broad tag and the listing.
+    tags.add(BLOG_TAG);
     tags.add(BLOG_LISTING_TAG);
 
     if (operation === "create") {
@@ -158,21 +153,24 @@ function tagsToInvalidate(payload: SanityWebhookPayload): string[] {
       // Updated post: invalidate its specific cache entry.
       if (slug) tags.add(blogPostTag(slug));
     } else if (operation === "delete") {
-      // Deleted post: remove from listing, slug list, and its own entry.
+      // Deleted/unpublished post: remove from slug list and its own cache entry.
       if (slug) tags.add(blogPostTag(slug));
       tags.add(BLOG_SLUGS_TAG);
     } else {
-      // Unknown operation — be conservative: invalidate everything blog-related.
+      // Unknown operation — be conservative.
       if (slug) tags.add(blogPostTag(slug));
       tags.add(BLOG_SLUGS_TAG);
     }
   } else if (_type === BLOG_SETTINGS_TYPE) {
+    // Settings change: only the settings tag — no need to bust post/listing caches.
     tags.add(BLOG_SETTINGS_TAG);
   } else if (_type === CATEGORY_TYPE) {
+    // Category change: only the taxonomy tag.
     tags.add(BLOG_TAXONOMY_TAG);
   } else {
-    // Unknown type sent through the webhook — log and invalidate broadly.
+    // Unknown type — invalidate broadly so nothing stale is served.
     console.warn("[revalidate/sanity] Unknown document type:", _type);
+    tags.add(BLOG_TAG);
   }
 
   return [...tags];
