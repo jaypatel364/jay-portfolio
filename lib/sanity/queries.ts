@@ -283,11 +283,9 @@ export async function getBlogTaxonomy(): Promise<BlogTaxonomy> {
 /**
  * Fetches a single published post by slug.
  *
- * Tags:  blog:post:<slug>, blog:listing, blog
+ * Tags:  blog, blog:post:<slug>
+ *   - blog              broad tag; invalidated by the webhook on any change.
  *   - blog:post:<slug>  lets the webhook invalidate exactly this post.
- *   - blog:listing      is included because post metadata (title, excerpt,
- *     cover) is shared between the detail and listing caches; a post update
- *     should also refresh the listing cards.
  *
  * TTL:   1 hour — webhook provides near-real-time freshness for updates.
  */
@@ -325,7 +323,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
       "relatedPosts": relatedPosts[]->{ ${postCardFields} }
     }`,
     { slug },
-    { next: { revalidate: BLOG_TTL.POST, tags: [blogPostTag(slug), BLOG_LISTING_TAG, BLOG_TAG] } },
+    { next: { revalidate: BLOG_TTL.POST, tags: [BLOG_TAG, blogPostTag(slug)] } },
   );
 }
 
@@ -352,7 +350,7 @@ export async function getMorePostsForArticle(post: BlogPost, limit = 3): Promise
   const relatedCacheOptions = {
     next: {
       revalidate: BLOG_TTL.POST,
-      tags: [blogPostTag(post.slug), BLOG_LISTING_TAG, BLOG_TAG],
+      tags: [BLOG_TAG, blogPostTag(post.slug)],
     },
   };
 
