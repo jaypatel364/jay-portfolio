@@ -1,4 +1,13 @@
 import { blogListFilter, sanityFetch } from "./client";
+import {
+  BLOG_LISTING_TAG,
+  BLOG_SETTINGS_TAG,
+  BLOG_SLUGS_TAG,
+  BLOG_TAG,
+  BLOG_TAXONOMY_TAG,
+  BLOG_TTL,
+  blogPostTag,
+} from "./cache-tags";
 import type { BlogPost, BlogPostCard, BlogSettings, BlogTaxonomy } from "./types";
 
 const imageProjection = /* groq */ `{
@@ -29,9 +38,20 @@ const postCardFields = /* groq */ `
   seo
 `;
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Blog Settings
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fetches the blogSettings singleton.
+ *
+ * Tags:  blog:settings, blog
+ * TTL:   6 hours — settings change infrequently; webhook clears on update.
+ */
 export async function getBlogSettings(): Promise<BlogSettings | null> {
   const filter = blogListFilter();
-  return sanityFetch<BlogSettings>(/* groq */ `*[_type == "blogSettings"][0]{
+  return sanityFetch<BlogSettings>(
+    /* groq */ `*[_type == "blogSettings"][0]{
       title,
       description,
       postsPerPage,
@@ -40,8 +60,15 @@ export async function getBlogSettings(): Promise<BlogSettings | null> {
       defaultOgImage ${imageProjection},
       seo,
       "featuredPosts": featuredPosts[]->[${filter}]{ ${postCardFields} }
-    }`);
+    }`,
+    {},
+    { next: { revalidate: BLOG_TTL.SETTINGS, tags: [BLOG_SETTINGS_TAG, BLOG_TAG] } },
+  );
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Blog Listing / Paginated index
+// ─────────────────────────────────────────────────────────────────────────────
 
 export type BlogPostsPageOptions = {
   page?: number;
@@ -93,28 +120,95 @@ function blogListConditions(options: BlogPostsPageOptions = {}): {
   return { filter: parts.join(" && "), params };
 }
 
+/**
+ * Returns one page of published posts plus total count — in a single GROQ
+ * query.
+ *
+ * Previously this required two round-trips (count + paginated slice). GROQ
+ * object projection lets us fetch both atomically:
+ *
+ *   {
+ *     "total": count(*[<filter>]),
+ *     "posts": *[<filter>] | order(...) [$start...$end] { ... }
+ *   }
+ *
+ * This halves the number of Sanity API requests on every index page render
+ * while producing identical results. One cache entry covers both pieces of
+ * data, so they are always consistent with each other.
+ *
+ * Note: $start/$end must be known before the query runs. Because page bounds
+ * depend on `total`, we use a two-pass approach only when the caller requests
+ * a page > 1 AND the requested page might exceed the real last page. In
+ * practice, the blog page component always passes page=1 on first render and
+ * re-fetches with a validated page number, so the single-query path covers
+ * the vast majority of real traffic. When a page overflow is detected from the
+ * first result we clamp and re-fetch once — still at most 2 queries vs the
+ * previous always-2 design.
+ *
+ * Tags:  blog:listing, blog
+ * TTL:   30 minutes — webhook fires on any post create/update/delete.
+ */
 export async function getBlogPostsPage(options: BlogPostsPageOptions = {}): Promise<BlogPostsPage> {
   const perPage = Math.max(1, options.perPage ?? DEFAULT_POSTS_PER_PAGE);
   const requestedPage = Math.max(1, options.page ?? 1);
   const { filter, params } = blogListConditions(options);
 
-  const total = (await sanityFetch<number>(/* groq */ `count(*[${filter}])`, params)) ?? 0;
+  const listingCacheOptions = {
+    next: { revalidate: BLOG_TTL.LISTING, tags: [BLOG_LISTING_TAG, BLOG_TAG] },
+  };
+
+  // ── Single GROQ query: count + page slice ─────────────────────────────────
+  type PageResult = { total: number; posts: BlogPostCard[] };
+
+  const start = (requestedPage - 1) * perPage;
+  const end = start + perPage;
+
+  const result = await sanityFetch<PageResult>(
+    /* groq */ `{
+      "total": count(*[${filter}]),
+      "posts": *[${filter}] | order(coalesce(publishedAt, _updatedAt) desc) [$start...$end] {
+        ${postCardFields}
+      }
+    }`,
+    { ...params, start, end },
+    listingCacheOptions,
+  );
+
+  const total = result?.total ?? 0;
   const totalPages = total > 0 ? Math.ceil(total / perPage) : 1;
   const page = total > 0 ? Math.min(requestedPage, totalPages) : 1;
 
-  const posts = await sanityFetch<BlogPostCard[]>(
-    /* groq */ `*[${filter}] | order(coalesce(publishedAt, _updatedAt) desc) [$start...$end] {
-        ${postCardFields}
+  // ── Page-overflow guard ───────────────────────────────────────────────────
+  // If the caller requested a page beyond the real last page (e.g. the user
+  // bookmarked page 5 and posts were deleted), clamp and re-fetch.
+  // This is rare in production; the ISR cache will usually serve the corrected
+  // result on subsequent visits without hitting Sanity again.
+  if (page < requestedPage && total > 0) {
+    const clampedStart = (page - 1) * perPage;
+    const clampedEnd = clampedStart + perPage;
+
+    const clamped = await sanityFetch<PageResult>(
+      /* groq */ `{
+        "total": count(*[${filter}]),
+        "posts": *[${filter}] | order(coalesce(publishedAt, _updatedAt) desc) [$start...$end] {
+          ${postCardFields}
+        }
       }`,
-    {
-      ...params,
-      start: (page - 1) * perPage,
-      end: (page - 1) * perPage + perPage,
-    },
-  );
+      { ...params, start: clampedStart, end: clampedEnd },
+      listingCacheOptions,
+    );
+
+    return {
+      posts: clamped?.posts ?? [],
+      total: clamped?.total ?? total,
+      page,
+      perPage,
+      totalPages,
+    };
+  }
 
   return {
-    posts: posts ?? [],
+    posts: result?.posts ?? [],
     total,
     page,
     perPage,
@@ -122,34 +216,59 @@ export async function getBlogPostsPage(options: BlogPostsPageOptions = {}): Prom
   };
 }
 
-/** Total published posts (for index metadata and counts). */
+/**
+ * Total published posts (for index metadata and counts).
+ *
+ * Tags:  blog:listing, blog
+ * TTL:   30 minutes.
+ */
 export async function getBlogPostsCount(): Promise<number> {
   const filter = blogListFilter();
-  const total = await sanityFetch<number>(/* groq */ `count(*[${filter}])`);
+  const total = await sanityFetch<number>(
+    /* groq */ `count(*[${filter}])`,
+    {},
+    { next: { revalidate: BLOG_TTL.LISTING, tags: [BLOG_LISTING_TAG, BLOG_TAG] } },
+  );
   return total ?? 0;
 }
 
 /** @deprecated Prefer getBlogPostsPage for the index; kept for simple all-posts use. */
 export async function getBlogPosts(): Promise<BlogPostCard[]> {
   const filter = blogListFilter();
-  const posts = await sanityFetch<
-    BlogPostCard[]
-  >(/* groq */ `*[${filter}] | order(coalesce(publishedAt, _updatedAt) desc) {
+  const posts = await sanityFetch<BlogPostCard[]>(
+    /* groq */ `*[${filter}] | order(coalesce(publishedAt, _updatedAt) desc) {
       ${postCardFields}
-    }`);
+    }`,
+    {},
+    { next: { revalidate: BLOG_TTL.LISTING, tags: [BLOG_LISTING_TAG, BLOG_TAG] } },
+  );
   return posts ?? [];
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Taxonomy
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fetches published categories (with post counts).
+ *
+ * Tags:  blog:taxonomy, blog
+ * TTL:   6 hours — categories change rarely; webhook fires on category updates.
+ */
 export async function getBlogTaxonomy(): Promise<BlogTaxonomy> {
   const filter = blogListFilter();
-  const result = await sanityFetch<{ categories: BlogTaxonomy["categories"] }>(/* groq */ `{
+  const result = await sanityFetch<{ categories: BlogTaxonomy["categories"] }>(
+    /* groq */ `{
       "categories": *[_type == "category" && count(*[${filter} && references(^._id)]) > 0] | order(title asc) {
         title,
         "slug": slug.current,
         description,
         "count": count(*[${filter} && references(^._id)])
       }
-    }`);
+    }`,
+    {},
+    { next: { revalidate: BLOG_TTL.TAXONOMY, tags: [BLOG_TAXONOMY_TAG, BLOG_TAG] } },
+  );
 
   return {
     categories: result?.categories ?? [],
@@ -157,6 +276,21 @@ export async function getBlogTaxonomy(): Promise<BlogTaxonomy> {
   };
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Individual post
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fetches a single published post by slug.
+ *
+ * Tags:  blog:post:<slug>, blog:listing, blog
+ *   - blog:post:<slug>  lets the webhook invalidate exactly this post.
+ *   - blog:listing      is included because post metadata (title, excerpt,
+ *     cover) is shared between the detail and listing caches; a post update
+ *     should also refresh the listing cards.
+ *
+ * TTL:   1 hour — webhook provides near-real-time freshness for updates.
+ */
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   const filter = blogListFilter();
   return sanityFetch<BlogPost>(
@@ -191,10 +325,23 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
       "relatedPosts": relatedPosts[]->{ ${postCardFields} }
     }`,
     { slug },
+    { next: { revalidate: BLOG_TTL.POST, tags: [blogPostTag(slug), BLOG_LISTING_TAG, BLOG_TAG] } },
   );
 }
 
-/** Related editor picks, else same category, else other featured/recent. */
+// ─────────────────────────────────────────────────────────────────────────────
+// "More posts" / related posts
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Related editor picks, else same-category posts, else other featured/recent.
+ *
+ * Returns early from `post.relatedPosts` when already populated by the
+ * getBlogPostBySlug projection — no extra Sanity request in that case.
+ *
+ * Tags:  blog:post:<slug>, blog:listing, blog
+ * TTL:   1 hour.
+ */
 export async function getMorePostsForArticle(post: BlogPost, limit = 3): Promise<BlogPostCard[]> {
   if (post.relatedPosts?.length) {
     return post.relatedPosts.slice(0, limit);
@@ -202,6 +349,12 @@ export async function getMorePostsForArticle(post: BlogPost, limit = 3): Promise
 
   const filter = blogListFilter();
   const categorySlug = post.categories?.[0]?.slug;
+  const relatedCacheOptions = {
+    next: {
+      revalidate: BLOG_TTL.POST,
+      tags: [blogPostTag(post.slug), BLOG_LISTING_TAG, BLOG_TAG],
+    },
+  };
 
   const more = await sanityFetch<BlogPostCard[]>(
     /* groq */ `*[
@@ -219,6 +372,7 @@ export async function getMorePostsForArticle(post: BlogPost, limit = 3): Promise
       categorySlug: categorySlug ?? null,
       limit,
     },
+    relatedCacheOptions,
   );
 
   if (more?.length) return more;
@@ -229,39 +383,22 @@ export async function getMorePostsForArticle(post: BlogPost, limit = 3): Promise
       ${postCardFields}
     }`,
     { slug: post.slug, limit },
+    relatedCacheOptions,
   );
 
   return recent ?? [];
 }
 
-export async function getBlogSlugs(): Promise<string[]> {
-  const filter = blogListFilter();
-  const rows = await sanityFetch<Array<{ slug: string }>>(
-    /* groq */ `*[${filter}]{ "slug": slug.current }`,
-    {},
-    { next: { revalidate: 300, tags: ["blog"] } },
-  );
-  return (rows ?? []).map((r) => r.slug).filter(Boolean);
-}
+// ─────────────────────────────────────────────────────────────────────────────
+// Featured posts
+// ─────────────────────────────────────────────────────────────────────────────
 
-/** Indexable blog URLs for sitemap.xml (skips seo.noIndex posts). */
-export async function getBlogSitemapEntries(): Promise<
-  Array<{ slug: string; lastModified: string }>
-> {
-  const filter = blogListFilter();
-  const rows = await sanityFetch<Array<{ slug: string; lastModified: string }>>(
-    /* groq */ `*[${filter} && seo.noIndex != true]{
-      "slug": slug.current,
-      "lastModified": coalesce(updatedAt, publishedAt, _updatedAt)
-    }`,
-    {},
-    { next: { revalidate: 300, tags: ["blog"] } },
-  );
-
-  return (rows ?? []).filter((row) => Boolean(row.slug));
-}
-
-/** Posts explicitly marked featured in Sanity (published only). */
+/**
+ * Posts explicitly marked featured in Sanity (published only).
+ *
+ * Tags:  blog:listing, blog
+ * TTL:   30 minutes — changes when a post's `featured` flag is toggled.
+ */
 export async function getFeaturedBlogPosts(limit = 2): Promise<BlogPostCard[]> {
   const filter = blogListFilter();
   const posts = await sanityFetch<BlogPostCard[]>(
@@ -270,9 +407,11 @@ export async function getFeaturedBlogPosts(limit = 2): Promise<BlogPostCard[]> {
       ${postCardFields}
     }`,
     { limit },
+    { next: { revalidate: BLOG_TTL.LISTING, tags: [BLOG_LISTING_TAG, BLOG_TAG] } },
   );
   return posts ?? [];
 }
+
 /** Resolve featured strip: Blog Settings picks → posts marked featured. */
 export function resolveFeaturedPosts(
   settings: BlogSettings | null,
@@ -283,4 +422,46 @@ export function resolveFeaturedPosts(
   if (fromSettings.length) return fromSettings.slice(0, limit);
 
   return flaggedPosts.slice(0, limit);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Slugs / Sitemap
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * All published post slugs — used by generateStaticParams and the sitemap.
+ *
+ * Tags:  blog:slugs, blog
+ * TTL:   1 hour — new posts create new slugs; webhook fires on publish/delete.
+ */
+export async function getBlogSlugs(): Promise<string[]> {
+  const filter = blogListFilter();
+  const rows = await sanityFetch<Array<{ slug: string }>>(
+    /* groq */ `*[${filter}]{ "slug": slug.current }`,
+    {},
+    { next: { revalidate: BLOG_TTL.SLUGS, tags: [BLOG_SLUGS_TAG, BLOG_TAG] } },
+  );
+  return (rows ?? []).map((r) => r.slug).filter(Boolean);
+}
+
+/**
+ * Indexable blog URLs for sitemap.xml (skips seo.noIndex posts).
+ *
+ * Tags:  blog:slugs, blog
+ * TTL:   1 hour.
+ */
+export async function getBlogSitemapEntries(): Promise<
+  Array<{ slug: string; lastModified: string }>
+> {
+  const filter = blogListFilter();
+  const rows = await sanityFetch<Array<{ slug: string; lastModified: string }>>(
+    /* groq */ `*[${filter} && seo.noIndex != true]{
+      "slug": slug.current,
+      "lastModified": coalesce(updatedAt, publishedAt, _updatedAt)
+    }`,
+    {},
+    { next: { revalidate: BLOG_TTL.SLUGS, tags: [BLOG_SLUGS_TAG, BLOG_TAG] } },
+  );
+
+  return (rows ?? []).filter((row) => Boolean(row.slug));
 }
