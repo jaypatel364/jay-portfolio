@@ -45,8 +45,8 @@ const postCardFields = /* groq */ `
 /**
  * Fetches the blogSettings singleton.
  *
- * Tags:  blog:settings, blog
- * TTL:   6 hours — settings change infrequently; webhook clears on update.
+ * Tags:  blog, blog:settings
+ * TTL:   24 hours — settings are essentially static; webhook clears on update.
  */
 export async function getBlogSettings(): Promise<BlogSettings | null> {
   const filter = blogListFilter();
@@ -62,7 +62,7 @@ export async function getBlogSettings(): Promise<BlogSettings | null> {
       "featuredPosts": featuredPosts[]->[${filter}]{ ${postCardFields} }
     }`,
     {},
-    { next: { revalidate: BLOG_TTL.SETTINGS, tags: [BLOG_SETTINGS_TAG, BLOG_TAG] } },
+    { next: { revalidate: BLOG_TTL.SETTINGS, tags: [BLOG_TAG, BLOG_SETTINGS_TAG] } },
   );
 }
 
@@ -252,8 +252,8 @@ export async function getBlogPosts(): Promise<BlogPostCard[]> {
 /**
  * Fetches published categories (with post counts).
  *
- * Tags:  blog:taxonomy, blog
- * TTL:   6 hours — categories change rarely; webhook fires on category updates.
+ * Tags:  blog, blog:taxonomy
+ * TTL:   24 hours — categories are essentially static; webhook fires on changes.
  */
 export async function getBlogTaxonomy(): Promise<BlogTaxonomy> {
   const filter = blogListFilter();
@@ -267,7 +267,7 @@ export async function getBlogTaxonomy(): Promise<BlogTaxonomy> {
       }
     }`,
     {},
-    { next: { revalidate: BLOG_TTL.TAXONOMY, tags: [BLOG_TAXONOMY_TAG, BLOG_TAG] } },
+    { next: { revalidate: BLOG_TTL.TAXONOMY, tags: [BLOG_TAG, BLOG_TAXONOMY_TAG] } },
   );
 
   return {
@@ -337,8 +337,8 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
  * Returns early from `post.relatedPosts` when already populated by the
  * getBlogPostBySlug projection — no extra Sanity request in that case.
  *
- * Tags:  blog:post:<slug>, blog:listing, blog
- * TTL:   1 hour.
+ * Tags:  blog, blog:post:<slug>
+ * TTL:   1 hour — shares the same invalidation lifecycle as the post itself.
  */
 export async function getMorePostsForArticle(post: BlogPost, limit = 3): Promise<BlogPostCard[]> {
   if (post.relatedPosts?.length) {
