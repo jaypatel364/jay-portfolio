@@ -107,19 +107,20 @@ function extractSlug(payload: SanityWebhookPayload): string | null {
   return payload.slug.current ?? null;
 }
 
-function extractBearerToken(request: NextRequest): string | null {
-  // Primary: x-sanity-secret header (set in the Sanity webhook configuration).
+function extractSecret(request: NextRequest): string | null {
+  // Preferred: x-sanity-secret header (configured in the Sanity webhook).
   const sanityHeader = request.headers.get("x-sanity-secret");
   if (sanityHeader) return sanityHeader.trim();
 
-  // Fallback: standard Authorization: Bearer <token> (alternative webhook setup).
+  // Fallback: standard Authorization: Bearer <token>.
   const authHeader = request.headers.get("authorization") ?? "";
   if (authHeader.startsWith("Bearer ")) {
     return authHeader.slice("Bearer ".length).trim();
   }
 
-  // Last resort: secret as a query param (useful for manual testing only).
-  return request.nextUrl.searchParams.get("secret");
+  // Query-parameter fallback intentionally omitted — secrets in URLs can leak
+  // into access logs, proxy logs, browser history, and analytics systems.
+  return null;
 }
 
 // ─── Tag invalidation logic ───────────────────────────────────────────────────
@@ -190,7 +191,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Revalidation not configured." }, { status: 500 });
   }
 
-  const incomingToken = extractBearerToken(request);
+  const incomingToken = extractSecret(request);
 
   if (!incomingToken || !timingSafeEqual(incomingToken, secret)) {
     console.warn("[revalidate/sanity] Rejected: invalid or missing secret.", { receivedAt });
