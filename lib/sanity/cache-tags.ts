@@ -39,10 +39,10 @@ export const BLOG_TTL = {
   POST: 60 * 60,
   /** Paginated listing, featured strip, count — 30 minutes. */
   LISTING: 30 * 60,
-  /** Category / tag taxonomy — 6 hours (rarely changes). */
-  TAXONOMY: 6 * 60 * 60,
-  /** blogSettings singleton — 6 hours. */
-  SETTINGS: 6 * 60 * 60,
+  /** Category / tag taxonomy — 24 hours (essentially static). */
+  TAXONOMY: 24 * 60 * 60,
+  /** blogSettings singleton — 24 hours (essentially static). */
+  SETTINGS: 24 * 60 * 60,
   /** All published slugs for generateStaticParams / sitemap — 1 hour. */
   SLUGS: 60 * 60,
 } as const;
