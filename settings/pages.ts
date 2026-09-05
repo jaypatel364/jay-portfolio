@@ -68,7 +68,8 @@ export const innerPages = {
         "NDA summaries included",
       ],
     },
-  }, services: {
+  },
+  services: {
     path: "/services",
     navId: "services",
     label: "Services",
@@ -84,7 +85,11 @@ export const innerPages = {
       description:
         "I help startups, SaaS companies, and product teams design, build, and improve production web applications — " +
         "from MVPs and full-stack products to backend APIs, frontend experiences, and performance work.",
-      chips: ["Full-stack product development", "SaaS & MVP builds", "API & performance engineering"],
+      chips: [
+        "Full-stack product development",
+        "SaaS & MVP builds",
+        "API & performance engineering",
+      ],
     },
   },
   contact: {
