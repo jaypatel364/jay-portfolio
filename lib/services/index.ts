@@ -1,5 +1,4 @@
 import { servicesHub } from "@/settings/services/hub";
-import { SERVICE_PAGE_EXTRAS } from "@/settings/services/extras";
 import { ALL_SERVICES } from "@/settings/services/pages";
 import { DEFAULT_SERVICE_SECTION_ORDER, type Service, type ServiceSectionKey } from "./types";
 
@@ -10,29 +9,12 @@ export function getServicesHub() {
   return servicesHub;
 }
 
-function mergeServiceExtras(service: Service): Service {
-  const extra = SERVICE_PAGE_EXTRAS[service.slug];
-  if (!extra) return service;
-
-  return {
-    ...service,
-    editorialIntro: service.editorialIntro ?? extra.editorialIntro,
-    whatWeBuild: service.whatWeBuild ?? extra.whatWeBuild,
-    industries: service.industries ?? extra.industries,
-    hero: {
-      ...service.hero,
-      headlineLines: service.hero.headlineLines ?? extra.headlineLines,
-    },
-  };
-}
-
 export function getAllServices(): Service[] {
-  return [...ALL_SERVICES].sort((a, b) => a.order - b.order).map(mergeServiceExtras);
+  return [...ALL_SERVICES].sort((a, b) => a.order - b.order);
 }
 
 export function getServiceBySlug(slug: string): Service | undefined {
-  const service = ALL_SERVICES.find((s) => s.slug === slug);
-  return service ? mergeServiceExtras(service) : undefined;
+  return ALL_SERVICES.find((s) => s.slug === slug);
 }
 
 export function getServiceSlugs(): string[] {

@@ -2,8 +2,8 @@ import type { Service } from "@/lib/services/types";
 import { SERVICE_CONSULTATION_CTA } from "../shared";
 
 export const fullStackProductDevelopment: Service = {
-  slug: "full-stack-product-development",
-  title: "Full-Stack Product Development",
+  slug: "full-stack-development",
+  title: "Full-Stack Development",
   shortDescription:
     "End-to-end web product development across frontend, backend, databases, APIs, integrations, and deployment.",
   cardCapabilities: [
@@ -16,12 +16,12 @@ export const fullStackProductDevelopment: Service = {
   icon: "layout",
   order: 1,
   seoBrief: {
-    primaryKeyword: "full stack product development",
+    primaryKeyword: "full stack development services",
     searchIntent: "Commercial — hiring a developer or team for end-to-end product builds",
     secondaryKeywords: [
-      "full stack development services",
+      "full stack web developer",
+      "React Node.js development",
       "full stack web application development",
-      "end to end product development",
       "full stack software development",
     ],
     longTailQuestions: [
@@ -45,7 +45,8 @@ export const fullStackProductDevelopment: Service = {
     conversionIntent: "Book a consultation to scope a full product build",
   },
   hero: {
-    heading: "Full-Stack Product Development Services",
+    heading: "Full Stack Development Services",
+    headlineLines: ["Build complete products", "without fragile", "handoffs between layers."],
     description:
       "I build complete web products — user-facing interfaces, application logic, APIs, data models, third-party integrations, and deployment pipelines — so your team gets working software, not a collection of disconnected pieces.",
     primaryCta: { label: "Discuss your product", href: "/contact/" },
@@ -56,10 +57,28 @@ export const fullStackProductDevelopment: Service = {
     ],
     technologies: ["React", "Next.js", "Node.js", "TypeScript", "PostgreSQL", "MongoDB"],
   },
+  editorialIntro: {
+    statement:
+      "Full-stack product development is not a buzzword — it is ownership across every layer that affects what users experience and what your team can maintain next quarter.",
+    supporting:
+      "When frontend, backend, data, and deployment are designed together, you avoid the slow drift that happens when separate vendors optimize locally and break the system globally.",
+    pullQuote: "Ship vertical slices, not disconnected decks.",
+  },
+  whatWeBuild: [
+    "Production web applications",
+    "Customer-facing dashboards",
+    "Admin & operations tooling",
+    "REST & GraphQL APIs",
+    "Auth & role systems",
+    "Database architectures",
+    "Third-party integrations",
+    "CI/CD pipelines",
+  ],
+  industries: ["SaaS & Technology", "Professional Services", "E-commerce", "Education"],
   overview:
     "Full-stack product development means owning the product across every technical layer that affects what users experience and what your team can maintain afterward. That includes frontend architecture, backend services, database design, authentication, integrations with payment or identity providers, and the deployment setup that keeps releases predictable.\n\nMost product teams do not need a large agency roster — they need one engineer who can translate requirements into a coherent system, make pragmatic trade-offs, and ship incrementally without accumulating fragile shortcuts. That is the work I focus on: turning product goals into production-ready applications that your team can extend after launch.",
   whatWeDo: {
-    heading: "What full-stack product development includes",
+    heading: "Full stack web development with React and Node.js",
     paragraphs: [
       "When I take on a full-stack product engagement, I work from defined product requirements through working software in production. That usually starts with clarifying scope: who uses the product, what workflows matter on day one, and which parts can wait for a later release. From there I design the technical architecture — how the frontend talks to APIs, how data is modeled, where authentication lives, and what infrastructure fits the expected load.",
       "Development happens in vertical slices rather than long frontend-only or backend-only phases. A typical slice might include a user flow in the interface, the API endpoints it depends on, persistence, validation, and basic tests. This keeps feedback loops short and reduces the risk of discovering integration problems late in the project.",
@@ -77,13 +96,13 @@ export const fullStackProductDevelopment: Service = {
       title: "Backend development",
       description:
         "Node.js services with clear API contracts, validation, error handling, and business logic that stays testable as features grow.",
-      relatedServiceSlug: "api-backend-engineering",
+      relatedServiceSlug: "backend-development",
     },
     {
       title: "API design",
       description:
         "REST (and GraphQL where appropriate) endpoints documented clearly enough that frontend and future integrations do not depend on tribal knowledge.",
-      relatedServiceSlug: "api-backend-engineering",
+      relatedServiceSlug: "backend-development",
     },
     {
       title: "Database architecture",
@@ -344,7 +363,7 @@ export const fullStackProductDevelopment: Service = {
   relatedServiceSlugs: [
     "saas-development",
     "mvp-development",
-    "api-backend-engineering",
+    "backend-development",
     "frontend-development",
   ],
   relatedPosts: [
@@ -360,16 +379,16 @@ export const fullStackProductDevelopment: Service = {
     },
   ],
   seo: {
-    title: "Full-Stack Product Development Services | Jay Patel",
+    title: "Full-Stack Development Services | React & Node.js | Jay Patel",
     description:
       "End-to-end full-stack product development with React, Next.js, Node.js, and TypeScript — architecture, APIs, databases, integrations, and deployment for startups and product teams.",
-    focusKeyword: "full stack product development",
+    focusKeyword: "full stack development services",
     keywords: [
-      "full stack product development",
       "full stack development services",
+      "full stack web developer",
+      "React Node.js development",
       "full stack web application development",
       "hire full stack developer",
-      "end to end product development",
     ],
   },
   updatedAt: "2026-08-27",

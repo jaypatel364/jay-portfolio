@@ -49,7 +49,7 @@ export function ServicesHubSection({
           id="services-hub-heading"
           className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl"
         >
-          Product engineering services
+          Custom software, web, and full-stack development
         </h2>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
           The expanded version of what you see on Skills — each page goes deep on scope, system

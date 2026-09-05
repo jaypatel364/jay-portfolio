@@ -2,8 +2,8 @@ import type { Service } from "@/lib/services/types";
 import { SERVICE_CONTACT_CTA } from "../shared";
 
 export const apiBackendEngineering: Service = {
-  slug: "api-backend-engineering",
-  title: "API & Backend Engineering",
+  slug: "backend-development",
+  title: "Backend Development",
   shortDescription:
     "Scalable API and backend engineering — REST, GraphQL, data modeling, auth, integrations, and reliable server-side systems.",
   cardCapabilities: [
@@ -16,14 +16,14 @@ export const apiBackendEngineering: Service = {
   icon: "server",
   order: 4,
   seoBrief: {
-    primaryKeyword: "API development",
+    primaryKeyword: "backend development services",
     searchIntent: "Commercial — teams needing backend/API engineering",
     secondaryKeywords: [
-      "backend development services",
+      "Node.js development",
+      "API development",
       "API development services",
       "Node.js backend development",
       "REST API development",
-      "GraphQL API development",
     ],
     longTailQuestions: [
       "How do you design a scalable REST API?",
@@ -45,7 +45,8 @@ export const apiBackendEngineering: Service = {
     conversionIntent: "Discuss backend/API requirements",
   },
   hero: {
-    heading: "API & Backend Engineering Services",
+    heading: "Backend Development Services",
+    headlineLines: ["APIs your frontend,", "mobile clients, and", "partners can rely on."],
     description:
       "I design and build backend systems and APIs that frontend teams, mobile apps, and partners can depend on — clear contracts, predictable error behavior, and data layers that stay maintainable as features accumulate.",
     primaryCta: { label: "Discuss your API", href: "/contact/" },
@@ -53,10 +54,28 @@ export const apiBackendEngineering: Service = {
     trustIndicators: ["Social API & real-time backends shipped", "Production Node.js services"],
     technologies: ["Node.js", "Express.js", "PostgreSQL", "MongoDB", "Redis", "GraphQL"],
   },
+  editorialIntro: {
+    statement:
+      "Backend engineering is where product rules live — who can access what, how data stays consistent, and how integrations fail without silent corruption.",
+    supporting:
+      "Weak APIs show up as frontend bugs, midnight pages, and partner integrations nobody trusts. Strong backends make every client faster to ship.",
+    pullQuote: "Contracts first. Implementation second.",
+  },
+  whatWeBuild: [
+    "REST & GraphQL APIs",
+    "Authentication services",
+    "Webhook processors",
+    "Background job systems",
+    "Database layers",
+    "Partner integration endpoints",
+    "Real-time backends",
+    "API documentation",
+  ],
+  industries: ["SaaS & Technology", "FinTech", "Logistics", "Marketplaces"],
   overview:
     "Backend engineering is where product rules live: who can access what, how money moves, how data stays consistent when two users act at once, and how external services sync without silent failures. Weak backends show up as frontend bugs, midnight pages, and integrations that nobody trusts.\n\nI work on greenfield APIs, extensions to existing services, and refactors of tangled codebases where every change breaks something unexpected. The output is not just endpoints — it is a coherent server-side architecture with logging, validation, migrations, and documentation your team can extend.",
   whatWeDo: {
-    heading: "Backend and API engineering scope",
+    heading: "Node.js and API development",
     paragraphs: [
       "Backend engagements typically start from consumer needs: which clients call the API, what latency they tolerate, and what consistency guarantees matter when writes collide. Those answers drive choices between monolith modules, separate services, sync vs async processing, and SQL vs document storage.",
       "I implement HTTP APIs (REST by default, GraphQL when query flexibility or mobile bandwidth genuinely justify it), background workers, webhook receivers, and integration adapters. Cross-cutting concerns — authentication, authorization, rate limits, input validation, structured logging — are established early so feature work does not reinvent them.",
@@ -304,7 +323,7 @@ export const apiBackendEngineering: Service = {
     },
   ],
   relatedServiceSlugs: [
-    "full-stack-product-development",
+    "full-stack-development",
     "saas-development",
     "performance-optimization",
     "mvp-development",
@@ -315,16 +334,16 @@ export const apiBackendEngineering: Service = {
     { title: "Webhook Integration Patterns", slug: "webhook-integration-patterns" },
   ],
   seo: {
-    title: "API & Backend Engineering Services | Node.js APIs | Jay Patel",
+    title: "Backend Development Services | Node.js & API Development | Jay Patel",
     description:
       "API and backend engineering with Node.js — REST, GraphQL, databases, auth, webhooks, and integrations for web and mobile products.",
-    focusKeyword: "API development",
+    focusKeyword: "backend development services",
     keywords: [
-      "API development",
       "backend development services",
+      "Node.js development",
+      "API development",
       "REST API development",
       "Node.js backend development",
-      "GraphQL API development",
     ],
   },
   updatedAt: "2026-08-27",

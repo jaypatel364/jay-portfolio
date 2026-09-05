@@ -16,14 +16,14 @@ export const performanceOptimization: Service = {
   icon: "gauge",
   order: 5,
   seoBrief: {
-    primaryKeyword: "web application performance optimization",
+    primaryKeyword: "web performance optimization services",
     searchIntent: "Commercial / investigative — teams with slow apps seeking help",
     secondaryKeywords: [
+      "Core Web Vitals",
+      "React performance",
+      "Next.js performance",
       "React performance optimization",
       "Next.js performance optimization",
-      "Core Web Vitals improvement",
-      "frontend performance audit",
-      "website speed optimization",
     ],
     longTailQuestions: [
       "Why is my Next.js app slow?",
@@ -45,7 +45,8 @@ export const performanceOptimization: Service = {
     conversionIntent: "Request a performance audit",
   },
   hero: {
-    heading: "Performance Optimization Services",
+    heading: "Web Performance Optimization Services",
+    headlineLines: ["Measure first.", "Fix what users", "actually feel."],
     description:
       "I diagnose and fix slow web applications — from Core Web Vitals and React rendering to API latency and database queries — using measurements first, not guesswork and premature caching.",
     primaryCta: { label: "Request a performance audit", href: "/contact/" },
@@ -53,10 +54,28 @@ export const performanceOptimization: Service = {
     trustIndicators: ["Core Web Vitals & SEO fundamentals", "Production React/Next.js experience"],
     technologies: ["Next.js", "React", "Lighthouse", "PostgreSQL", "Redis"],
   },
+  editorialIntro: {
+    statement:
+      "Performance work without profiling is guesswork — swap one bottleneck for another and call it optimization.",
+    supporting:
+      "I start from real user paths, Core Web Vitals, and server timing — then prioritize fixes by impact and cost so speed improvements stick after the next release.",
+    pullQuote: "Speed is a feature. Measure it like one.",
+  },
+  whatWeBuild: [
+    "Core Web Vitals improvements",
+    "React & Next.js rendering fixes",
+    "Bundle & asset optimization",
+    "API latency reduction",
+    "Database query tuning",
+    "Caching strategies",
+    "Performance monitoring hooks",
+    "Regression guardrails",
+  ],
+  industries: ["SaaS & Technology", "E-commerce", "Media & Content", "B2B platforms"],
   overview:
     "Performance problems rarely have a single cause. Users complain about slow pages when the real issue is an unbounded API query, an oversized JavaScript bundle, layout shift from late-loading fonts, or database locks under concurrent writes. Optimization work that skips measurement usually trades one bottleneck for another.\n\nI start with real user metrics and profiling — Lighthouse and lab tests, bundle analysis, server timing, query plans — then prioritize fixes by user impact and implementation cost. The goal is faster experiences, better search signals where performance affects rankings, and infrastructure bills that match actual load instead of over-provisioned defaults.",
   whatWeDo: {
-    heading: "What performance optimization includes",
+    heading: "Core Web Vitals, React performance, and Next.js performance",
     paragraphs: [
       "Performance engagements begin with establishing baselines: which pages or API routes hurt most, what Core Web Vitals look like in the field when analytics exist, and where time is spent in the critical path. Without that, optimization becomes a checklist of best practices that may not touch your actual pain.",
       "Frontend work targets rendering strategy (SSR, SSG, ISR, client components), bundle size, image delivery, font loading, and interaction responsiveness. Backend work targets N+1 queries, missing indexes, synchronous external calls, and queue-worthy background tasks. Infrastructure changes — CDN, caching layers, connection pooling — come after code-level wins unless ops issues are clearly dominant.",
@@ -89,7 +108,7 @@ export const performanceOptimization: Service = {
       title: "API & backend latency reduction",
       description:
         "Profile endpoints, parallelize safe operations, and move slow work to background jobs.",
-      relatedServiceSlug: "api-backend-engineering",
+      relatedServiceSlug: "backend-development",
     },
     {
       title: "Database query tuning",
@@ -311,27 +330,23 @@ export const performanceOptimization: Service = {
         "Yes. Many slow apps need database and API fixes more than frontend tweaks. Engagements can be backend-heavy when profiling shows that is where time goes.",
     },
   ],
-  relatedServiceSlugs: [
-    "frontend-development",
-    "api-backend-engineering",
-    "full-stack-product-development",
-  ],
+  relatedServiceSlugs: ["frontend-development", "backend-development", "full-stack-development"],
   relatedPosts: [
     { title: "Core Web Vitals Guide for Developers", slug: "core-web-vitals-guide" },
     { title: "Next.js Performance Checklist", slug: "nextjs-performance-checklist" },
     { title: "React Rendering Optimization", slug: "react-rendering-optimization" },
   ],
   seo: {
-    title: "Web Application Performance Optimization | React & Next.js | Jay Patel",
+    title: "Web Performance Optimization Services | Core Web Vitals | Jay Patel",
     description:
       "Performance optimization for React, Next.js, and Node.js apps — Core Web Vitals, rendering, API latency, database tuning, and caching with measurement-driven fixes.",
-    focusKeyword: "web application performance optimization",
+    focusKeyword: "web performance optimization services",
     keywords: [
-      "web application performance optimization",
+      "web performance optimization services",
+      "Core Web Vitals",
+      "React performance",
+      "Next.js performance",
       "React performance optimization",
-      "Next.js performance optimization",
-      "Core Web Vitals improvement",
-      "frontend performance audit",
     ],
   },
   updatedAt: "2026-08-27",

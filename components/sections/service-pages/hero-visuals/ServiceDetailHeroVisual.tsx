@@ -89,7 +89,7 @@ function FlowDiagram({
 }
 
 const DIAGRAMS: Record<string, { label: string; nodes: Node[]; edges: [string, string][] }> = {
-  "full-stack-product-development": {
+  "full-stack-development": {
     label: "full-stack.flow",
     nodes: [
       { id: "fe", label: "Frontend", x: 180, y: 36, accent: true },
@@ -146,7 +146,7 @@ const DIAGRAMS: Record<string, { label: string; nodes: Node[]; edges: [string, s
       ["launch", "learn"],
     ],
   },
-  "api-backend-engineering": {
+  "backend-development": {
     label: "api.flow",
     nodes: [
       { id: "client", label: "Clients", x: 180, y: 36 },
@@ -200,7 +200,7 @@ const DIAGRAMS: Record<string, { label: string; nodes: Node[]; edges: [string, s
 };
 
 export function ServiceDetailHeroVisual({ slug, title, large }: ServiceDetailHeroVisualProps) {
-  const diagram = DIAGRAMS[slug] ?? DIAGRAMS["full-stack-product-development"];
+  const diagram = DIAGRAMS[slug] ?? DIAGRAMS["full-stack-development"];
 
   return (
     <div className="relative h-full">

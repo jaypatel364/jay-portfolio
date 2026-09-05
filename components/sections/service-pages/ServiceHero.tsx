@@ -13,7 +13,7 @@ interface ServiceHeroProps {
 
 export function ServiceHero({ service }: ServiceHeroProps) {
   const reduced = useReducedMotion() ?? false;
-  const lines = service.hero.headlineLines ?? [service.hero.heading];
+  const taglineLines = service.hero.headlineLines;
 
   return (
     <header className="relative w-full overflow-hidden border-b border-border/60">
@@ -47,13 +47,23 @@ export function ServiceHero({ service }: ServiceHeroProps) {
             {service.title}
           </p>
 
-          <h1 className="font-heading mt-5 text-[clamp(2.25rem,5vw,3.75rem)] font-bold leading-[1.05] tracking-tight">
-            {lines.map((line, i) => (
-              <span key={line} className="block text-balance">
-                {i === lines.length - 1 ? <span className="text-primary">{line}</span> : line}
-              </span>
-            ))}
+          <h1 className="font-heading mt-5 text-[clamp(2.25rem,5vw,3.75rem)] font-bold leading-[1.05] tracking-tight text-balance">
+            {service.hero.heading}
           </h1>
+
+          {taglineLines?.length ? (
+            <p className="font-heading mt-5 max-w-xl text-xl font-semibold leading-snug tracking-tight text-foreground/90 sm:text-2xl">
+              {taglineLines.map((line, i) => (
+                <span key={line} className="block text-balance">
+                  {i === taglineLines.length - 1 ? (
+                    <span className="text-primary">{line}</span>
+                  ) : (
+                    line
+                  )}
+                </span>
+              ))}
+            </p>
+          ) : null}
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             {service.hero.description}

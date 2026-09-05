@@ -16,12 +16,12 @@ export const saasDevelopment: Service = {
   icon: "monitor",
   order: 2,
   seoBrief: {
-    primaryKeyword: "SaaS development",
+    primaryKeyword: "SaaS development services",
     searchIntent: "Commercial — evaluating SaaS development partners or freelancers",
     secondaryKeywords: [
-      "SaaS development services",
-      "custom SaaS development",
+      "custom SaaS",
       "SaaS application development",
+      "custom SaaS development",
       "SaaS product development",
       "SaaS MVP development",
     ],
@@ -47,6 +47,7 @@ export const saasDevelopment: Service = {
   },
   hero: {
     heading: "SaaS Development Services",
+    headlineLines: ["Turn subscription products", "into systems", "customers can trust."],
     description:
       "I build custom SaaS applications with maintainable architecture, clear subscription and user-management flows, and the backend foundations that keep performance predictable as accounts and data grow.",
     primaryCta: { label: "Start your SaaS project", href: "/contact/" },
@@ -54,10 +55,28 @@ export const saasDevelopment: Service = {
     trustIndicators: ["Production web platforms shipped", "Form-heavy & workflow SaaS experience"],
     technologies: ["Next.js", "React", "Node.js", "PostgreSQL", "Stripe"],
   },
+  editorialIntro: {
+    statement:
+      "SaaS development is not CRUD with a login form — it is billing, permissions, onboarding, and architecture that survives your second enterprise customer.",
+    supporting:
+      "The hardest SaaS problems show up after the demo: tenant isolation, webhook reliability, plan changes, and dashboards that stay fast when data grows.",
+    pullQuote: "Build the platform skeleton before the feature sprawl.",
+  },
+  whatWeBuild: [
+    "Multi-tenant SaaS platforms",
+    "Subscription & billing flows",
+    "Team & account management",
+    "Customer portals",
+    "Admin consoles",
+    "Usage analytics views",
+    "Webhook & API products",
+    "B2B workflow tools",
+  ],
+  industries: ["SaaS & Technology", "FinTech", "Healthcare", "Professional Services"],
   overview:
     "SaaS development is more than putting a login form in front of a CRUD app. Reliable SaaS products need thoughtful tenant or account modeling, permission boundaries, billing hooks, onboarding that reduces churn, observability when integrations fail, and APIs that third-party tools can consume later.\n\nI work with founders and product teams who need a SaaS MVP to validate pricing, an existing product that outgrew its first architecture, or a B2B platform that must support multiple customer organizations without data leaks. The goal is always the same: a SaaS codebase and infrastructure your team can extend without rewriting core assumptions every quarter.",
   whatWeDo: {
-    heading: "Custom SaaS development — what it covers",
+    heading: "Custom SaaS and SaaS application development",
     paragraphs: [
       "SaaS engagements begin by clarifying the commercial model: who pays, what they access, how trials convert, and whether you need true multi-tenancy or a simpler single-database account model. Those decisions drive schema design, authorization rules, and how aggressively you isolate customer data.",
       "On the product side I implement user-facing workflows — dashboards, settings, team invites, usage views — alongside admin tooling your operations team needs. On the platform side I build APIs, background jobs, webhooks, and integration points for email, payments, analytics, and identity providers.",
@@ -89,7 +108,7 @@ export const saasDevelopment: Service = {
       title: "API layer for integrations",
       description:
         "Public or partner APIs with authentication, rate limits, and versioning when customers expect programmatic access.",
-      relatedServiceSlug: "api-backend-engineering",
+      relatedServiceSlug: "backend-development",
     },
     {
       title: "Background jobs & webhooks",
@@ -345,8 +364,8 @@ export const saasDevelopment: Service = {
   ],
   relatedServiceSlugs: [
     "mvp-development",
-    "full-stack-product-development",
-    "api-backend-engineering",
+    "full-stack-development",
+    "backend-development",
     "performance-optimization",
   ],
   relatedPosts: [
@@ -371,13 +390,12 @@ export const saasDevelopment: Service = {
     title: "SaaS Development Services | Custom SaaS Applications | Jay Patel",
     description:
       "Custom SaaS development services — architecture, billing, auth, admin tooling, and scalable backends with Next.js, Node.js, and PostgreSQL for startups and product teams.",
-    focusKeyword: "SaaS development",
+    focusKeyword: "SaaS development services",
     keywords: [
-      "SaaS development",
       "SaaS development services",
-      "custom SaaS development",
+      "custom SaaS",
       "SaaS application development",
-      "SaaS product development",
+      "custom SaaS development",
       "hire SaaS developer",
     ],
   },

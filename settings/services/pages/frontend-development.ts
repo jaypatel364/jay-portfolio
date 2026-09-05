@@ -16,14 +16,14 @@ export const frontendDevelopment: Service = {
   icon: "monitor",
   order: 6,
   seoBrief: {
-    primaryKeyword: "frontend development services",
+    primaryKeyword: "React & Next.js development services",
     searchIntent: "Commercial — hiring frontend/React/Next.js developers",
     secondaryKeywords: [
+      "frontend development",
+      "React developer",
       "React development services",
       "Next.js development",
-      "hire frontend developer",
       "frontend web development",
-      "UI development services",
     ],
     longTailQuestions: [
       "React vs Next.js for my product?",
@@ -44,7 +44,8 @@ export const frontendDevelopment: Service = {
     conversionIntent: "Discuss frontend/UI requirements",
   },
   hero: {
-    heading: "Frontend Development Services",
+    heading: "React & Next.js Development Services",
+    headlineLines: ["Interfaces that feel", "intentional — not", "assembled from templates."],
     description:
       "I build fast, accessible frontends with React and Next.js — from marketing sites and dashboards to complex interactive products — with component architecture that stays maintainable as your team grows.",
     primaryCta: { label: "Discuss your frontend", href: "/contact/" },
@@ -52,10 +53,28 @@ export const frontendDevelopment: Service = {
     trustIndicators: ["Production React & Next.js UIs", "Accessibility & semantic HTML focus"],
     technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
   },
+  editorialIntro: {
+    statement:
+      "Frontend development is what users actually experience — load time, clarity, keyboard paths, and whether the product feels trustworthy on mobile.",
+    supporting:
+      "Strong backends still fail when the UI is confusing or slow. I implement designs with semantic HTML, sensible state boundaries, and rendering choices that balance SEO and interactivity.",
+    pullQuote: "Design fidelity meets production discipline.",
+  },
+  whatWeBuild: [
+    "React & Next.js applications",
+    "SaaS dashboards",
+    "Marketing & content sites",
+    "Design system components",
+    "Complex form flows",
+    "Accessible interfaces",
+    "SEO-friendly public pages",
+    "API-connected product UIs",
+  ],
+  industries: ["SaaS & Technology", "E-commerce", "Education", "Professional Services"],
   overview:
     "Frontend development is what users actually experience: load time, clarity of interface, keyboard navigation, form validation feedback, and whether the product feels trustworthy on mobile. Strong backends still fail when the UI is confusing, inaccessible, or so slow that users leave before value appears.\n\nI implement designs with attention to semantic HTML, state management appropriate to the problem, and rendering choices that balance SEO, interactivity, and bundle size. Whether you need a new Next.js marketing site, a SaaS dashboard, or help untangling a React codebase grown over years, the focus is interfaces that ship reliably and that other developers can extend.",
   whatWeDo: {
-    heading: "Frontend development — scope and outcomes",
+    heading: "Frontend development for React product teams",
     paragraphs: [
       "Frontend work spans implementation from design files or wireframes, building reusable component libraries, wiring data from your APIs, and ensuring responsive behavior across breakpoints. I use TypeScript throughout for safer refactors and clearer contracts between UI and data layers.",
       "Rendering strategy matters from the start. Marketing and content-heavy pages often benefit from static or server rendering for SEO and first paint. Authenticated app shells may lean client-side with careful code splitting. I choose patterns based on crawl requirements, interactivity needs, and your hosting platform — not a default of client-only SPAs.",
@@ -108,7 +127,7 @@ export const frontendDevelopment: Service = {
       title: "API integration",
       description:
         "Typed clients, loading and error states, and cache strategies aligned with your backend.",
-      relatedServiceSlug: "api-backend-engineering",
+      relatedServiceSlug: "backend-development",
     },
   ],
   problems: [
@@ -325,7 +344,7 @@ export const frontendDevelopment: Service = {
     },
   ],
   relatedServiceSlugs: [
-    "full-stack-product-development",
+    "full-stack-development",
     "performance-optimization",
     "mvp-development",
     "saas-development",
@@ -336,16 +355,16 @@ export const frontendDevelopment: Service = {
     { title: "Next.js SEO Fundamentals", slug: "nextjs-seo-fundamentals" },
   ],
   seo: {
-    title: "Frontend Development Services | React & Next.js | Jay Patel",
+    title: "React & Next.js Development Services | Frontend Developer | Jay Patel",
     description:
       "Frontend development with React and Next.js — accessible UI, component architecture, SEO-friendly rendering, and production dashboards for startups and product teams.",
-    focusKeyword: "frontend development services",
+    focusKeyword: "React & Next.js development services",
     keywords: [
-      "frontend development services",
+      "React & Next.js development services",
+      "frontend development",
+      "React developer",
       "React development services",
       "Next.js development",
-      "hire frontend developer",
-      "UI development services",
     ],
   },
   updatedAt: "2026-08-27",

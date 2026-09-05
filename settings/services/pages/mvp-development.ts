@@ -16,14 +16,14 @@ export const mvpDevelopment: Service = {
   icon: "rocket",
   order: 3,
   seoBrief: {
-    primaryKeyword: "MVP development",
+    primaryKeyword: "MVP development services",
     searchIntent: "Commercial — founders seeking MVP build partners",
     secondaryKeywords: [
-      "MVP development services",
+      "startup MVP",
+      "SaaS MVP",
+      "MVP developer",
       "minimum viable product development",
       "startup MVP development",
-      "MVP software development",
-      "build an MVP",
     ],
     longTailQuestions: [
       "How long does it take to build an MVP?",
@@ -46,6 +46,7 @@ export const mvpDevelopment: Service = {
   },
   hero: {
     heading: "MVP Development Services",
+    headlineLines: ["Validate the idea", "without throwing away", "the codebase."],
     description:
       "I help founders and product teams build focused MVPs — the smallest useful version of your product — with enough technical quality to learn from real users instead of throwing away prototype code after launch.",
     primaryCta: { label: "Scope your MVP", href: "/contact/" },
@@ -53,10 +54,28 @@ export const mvpDevelopment: Service = {
     trustIndicators: ["Shipped MVPs & v1 platforms", "Pragmatic scope — no feature bloat"],
     technologies: ["Next.js", "React", "Node.js", "PostgreSQL", "Supabase"],
   },
+  editorialIntro: {
+    statement:
+      "An MVP should answer one product question — not preview every feature your roadmap might contain someday.",
+    supporting:
+      "The goal is deployed software real users can adopt, with enough quality to measure retention and revenue — not a throwaway prototype that forces a rewrite when traction appears.",
+    pullQuote: "Learn fast. Ship honestly. Cut scope deliberately.",
+  },
+  whatWeBuild: [
+    "Focused MVP applications",
+    "Core workflow prototypes",
+    "Pilot-ready web products",
+    "Auth & account foundations",
+    "Analytics instrumentation",
+    "Staging & production environments",
+    "Design-partner releases",
+    "v2 roadmap foundations",
+  ],
+  industries: ["Startups", "SaaS & Technology", "E-commerce", "Internal innovation"],
   overview:
     "An MVP should answer a specific product question: will users complete this workflow, pay for this outcome, or prefer this approach over alternatives? MVP development fails when teams treat it as a mini version of every future feature, or when engineers build throwaway code that cannot evolve.\n\nI focus on ruthless scope clarity, vertical feature slices, and architecture that is intentionally simple but not reckless. You get a deployed product with auth, core data flows, and analytics hooks — enough to run experiments, onboard design partners, or support an early fundraising narrative without committing to six months of speculative work.",
   whatWeDo: {
-    heading: "MVP development — what you get",
+    heading: "Startup MVP and SaaS MVP development",
     paragraphs: [
       "MVP work starts with defining the hypothesis: what must be true for this product to deserve more investment? We translate that into a feature list with explicit in-scope and out-of-scope boundaries. Nice-to-haves are documented for phase two rather than smuggled into v1.",
       "Implementation prioritizes the path from signup to the core value moment. Secondary screens, admin polish, and edge-case automation wait until you have signal. I still apply sensible defaults for security, data validation, and deployment because learning from users is useless if the app leaks data or breaks on every deploy.",
@@ -101,7 +120,7 @@ export const mvpDevelopment: Service = {
       title: "Handoff to v2",
       description:
         "Document technical debt consciously taken and the recommended next architectural steps.",
-      relatedServiceSlug: "full-stack-product-development",
+      relatedServiceSlug: "full-stack-development",
     },
   ],
   problems: [
@@ -306,9 +325,9 @@ export const mvpDevelopment: Service = {
   ],
   relatedServiceSlugs: [
     "saas-development",
-    "full-stack-product-development",
+    "full-stack-development",
     "frontend-development",
-    "api-backend-engineering",
+    "backend-development",
   ],
   relatedPosts: [
     { title: "MVP Development Process", slug: "mvp-development-process" },
@@ -317,16 +336,16 @@ export const mvpDevelopment: Service = {
     { title: "MVP Development Cost", slug: "mvp-development-cost" },
   ],
   seo: {
-    title: "MVP Development Services | Startup & Product MVPs | Jay Patel",
+    title: "MVP Development Services | Startup & SaaS MVPs | Jay Patel",
     description:
       "MVP development for startups and product teams — focused scope, deployed software, and architecture that can evolve into a full product without a rewrite.",
-    focusKeyword: "MVP development",
+    focusKeyword: "MVP development services",
     keywords: [
-      "MVP development",
       "MVP development services",
-      "minimum viable product development",
+      "startup MVP",
+      "SaaS MVP",
+      "MVP developer",
       "startup MVP development",
-      "build an MVP",
     ],
   },
   updatedAt: "2026-08-27",
