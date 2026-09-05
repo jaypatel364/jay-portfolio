@@ -21,10 +21,10 @@ const securityHeaders = [
         ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://www.google.com https://www.gstatic.com"
         : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://www.google.com https://www.gstatic.com",
       "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://www.gstatic.com https://www.google.com",
+      "img-src 'self' data: blob: https://cdn.sanity.io https://i.ytimg.com https://www.gstatic.com https://www.google.com",
       "font-src 'self' data:",
-      "connect-src 'self' https://github-contributions-api.jogruber.de https://*.ingest.sentry.io https://vitals.vercel-insights.com https://va.vercel-scripts.com https://www.google.com https://www.gstatic.com",
-      "frame-src 'self' https://www.google.com https://recaptcha.google.com https://www.recaptcha.net",
+      "connect-src 'self' https://*.api.sanity.io https://*.apicdn.sanity.io https://cdn.sanity.io https://github-contributions-api.jogruber.de https://*.ingest.sentry.io https://vitals.vercel-insights.com https://va.vercel-scripts.com https://www.google.com https://www.gstatic.com",
+      "frame-src 'self' https://www.google.com https://recaptcha.google.com https://www.recaptcha.net https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com https://codepen.io",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self' mailto:",
@@ -65,6 +65,14 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 7,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+        port: "",
+        pathname: "/images/**",
+      },
+    ],
   },
   reactStrictMode: true,
   compress: true,

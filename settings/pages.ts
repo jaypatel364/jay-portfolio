@@ -69,6 +69,43 @@ export const innerPages = {
       ],
     },
   },
+  services: {
+    path: "/services",
+    navId: "services",
+    label: "Services",
+    title: "Software Development Services | Full-Stack, SaaS & MVP | Jay Patel",
+    description:
+      "Full-stack product development, SaaS development, MVP builds, API engineering, frontend development, " +
+      "and performance optimization for startups and product teams.",
+    homeCta: "See all services",
+    placeholder: null,
+    hero: {
+      label: "Services",
+      title: "Software Development Services for Scalable Digital Products",
+      description:
+        "I help startups, SaaS companies, and product teams design, build, and improve production web applications — " +
+        "from MVPs and full-stack products to backend APIs, frontend experiences, and performance work.",
+      chips: ["Custom software", "Web development", "Full-stack development"],
+    },
+  },
+  blog: {
+    path: "/blog",
+    navId: "blog",
+    label: "Blog",
+    title: "Blog | Web Development Insights & Practical Guides | Jay Patel",
+    description:
+      "Practical guides and in-depth tutorials on React, Next.js, Node.js, TypeScript, backend development, " +
+      "APIs, performance, and modern web architecture by Jay Patel.",
+    homeCta: "Read the blog",
+    placeholder: null,
+    hero: {
+      label: "Blog",
+      title: "Web Development Insights & Practical Guides",
+      description:
+        "Practical guides and in-depth tutorials on React, Next.js, Node.js, TypeScript, backend development, APIs, performance, and modern web architecture. Learn how to choose the right tools, build scalable applications, and solve real-world development problems.",
+      chips: ["Web Development", "Practical Tutorials", "Engineering Deep Dives"],
+    },
+  },
   contact: {
     path: "/contact",
     navId: "contact",
