@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import type { Service } from "@/lib/services/types";

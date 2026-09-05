@@ -21,7 +21,7 @@ export function BlogQuoteBlock({
   return (
     <figure
       className={cn(
-        "relative mt-10 overflow-hidden rounded-2xl border",
+        "relative overflow-hidden rounded-2xl border",
         isLarge
           ? "border-primary/30 bg-gradient-to-br from-primary/[0.10] via-card/70 to-card/40 px-8 py-10 text-center sm:px-12 sm:py-12"
           : isPull

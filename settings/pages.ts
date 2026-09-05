@@ -92,6 +92,24 @@ export const innerPages = {
       ],
     },
   },
+  blog: {
+    path: "/blog",
+    navId: "blog",
+    label: "Blog",
+    title: "Blog | Web Development Insights & Practical Guides | Jay Patel",
+    description:
+      "Practical guides and in-depth tutorials on React, Next.js, Node.js, TypeScript, backend development, " +
+      "APIs, performance, and modern web architecture by Jay Patel.",
+    homeCta: "Read the blog",
+    placeholder: null,
+    hero: {
+      label: "Blog",
+      title: "Web Development Insights & Practical Guides",
+      description:
+        "Practical guides and in-depth tutorials on React, Next.js, Node.js, TypeScript, backend development, APIs, performance, and modern web architecture. Learn how to choose the right tools, build scalable applications, and solve real-world development problems.",
+      chips: ["Web Development", "Practical Tutorials", "Engineering Deep Dives"],
+    },
+  },
   contact: {
     path: "/contact",
     navId: "contact",
