@@ -69,6 +69,29 @@ export const innerPages = {
       ],
     },
   },
+  services: {
+    path: "/services",
+    navId: "services",
+    label: "Services",
+    title: "Software Development Services | Full Stack, SaaS & MVP | Jay Patel",
+    description:
+      "Full-stack product development, SaaS development, MVP builds, API engineering, frontend development, " +
+      "and performance optimization for startups and product teams.",
+    homeCta: "See all services",
+    placeholder: null,
+    hero: {
+      label: "Services",
+      title: "Software Development Services for Scalable Digital Products",
+      description:
+        "I help startups, SaaS companies, and product teams design, build, and improve production web applications — " +
+        "from MVPs and full-stack products to backend APIs, frontend experiences, and performance work.",
+      chips: [
+        "Full-stack product development",
+        "SaaS & MVP builds",
+        "API & performance engineering",
+      ],
+    },
+  },
   contact: {
     path: "/contact",
     navId: "contact",
