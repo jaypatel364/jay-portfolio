@@ -279,7 +279,7 @@ export const rootMetadata: Metadata = {
       { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-    shortcut: "/favicon.ico",
+    shortcut: "/favicon-v2.ico",
   },
   manifest: "/manifest.webmanifest",
 };

@@ -18,6 +18,7 @@ export {
   WorkHeroVisual,
   ContactHeroVisual,
   BlogHeroVisual,
+  ServicesHeroVisual,
 } from "./hero-visuals";
 export { GlobalCta } from "./GlobalCta";
 export { GlobalCtaGate } from "./GlobalCtaGate";
