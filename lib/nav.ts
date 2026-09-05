@@ -36,9 +36,9 @@ export const PRIMARY_NAV: NavItem[] = [
     isRoute: true,
   },
   {
-    id: "services",
-    label: "Services",
-    href: "/services/",
+    id: innerPages.services.navId,
+    label: innerPages.services.label,
+    href: `${innerPages.services.path}/`,
     isRoute: true,
   },
   {
@@ -83,6 +83,27 @@ export const PATH_TO_NAV_ID: Record<string, string> = {
   [`${innerPages.about.path}/`]: innerPages.about.navId,
   [`${innerPages.skills.path}/`]: innerPages.skills.navId,
   [`${innerPages.work.path}/`]: innerPages.work.navId,
-  "/services/": "services",
+  [`${innerPages.services.path}/`]: innerPages.services.navId,
   [`${innerPages.contact.path}/`]: innerPages.contact.navId,
 };
+
+/** Resolve active nav id — exact routes first, then nested paths (e.g. `/work/<slug>/`). */
+export function resolveNavId(pathname: string): string {
+  if (PATH_TO_NAV_ID[pathname]) return PATH_TO_NAV_ID[pathname];
+
+  if (
+    pathname.startsWith(`${innerPages.work.path}/`) &&
+    pathname.length > innerPages.work.path.length + 1
+  ) {
+    return innerPages.work.navId;
+  }
+
+  if (
+    pathname.startsWith(`${innerPages.services.path}/`) &&
+    pathname.length > innerPages.services.path.length + 1
+  ) {
+    return innerPages.services.navId;
+  }
+
+  return "home";
+}

@@ -18,6 +18,8 @@ import {
 
 interface AccentContextValue {
   accentId: string;
+  /** True after localStorage / cookie accent is synced on the client. */
+  ready: boolean;
   setAccent: (id: string) => void;
 }
 
@@ -32,9 +34,11 @@ export function AccentProvider({
   children: ReactNode;
 }) {
   const [accentId, setAccentIdState] = useState(() => resolveAccentId(initialAccentId));
+  const [ready, setReady] = useState(false);
 
   useLayoutEffect(() => {
     setAccentIdState(persistAccentChoice(readStoredAccentId()));
+    setReady(true);
   }, []);
 
   useLayoutEffect(() => {
@@ -50,7 +54,7 @@ export function AccentProvider({
     setAccentIdState(persistAccentChoice(resolveAccentId(id)));
   }, []);
 
-  const value = useMemo(() => ({ accentId, setAccent }), [accentId, setAccent]);
+  const value = useMemo(() => ({ accentId, ready, setAccent }), [accentId, ready, setAccent]);
 
   return <AccentContext.Provider value={value}>{children}</AccentContext.Provider>;
 }

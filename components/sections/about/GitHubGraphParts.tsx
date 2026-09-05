@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
@@ -9,7 +10,6 @@ import {
   DAY_LABELS,
   SHOW_DAY_INDICES,
   CELL_CLASS,
-  CELL_HOVER,
   getMonthLabels,
   AnimatedNumber,
 } from "./github-utils";
@@ -39,7 +39,23 @@ function Tooltip({ t }: { t: TooltipState }) {
   );
 }
 
-// ── Shared grid renderer (used by both inline view and full-year modal) ───────
+/** Resolve CSS color tokens for canvas fill (avoids ~350 cell DOM nodes). */
+function resolveCellColors(el: HTMLElement): Record<0 | 1 | 2 | 3 | 4, string> {
+  const probe = document.createElement("div");
+  probe.style.cssText = "position:absolute;width:0;height:0;overflow:hidden;pointer-events:none";
+  el.appendChild(probe);
+
+  const levels = [0, 1, 2, 3, 4] as const;
+  const colors = {} as Record<0 | 1 | 2 | 3 | 4, string>;
+  for (const level of levels) {
+    probe.className = CELL_CLASS[level];
+    colors[level] = getComputedStyle(probe).backgroundColor || "transparent";
+  }
+  el.removeChild(probe);
+  return colors;
+}
+
+// ── Shared grid renderer (canvas — keeps DOM width under SEO tool limits) ─────
 
 function ContributionGrid({
   weeks,
@@ -59,12 +75,101 @@ function ContributionGrid({
   const GAP = 3;
   const STEP = cellSize + GAP;
   const monthLabels = getMonthLabels(weeks);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const colorsRef = useRef<Record<0 | 1 | 2 | 3 | 4, string> | null>(null);
+  const hoverRef = useRef<{ wi: number; di: number } | null>(null);
+
+  const gridWidth = weeks.length * STEP - GAP;
+  const gridHeight = 7 * STEP - GAP;
+
+  const paint = useCallback(() => {
+    const canvas = canvasRef.current;
+    const wrap = wrapRef.current;
+    if (!canvas || !wrap || !weeks.length) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.floor(gridWidth * dpr));
+    canvas.height = Math.max(1, Math.floor(gridHeight * dpr));
+    canvas.style.width = `${gridWidth}px`;
+    canvas.style.height = `${gridHeight}px`;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, gridWidth, gridHeight);
+
+    if (!colorsRef.current) {
+      colorsRef.current = resolveCellColors(wrap);
+    }
+    const colors = colorsRef.current;
+    const radius = Math.max(2, cellSize * 0.22);
+    const hover = hoverRef.current;
+
+    weeks.forEach((week, wi) => {
+      week.days.forEach((day, di) => {
+        if (day === null) return;
+        const x = wi * STEP;
+        const y = di * STEP;
+        const isHover = hover?.wi === wi && hover?.di === di;
+
+        ctx.beginPath();
+        if (typeof ctx.roundRect === "function") {
+          ctx.roundRect(x, y, cellSize, cellSize, radius);
+        } else {
+          ctx.rect(x, y, cellSize, cellSize);
+        }
+        ctx.fillStyle = colors[day.level];
+        ctx.globalAlpha = inView ? (isHover ? 1 : 0.92) : 0.35;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        if (isHover) {
+          ctx.strokeStyle = colors[4];
+          ctx.lineWidth = 1.5;
+          ctx.globalAlpha = 0.55;
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      });
+    });
+  }, [weeks, cellSize, gridWidth, gridHeight, STEP, inView]);
+
+  useEffect(() => {
+    colorsRef.current = null;
+    paint();
+  }, [paint]);
+
+  // Re-resolve colors when theme/accent class changes on <html>
+  useEffect(() => {
+    const root = document.documentElement;
+    const obs = new MutationObserver(() => {
+      colorsRef.current = null;
+      paint();
+    });
+    obs.observe(root, { attributes: true, attributeFilter: ["class", "style", "data-theme"] });
+    return () => obs.disconnect();
+  }, [paint]);
+
+  const hitTest = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const wi = Math.floor(x / STEP);
+    const di = Math.floor(y / STEP);
+    if (wi < 0 || wi >= weeks.length || di < 0 || di >= 7) return null;
+    const day = weeks[wi]?.days[di];
+    if (!day) return null;
+    return { wi, di, day };
+  };
 
   return (
-    <div key={cellSize} className="w-full">
+    <div key={cellSize} className="w-full" ref={wrapRef}>
       {/* Month labels row */}
       <div
-        className={scrollable ? "relative mb-2 h-4" : "relative mb-2 h-4"}
+        className="relative mb-2 h-4"
         style={{
           marginLeft: 36,
           width: scrollable ? weeks.length * STEP : undefined,
@@ -83,9 +188,8 @@ function ContributionGrid({
         ))}
       </div>
 
-      {/* Day labels + cells */}
+      {/* Day labels + canvas grid */}
       <div className={scrollable ? "flex w-full items-start pb-2" : "flex w-full items-start"}>
-        {/* Day-of-week labels */}
         <div className="mr-2 shrink-0 left-0 bg-card" style={{ width: 28 }}>
           {DAY_LABELS.map((d, i) => (
             <div
@@ -98,60 +202,38 @@ function ContributionGrid({
           ))}
         </div>
 
-        {/* Grid */}
         <div
-          className={
-            scrollable
-              ? "flex gap-[3px] py-1 shrink-0"
-              : "flex flex-1 gap-[3px] overflow-visible py-1"
-          }
-          style={scrollable ? { width: weeks.length * STEP - GAP } : undefined}
+          className={scrollable ? "shrink-0 py-1" : "min-w-0 flex-1 overflow-x-auto py-1"}
+          style={scrollable ? { width: gridWidth } : undefined}
         >
-          {weeks.map((week, wi) => (
-            <div
-              key={wi}
-              className={scrollable ? "flex flex-col gap-[3px]" : "flex flex-1 flex-col gap-[3px]"}
-              style={scrollable ? { width: cellSize } : undefined}
-            >
-              {week.days.map((day, di) => {
-                if (day === null) {
-                  return (
-                    <div
-                      key={di}
-                      style={{ height: cellSize, borderRadius: Math.max(2, cellSize * 0.22) }}
-                    />
-                  );
+          <canvas
+            ref={canvasRef}
+            className="block cursor-default"
+            role="img"
+            aria-label="GitHub contribution activity over the past year"
+            onMouseMove={(e) => {
+              const hit = hitTest(e);
+              if (!hit) {
+                if (hoverRef.current) {
+                  hoverRef.current = null;
+                  paint();
                 }
-
-                return (
-                  <motion.div
-                    key={di}
-                    initial={{ opacity: 0, scale: 0.3 }}
-                    animate={inView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{
-                      duration: 0.22,
-                      delay: inView ? wi * 0.009 + di * 0.003 : 0,
-                      ease: [0.34, 1.56, 0.64, 1],
-                    }}
-                    style={{
-                      height: cellSize,
-                      borderRadius: Math.max(2, cellSize * 0.22),
-                    }}
-                    className={[
-                      "w-full cursor-default transition-all duration-150",
-                      CELL_CLASS[day.level],
-                      CELL_HOVER[day.level],
-                      "hover:scale-[1.4] hover:z-10 hover:ring-2 hover:ring-primary/50",
-                    ].join(" ")}
-                    onMouseEnter={(e) => onCellHover(e, day)}
-                    onMouseLeave={onCellLeave}
-                    role="img"
-                    aria-label={`${day.count} contributions on ${day.date}`}
-                  />
-                );
-              })}
-            </div>
-          ))}
+                onCellLeave();
+                return;
+              }
+              const prev = hoverRef.current;
+              if (!prev || prev.wi !== hit.wi || prev.di !== hit.di) {
+                hoverRef.current = { wi: hit.wi, di: hit.di };
+                paint();
+              }
+              onCellHover(e, hit.day);
+            }}
+            onMouseLeave={() => {
+              hoverRef.current = null;
+              paint();
+              onCellLeave();
+            }}
+          />
         </div>
       </div>
 

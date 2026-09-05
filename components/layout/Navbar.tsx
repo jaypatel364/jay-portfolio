@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon, Search, Palette, Check } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
+import { useAppearanceReady } from "@/hooks/use-appearance-ready";
 import { useNavActive } from "@/hooks/use-nav-active";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { ALL_NAV_TARGETS, PRIMARY_NAV } from "@/lib/nav";
@@ -15,10 +16,13 @@ import { useAccent } from "@/hooks/use-accent";
 import { ACCENT_PRESETS } from "@/lib/accent-colors";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
-import { AccentPicker } from "@/components/features/accent";
+import { RESUME_OPEN_EVENT } from "@/components/features/resume/open-resume";
 import { Brand } from "@/components/shared";
 
-/** cmdk / resume stay out of the initial bundle until opened or idle. */
+/** cmdk / accent / resume stay out of the initial bundle until opened or idle. */
+const AccentPicker = dynamic(() =>
+  import("@/components/features/accent").then((m) => ({ default: m.AccentPicker })),
+);
 const CommandPalette = dynamic(() =>
   import("@/components/features/command-palette").then((m) => ({ default: m.CommandPalette })),
 );
@@ -83,51 +87,43 @@ function MobileAccentPicker() {
         />
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 4 }}
-            transition={{ type: "spring", stiffness: 400, damping: 28 }}
-            className="absolute bottom-full right-0 mb-2 z-50 min-w-[160px] rounded-xl border border-border bg-card p-2.5 shadow-premium"
-            role="listbox"
-            aria-label="Choose accent color"
-          >
-            <p className="mb-2 px-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Accent color
-            </p>
-            <div className="flex flex-col gap-0.5">
-              {ACCENT_PRESETS.map((preset) => (
-                <button
-                  key={preset.id}
-                  role="option"
-                  aria-selected={preset.id === accentId}
-                  onClick={() => {
-                    setAccent(preset.id);
-                    setOpen(false);
-                  }}
-                  className={cn(
-                    "flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors",
-                    preset.id === accentId
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "text-foreground hover:bg-accent",
-                  )}
-                >
-                  <span
-                    className="h-4 w-4 shrink-0 rounded-full ring-1 ring-border"
-                    style={{ background: preset.swatch }}
-                  />
-                  <span className="flex-1">{preset.label}</span>
-                  {preset.id === accentId && (
-                    <Check className="h-3.5 w-3.5 text-primary shrink-0" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {open ? (
+        <div
+          className="absolute bottom-full right-0 mb-2 z-50 min-w-[160px] origin-bottom-right animate-in fade-in zoom-in-95 slide-in-from-bottom-1 rounded-xl border border-border bg-card p-2.5 shadow-premium duration-200"
+          role="listbox"
+          aria-label="Choose accent color"
+        >
+          <p className="mb-2 px-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Accent color
+          </p>
+          <div className="flex flex-col gap-0.5">
+            {ACCENT_PRESETS.map((preset) => (
+              <button
+                key={preset.id}
+                role="option"
+                aria-selected={preset.id === accentId}
+                onClick={() => {
+                  setAccent(preset.id);
+                  setOpen(false);
+                }}
+                className={cn(
+                  "flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left text-sm transition-colors",
+                  preset.id === accentId
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "text-foreground hover:bg-accent",
+                )}
+              >
+                <span
+                  className="h-4 w-4 shrink-0 rounded-full ring-1 ring-border"
+                  style={{ background: preset.swatch }}
+                />
+                <span className="flex-1">{preset.label}</span>
+                {preset.id === accentId && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -137,6 +133,7 @@ const JUMP_TARGETS = ALL_NAV_TARGETS;
 
 export function Navbar() {
   const { resolvedTheme, toggleTheme } = useTheme();
+  const appearanceReady = useAppearanceReady();
   const active = useNavActive();
   const readingSection = useActiveSection();
   const { percent, pastHero } = useScrollProgress();
@@ -147,6 +144,7 @@ export function Navbar() {
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [chromeReady, setChromeReady] = useState(false);
+  const [resumeReady, setResumeReady] = useState(false);
 
   useEffect(() => {
     // Sync initial state immediately — handles page refresh while already scrolled
@@ -167,7 +165,7 @@ export function Navbar() {
     };
   }, []);
 
-  // Prefetch command palette / resume after first paint so ⌘K isn't cold.
+  // Prefetch command palette after first paint so ⌘K isn't cold.
   useEffect(() => {
     const mount = () => setChromeReady(true);
     const ric = window.requestIdleCallback;
@@ -177,6 +175,12 @@ export function Navbar() {
     }
     const id = setTimeout(mount, 1);
     return () => clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    const onOpenResume = () => setResumeReady(true);
+    window.addEventListener(RESUME_OPEN_EVENT, onOpenResume);
+    return () => window.removeEventListener(RESUME_OPEN_EVENT, onOpenResume);
   }, []);
 
   // Global keyboard shortcuts
@@ -267,86 +271,89 @@ export function Navbar() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <nav className="mx-auto flex w-full min-w-0 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6">
-        <button
-          onClick={() => goTo(NAV_ITEMS[0])}
+      <nav
+        className="mx-auto flex w-full min-w-0 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6"
+        aria-label="Primary"
+      >
+        <Link
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            goTo(NAV_ITEMS[0]);
+          }}
           aria-label={`${siteConfig.fullName} — home`}
           className="min-w-0 shrink font-heading text-xl font-bold tracking-tight"
         >
           <Brand />
-        </button>
+        </Link>
 
         <div className="hidden items-center gap-1 lg:flex">
           {NAV_ITEMS.map((item) => (
-            <button
+            <Link
               key={item.id}
-              onClick={() => goTo(item)}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                goTo(item);
+              }}
               className={cn(
                 "relative rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 active === item.id ? "text-primary" : "text-muted-foreground hover:text-foreground",
               )}
             >
-              {active === item.id && (
-                <motion.div
-                  layoutId="nav-active"
-                  className="absolute inset-0 rounded-lg bg-primary/10"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              {active === item.id ? (
+                <span
+                  aria-hidden
+                  className="absolute inset-0 rounded-lg bg-primary/10 transition-colors duration-200"
                 />
-              )}
+              ) : null}
               <span className="relative z-10">{item.label}</span>
-            </button>
+            </Link>
           ))}
         </div>
 
         {/* Scroll progress badge — appears after scrolling past hero */}
-        <AnimatePresence>
-          {pastHero && (
-            <motion.div
-              key="scroll-badge"
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.85 }}
-              transition={{ type: "spring", stiffness: 380, damping: 28 }}
-              className="hidden items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm lg:flex"
-              aria-label={`Reading ${readingSection} — ${percent}% through page`}
+        {pastHero ? (
+          <div
+            className="hidden animate-in fade-in zoom-in-95 items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm duration-200 lg:flex"
+            aria-label={`Reading ${readingSection} — ${percent}% through page`}
+          >
+            {/* Mini arc progress ring */}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              className="shrink-0 -rotate-90"
+              aria-hidden="true"
             >
-              {/* Mini arc progress ring */}
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                className="shrink-0 -rotate-90"
-                aria-hidden="true"
-              >
-                <circle
-                  cx="8"
-                  cy="8"
-                  r="6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className="opacity-15"
-                />
-                <circle
-                  cx="8"
-                  cy="8"
-                  r="6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeDasharray={`${2 * Math.PI * 6}`}
-                  strokeDashoffset={`${2 * Math.PI * 6 * (1 - percent / 100)}`}
-                  strokeLinecap="round"
-                  className="text-primary transition-all duration-300"
-                  style={{ color: "var(--primary)" }}
-                />
-              </svg>
-              <span className="font-medium">{readingSection}</span>
-              <span className="opacity-60">·</span>
-              <span className="tabular-nums">{percent}%</span>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <circle
+                cx="8"
+                cy="8"
+                r="6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className="opacity-15"
+              />
+              <circle
+                cx="8"
+                cy="8"
+                r="6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeDasharray={`${2 * Math.PI * 6}`}
+                strokeDashoffset={`${2 * Math.PI * 6 * (1 - percent / 100)}`}
+                strokeLinecap="round"
+                className="text-primary transition-all duration-300"
+                style={{ color: "var(--primary)" }}
+              />
+            </svg>
+            <span className="font-medium">{readingSection}</span>
+            <span className="opacity-60">·</span>
+            <span className="tabular-nums">{percent}%</span>
+          </div>
+        ) : null}
 
         <div className="flex shrink-0 items-center gap-2">
           {/* ⌘K search trigger — visible on md+ as a pill, icon-only on mobile */}
@@ -372,16 +379,28 @@ export function Navbar() {
           {/* Shortcuts hint button */}
           <ShortcutsTrigger onClick={() => setShortcutsOpen(true)} />
 
-          {/* Accent color picker */}
-          <AccentPicker />
-
-          <button
-            onClick={toggleTheme}
-            className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-            aria-label="Toggle theme"
-          >
-            {resolvedTheme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </button>
+          {/* Accent + theme — hidden until storage is hydrated (avoids default flash) */}
+          {appearanceReady ? (
+            <div className="flex items-center gap-2 animate-in fade-in duration-200">
+              <AccentPicker />
+              <button
+                onClick={toggleTheme}
+                className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                aria-label="Toggle theme"
+              >
+                {resolvedTheme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2" aria-hidden>
+              <span className="inline-block size-9 shrink-0" />
+              <span className="inline-block size-9 shrink-0" />
+            </div>
+          )}
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -393,58 +412,54 @@ export function Navbar() {
         </div>
       </nav>
 
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="glass-strong mx-4 mt-2 rounded-xl lg:hidden"
-          >
-            <div className="flex flex-col gap-1 p-4">
-              {NAV_ITEMS.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => goTo(item)}
-                  className={cn(
-                    "relative rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors",
-                    active === item.id
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                  )}
-                >
-                  <span className="relative z-10">{item.label}</span>
-                </button>
-              ))}
+      {mobileOpen ? (
+        <div className="glass-strong mx-4 mt-2 animate-in fade-in slide-in-from-top-2 rounded-xl duration-200 lg:hidden">
+          <div className="flex flex-col gap-1 p-4">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.id}
+                href={item.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  goTo(item);
+                }}
+                className={cn(
+                  "relative rounded-lg px-4 py-3 text-left text-sm font-medium transition-colors",
+                  active === item.id
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                )}
+              >
+                <span className="relative z-10">{item.label}</span>
+              </Link>
+            ))}
 
-              {/* Divider */}
-              <div className="my-2 border-t border-border" />
-
-              {/* Theme & Accent row */}
-              <div className="flex items-center justify-between px-1">
-                <span className="text-xs font-medium text-muted-foreground">Appearance</span>
-                <div className="flex items-center gap-1">
-                  {/* Accent color swatches */}
-                  <MobileAccentPicker />
-                  {/* Light / Dark toggle */}
-                  <button
-                    onClick={toggleTheme}
-                    className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                    aria-label="Toggle theme"
-                  >
-                    {resolvedTheme === "dark" ? (
-                      <Sun className="h-4 w-4" />
-                    ) : (
-                      <Moon className="h-4 w-4" />
-                    )}
-                  </button>
+            {/* Theme & Accent row — after preferences hydrate */}
+            {appearanceReady ? (
+              <>
+                <div className="my-2 border-t border-border" />
+                <div className="flex animate-in fade-in items-center justify-between px-1 duration-200">
+                  <span className="text-xs font-medium text-muted-foreground">Appearance</span>
+                  <div className="flex items-center gap-1">
+                    <MobileAccentPicker />
+                    <button
+                      onClick={toggleTheme}
+                      className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      aria-label="Toggle theme"
+                    >
+                      {resolvedTheme === "dark" ? (
+                        <Sun className="h-4 w-4" />
+                      ) : (
+                        <Moon className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
 
       {/* Heavy chrome — mount on demand or after idle to cut unused JS / TBT */}
       {(paletteOpen || chromeReady) && (
@@ -454,10 +469,10 @@ export function Navbar() {
           onOpenShortcuts={() => setShortcutsOpen(true)}
         />
       )}
-      {(shortcutsOpen || chromeReady) && (
+      {shortcutsOpen ? (
         <ShortcutsOverlay open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
-      )}
-      {(paletteOpen || chromeReady) && <ResumeViewer />}
+      ) : null}
+      {resumeReady ? <ResumeViewer /> : null}
     </header>
   );
 }

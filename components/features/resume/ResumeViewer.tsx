@@ -5,10 +5,10 @@ import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Download, ExternalLink, FileText, X } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
-import { RESUME_OPEN_EVENT } from "./open-resume";
+import { RESUME_OPEN_EVENT, consumePendingResumeOpen } from "./open-resume";
 
 export function ResumeViewer() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => consumePendingResumeOpen());
   const [mounted, setMounted] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
 

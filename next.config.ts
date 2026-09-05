@@ -73,27 +73,14 @@ const nextConfig: NextConfig = {
     removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
   async headers() {
-    return [
-      { source: "/(.*)", headers: securityHeaders },
-      // Project slug pages are always noindex (coming-soon placeholders)
-      {
-        source: "/work/:slug",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }],
-      },
-      {
-        source: "/work/:slug/",
-        headers: [{ key: "X-Robots-Tag", value: "noindex, follow" }],
-      },
-    ];
+    return [{ source: "/(.*)", headers: securityHeaders }];
   },
   async redirects() {
     // Preview deployments (unique *.vercel.app URLs) are not redirected.
     // www is also redirected in Vercel Domains; this is a backup.
     const hosts = ["www.jaypateldev.com", "jay-patel-dev.vercel.app"];
     return [
-      { source: "/resume", destination: "/", permanent: true },
-      { source: "/engineering", destination: "/", permanent: true },
-      // Legacy project / case-study URLs → canonical /work/…
+      // Legacy project URLs → canonical /work/…
       { source: "/projects", destination: "/work/", permanent: true },
       { source: "/projects/", destination: "/work/", permanent: true },
       { source: "/projects/:slug", destination: "/work/:slug/", permanent: true },
