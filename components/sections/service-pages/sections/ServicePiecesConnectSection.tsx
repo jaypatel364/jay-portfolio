@@ -13,7 +13,7 @@ export function ServicePiecesConnectSection({ service }: { service: Service }) {
     <ServiceSectionShell
       id="pieces-connect"
       label="System"
-      title="How the pieces connect"
+      title="How the product system comes together"
       description="These are not isolated deliverables — they work together as one product system."
       theme="contrast"
       width="wide"

@@ -59,7 +59,7 @@ export function BlogIndexToolbar({
 
           <div className="min-w-0 flex-1">
             <label htmlFor="blog-search" className="sr-only">
-              Search blog posts
+              Search articles
             </label>
             <input
               id="blog-search"
@@ -136,7 +136,7 @@ export function BlogIndexToolbar({
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 px-1">
         <p className="text-sm text-muted-foreground" aria-live="polite">
           <span className="font-semibold tabular-nums text-foreground">{resultCount}</span>{" "}
-          {resultCount === 1 ? "post" : "posts"}
+          {resultCount === 1 ? "article" : "articles"}
           {totalPages > 1 ? (
             <>
               {" "}

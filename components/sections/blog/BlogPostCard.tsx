@@ -124,40 +124,58 @@ export function BlogPostCard({ post, variant = "default", className }: BlogPostC
         ) : null}
       </div>
 
-      <div className={cn("flex flex-1 flex-col", variant === "compact" ? "p-4" : "p-5 sm:p-6")}>
-        {category ? (
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">{category}</p>
-        ) : null}
+      <div className={cn("flex flex-1 flex-col", variant === "compact" ? "p-4" : "p-4 sm:p-5")}>
+        {/* Category + Date — single compact row */}
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
+          {category ? <span>{category}</span> : null}
+          {category && post.publishedAt ? (
+            <span className="text-muted-foreground/60">·</span>
+          ) : null}
+          {post.publishedAt ? (
+            <BlogPublishedDate
+              date={post.publishedAt}
+              className="font-medium normal-case tracking-normal text-muted-foreground"
+              showLabel={false}
+            />
+          ) : null}
+        </div>
 
-        <h2
+        {/* Title — max 3 lines + reserved height so cards stay equal */}
+        <span
           className={cn(
             "font-heading font-semibold tracking-tight text-balance text-foreground transition-colors group-hover:text-primary",
-            category ? "mt-2" : "mt-0",
-            variant === "compact" ? "text-lg" : "text-xl",
+            "line-clamp-2",
+            // Smaller sizes + reserved 3-line height
+            variant === "compact"
+              ? "mt-3 text-base leading-snug min-h-[3.25rem]" // ~1.08rem × 3
+              : "mt-3 text-md leading-snug min-h-[2.5rem]", // ~1.25rem × 3
           )}
         >
           {post.title}
-        </h2>
+        </span>
+
+        {/* Description — max 3 lines + reserved height */}
         {post.excerpt ? (
           <p
             className={cn(
-              "mt-2 leading-relaxed text-muted-foreground",
-              variant === "compact" ? "line-clamp-2 text-xs" : "line-clamp-3 text-sm",
+              "mt-2 leading-relaxed text-muted-foreground line-clamp-3",
+              variant === "compact"
+                ? "text-xs min-h-[3.6rem]" // ~1.2rem * 3
+                : "text-sm min-h-[4rem]", // ~1.5rem * 3
             )}
           >
             {post.excerpt}
           </p>
-        ) : null}
+        ) : (
+          // Keep the reserved space even when there is no excerpt
+          <div
+            className={cn("mt-2", variant === "compact" ? "min-h-[3.6rem]" : "min-h-[4.5rem]")}
+          />
+        )}
 
-        <BlogPublishedDate
-          date={post.publishedAt}
-          readingMinutes={post.readingTimeMinutes}
-          className="mt-4"
-          showLabel={false}
-        />
-
+        {/* CTA pinned to the bottom */}
         <div className="mt-auto flex items-center gap-1 pt-5 text-sm font-medium text-primary">
-          Read post
+          Read article
           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </div>
       </div>

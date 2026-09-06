@@ -167,7 +167,7 @@ export function BlogPostArticle({
                 href="/blog/"
                 className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary/80"
               >
-                View all posts
+                View all articles
                 <ArrowUpRight className="h-4 w-4" aria-hidden />
               </Link>
             </div>
@@ -257,7 +257,7 @@ function ArticleBody({
 
       <div className="mt-10 flex flex-col gap-4 rounded-2xl border border-border/70 bg-card/50 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-5">
         <p className="min-w-0 text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]">
-          Found this post helpful? Don&apos;t forget to share it with your network!
+          Found this artical helpful? Don&apos;t forget to share it with your network!
         </p>
         <BlogShareBar title={post.title} url={shareUrl} compact className="shrink-0" />
       </div>

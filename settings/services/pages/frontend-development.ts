@@ -16,7 +16,7 @@ export const frontendDevelopment: Service = {
   icon: "monitor",
   order: 6,
   seoBrief: {
-    primaryKeyword: "React & Next.js development services",
+    primaryKeyword: "Frontend development services",
     searchIntent: "Commercial — hiring frontend/React/Next.js developers",
     secondaryKeywords: [
       "frontend development",
@@ -44,7 +44,7 @@ export const frontendDevelopment: Service = {
     conversionIntent: "Discuss frontend/UI requirements",
   },
   hero: {
-    heading: "React & Next.js Development Services",
+    heading: "Frontend Development Services",
     headlineLines: ["Interfaces that feel", "intentional — not", "assembled from templates."],
     description:
       "I build fast, accessible frontends with React and Next.js — from marketing sites and dashboards to complex interactive products — with component architecture that stays maintainable as your team grows.",
@@ -355,12 +355,12 @@ export const frontendDevelopment: Service = {
     { title: "Next.js SEO Fundamentals", slug: "nextjs-seo-fundamentals" },
   ],
   seo: {
-    title: "React & Next.js Development Services | Frontend Developer | Jay Patel",
+    title: "Frontend  Development Services | Frontend Developer | Jay Patel",
     description:
       "Frontend development with React and Next.js — accessible UI, component architecture, SEO-friendly rendering, and production dashboards for startups and product teams.",
-    focusKeyword: "React & Next.js development services",
+    focusKeyword: "Frontend  development services",
     keywords: [
-      "React & Next.js development services",
+      "Frontend development services",
       "frontend development",
       "React developer",
       "React development services",

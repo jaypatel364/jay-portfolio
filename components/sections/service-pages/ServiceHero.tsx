@@ -51,20 +51,6 @@ export function ServiceHero({ service }: ServiceHeroProps) {
             {service.hero.heading}
           </h1>
 
-          {taglineLines?.length ? (
-            <p className="font-heading mt-5 max-w-xl text-xl font-semibold leading-snug tracking-tight text-foreground/90 sm:text-2xl">
-              {taglineLines.map((line, i) => (
-                <span key={line} className="block text-balance">
-                  {i === taglineLines.length - 1 ? (
-                    <span className="text-primary">{line}</span>
-                  ) : (
-                    line
-                  )}
-                </span>
-              ))}
-            </p>
-          ) : null}
-
           <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             {service.hero.description}
           </p>

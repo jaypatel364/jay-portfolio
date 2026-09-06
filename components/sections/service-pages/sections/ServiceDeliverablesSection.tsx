@@ -127,7 +127,7 @@ export function ServiceDeliverablesSection({ service }: { service: Service }) {
                 id="deliverables-heading"
                 className="font-heading text-3xl font-bold tracking-tight text-balance sm:text-4xl"
               >
-                What you receive
+                What Is Included in {service.title}?
               </h2>
               <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
                 Concrete outputs from this engagement — not vague promises.

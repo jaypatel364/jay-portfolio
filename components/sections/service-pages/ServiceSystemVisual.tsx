@@ -25,7 +25,7 @@ export function ServiceSystemVisual({ service }: { service: Service }) {
               System
             </p>
             <h2 className="font-heading mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-              How the pieces connect
+              How the product system comes together{" "}
             </h2>
             <p className="mt-5 text-base leading-relaxed text-muted-foreground">
               {service.whatWeDo.paragraphs[0]}

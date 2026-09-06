@@ -216,7 +216,7 @@ export function BlogIndexSection({
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
             >
               {posts.map((post) => (
                 <PostCard key={post._id} post={post} />

@@ -66,7 +66,8 @@ export function BlogArticleSidebar({
           Building something similar?
         </p>
         <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
-          Freelance full-stack work — React, Next.js, Node.js. Usually replies within 24 hours.
+          Full Stack Freelance Developer - React, Next.js, Node.js. Reaches out within 24
+          hours.{" "}
         </p>
         <div className="mt-3 flex flex-col gap-2">
           <SiteButton href="/contact/" size="sm" className="w-full">
