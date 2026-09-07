@@ -75,13 +75,13 @@ export const innerPages = {
     label: "Services",
     title: "Software Development Services | Full-Stack, SaaS & MVP | Jay Patel",
     description:
-      "Full-stack product development, SaaS development, MVP builds, API engineering, frontend development, " +
-      "and performance optimization for startups and product teams.",
+      "Full-stack product development, MERN stack development, SaaS development, MVP builds, API engineering, " +
+      "frontend development, and performance optimization for startups and product teams.",
     homeCta: "See all services",
     placeholder: null,
     hero: {
       label: "Services",
-      title: "Software Development Services for Scalable Digital Products",
+      title: "Full Stack Web Development Services",
       description:
         "I help startups, SaaS companies, and product teams design, build, and improve production web applications — " +
         "from MVPs and full-stack products to backend APIs, frontend experiences, and performance work.",

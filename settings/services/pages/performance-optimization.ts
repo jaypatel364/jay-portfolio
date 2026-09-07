@@ -5,7 +5,7 @@ export const performanceOptimization: Service = {
   slug: "performance-optimization",
   title: "Performance Optimization",
   shortDescription:
-    "Application performance optimization for React, Next.js, and Node.js — Core Web Vitals, rendering, queries, and infrastructure tuning.",
+    "Application performance optimization for React, Next.js, and Node.js, Core Web Vitals, rendering, queries, and infrastructure tuning.",
   cardCapabilities: [
     "Core Web Vitals audits",
     "React & Next.js rendering",
@@ -15,10 +15,10 @@ export const performanceOptimization: Service = {
   categoryLabels: ["Performance", "Next.js", "React", "Core Web Vitals"],
   icon: "gauge",
   order: 5,
-  published: true,
+  published: false,
   seoBrief: {
     primaryKeyword: "web performance optimization services",
-    searchIntent: "Commercial / investigative — teams with slow apps seeking help",
+    searchIntent: "Commercial /investigative: teams with slow apps seeking help",
     secondaryKeywords: [
       "Core Web Vitals",
       "React performance",
@@ -49,7 +49,7 @@ export const performanceOptimization: Service = {
     heading: "Web Performance Optimization Services",
     headlineLines: ["Measure first.", "Fix what users", "actually feel."],
     description:
-      "I diagnose and fix slow web applications — from Core Web Vitals and React rendering to API latency and database queries — using measurements first, not guesswork and premature caching.",
+      "I diagnose and fix slow web applications, from Core Web Vitals and React rendering to API latency and database queries, using measurements first, not guesswork and premature caching.",
     primaryCta: { label: "Request a performance audit", href: "/contact/" },
     secondaryCta: SERVICE_CONTACT_CTA,
     trustIndicators: ["Core Web Vitals & SEO fundamentals", "Production React/Next.js experience"],
@@ -57,9 +57,9 @@ export const performanceOptimization: Service = {
   },
   editorialIntro: {
     statement:
-      "Performance work without profiling is guesswork — swap one bottleneck for another and call it optimization.",
+      "Performance work without profiling is guesswork. Swap one bottleneck for another and call it optimization.",
     supporting:
-      "I start from real user paths, Core Web Vitals, and server timing — then prioritize fixes by impact and cost so speed improvements stick after the next release.",
+      "I start from real user paths, Core Web Vitals, and server timing. Then prioritize fixes by impact and cost so speed improvements stick after the next release.",
     pullQuote: "Speed is a feature. Measure it like one.",
   },
   whatWeBuild: [
@@ -74,12 +74,12 @@ export const performanceOptimization: Service = {
   ],
   industries: ["SaaS & Technology", "E-commerce", "Media & Content", "B2B platforms"],
   overview:
-    "Performance problems rarely have a single cause. Users complain about slow pages when the real issue is an unbounded API query, an oversized JavaScript bundle, layout shift from late-loading fonts, or database locks under concurrent writes. Optimization work that skips measurement usually trades one bottleneck for another.\n\nI start with real user metrics and profiling — Lighthouse and lab tests, bundle analysis, server timing, query plans — then prioritize fixes by user impact and implementation cost. The goal is faster experiences, better search signals where performance affects rankings, and infrastructure bills that match actual load instead of over-provisioned defaults.",
+    "Performance problems rarely have a single cause. Users complain about slow pages when the real issue is an unbounded API query, an oversized JavaScript bundle, layout shift from late-loading fonts, or database locks under concurrent writes. Optimization work that skips measurement usually trades one bottleneck for another.\n\nI start with real user metrics and profiling. Lighthouse and lab tests, bundle analysis, server timing, query plans. Then prioritize fixes by user impact and implementation cost. The goal is faster experiences, better search signals where performance affects rankings, and infrastructure bills that match actual load instead of over-provisioned defaults.",
   whatWeDo: {
     heading: "Core Web Vitals, React performance, and Next.js performance",
     paragraphs: [
       "Performance engagements begin with establishing baselines: which pages or API routes hurt most, what Core Web Vitals look like in the field when analytics exist, and where time is spent in the critical path. Without that, optimization becomes a checklist of best practices that may not touch your actual pain.",
-      "Frontend work targets rendering strategy (SSR, SSG, ISR, client components), bundle size, image delivery, font loading, and interaction responsiveness. Backend work targets N+1 queries, missing indexes, synchronous external calls, and queue-worthy background tasks. Infrastructure changes — CDN, caching layers, connection pooling — come after code-level wins unless ops issues are clearly dominant.",
+      "Frontend work targets rendering strategy (SSR, SSG, ISR, client components), bundle size, image delivery, font loading, and interaction responsiveness. Backend work targets N+1 queries, missing indexes, synchronous external calls, and queue-worthy background tasks. Infrastructure changes, CDN, caching layers, connection pooling, come after code-level wins unless ops issues are clearly dominant.",
       "This service suits marketing sites that lost traffic after a redesign, SaaS dashboards that choke on large datasets, e-commerce flows with cart abandonment tied to latency, and teams preparing for traffic spikes or SEO-critical launches.",
     ],
   },
@@ -124,7 +124,7 @@ export const performanceOptimization: Service = {
     {
       title: "Technical SEO performance fixes",
       description:
-        "Crawlability, semantic HTML, and speed factors that affect search visibility — paired with content work elsewhere.",
+        "Crawlability, semantic HTML, and speed factors that affect search visibility, paired with content work elsewhere.",
     },
     {
       title: "Monitoring & regression guards",
@@ -136,7 +136,7 @@ export const performanceOptimization: Service = {
     {
       title: "Poor Core Web Vitals scores",
       description:
-        "Search and conversion suffer when LCP, INP, or CLS fail thresholds — often from fixable frontend patterns.",
+        "Search and conversion suffer when LCP, INP, or CLS fail thresholds, often from fixable frontend patterns.",
     },
     {
       title: "Slow SaaS dashboards",
@@ -151,7 +151,7 @@ export const performanceOptimization: Service = {
     {
       title: "API timeouts under load",
       description:
-        "Endpoints that degrade when concurrent users increase — missing pools, locks, or caches.",
+        "Endpoints that degrade when concurrent users increase, missing pools, locks, or caches.",
     },
     {
       title: "Layout shift and janky UX",
@@ -160,14 +160,14 @@ export const performanceOptimization: Service = {
     {
       title: "Mystery slowness after launch",
       description:
-        "Teams without profiling culture guessing at fixes — burning sprints on low-impact tweaks.",
+        "Teams without profiling culture guessing at fixes, burning sprints on low-impact tweaks.",
     },
   ],
   process: [
     {
       title: "Baseline measurement",
       description:
-        "Collect lab scores, traces, and — when available — real user monitoring on critical URLs.",
+        "Collect lab scores, traces, and, when available, real user monitoring on critical URLs.",
     },
     {
       title: "Bottleneck prioritization",
@@ -175,7 +175,7 @@ export const performanceOptimization: Service = {
     },
     {
       title: "Quick wins delivery",
-      description: "Ship high-confidence improvements first — images, fonts, obvious query fixes.",
+      description: "Ship high-confidence improvements first, images, fonts, obvious query fixes.",
     },
     {
       title: "Frontend rendering fixes",
@@ -243,7 +243,7 @@ export const performanceOptimization: Service = {
   audiences: [
     {
       title: "Product teams with user complaints",
-      description: "Support tickets mentioning slowness — need diagnosis, not generic advice.",
+      description: "Support tickets mentioning slowness, need diagnosis, not generic advice.",
     },
     {
       title: "SEO-focused businesses",
@@ -312,31 +312,31 @@ export const performanceOptimization: Service = {
   whyHire: {
     roleTitle: "Performance Engineer",
     intro:
-      "You get measurable improvements backed by data — real profiling across frontend, APIs, and databases, with fixes and regression guards so speed does not slip after the next release.",
+      "You get measurable improvements backed by data, real profiling across frontend, APIs, and databases, with fixes and regression guards so speed does not slip after the next release.",
     reasons: [
       {
         tag: "Measurement",
         title: "Baselines before changes",
         description:
-          "Lighthouse, Web Vitals, API traces, and query plans captured first — so every optimization is tied to evidence, not guesswork.",
+          "Lighthouse, Web Vitals, API traces, and query plans captured first, so every optimization is tied to evidence, not guesswork.",
       },
       {
         tag: "Impact",
         title: "Fixes where users feel it",
         description:
-          "LCP, TTI, and API latency prioritized by business effect — checkout, signup, and dashboard flows before low-traffic admin pages.",
+          "LCP, TTI, and API latency prioritized by business effect, checkout, signup, and dashboard flows before low-traffic admin pages.",
       },
       {
         tag: "Depth",
         title: "Full-stack bottlenecks",
         description:
-          "Rendering, bundle size, caching, and database queries addressed together — because slowness rarely lives in only one layer.",
+          "Rendering, bundle size, caching, and database queries addressed together, because slowness rarely lives in only one layer.",
       },
       {
         tag: "Durability",
         title: "Regression guards",
         description:
-          "Monitoring and budgets so performance gains survive the next feature ship — not a one-time audit that erodes within a sprint.",
+          "Monitoring and budgets so performance gains survive the next feature ship, not a one-time audit that erodes within a sprint.",
       },
     ],
     highlights: [
@@ -350,7 +350,7 @@ export const performanceOptimization: Service = {
     {
       question: "How do you measure performance improvements?",
       answer:
-        "I align on KPIs upfront — Core Web Vitals, TTFB, API p95 latency, or custom business metrics. Lab tools plus staging/production measurements show before and after, not anecdotal feel.",
+        "I align on KPIs upfront, Core Web Vitals, TTFB, API p95 latency, or custom business metrics. Lab tools plus staging/production measurements show before and after, not anecdotal feel.",
     },
     {
       question: "Can you optimize an app you did not build?",
@@ -370,7 +370,7 @@ export const performanceOptimization: Service = {
     {
       question: "Do you optimize mobile performance separately?",
       answer:
-        "Mobile constraints — CPU, network, viewport — are part of every audit. Responsive images, JS budgets, and touch interaction latency are evaluated explicitly.",
+        "Mobile constraints, CPU, network, viewport, are part of every audit. Responsive images, JS budgets, and touch interaction latency are evaluated explicitly.",
     },
     {
       question: "Can performance work include backend-only issues?",
@@ -387,7 +387,7 @@ export const performanceOptimization: Service = {
   seo: {
     title: "Web Performance Optimization Services | Core Web Vitals | Jay Patel",
     description:
-      "Performance optimization for React, Next.js, and Node.js apps — Core Web Vitals, rendering, API latency, database tuning, and caching with measurement-driven fixes.",
+      "Performance optimization for React, Next.js, and Node.js apps, Core Web Vitals, rendering, API latency, database tuning, and caching with measurement-driven fixes.",
     focusKeyword: "web performance optimization services",
     keywords: [
       "web performance optimization services",

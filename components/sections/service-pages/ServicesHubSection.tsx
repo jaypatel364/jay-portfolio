@@ -6,6 +6,7 @@ import {
   ArrowUpRight,
   Check,
   Gauge,
+  Layers,
   Layout,
   Monitor,
   Rocket,
@@ -26,6 +27,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   server: Server,
   rocket: Rocket,
   gauge: Gauge,
+  layers: Layers,
 };
 
 interface ServicesHubSectionProps {
@@ -50,11 +52,11 @@ export function ServicesHubSection({
           id="services-hub-heading"
           className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl"
         >
-          Custom software, web, and full-stack development
+          End-to-End Web Development for Modern Products{" "}
         </h2>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-          The expanded version of what you see on Skills — each page goes deep on scope, system
-          design, process, and proof.
+          I am a full stack developer and I do full stack development, custom software development
+          and web app development for you to make your product launch faster & better working.
         </p>
       </div>
 

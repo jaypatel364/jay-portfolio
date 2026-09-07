@@ -87,6 +87,13 @@ export type ServiceVisual = {
   priority?: boolean;
 };
 
+/** Cover / OG image copy for SEO and social previews. */
+export type ServiceCoverImage = {
+  title: string;
+  alt: string;
+  image?: string;
+};
+
 export type ServiceEditorialIntro = {
   /** Large editorial statement (displayed prominently). */
   statement: string;
@@ -198,6 +205,10 @@ export type Service = {
   /** Blog post slugs — card data (title, excerpt, cover) is resolved from Sanity at render time. */
   relatedPosts: string[];
   seo: ServiceSeo;
+  /** Approximate reading time for the full service page (minutes). */
+  readTimeMinutes?: number;
+  /** Cover / feature image metadata for OG and accessibility. */
+  coverImage?: ServiceCoverImage;
   sectionOrder?: ServiceSectionKey[];
   sectionVisibility?: ServiceSectionVisibility;
   updatedAt?: string;

@@ -6,18 +6,17 @@ export const servicesHub: ServicesHubSettings = {
   label: "Services",
   hero: {
     label: "Services",
-    title: "Software Development Services for Scalable Digital Products",
+    title: "Full Stack Web Development Services",
     description:
-      "I help startups, SaaS companies, and product teams design, build, and improve production web applications — " +
-      "from MVPs and full-stack products to backend APIs, frontend experiences, and performance work.",
+      "Looking to hire a full stack developer who delivers real results? Jay Patel provides professional web development services which are clean and fast. All projects are designed to scale from custom web design to full stack web development. Get quality, reliable and affordable personalized web application development services for your business goals.",
     primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
     chips: ["Custom software", "Web development", "Full-stack development"],
   },
   seo: {
-    title: "Software Development Services | Full-Stack, SaaS & MVP | Jay Patel",
+    title: "Full Stack Web Development Services | Jay Patel",
     description:
-      "Full-stack product development, SaaS development, MVP builds, API engineering, frontend development, and performance optimization for startups and product teams.",
+      "Custom full stack web development services using React, Next.js, Node.js and TypeScript. Build scalable web applications, SaaS products and MVPs with Jay Patel.",
     focusKeyword: "software development services",
     keywords: [
       "software development services",
@@ -27,6 +26,7 @@ export const servicesHub: ServicesHubSettings = {
       "full stack development services",
       "SaaS development services",
       "MVP development",
+      "MERN stack development",
       "Jay Patel developer",
     ],
   },

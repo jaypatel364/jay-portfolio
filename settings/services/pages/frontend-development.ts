@@ -5,26 +5,40 @@ export const frontendDevelopment: Service = {
   slug: "frontend-development",
   title: "Frontend Development",
   shortDescription:
-    "Modern frontend development with React and Next.js — accessible UI, strong UX, component architecture, and SEO-friendly rendering.",
+    "Frontend development services with React development, TypeScript development, and responsive web development for modern product teams.",
   cardCapabilities: [
-    "React & Next.js applications",
-    "Component systems & design implementation",
-    "Accessibility & semantic HTML",
-    "SEO-friendly rendering patterns",
+    "React Development Services",
+    "Responsive Frontend Development",
+    "Custom React Development",
   ],
   categoryLabels: ["React", "Next.js", "TypeScript", "Frontend"],
   icon: "monitor",
   order: 6,
   published: true,
   seoBrief: {
-    primaryKeyword: "Frontend development services",
-    searchIntent: "Commercial — hiring frontend/React/Next.js developers",
+    primaryKeyword: "frontend development",
+    searchIntent: "Commercial: hiring frontend/React/Next.js developers",
     secondaryKeywords: [
-      "frontend development",
-      "React developer",
-      "React development services",
-      "Next.js development",
+      "frontend development services",
+      "front end development",
+      "frontend developer",
+      "front end developer",
       "frontend web development",
+      "hire frontend developer",
+      "freelance frontend developer",
+      "custom frontend development",
+      "web frontend development",
+      "responsive frontend development",
+      "React development",
+      "React development services",
+      "React developer",
+      "hire React developer",
+      "React frontend development",
+      "TypeScript development",
+      "JavaScript development",
+      "responsive web development",
+      "modern frontend development",
+      "Tailwind CSS development",
     ],
     longTailQuestions: [
       "React vs Next.js for my product?",
@@ -46,72 +60,72 @@ export const frontendDevelopment: Service = {
   },
   hero: {
     heading: "Frontend Development Services",
-    headlineLines: ["Interfaces that feel", "intentional — not", "assembled from templates."],
+    headlineLines: ["Interfaces that feel", "intentional, not", "assembled from templates."],
     description:
-      "I build fast, accessible frontends with React and Next.js — from marketing sites and dashboards to complex interactive products — with component architecture that stays maintainable as your team grows.",
-    primaryCta: { label: "Discuss your frontend", href: "/contact/" },
+      "Frontend development services for React and TypeScript products: responsive web applications, custom React development, and modern UI that loads fast and works on every device.",
+    primaryCta: { label: "Hire a frontend developer", href: "/contact/" },
     secondaryCta: SERVICE_CONTACT_CTA,
     trustIndicators: ["Production React & Next.js UIs", "Accessibility & semantic HTML focus"],
     technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
   },
   editorialIntro: {
     statement:
-      "Frontend development is what users actually experience — load time, clarity, keyboard paths, and whether the product feels trustworthy on mobile.",
+      "Frontend development is what users see first, if the UI is slow or confusing, nothing else on your roadmap matters.",
     supporting:
-      "Strong backends still fail when the UI is confusing or slow. I implement designs with semantic HTML, sensible state boundaries, and rendering choices that balance SEO and interactivity.",
-    pullQuote: "Design fidelity meets production discipline.",
+      "I build responsive frontend development and React frontend development that matches your designs, passes accessibility basics, and gives your team a component-based development foundation they can extend.",
+    pullQuote: "Good frontend web development earns trust on the first screen.",
   },
   whatWeBuild: [
-    "React & Next.js applications",
+    "React web development projects",
+    "Interactive web applications",
+    "Responsive web applications",
     "SaaS dashboards",
-    "Marketing & content sites",
-    "Design system components",
-    "Complex form flows",
-    "Accessible interfaces",
+    "Custom React development",
     "SEO-friendly public pages",
+    "Component-based development libraries",
     "API-connected product UIs",
   ],
   industries: ["SaaS & Technology", "E-commerce", "Education", "Professional Services"],
   overview:
-    "Frontend development is what users actually experience: load time, clarity of interface, keyboard navigation, form validation feedback, and whether the product feels trustworthy on mobile. Strong backends still fail when the UI is confusing, inaccessible, or so slow that users leave before value appears.\n\nI implement designs with attention to semantic HTML, state management appropriate to the problem, and rendering choices that balance SEO, interactivity, and bundle size. Whether you need a new Next.js marketing site, a SaaS dashboard, or help untangling a React codebase grown over years, the focus is interfaces that ship reliably and that other developers can extend.",
+    "Frontend development services for teams that need fast, clean interfaces. I handle React development, TypeScript development, and responsive web development, building interactive web applications and modern frontend development that works across devices and stays maintainable for your team.",
   whatWeDo: {
-    heading: "Frontend development for React product teams",
+    heading: "Frontend development services for React and TypeScript teams",
     paragraphs: [
-      "Frontend work spans implementation from design files or wireframes, building reusable component libraries, wiring data from your APIs, and ensuring responsive behavior across breakpoints. I use TypeScript throughout for safer refactors and clearer contracts between UI and data layers.",
-      "Rendering strategy matters from the start. Marketing and content-heavy pages often benefit from static or server rendering for SEO and first paint. Authenticated app shells may lean client-side with careful code splitting. I choose patterns based on crawl requirements, interactivity needs, and your hosting platform — not a default of client-only SPAs.",
-      "Frontend development is ideal when you have backend capacity but need senior UI implementation, when designers have finished visuals that need a production-grade build, or when an existing React app needs refactoring for performance, accessibility, or developer experience.",
+      "Frontend development covers everything users click, read, and type. As a React developer and freelance frontend developer, I turn designs into production UI with React development services that include routing, forms, data fetching, and responsive web development. Whether you need web frontend development for a SaaS dashboard or a marketing site, the focus is the same: clear layout, fast load, and code your team can read.",
+      "I offer custom frontend development and custom React development for startups, agencies, and product teams. That includes React.js development, React web development, React frontend development, and UI development with Tailwind CSS development where it fits. I also handle frontend architecture, how components are organized, how state flows, and how the app talks to your API.",
+      "Hire a frontend developer when your backend is ready but UI quality lags, when you need a React developer to implement Figma files, or when an existing app needs frontend performance optimization and better component-based development. Front end development should not block your release schedule, and with the right frontend development company partner, it won't.",
     ],
   },
   capabilities: [
     {
-      title: "React application development",
+      title: "React development services",
       description:
-        "SPAs and hybrid apps with thoughtful state boundaries, error boundaries, and testing on critical components.",
+        "React application development with hooks, routing, and testing, from SPAs to hybrid apps with clear component boundaries.",
     },
     {
-      title: "Next.js sites & applications",
+      title: "React.js development & React web development",
       description:
-        "App Router projects with SSR, SSG, ISR, and server components where they reduce client JavaScript.",
+        "Custom React development and React frontend development built to match your design system and API contracts.",
     },
     {
-      title: "Design implementation",
+      title: "Responsive frontend development",
       description:
-        "Pixel-faithful builds from Figma with responsive behavior and interaction states designers expect.",
+        "Responsive web development and responsive web application layouts that work on mobile, tablet, and desktop.",
     },
     {
-      title: "Component architecture",
+      title: "TypeScript & JavaScript development",
       description:
-        "Shared primitives, composition patterns, and documentation so teams do not fork buttons every sprint.",
+        "TypeScript development and JavaScript development for safer refactors and clearer props across large UI codebases.",
     },
     {
-      title: "Forms & validation",
+      title: "UI development & component-based development",
       description:
-        "Complex multi-step forms with accessible errors, async validation, and optimistic UI where appropriate.",
+        "Reusable primitives and modern frontend development patterns so teams stop copying buttons every sprint.",
     },
     {
-      title: "Accessibility (a11y)",
+      title: "Tailwind CSS development",
       description:
-        "Semantic landmarks, focus management, ARIA where needed, and keyboard paths through primary flows.",
+        "Utility-first styling for fast iteration without sacrificing consistent spacing, color, and typography.",
     },
     {
       title: "Frontend performance",
@@ -135,7 +149,7 @@ export const frontendDevelopment: Service = {
     {
       title: "Designs that never match production",
       description:
-        "Gap between Figma and shipped UI erodes trust — I implement with responsive and state detail.",
+        "Gap between Figma and shipped UI erodes trust. I implement with responsive and state detail.",
     },
     {
       title: "Inaccessible interfaces",
@@ -145,7 +159,7 @@ export const frontendDevelopment: Service = {
     {
       title: "Unmaintainable component soup",
       description:
-        "Copy-paste components with slightly different props — refactored toward a coherent system.",
+        "Copy-paste components with slightly different props, refactored toward a coherent system.",
     },
     {
       title: "SEO-invisible React SPAs",
@@ -160,7 +174,7 @@ export const frontendDevelopment: Service = {
     {
       title: "Frontend team bottleneck",
       description:
-        "Backends ready but UI backlog blocking releases — need senior implementation capacity.",
+        "Backends ready but UI backlog blocking releases, need senior implementation capacity.",
     },
   ],
   process: [
@@ -181,7 +195,7 @@ export const frontendDevelopment: Service = {
     },
     {
       title: "API wiring & states",
-      description: "Loading, empty, error, and success states — not only the happy path.",
+      description: "Loading, empty, error, and success states, not only the happy path.",
     },
     {
       title: "Interaction polish",
@@ -321,19 +335,19 @@ export const frontendDevelopment: Service = {
   whyHire: {
     roleTitle: "Frontend Developer",
     intro:
-      "You get interfaces that match your designs, perform well, and stay maintainable as features grow — built in React and Next.js with accessibility and real-world UX polish.",
+      "You get a frontend developer and React developer who ships responsive frontend development that matches your designs, with frontend architecture your team can build on after handoff.",
     reasons: [
       {
         tag: "Precision",
         title: "Pixel-accurate implementation",
         description:
-          "Designs translated to production UI without drift — responsive breakpoints, interaction states, and edge cases handled before handoff.",
+          "Designs translated to production UI without drift, responsive breakpoints, interaction states, and edge cases handled before handoff.",
       },
       {
         tag: "Performance",
         title: "Fast, responsive interfaces",
         description:
-          "Core Web Vitals, bundle discipline, and interaction polish built in — not bolted on after users complain about sluggish screens.",
+          "Core Web Vitals, bundle discipline, and interaction polish built in, not bolted on after users complain about sluggish screens.",
       },
       {
         tag: "Accessibility",
@@ -345,7 +359,7 @@ export const frontendDevelopment: Service = {
         tag: "Maintainability",
         title: "Component systems that scale",
         description:
-          "Clear component boundaries and patterns your team can build on — not a one-off codebase that fractures after the first few features.",
+          "Clear component boundaries and patterns your team can build on, not a one-off codebase that fractures after the first few features.",
       },
     ],
     highlights: [
@@ -361,34 +375,34 @@ export const frontendDevelopment: Service = {
   ],
   faqs: [
     {
-      question: "Do you work from Figma or other design tools?",
+      question: "What is frontend development?",
       answer:
-        "Yes. I implement from Figma, Penpot, or similar sources and flag gaps in responsive specs or interaction states early.",
+        "Frontend development is building the part of a web product users see and interact with, layouts, forms, navigation, and client-side logic. A frontend developer works in HTML, CSS, JavaScript or TypeScript, usually with frameworks like React.",
     },
     {
-      question: "React or Next.js — which should I use?",
+      question: "What do frontend development services include?",
       answer:
-        "Next.js when you need SEO, file-based routing, and server rendering out of the box. Plain React when you are embedding UI inside an existing app shell or have specialized bundler needs. I recommend based on product type, not preference alone.",
+        "They include UI implementation from designs, React development, responsive web development, API integration, accessibility basics, and frontend performance optimization. Scope depends on whether you need a full app shell or specific screens.",
     },
     {
-      question: "How do you handle accessibility?",
+      question: "How do I hire a React developer?",
       answer:
-        "Semantic HTML first, keyboard testing on primary flows, focus management in modals and wizards, and automated axe checks in CI where feasible. WCAG AA is the usual target unless you specify otherwise.",
+        "Share your designs, timeline, and tech stack. I scope React development services in milestones. You work directly with the React developer building your UI, useful when you need a freelance React developer without agency overhead.",
     },
     {
-      question: "Can you join an existing frontend codebase?",
+      question: "React or Next.js: which should I use?",
       answer:
-        "Yes. I follow your conventions, improve where agreed, and avoid drive-by rewrites unless technical debt blocks the roadmap.",
+        "Next.js when you need SEO and server rendering. Plain React when you embed UI inside an existing app. I recommend based on your product, not preference alone.",
     },
     {
-      question: "Do you build design systems?",
+      question: "Do you work from Figma designs?",
       answer:
-        "I build component libraries and primitives that function as a lightweight design system. Full design ops programs usually involve your design team owning tokens and brand evolution.",
+        "Yes. I implement from Figma or similar tools and flag responsive gaps or missing states before development starts.",
     },
     {
-      question: "Is frontend work separate from backend?",
+      question: "What is the difference between frontend developer and full stack developer?",
       answer:
-        "It can be. I often integrate with your APIs. Full-stack engagements cover both when you want single ownership.",
+        "A frontend developer focuses on UI and client-side code. A full stack developer also builds APIs and databases. I offer both, frontend-only or full stack engagements.",
     },
   ],
   relatedServiceSlugs: [
@@ -402,18 +416,33 @@ export const frontendDevelopment: Service = {
     "accessible-react-components",
     "nextjs-seo-fundamentals",
   ],
-  seo: {
-    title: "Frontend  Development Services | Frontend Developer | Jay Patel",
-    description:
-      "Frontend development with React and Next.js — accessible UI, component architecture, SEO-friendly rendering, and production dashboards for startups and product teams.",
-    focusKeyword: "Frontend  development services",
-    keywords: [
-      "Frontend development services",
-      "frontend development",
-      "React developer",
-      "React development services",
-      "Next.js development",
-    ],
+  readTimeMinutes: 10,
+  coverImage: {
+    title: "Frontend Development Services | React and TypeScript UI",
+    alt: "Frontend development illustration showing React components, responsive layout, and TypeScript code for a modern web application interface",
   },
-  updatedAt: "2026-08-27",
+  seo: {
+    title: "Frontend Development Services | React & TypeScript Developer",
+    description:
+      "Frontend development services with React and TypeScript. Hire a frontend developer or React developer for custom frontend development, responsive web applications, and UI that ships on time.",
+    focusKeyword: "frontend development",
+    keywords: [
+      "frontend development",
+      "frontend development services",
+      "frontend developer",
+      "React development",
+      "React developer",
+      "hire React developer",
+      "custom frontend development",
+      "responsive web development",
+      "React frontend development",
+      "freelance frontend developer",
+      "TypeScript development",
+      "modern frontend development",
+    ],
+    ogTitle: "Frontend Development Services | React & TypeScript Developer",
+    ogDescription:
+      "Hire a frontend developer for React development, responsive web applications, and custom frontend development. Frontend development services for startups and product teams.",
+  },
+  updatedAt: "2026-09-07",
 };

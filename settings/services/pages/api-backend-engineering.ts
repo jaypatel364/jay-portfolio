@@ -5,26 +5,37 @@ export const apiBackendEngineering: Service = {
   slug: "backend-development",
   title: "Backend Development",
   shortDescription:
-    "Scalable API and backend engineering — REST, GraphQL, data modeling, auth, integrations, and reliable server-side systems.",
-  cardCapabilities: [
-    "REST & GraphQL API design",
-    "Database modeling & queries",
-    "Auth, webhooks & jobs",
-    "Third-party integrations",
-  ],
+    "Backend development services with Node.js development, REST API development, and scalable backend development for web and mobile products.",
+  cardCapabilities: ["Node.js Development", "REST API Development", "Scalable Backend Development"],
   categoryLabels: ["Node.js", "API", "PostgreSQL", "Redis"],
   icon: "server",
   order: 4,
   published: true,
   seoBrief: {
-    primaryKeyword: "backend development services",
-    searchIntent: "Commercial — teams needing backend/API engineering",
+    primaryKeyword: "backend development",
+    searchIntent: "Commercial: teams needing backend/API engineering",
     secondaryKeywords: [
+      "backend development services",
+      "backend developer",
+      "backend web development",
+      "hire backend developer",
+      "freelance backend developer",
+      "custom backend development",
+      "server-side development",
+      "scalable backend development",
+      "backend engineering services",
       "Node.js development",
-      "API development",
-      "API development services",
+      "Node.js development services",
+      "Node.js developer",
       "Node.js backend development",
+      "Node.js API development",
+      "Express.js development",
       "REST API development",
+      "GraphQL development",
+      "API development",
+      "PostgreSQL development",
+      "MongoDB development",
+      "backend architecture",
     ],
     longTailQuestions: [
       "How do you design a scalable REST API?",
@@ -49,18 +60,18 @@ export const apiBackendEngineering: Service = {
     heading: "Backend Development Services",
     headlineLines: ["APIs your frontend,", "mobile clients, and", "partners can rely on."],
     description:
-      "I design and build backend systems and APIs that frontend teams, mobile apps, and partners can depend on — clear contracts, predictable error behavior, and data layers that stay maintainable as features accumulate.",
-    primaryCta: { label: "Discuss your API", href: "/contact/" },
+      "Backend development services for products that need stable APIs and clean data layers: Node.js development, REST API development, and server-side development your frontend and partners can depend on.",
+    primaryCta: { label: "Hire a backend developer", href: "/contact/" },
     secondaryCta: SERVICE_CONTACT_CTA,
     trustIndicators: ["Social API & real-time backends shipped", "Production Node.js services"],
     technologies: ["Node.js", "Express.js", "PostgreSQL", "MongoDB", "Redis", "GraphQL"],
   },
   editorialIntro: {
     statement:
-      "Backend engineering is where product rules live — who can access what, how data stays consistent, and how integrations fail without silent corruption.",
+      "Backend development is where your product rules live: who can access what, how data stays correct, and how integrations fail without breaking trust.",
     supporting:
-      "Weak APIs show up as frontend bugs, midnight pages, and partner integrations nobody trusts. Strong backends make every client faster to ship.",
-    pullQuote: "Contracts first. Implementation second.",
+      "Weak backend development shows up as frontend bugs and partner integrations nobody wants to touch. Strong backend engineering services make every client faster to ship.",
+    pullQuote: "Document the API before you scale the team.",
   },
   whatWeBuild: [
     "REST & GraphQL APIs",
@@ -74,44 +85,45 @@ export const apiBackendEngineering: Service = {
   ],
   industries: ["SaaS & Technology", "FinTech", "Logistics", "Marketplaces"],
   overview:
-    "Backend engineering is where product rules live: who can access what, how money moves, how data stays consistent when two users act at once, and how external services sync without silent failures. Weak backends show up as frontend bugs, midnight pages, and integrations that nobody trusts.\n\nI work on greenfield APIs, extensions to existing services, and refactors of tangled codebases where every change breaks something unexpected. The output is not just endpoints — it is a coherent server-side architecture with logging, validation, migrations, and documentation your team can extend.",
+    "Backend development services for products that depend on stable APIs and data. I deliver Node.js development, REST API development, and scalable backend development, from Express.js development and PostgreSQL development to authentication development your frontend and partners can trust.",
   whatWeDo: {
-    heading: "Node.js and API development",
+    heading: "Backend development services with Node.js and APIs",
     paragraphs: [
-      "Backend engagements typically start from consumer needs: which clients call the API, what latency they tolerate, and what consistency guarantees matter when writes collide. Those answers drive choices between monolith modules, separate services, sync vs async processing, and SQL vs document storage.",
-      "I implement HTTP APIs (REST by default, GraphQL when query flexibility or mobile bandwidth genuinely justify it), background workers, webhook receivers, and integration adapters. Cross-cutting concerns — authentication, authorization, rate limits, input validation, structured logging — are established early so feature work does not reinvent them.",
-      "This service fits products where the frontend is handled elsewhere but backend quality is the bottleneck, mobile clients need stable APIs, partner integrations require documented contracts, or an existing Node.js backend needs senior ownership to regain velocity.",
+      "Backend development starts with who calls your API and what they need from it. As a backend developer and Node.js developer, I design server-side development that fits web apps, mobile clients, and partner tools. My backend development services cover REST API development, GraphQL development, database development, and real-time backend development when your product needs live updates.",
+      "Node.js development is at the core of most engagements, Node.js backend development, Node.js API development, and Node.js web development with Express.js development or NestJS development. I also handle PostgreSQL development, MongoDB development, Prisma development, authentication development, and authorization development so permissions stay consistent across routes.",
+      "Hire a backend developer when your frontend team is blocked on API work, when you need a freelance backend developer for a greenfield service, or when an existing backend needs senior ownership. Whether you search for a backend development company or a Node.js developer for hire, you get documented contracts, tested paths, and scalable APIs built for production load.",
     ],
   },
   capabilities: [
     {
-      title: "REST API design",
+      title: "Node.js development services",
       description:
-        "Resource-oriented routes, pagination, filtering, versioning, and OpenAPI-style documentation.",
+        "Node.js development and Node.js web development with clear module boundaries, error handling, and deployment setup.",
     },
     {
-      title: "GraphQL APIs",
+      title: "Node.js API development & REST API development",
       description:
-        "Schema design, resolvers, and performance guardrails when clients need flexible queries.",
+        "REST API development with pagination, filtering, versioning, and docs your frontend team can follow.",
     },
     {
-      title: "Database modeling",
+      title: "Express.js & NestJS development",
       description:
-        "Normalized schemas, indexes, and migration strategies in PostgreSQL or MongoDB.",
+        "Express.js development for speed, NestJS development when structure and DI help larger teams.",
     },
     {
-      title: "Authentication & authorization",
-      description: "JWT, sessions, API keys, OAuth, and fine-grained permission checks.",
+      title: "GraphQL development & API development",
+      description:
+        "GraphQL development and API development when clients need flexible queries and you can invest in performance monitoring.",
     },
     {
-      title: "Third-party integrations",
+      title: "Database development",
       description:
-        "Payment, email, CRM, and partner APIs with retries, idempotency keys, and dead-letter handling.",
+        "PostgreSQL development, MongoDB development, and Prisma development with indexes matched to real query patterns.",
     },
     {
-      title: "Webhooks & event processing",
+      title: "Authentication & authorization development",
       description:
-        "Inbound and outbound events with signature verification and replay-safe handlers.",
+        "Authentication development and authorization development with JWT, OAuth, API keys, and role checks on sensitive routes.",
     },
     {
       title: "Caching & performance",
@@ -132,7 +144,7 @@ export const apiBackendEngineering: Service = {
   problems: [
     {
       title: "Undocumented APIs",
-      description: "Frontends guessing field meanings and error codes — slowing every release.",
+      description: "Frontends guessing field meanings and error codes, slowing every release.",
     },
     {
       title: "N+1 queries and slow endpoints",
@@ -218,7 +230,7 @@ export const apiBackendEngineering: Service = {
     {
       title: "Fintech & payments",
       description:
-        "Ledger-like operations with strict validation — paired with compliance review when required.",
+        "Ledger-like operations with strict validation, paired with compliance review when required.",
     },
     {
       title: "Real-time collaboration",
@@ -300,13 +312,13 @@ export const apiBackendEngineering: Service = {
   whyHire: {
     roleTitle: "Backend Developer",
     intro:
-      "You get APIs and data layers that are documented, testable, and built for the integrations your product depends on — with observability so production issues are diagnosable, not mysterious.",
+      "You get a backend developer and Node.js developer who ships documented APIs, solid database development, and backend architecture your team can extend, with observability when production issues appear.",
     reasons: [
       {
         tag: "Contracts",
         title: "APIs teams can trust",
         description:
-          "Documented endpoints with consistent validation, error shapes, and versioning — so frontend and partner integrations do not depend on tribal knowledge.",
+          "Documented endpoints with consistent validation, error shapes, and versioning, so frontend and partner integrations do not depend on tribal knowledge.",
       },
       {
         tag: "Reliability",
@@ -318,13 +330,13 @@ export const apiBackendEngineering: Service = {
         tag: "Observability",
         title: "Diagnosable in production",
         description:
-          "Structured logging, error tracking, and health checks so the first incident is fixable in hours — not days of blind debugging.",
+          "Structured logging, error tracking, and health checks so the first incident is fixable in hours, not days of blind debugging.",
       },
       {
         tag: "Data",
         title: "Schema matched to access patterns",
         description:
-          "PostgreSQL or MongoDB designed for how your product actually queries and reports — not a generic template that breaks under load.",
+          "PostgreSQL or MongoDB designed for how your product actually queries and reports, not a generic template that breaks under load.",
       },
     ],
     highlights: [
@@ -340,34 +352,34 @@ export const apiBackendEngineering: Service = {
   ],
   faqs: [
     {
-      question: "REST or GraphQL — which do you recommend?",
+      question: "What is backend development?",
       answer:
-        "REST is the default for most products — simpler caching, tooling, and onboarding. GraphQL helps when many client types need different field sets and you can invest in performance monitoring. I recommend based on client diversity and team familiarity, not ideology.",
+        "Backend development is building the server-side parts of a web product, APIs, databases, auth, background jobs, and integrations. A backend developer writes the code that stores data and enforces business rules.",
     },
     {
-      question: "Can you work alongside our frontend team?",
+      question: "What do backend development services include?",
       answer:
-        "Yes. I agree on API contracts upfront, deliver staging endpoints early, and maintain changelogs so frontend work is not blocked.",
+        "They include API design, Node.js development, database development, authentication development, webhooks, testing, deployment, and documentation. Exact scope depends on greenfield vs existing codebase work.",
     },
     {
-      question: "Do you refactor existing backends?",
+      question: "How do I hire a Node.js developer?",
       answer:
-        "Yes. Typical work includes extracting modules, adding tests on critical paths, documenting endpoints, and fixing the worst performance bottlenecks before larger rewrites.",
+        "Share your API consumers, data model, and timeline. I scope Node.js development services in milestones with staging endpoints early so frontend work is not blocked.",
     },
     {
-      question: "How do you secure APIs?",
+      question: "REST or GraphQL: which do you recommend?",
       answer:
-        "HTTPS, validated inputs, parameterized queries, least-privilege auth, rate limiting on sensitive routes, secrets in environment stores, and webhook signature verification. Threat modeling scales with data sensitivity.",
+        "REST API development is the default for most products. GraphQL development helps when many client types need different field sets. I recommend based on your clients and team, not trends.",
     },
     {
-      question: "Can you build real-time features?",
+      question: "Do you build real-time backends?",
       answer:
-        "Yes — WebSockets or SSE for chat, notifications, and live updates, with attention to connection scaling and fallback behavior.",
+        "Yes, WebSocket development and real-time backend development for chat, notifications, and live dashboards, with attention to connection scaling.",
     },
     {
-      question: "What does API documentation include?",
+      question: "Can you refactor an existing backend?",
       answer:
-        "Endpoint list, request/response examples, auth instructions, error codes, and webhook payloads. Format depends on your toolchain — OpenAPI, Markdown, or Postman collections.",
+        "Yes. Typical work adds tests on critical paths, documents endpoints, fixes slow queries, and untangles auth logic before larger rewrites.",
     },
   ],
   relatedServiceSlugs: [
@@ -382,18 +394,33 @@ export const apiBackendEngineering: Service = {
     "nodejs-backend-architecture",
     "webhook-integration-patterns",
   ],
-  seo: {
-    title: "Backend Development Services | Node.js & API Development | Jay Patel",
-    description:
-      "API and backend engineering with Node.js — REST, GraphQL, databases, auth, webhooks, and integrations for web and mobile products.",
-    focusKeyword: "backend development services",
-    keywords: [
-      "backend development services",
-      "Node.js development",
-      "API development",
-      "REST API development",
-      "Node.js backend development",
-    ],
+  readTimeMinutes: 10,
+  coverImage: {
+    title: "Backend Development Services | Node.js APIs and Databases",
+    alt: "Backend development diagram showing Node.js API gateway connected to PostgreSQL database and external integrations",
   },
-  updatedAt: "2026-08-27",
+  seo: {
+    title: "Backend Development Services | Node.js, APIs & Databases",
+    description:
+      "Backend development services with Node.js, REST APIs, and databases. Hire a backend developer or Node.js developer for scalable backend development, API development, and server-side development.",
+    focusKeyword: "backend development",
+    keywords: [
+      "backend development",
+      "backend development services",
+      "backend developer",
+      "Node.js development",
+      "Node.js developer",
+      "REST API development",
+      "hire backend developer",
+      "scalable backend development",
+      "Express.js development",
+      "API development",
+      "PostgreSQL development",
+      "backend engineering services",
+    ],
+    ogTitle: "Backend Development Services | Node.js, APIs & Databases",
+    ogDescription:
+      "Hire a backend developer for Node.js development, REST API development, and database work. Backend development services for web and mobile products.",
+  },
+  updatedAt: "2026-09-07",
 };

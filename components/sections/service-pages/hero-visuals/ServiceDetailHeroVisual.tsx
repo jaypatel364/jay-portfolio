@@ -237,6 +237,20 @@ const DIAGRAMS: Record<string, { label: string; nodes: Node[]; edges: [string, s
       ["a11y", "perf"],
     ],
   },
+  "mern-stack-development": {
+    label: "mern.stack",
+    nodes: [
+      { id: "react", label: "React", x: 180, y: 36, accent: true },
+      { id: "express", label: "Express.js", x: 180, y: 96 },
+      { id: "node", label: "Node.js", x: 180, y: 156 },
+      { id: "mongo", label: "MongoDB", x: 180, y: 216, accent: true },
+    ],
+    edges: [
+      ["react", "express"],
+      ["express", "node"],
+      ["node", "mongo"],
+    ],
+  },
 };
 
 export function ServiceDetailHeroVisual({
