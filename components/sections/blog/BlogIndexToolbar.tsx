@@ -1,9 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Boxes, Hash, Loader2, Search, SlidersHorizontal, X } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { Loader2, Search, SlidersHorizontal, X } from "lucide-react";
 import type { BlogTerm } from "@/lib/sanity/types";
 import { cn } from "@/lib/utils";
+import { BLOG_ALL_CATEGORY_ICON, getBlogCategoryIcon } from "./blog-category-icons";
 
 type BlogIndexToolbarProps = {
   search: string;
@@ -114,7 +116,7 @@ export function BlogIndexToolbar({
           >
             <CategoryPill
               label="All"
-              icon={Boxes}
+              icon={BLOG_ALL_CATEGORY_ICON}
               count={totalPublished}
               selected={!category}
               onClick={() => onSelectCategory(null)}
@@ -123,7 +125,7 @@ export function BlogIndexToolbar({
               <CategoryPill
                 key={item.slug || item.title}
                 label={item.title}
-                icon={Hash}
+                icon={getBlogCategoryIcon(item)}
                 count={item.count ?? 0}
                 selected={category === item.slug}
                 onClick={() => onSelectCategory(item.slug || null)}
@@ -183,7 +185,7 @@ function CategoryPill({
   onClick,
 }: {
   label: string;
-  icon: typeof Boxes;
+  icon: LucideIcon;
   count: number;
   selected: boolean;
   onClick: () => void;

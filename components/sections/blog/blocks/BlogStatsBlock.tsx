@@ -3,7 +3,12 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { TrendingUp } from "lucide-react";
 
-type StatItem = { label?: string; value?: string };
+type StatItem = {
+  label?: string;
+  value?: string;
+  source?: string;
+  sourceUrl?: string;
+};
 
 export function BlogStatsBlock({ items }: { items: StatItem[] }) {
   const reduced = useReducedMotion() ?? false;
@@ -33,9 +38,27 @@ export function BlogStatsBlock({ items }: { items: StatItem[] }) {
             <p className="font-heading text-2xl font-bold tracking-tight text-primary sm:text-[1.75rem]">
               {item.value}
             </p>
-            <p className="mt-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-              {item.label}
-            </p>
+            {item.label ? (
+              <p className="mt-2 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                {item.label}
+              </p>
+            ) : null}
+            {item.source ? (
+              <p className="mt-2 text-xs text-muted-foreground">
+                {item.sourceUrl ? (
+                  <a
+                    href={item.sourceUrl}
+                    className="text-primary underline decoration-primary/30 underline-offset-2 transition-colors hover:decoration-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.source}
+                  </a>
+                ) : (
+                  item.source
+                )}
+              </p>
+            ) : null}
           </div>
         </motion.div>
       ))}

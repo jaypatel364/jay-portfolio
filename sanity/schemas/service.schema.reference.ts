@@ -36,6 +36,13 @@ export const service = defineType({
     defineField({ name: "slug", type: "slug", options: { source: "title" }, validation: (r) => r.required() }),
     defineField({ name: "shortDescription", type: "text", rows: 2 }),
     defineField({ name: "order", type: "number", initialValue: 100 }),
+    defineField({
+      name: "published",
+      type: "boolean",
+      title: "Published",
+      description: "When off, the service is hidden from the hub, detail routes, links, and sitemap.",
+      initialValue: false,
+    }),
     defineField({ name: "icon", type: "string" }),
     defineField({ name: "cardCapabilities", type: "array", of: [{ type: "string" }] }),
     defineField({ name: "categoryLabels", type: "array", of: [{ type: "string" }] }),
@@ -130,7 +137,45 @@ export const service = defineType({
     defineField({ name: "benefits", type: "array", of: [{ type: "object", fields: [
       defineField({ name: "title", type: "string" }),
       defineField({ name: "description", type: "text", rows: 2 }),
+      defineField({
+        name: "kind",
+        type: "string",
+        options: { list: ["benefit", "outcome"] },
+        initialValue: "benefit",
+      }),
     ]}] }),
+    defineField({
+      name: "whyHire",
+      title: "Why hire",
+      type: "object",
+      fields: [
+        defineField({ name: "roleTitle", type: "string", title: "Role title" }),
+        defineField({ name: "intro", type: "text", rows: 3 }),
+        defineField({
+          name: "reasons",
+          type: "array",
+          of: [{
+            type: "object",
+            fields: [
+              defineField({ name: "tag", type: "string" }),
+              defineField({ name: "title", type: "string" }),
+              defineField({ name: "description", type: "text", rows: 2 }),
+            ],
+          }],
+        }),
+        defineField({
+          name: "highlights",
+          type: "array",
+          of: [{
+            type: "object",
+            fields: [
+              defineField({ name: "label", type: "string" }),
+              defineField({ name: "value", type: "string" }),
+            ],
+          }],
+        }),
+      ],
+    }),
     defineField({ name: "caseStudies", type: "array", of: [{ type: "reference", to: [{ type: "project" }] }] }),
     defineField({ name: "faqs", type: "array", of: [{ type: "object", fields: [
       defineField({ name: "question", type: "string" }),

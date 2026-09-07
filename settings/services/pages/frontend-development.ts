@@ -15,6 +15,7 @@ export const frontendDevelopment: Service = {
   categoryLabels: ["React", "Next.js", "TypeScript", "Frontend"],
   icon: "monitor",
   order: 6,
+  published: true,
   seoBrief: {
     primaryKeyword: "Frontend development services",
     searchIntent: "Commercial — hiring frontend/React/Next.js developers",
@@ -284,28 +285,75 @@ export const frontendDevelopment: Service = {
   ],
   benefits: [
     {
+      kind: "benefit",
       title: "Interfaces users trust",
       description:
         "Polished, consistent UI increases confidence especially in B2B and fintech contexts.",
     },
     {
+      kind: "benefit",
+      title: "Maintainable codebase",
+      description: "Component patterns that scale with team size instead of fracturing.",
+    },
+    {
+      kind: "benefit",
+      title: "Faster feature delivery after setup",
+      description: "Solid foundations let your team ship screens without reinventing primitives.",
+    },
+    {
+      kind: "outcome",
       title: "Better accessibility compliance",
       description:
         "Reduced risk and broader audience reach through inclusive design implementation.",
     },
     {
+      kind: "outcome",
       title: "SEO-ready public pages",
       description: "Server rendering and metadata done correctly from launch, not bolted on later.",
     },
     {
-      title: "Maintainable codebase",
-      description: "Component patterns that scale with team size instead of fracturing.",
-    },
-    {
-      title: "Faster feature delivery after setup",
-      description: "Solid foundations let your team ship screens without reinventing primitives.",
+      kind: "outcome",
+      title: "Less design-to-dev rework",
+      description:
+        "Clear component specs and responsive behavior reduce back-and-forth after handoff.",
     },
   ],
+  whyHire: {
+    roleTitle: "Frontend Developer",
+    intro:
+      "You get interfaces that match your designs, perform well, and stay maintainable as features grow — built in React and Next.js with accessibility and real-world UX polish.",
+    reasons: [
+      {
+        tag: "Precision",
+        title: "Pixel-accurate implementation",
+        description:
+          "Designs translated to production UI without drift — responsive breakpoints, interaction states, and edge cases handled before handoff.",
+      },
+      {
+        tag: "Performance",
+        title: "Fast, responsive interfaces",
+        description:
+          "Core Web Vitals, bundle discipline, and interaction polish built in — not bolted on after users complain about sluggish screens.",
+      },
+      {
+        tag: "Accessibility",
+        title: "Inclusive by default",
+        description:
+          "Semantic markup, keyboard navigation, and screen reader fundamentals so your product reaches more users and reduces compliance risk.",
+      },
+      {
+        tag: "Maintainability",
+        title: "Component systems that scale",
+        description:
+          "Clear component boundaries and patterns your team can build on — not a one-off codebase that fractures after the first few features.",
+      },
+    ],
+    highlights: [
+      { label: "Stack", value: "React · Next.js · TypeScript · Tailwind" },
+      { label: "Strength", value: "Forms, dashboards & design systems" },
+      { label: "Delivery", value: "Figma-to-production, no rework loops" },
+    ],
+  },
   caseStudySlugs: [
     "spendly-personal-expense-tracker",
     "minilist-headless-cms",
@@ -350,9 +398,9 @@ export const frontendDevelopment: Service = {
     "saas-development",
   ],
   relatedPosts: [
-    { title: "React vs Next.js for Product Teams", slug: "react-vs-nextjs-product-teams" },
-    { title: "Accessible React Components", slug: "accessible-react-components" },
-    { title: "Next.js SEO Fundamentals", slug: "nextjs-seo-fundamentals" },
+    "react-vs-nextjs-product-teams",
+    "accessible-react-components",
+    "nextjs-seo-fundamentals",
   ],
   seo: {
     title: "Frontend  Development Services | Frontend Developer | Jay Patel",

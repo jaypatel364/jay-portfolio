@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
+  Check,
   Gauge,
   Layout,
   Monitor,
@@ -75,13 +76,12 @@ export function ServicesHubSection({
               }}
               className="group"
             >
-              <article className={cn(serviceCardClass, "hover:-translate-y-1")}>
+              <article className={serviceCardClass}>
                 <Link
                   href={href}
-                  className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                >
-                  <span className="sr-only">View {service.title}</span>
-                </Link>
+                  className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                  aria-label={service.title}
+                />
 
                 <div className="relative flex items-start justify-between gap-3">
                   <span className={cn(serviceIconWrapClass)}>
@@ -92,22 +92,42 @@ export function ServicesHubSection({
                   </span>
                 </div>
 
-                <h3 className="font-heading relative mt-5 text-lg font-bold tracking-tight text-foreground">
+                <h3 className="font-heading relative mt-5 text-lg font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
                   {service.title}
                 </h3>
                 <p className="relative mt-2.5 text-sm leading-relaxed text-muted-foreground">
                   {service.shortDescription}
                 </p>
 
-                <ul className="relative mt-4 space-y-1">
-                  {service.cardCapabilities.slice(0, 3).map((cap) => (
-                    <li key={cap} className="text-xs text-muted-foreground">
-                      — {cap}
-                    </li>
+                <ul
+                  className="relative mt-4 space-y-2"
+                  aria-label={`${service.title} capabilities`}
+                >
+                  {service.cardCapabilities.slice(0, 3).map((cap, capIndex) => (
+                    <motion.li
+                      key={cap}
+                      initial={{ opacity: 0, x: -8 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.6 }}
+                      transition={{
+                        duration: 0.35,
+                        delay: Math.min(i * 0.04, 0.28) + 0.12 + capIndex * 0.05,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                      className="flex items-start gap-2.5"
+                    >
+                      <span
+                        className="mt-px flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-200 group-hover:bg-primary group-hover:text-primary-foreground"
+                        aria-hidden
+                      >
+                        <Check className="h-2.5 w-2.5" strokeWidth={2.5} />
+                      </span>
+                      <span className="text-xs leading-relaxed text-muted-foreground transition-colors duration-200 group-hover:text-foreground/85">
+                        {cap}
+                      </span>
+                    </motion.li>
                   ))}
                 </ul>
-
-                <p className="relative mt-5 text-sm font-semibold text-primary">View service →</p>
               </article>
             </motion.li>
           );

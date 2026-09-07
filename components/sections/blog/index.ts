@@ -7,6 +7,7 @@ export { BlogPostCard } from "./BlogPostCard";
 export { PortableTextBody } from "./PortableTextBody";
 export { BlogTableOfContents } from "./BlogTableOfContents";
 export { BlogShareBar } from "./BlogShareBar";
+export { BlogArticleEngagementBar } from "./BlogArticleEngagementBar";
 export { BlogReadingProgress } from "./BlogReadingProgress";
 export { BlogArticleSidebar } from "./BlogArticleSidebar";
 export { BlogStickyRail } from "./BlogStickyRail";

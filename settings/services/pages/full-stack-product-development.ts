@@ -15,6 +15,7 @@ export const fullStackProductDevelopment: Service = {
   categoryLabels: ["React", "Next.js", "Node.js", "TypeScript"],
   icon: "layout",
   order: 1,
+  published: true,
   seoBrief: {
     primaryKeyword: "full stack development services",
     searchIntent: "Commercial — hiring a developer or team for end-to-end product builds",
@@ -293,30 +294,77 @@ export const fullStackProductDevelopment: Service = {
   ],
   benefits: [
     {
+      kind: "benefit",
       title: "Faster time to market",
       description:
         "One owner across layers reduces coordination overhead and keeps milestones realistic.",
     },
     {
+      kind: "benefit",
       title: "Coherent architecture",
       description:
         "Frontend, API, and data layers designed together — fewer surprise refactors mid-project.",
     },
     {
+      kind: "benefit",
       title: "Easier maintainability",
       description:
         "Readable code, consistent patterns, and documentation that outlive the initial build.",
     },
     {
+      kind: "outcome",
       title: "Lower integration risk",
       description:
         "Third-party services wired with proper error handling instead of last-minute glue code.",
     },
     {
+      kind: "outcome",
       title: "Better scalability path",
       description: "Foundations that support more users and features without immediate rewrites.",
     },
+    {
+      kind: "outcome",
+      title: "Fewer cross-team blockers",
+      description:
+        "Shared ownership across the stack means fewer handoff delays when shipping features.",
+    },
   ],
+  whyHire: {
+    roleTitle: "Full-Stack Developer",
+    intro:
+      "You get one engineer who owns frontend, backend, data, and deployment — so product decisions move faster and nothing falls through the cracks between layers.",
+    reasons: [
+      {
+        tag: "Ownership",
+        title: "One owner across every layer",
+        description:
+          "No frontend/backend handoffs slowing releases. Architecture, APIs, UI, and deployment stay aligned because one person is accountable for all of them.",
+      },
+      {
+        tag: "Shipping",
+        title: "Vertical slice delivery",
+        description:
+          "Features ship as complete units — interface, API, and data together — not as disconnected tickets that only integrate at the end.",
+      },
+      {
+        tag: "Architecture",
+        title: "Coherent system design",
+        description:
+          "Data models, API contracts, and UI patterns are designed together from day one, reducing expensive refactors as the product grows.",
+      },
+      {
+        tag: "Continuity",
+        title: "Code your team can extend",
+        description:
+          "Readable TypeScript, consistent patterns, and handoff documentation so your team can maintain and extend the product after launch.",
+      },
+    ],
+    highlights: [
+      { label: "Stack", value: "React · Next.js · Node.js · TypeScript" },
+      { label: "Focus", value: "End-to-end product builds" },
+      { label: "Approach", value: "Vertical slices, not silos" },
+    ],
+  },
   caseStudySlugs: [
     "real-time-chat-application",
     "pms-hr-management-system",
@@ -366,18 +414,7 @@ export const fullStackProductDevelopment: Service = {
     "backend-development",
     "frontend-development",
   ],
-  relatedPosts: [
-    {
-      title: "How to Choose a Tech Stack for a New Web Product",
-      slug: "choosing-tech-stack-web-product",
-      description: "Practical criteria for stack decisions beyond hype cycles.",
-    },
-    {
-      title: "MVP vs Full Product: What to Build First",
-      slug: "mvp-vs-full-product",
-      description: "Scoping trade-offs before committing engineering time.",
-    },
-  ],
+  relatedPosts: [],
   seo: {
     title: "Full-Stack Development Services | React & Node.js | Jay Patel",
     description:

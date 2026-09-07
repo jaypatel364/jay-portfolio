@@ -3,18 +3,23 @@ import { ALL_SERVICES } from "@/settings/services/pages";
 import { DEFAULT_SERVICE_SECTION_ORDER, type Service, type ServiceSectionKey } from "./types";
 
 export type { Service, ServicesHubSettings, ServiceSectionKey } from "./types";
-export { DEFAULT_SERVICE_SECTION_ORDER };
+export { DEFAULT_SERVICE_SECTION_ORDER } from "./types";
 
 export function getServicesHub() {
   return servicesHub;
 }
 
+export function isServicePublished(service: Service): boolean {
+  return service.published;
+}
+
 export function getAllServices(): Service[] {
-  return [...ALL_SERVICES].sort((a, b) => a.order - b.order);
+  return ALL_SERVICES.filter(isServicePublished).sort((a, b) => a.order - b.order);
 }
 
 export function getServiceBySlug(slug: string): Service | undefined {
-  return ALL_SERVICES.find((s) => s.slug === slug);
+  const service = ALL_SERVICES.find((s) => s.slug === slug);
+  return service && isServicePublished(service) ? service : undefined;
 }
 
 export function getServiceSlugs(): string[] {

@@ -63,6 +63,7 @@ export type ServiceDeliverable = {
 export type ServiceBenefit = {
   title: string;
   description: string;
+  kind: "benefit" | "outcome";
 };
 
 export type ServiceProblem = {
@@ -73,13 +74,6 @@ export type ServiceProblem = {
 export type ServiceFaq = {
   question: string;
   answer: string;
-};
-
-export type ServiceRelatedPost = {
-  title: string;
-  /** Blog slug — links to /blog/<slug>/ when the blog module ships. */
-  slug: string;
-  description?: string;
 };
 
 /** CMS-ready image / visual slot for future assets. */
@@ -99,6 +93,29 @@ export type ServiceEditorialIntro = {
   /** Supporting paragraph — not a repeat of the hero. */
   supporting: string;
   pullQuote?: string;
+};
+
+export type ServiceWhyHireReason = {
+  title: string;
+  description: string;
+  /** Short label shown on the card — e.g. "Ownership", "Speed". */
+  tag: string;
+};
+
+export type ServiceWhyHireHighlight = {
+  label: string;
+  value: string;
+};
+
+export type ServiceWhyHire = {
+  /** e.g. "Full-Stack Developer" — used in "Why Hire Me as a …?" */
+  roleTitle: string;
+  /** Service-specific intro — not a repeat of the hero or overview. */
+  intro: string;
+  /** Service-specific reasons — not shared global proof points. */
+  reasons: ServiceWhyHireReason[];
+  /** Optional stat strip below the grid. */
+  highlights?: ServiceWhyHireHighlight[];
 };
 
 export type ServiceArchitectureNode = {
@@ -122,6 +139,7 @@ export type ServiceSectionKey =
   | "audiences"
   | "deliverables"
   | "benefits"
+  | "whyHire"
   | "caseStudies"
   | "faqs"
   | "relatedServices"
@@ -139,6 +157,8 @@ export type Service = {
   categoryLabels: string[];
   icon: string;
   order: number;
+  /** When false, the service is hidden from the hub, detail routes, links, and sitemap. */
+  published: boolean;
   /** Internal SEO brief — not rendered on the public page */
   seoBrief: ServiceSeoBrief;
   hero: {
@@ -170,11 +190,13 @@ export type Service = {
   audiences: ServiceAudience[];
   deliverables: ServiceDeliverable[];
   benefits: ServiceBenefit[];
+  whyHire: ServiceWhyHire;
   /** Public project slugs from settings/projects.ts */
   caseStudySlugs?: string[];
   faqs: ServiceFaq[];
   relatedServiceSlugs: string[];
-  relatedPosts: ServiceRelatedPost[];
+  /** Blog post slugs — card data (title, excerpt, cover) is resolved from Sanity at render time. */
+  relatedPosts: string[];
   seo: ServiceSeo;
   sectionOrder?: ServiceSectionKey[];
   sectionVisibility?: ServiceSectionVisibility;
@@ -207,6 +229,7 @@ export const DEFAULT_SERVICE_SECTION_ORDER: ServiceSectionKey[] = [
   "audiences",
   "deliverables",
   "benefits",
+  "whyHire",
   "caseStudies",
   "faqs",
   "relatedServices",

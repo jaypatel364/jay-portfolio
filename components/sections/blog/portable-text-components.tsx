@@ -249,7 +249,16 @@ export const portableTextComponents: PortableTextComponents = {
       />
     ),
     statsBlock: ({ value }) => (
-      <BlogStatsBlock items={(value?.items as Array<{ label?: string; value?: string }>) ?? []} />
+      <BlogStatsBlock
+        items={
+          (value?.items as Array<{
+            label?: string;
+            value?: string;
+            source?: string;
+            sourceUrl?: string;
+          }>) ?? []
+        }
+      />
     ),
     faqBlock: ({ value }) => (
       <BlogFaqBlock

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SiteChrome } from "@/components/layout";
 import { ServicePageArticle } from "@/components/sections/service-pages";
+import { getBlogPostsBySlugs } from "@/lib/sanity/queries";
 import { getServiceBySlug, getServiceSlugs, type Service } from "@/lib/services";
 import { getProjectBySlug } from "@/settings/projects";
 import {
@@ -38,6 +39,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   if (!service) notFound();
 
   const caseStudyProjects = resolveCaseStudyProjects(service);
+  const relatedBlogPosts = await getBlogPostsBySlugs(service.relatedPosts);
   const faqJsonLd = serviceFaqJsonLd(service);
 
   return (
@@ -63,7 +65,11 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
         />
       ) : null}
       <main id="main">
-        <ServicePageArticle service={service} caseStudyProjects={caseStudyProjects} />
+        <ServicePageArticle
+          service={service}
+          caseStudyProjects={caseStudyProjects}
+          relatedBlogPosts={relatedBlogPosts}
+        />
       </main>
     </SiteChrome>
   );

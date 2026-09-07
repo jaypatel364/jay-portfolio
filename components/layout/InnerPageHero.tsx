@@ -9,6 +9,8 @@ export interface InnerPageHeroProps {
   backHref?: string;
   backLabel?: string;
   className?: string;
+  /** Optional anchor id for scroll tracking (e.g. navbar reading badge). */
+  id?: string;
   /** Page-specific art for the right column (desktop) / below copy (mobile). */
   visual?: ReactNode;
 }
@@ -20,10 +22,12 @@ export function InnerPageHero({
   description,
   chips = [],
   className,
+  id,
   visual,
 }: InnerPageHeroProps) {
   return (
     <section
+      id={id}
       className={cn(
         "relative overflow-hidden border-b border-border/60 px-4 pb-14 pt-28 sm:px-6 md:pb-20 md:pt-32",
         className,

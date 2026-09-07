@@ -18,6 +18,7 @@ export {
   getFeaturedBlogPosts,
   getBlogTaxonomy,
   getBlogPostBySlug,
+  getBlogPostsBySlugs,
   getMorePostsForArticle,
   getBlogSlugs,
   getBlogSitemapEntries,

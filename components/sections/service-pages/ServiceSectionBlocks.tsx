@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { BlogPostCard as PostCard } from "@/components/sections/blog/BlogPostCard";
+import type { BlogPostCard } from "@/lib/sanity/types";
 import type { Service } from "@/lib/services/types";
 import type { Project } from "@/settings/projects";
 import { servicePath } from "@/lib/services";
@@ -13,20 +15,24 @@ function SectionShell({
   title,
   children,
   className,
+  wide,
 }: {
   id: string;
   label: string;
   title: string;
   children: React.ReactNode;
   className?: string;
+  wide?: boolean;
 }) {
+  const containerClass = wide ? "mx-auto max-w-6xl px-4 sm:px-6" : "mx-auto max-w-3xl";
+
   return (
     <section
       id={id}
       aria-labelledby={`${id}-heading`}
       className={cn("scroll-mt-28 py-12 md:py-16", className)}
     >
-      <div className="mx-auto max-w-3xl">
+      <div className={containerClass}>
         <span className="text-sm font-semibold uppercase tracking-widest text-primary">
           {label}
         </span>
@@ -37,7 +43,7 @@ function SectionShell({
           {title}
         </h2>
       </div>
-      <div className="mx-auto mt-8 max-w-3xl">{children}</div>
+      <div className={cn(containerClass, "mt-8")}>{children}</div>
     </section>
   );
 }
@@ -302,35 +308,25 @@ export function ServiceRelatedServicesSection({
   );
 }
 
-export function ServiceRelatedPostsSection({ service }: { service: Service }) {
-  if (!service.relatedPosts.length) return null;
+export function ServiceRelatedPostsSection({
+  service,
+  posts,
+}: {
+  service: Service;
+  posts: BlogPostCard[];
+}) {
+  if (!posts.length) return null;
 
   return (
-    <SectionShell id="related-resources" label="Resources" title="Related articles & guides">
-      <p className="mb-6 text-sm text-muted-foreground">
+    <SectionShell id="related-resources" label="Resources" title="Related articles & guides" wide>
+      <p className="mb-6 max-w-3xl text-sm text-muted-foreground">
         Topic clusters connect service pages with deeper articles — explore guides related to{" "}
         {service.title.toLowerCase()}.
       </p>
-      <ul className="space-y-3">
-        {service.relatedPosts.map((post) => (
-          <li key={post.slug}>
-            <Link
-              href={`/blog/${post.slug}/`}
-              className="group flex items-start justify-between gap-4 rounded-xl border border-border/70 p-5 transition-colors hover:border-primary/35 hover:bg-primary/5"
-            >
-              <div>
-                <h3 className="font-heading font-semibold text-foreground group-hover:text-primary">
-                  {post.title}
-                </h3>
-                {post.description ? (
-                  <p className="mt-1 text-sm text-muted-foreground">{post.description}</p>
-                ) : null}
-              </div>
-              <ArrowUpRight
-                className="h-4 w-4 shrink-0 text-primary opacity-0 transition-opacity group-hover:opacity-100"
-                aria-hidden
-              />
-            </Link>
+      <ul className="grid list-none gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => (
+          <li key={post._id}>
+            <PostCard post={post} />
           </li>
         ))}
       </ul>

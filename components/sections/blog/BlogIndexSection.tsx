@@ -110,7 +110,7 @@ export function BlogIndexSection({
   return (
     <div className="relative min-w-0 space-y-12 md:space-y-16">
       {showFeatured ? (
-        <section aria-labelledby="blog-featured-heading">
+        <section id="blog-featured" aria-labelledby="blog-featured-heading">
           <div className="mb-5 flex items-end justify-between gap-3">
             <div>
               <p className="text-sm font-semibold uppercase tracking-widest text-primary">
@@ -135,7 +135,7 @@ export function BlogIndexSection({
         </section>
       ) : null}
 
-      <section aria-labelledby="blog-posts-heading">
+      <section id="blog-posts" aria-labelledby="blog-posts-heading">
         <div className="pointer-events-none absolute inset-x-0 top-[40%] -z-10 mx-auto h-64 max-w-3xl rounded-full bg-primary/5 blur-3xl" />
 
         <div className="mx-auto max-w-3xl text-center">

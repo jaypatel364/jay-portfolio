@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Service } from "@/lib/services/types";
@@ -12,28 +11,20 @@ interface ServiceHeroProps {
 }
 
 export function ServiceHero({ service }: ServiceHeroProps) {
-  const reduced = useReducedMotion() ?? false;
-  const taglineLines = service.hero.headlineLines;
-
   return (
     <header className="relative w-full overflow-hidden border-b border-border/60">
       <div className="pointer-events-none absolute inset-0 bg-grid opacity-25" aria-hidden />
       <div
         className="aurora-blob pointer-events-none absolute -left-32 top-0 h-72 w-72 bg-primary opacity-30"
-        style={{ animation: reduced ? undefined : "aurora-1 14s ease-in-out infinite" }}
+        style={{ animation: "aurora-1 14s ease-in-out infinite" }}
       />
       <div
         className="aurora-blob pointer-events-none absolute -right-24 bottom-0 h-56 w-56 bg-glow opacity-25"
-        style={{ animation: reduced ? undefined : "aurora-2 16s ease-in-out infinite" }}
+        style={{ animation: "aurora-2 16s ease-in-out infinite" }}
       />
 
       <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-4 pb-20 pt-28 sm:px-6 md:pb-28 md:pt-32 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,440px)] lg:gap-16">
-        <motion.div
-          initial={reduced ? false : { opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="min-w-0"
-        >
+        <div className="min-w-0">
           <ServiceBreadcrumbs
             items={[
               { label: "Home", href: "/" },
@@ -73,16 +64,11 @@ export function ServiceHero({ service }: ServiceHeroProps) {
               Explore work
             </Link>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={reduced ? false : { opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto w-full min-w-0 lg:mx-0"
-        >
-          <ServiceDetailHeroVisual slug={service.slug} title={service.title} large />
-        </motion.div>
+        <div className="mx-auto w-full min-w-0 lg:mx-0">
+          <ServiceDetailHeroVisual slug={service.slug} title={service.title} large instant />
+        </div>
       </div>
     </header>
   );

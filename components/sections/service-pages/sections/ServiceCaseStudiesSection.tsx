@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import type { Project } from "@/settings/projects";
 import { projectHref } from "@/settings/projects";
 import type { Service } from "@/lib/services/types";
@@ -88,10 +88,15 @@ export function ServiceCaseStudiesSection({
                 </p>
 
                 {project.highlights && project.highlights.length > 0 ? (
-                  <ul className="relative mt-4 space-y-1.5">
+                  <ul className="relative mt-4 space-y-2">
                     {project.highlights.slice(0, 2).map((point) => (
-                      <li key={point} className="flex items-start gap-2 text-sm text-foreground/90">
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                      <li
+                        key={point}
+                        className="flex items-start gap-2.5 text-sm text-foreground/90"
+                      >
+                        <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+                          <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
+                        </span>
                         <span className="line-clamp-1">{point}</span>
                       </li>
                     ))}

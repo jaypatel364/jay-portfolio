@@ -1,7 +1,7 @@
 "use client";
 
 import type { Service } from "@/lib/services/types";
-import { servicePath } from "@/lib/services";
+import { getServiceBySlug, servicePath } from "@/lib/services";
 import { CAPABILITY_ICON_CYCLE } from "@/components/sections/services/service-icons";
 import {
   ServiceItemCards,
@@ -13,9 +13,11 @@ export function ServiceCapabilitiesSection({ service }: { service: Service }) {
   const items: ServiceCardItem[] = service.capabilities.map((cap, i) => ({
     title: cap.title,
     description: cap.description,
-    href: cap.relatedServiceSlug ? servicePath(cap.relatedServiceSlug) : undefined,
+    href:
+      cap.relatedServiceSlug && getServiceBySlug(cap.relatedServiceSlug)
+        ? servicePath(cap.relatedServiceSlug)
+        : undefined,
     icon: CAPABILITY_ICON_CYCLE[i % CAPABILITY_ICON_CYCLE.length],
-    linkLabel: cap.relatedServiceSlug ? "View service →" : undefined,
   }));
 
   return (

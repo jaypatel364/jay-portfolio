@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { getActiveArticleHeadingLabel, isBlogPostPath } from "@/lib/scroll-progress";
 
 /** Friendly labels for section ids used in the navbar reading badge */
 const SECTION_LABELS: Record<string, string> = {
@@ -13,6 +14,10 @@ const SECTION_LABELS: Record<string, string> = {
   work: "Work",
   faq: "FAQ",
   contact: "Contact",
+  blog: "Blog",
+  "blog-featured": "Featured",
+  "blog-posts": "All posts",
+  "blog-related": "More posts",
   "who-am-i": "Who Am I",
   "why-choose": "Why Me",
   "stack-catalog": "Stack",
@@ -45,8 +50,21 @@ function formatSectionId(id: string | undefined | null): string {
 export function useActiveSection() {
   const pathname = usePathname();
   const [active, setActive] = useState("Home");
+  const isBlogPost = isBlogPostPath(pathname);
 
   useEffect(() => {
+    if (isBlogPost) {
+      const syncHeading = () => setActive(getActiveArticleHeadingLabel());
+
+      syncHeading();
+      window.addEventListener("scroll", syncHeading, { passive: true });
+      window.addEventListener("resize", syncHeading, { passive: true });
+      return () => {
+        window.removeEventListener("scroll", syncHeading);
+        window.removeEventListener("resize", syncHeading);
+      };
+    }
+
     const main = document.getElementById("main");
     const nodes = main ? Array.from(main.querySelectorAll<HTMLElement>("section[id]")) : [];
 
@@ -72,7 +90,7 @@ export function useActiveSection() {
 
     nodes.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [pathname]);
+  }, [pathname, isBlogPost]);
 
   return active;
 }

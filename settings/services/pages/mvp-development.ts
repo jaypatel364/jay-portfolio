@@ -15,6 +15,7 @@ export const mvpDevelopment: Service = {
   categoryLabels: ["MVP", "Next.js", "Node.js", "Startup"],
   icon: "rocket",
   order: 3,
+  published: true,
   seoBrief: {
     primaryKeyword: "MVP development services",
     searchIntent: "Commercial — founders seeking MVP build partners",
@@ -265,26 +266,73 @@ export const mvpDevelopment: Service = {
   ],
   benefits: [
     {
+      kind: "benefit",
       title: "Faster learning cycles",
       description: "Ship in weeks, not quarters, with scope that matches your runway.",
     },
     {
+      kind: "benefit",
       title: "Capital-efficient builds",
       description: "Pay for proof, not premature platform complexity.",
     },
     {
+      kind: "benefit",
+      title: "Direct senior ownership",
+      description: "No account managers — you work with the engineer building the product.",
+    },
+    {
+      kind: "outcome",
       title: "Evolution-ready code",
       description: "Conscious trade-offs documented so v2 is a roadmap, not a rescue mission.",
     },
     {
+      kind: "outcome",
       title: "Clear go/no-go signals",
       description: "Metrics and instrumentation baked in from the start.",
     },
     {
-      title: "Direct senior ownership",
-      description: "No account managers — you work with the engineer building the product.",
+      kind: "outcome",
+      title: "Investor-ready product narrative",
+      description:
+        "A working product with real usage data strengthens fundraising and partnership conversations.",
     },
   ],
+  whyHire: {
+    roleTitle: "MVP Developer",
+    intro:
+      "You get a focused first release that proves your hypothesis without overbuilding — scoped honestly, shipped in vertical slices, and structured so v2 is an evolution, not a rewrite.",
+    reasons: [
+      {
+        tag: "Focus",
+        title: "Ruthless v1 scoping",
+        description:
+          "Only what validates the hypothesis ships first. Nice-to-haves are named explicitly and deferred — so budget and timeline stay honest.",
+      },
+      {
+        tag: "Speed",
+        title: "Weeks, not quarters",
+        description:
+          "Vertical slices to staging and production with clear milestones. You see working software early enough to change direction before sunk cost sets in.",
+      },
+      {
+        tag: "Foundation",
+        title: "Evolution-ready code",
+        description:
+          "Not a throwaway prototype — structured auth, data models, and deployment so a successful MVP can grow into a real platform.",
+      },
+      {
+        tag: "Clarity",
+        title: "Honest go/no-go signals",
+        description:
+          "Analytics hooks and feedback loops baked into launch so you learn from real usage — not opinions from a demo that never met a user.",
+      },
+    ],
+    highlights: [
+      { label: "Stack", value: "React · Next.js · Node.js · MongoDB" },
+      { label: "Focus", value: "Founder & early-stage SaaS MVPs" },
+      { label: "Approach", value: "Scope tight, ship fast, learn early" },
+    ],
+  },
   caseStudySlugs: ["spendly-personal-expense-tracker", "real-time-chat-application"],
   faqs: [
     {
@@ -330,10 +378,10 @@ export const mvpDevelopment: Service = {
     "backend-development",
   ],
   relatedPosts: [
-    { title: "MVP Development Process", slug: "mvp-development-process" },
-    { title: "MVP vs Prototype", slug: "mvp-vs-prototype" },
-    { title: "How to Validate an MVP", slug: "how-to-validate-mvp" },
-    { title: "MVP Development Cost", slug: "mvp-development-cost" },
+    "mvp-development-process",
+    "mvp-vs-prototype",
+    "how-to-validate-mvp",
+    "mvp-development-cost",
   ],
   seo: {
     title: "MVP Development Services | Startup & SaaS MVPs | Jay Patel",

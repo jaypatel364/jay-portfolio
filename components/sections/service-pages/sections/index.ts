@@ -10,4 +10,5 @@ export { ServiceUseCasesSection } from "./ServiceUseCasesSection";
 export { ServiceAudiencesSection } from "./ServiceAudiencesSection";
 export { ServiceDeliverablesSection } from "./ServiceDeliverablesSection";
 export { ServiceBenefitsSection } from "./ServiceBenefitsSection";
+export { ServiceWhyHireSection } from "./ServiceWhyHireSection";
 export { ServiceCaseStudiesSection } from "./ServiceCaseStudiesSection";

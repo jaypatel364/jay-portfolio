@@ -8,6 +8,8 @@ interface ServiceDetailHeroVisualProps {
   slug: string;
   title: string;
   large?: boolean;
+  /** Skip entrance animations — used in the page hero for instant paint. */
+  instant?: boolean;
 }
 
 type Node = { id: string; label: string; x: number; y: number; accent?: boolean };
@@ -17,14 +19,17 @@ function FlowDiagram({
   edges,
   label,
   large,
+  instant,
 }: {
   nodes: Node[];
   edges: [string, string][];
   label: string;
   large?: boolean;
+  instant?: boolean;
 }) {
   const reduced = useReducedMotion() ?? false;
   const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
+  const animate = !instant && !reduced;
 
   return (
     <HeroVisualFrame
@@ -37,6 +42,19 @@ function FlowDiagram({
           const a = byId[from];
           const b = byId[to];
           if (!a || !b) return null;
+          if (!animate) {
+            return (
+              <line
+                key={`${from}-${to}`}
+                x1={a.x}
+                y1={a.y + 16}
+                x2={b.x}
+                y2={b.y - 8}
+                stroke="var(--border)"
+                strokeWidth={1.5}
+              />
+            );
+          }
           return (
             <motion.line
               key={`${from}-${to}`}
@@ -46,7 +64,7 @@ function FlowDiagram({
               y2={b.y - 8}
               stroke="var(--border)"
               strokeWidth={1.5}
-              initial={reduced ? false : { pathLength: 0, opacity: 0 }}
+              initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ delay: 0.15 + i * 0.08, duration: 0.5 }}
             />
@@ -54,24 +72,46 @@ function FlowDiagram({
         })}
         {nodes.map((node, i) => (
           <g key={node.id}>
-            <motion.rect
-              x={node.x - 52}
-              y={node.y - 14}
-              width={104}
-              height={28}
-              rx={8}
-              fill={
-                node.accent ? "color-mix(in oklch, var(--primary) 18%, var(--card))" : "var(--card)"
-              }
-              stroke={
-                node.accent
-                  ? "color-mix(in oklch, var(--primary) 45%, transparent)"
-                  : "var(--border)"
-              }
-              initial={reduced ? false : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.06, duration: 0.4 }}
-            />
+            {animate ? (
+              <motion.rect
+                x={node.x - 52}
+                y={node.y - 14}
+                width={104}
+                height={28}
+                rx={8}
+                fill={
+                  node.accent
+                    ? "color-mix(in oklch, var(--primary) 18%, var(--card))"
+                    : "var(--card)"
+                }
+                stroke={
+                  node.accent
+                    ? "color-mix(in oklch, var(--primary) 45%, transparent)"
+                    : "var(--border)"
+                }
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.06, duration: 0.4 }}
+              />
+            ) : (
+              <rect
+                x={node.x - 52}
+                y={node.y - 14}
+                width={104}
+                height={28}
+                rx={8}
+                fill={
+                  node.accent
+                    ? "color-mix(in oklch, var(--primary) 18%, var(--card))"
+                    : "var(--card)"
+                }
+                stroke={
+                  node.accent
+                    ? "color-mix(in oklch, var(--primary) 45%, transparent)"
+                    : "var(--border)"
+                }
+              />
+            )}
             <text
               x={node.x}
               y={node.y + 4}
@@ -199,12 +239,17 @@ const DIAGRAMS: Record<string, { label: string; nodes: Node[]; edges: [string, s
   },
 };
 
-export function ServiceDetailHeroVisual({ slug, title, large }: ServiceDetailHeroVisualProps) {
+export function ServiceDetailHeroVisual({
+  slug,
+  title,
+  large,
+  instant,
+}: ServiceDetailHeroVisualProps) {
   const diagram = DIAGRAMS[slug] ?? DIAGRAMS["full-stack-development"];
 
   return (
     <div className="relative h-full">
-      <FlowDiagram {...diagram} large={large} />
+      <FlowDiagram {...diagram} large={large} instant={instant} />
       <p className="sr-only">{title} architecture visualization</p>
     </div>
   );

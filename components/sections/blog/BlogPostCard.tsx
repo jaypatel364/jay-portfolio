@@ -14,7 +14,7 @@ type BlogPostCardProps = {
 
 export function BlogPostCard({ post, variant = "default", className }: BlogPostCardProps) {
   const imageUrl = sanityImageUrl(post.coverImage, variant === "featured" ? 1400 : 900);
-  const category = post.categories?.[0]?.title;
+  const category = post.categories?.[0] ?? null;
   const featured = Boolean(post.featured) || variant === "featured";
 
   if (variant === "featured") {
@@ -55,9 +55,18 @@ export function BlogPostCard({ post, variant = "default", className }: BlogPostC
               Featured
             </span>
             {category ? (
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {category}
-              </span>
+              category.slug ? (
+                <Link
+                  href={`/blog/?category=${category.slug}`}
+                  className="relative z-20 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-primary transition-colors hover:bg-primary/15"
+                >
+                  {category.title}
+                </Link>
+              ) : (
+                <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-primary">
+                  {category.title}
+                </span>
+              )
             ) : null}
           </div>
 
@@ -125,16 +134,31 @@ export function BlogPostCard({ post, variant = "default", className }: BlogPostC
       </div>
 
       <div className={cn("flex flex-1 flex-col", variant === "compact" ? "p-4" : "p-4 sm:p-5")}>
-        {/* Category + Date — single compact row */}
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary">
-          {category ? <span>{category}</span> : null}
+        {/* Category pill + plain date */}
+        <div className="flex flex-wrap items-center gap-2">
+          {category ? (
+            category.slug ? (
+              <Link
+                href={`/blog/?category=${category.slug}`}
+                className="relative z-20 inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary transition-colors hover:bg-primary/15"
+              >
+                {category.title}
+              </Link>
+            ) : (
+              <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-primary">
+                {category.title}
+              </span>
+            )
+          ) : null}
           {category && post.publishedAt ? (
-            <span className="text-muted-foreground/60">·</span>
+            <span className="text-muted-foreground/50" aria-hidden>
+              ·
+            </span>
           ) : null}
           {post.publishedAt ? (
             <BlogPublishedDate
               date={post.publishedAt}
-              className="font-medium normal-case tracking-normal text-muted-foreground"
+              className="text-xs text-muted-foreground"
               showLabel={false}
             />
           ) : null}
@@ -143,7 +167,7 @@ export function BlogPostCard({ post, variant = "default", className }: BlogPostC
         {/* Title — max 3 lines + reserved height so cards stay equal */}
         <span
           className={cn(
-            "font-heading font-semibold tracking-tight text-balance text-foreground transition-colors group-hover:text-primary",
+            "font-heading font-semibold tracking-tight text-foreground transition-colors group-hover:text-primary",
             "line-clamp-2",
             // Smaller sizes + reserved 3-line height
             variant === "compact"

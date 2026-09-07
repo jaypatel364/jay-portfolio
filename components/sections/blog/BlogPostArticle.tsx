@@ -8,7 +8,7 @@ import { pageUrl } from "@/settings/seo";
 import { PortableTextBody } from "./PortableTextBody";
 import { BlogPostCard as PostCard } from "./BlogPostCard";
 import { BlogTableOfContents } from "./BlogTableOfContents";
-import { BlogShareBar } from "./BlogShareBar";
+import { BlogArticleEngagementBar } from "./BlogArticleEngagementBar";
 import { BlogReadingProgress } from "./BlogReadingProgress";
 import { BlogArticleSidebar } from "./BlogArticleSidebar";
 import { BlogStickyRail } from "./BlogStickyRail";
@@ -153,7 +153,10 @@ export function BlogPostArticle({
         </div>
 
         {morePosts.length > 0 ? (
-          <div className="mx-auto mt-20 w-full max-w-6xl border-t border-border/60 px-4 pt-16 sm:px-6">
+          <div
+            id="blog-related"
+            className="mx-auto mt-20 w-full max-w-6xl border-t border-border/60 px-4 pt-16 sm:px-6"
+          >
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-widest text-primary">
@@ -255,12 +258,7 @@ function ArticleBody({
         </aside>
       ) : null}
 
-      <div className="mt-10 flex flex-col gap-4 rounded-2xl border border-border/70 bg-card/50 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-5">
-        <p className="min-w-0 text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]">
-          Found this artical helpful? Don&apos;t forget to share it with your network!
-        </p>
-        <BlogShareBar title={post.title} url={shareUrl} compact className="shrink-0" />
-      </div>
+      <BlogArticleEngagementBar title={post.title} url={shareUrl} />
     </div>
   );
 }

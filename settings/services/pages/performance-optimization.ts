@@ -15,6 +15,7 @@ export const performanceOptimization: Service = {
   categoryLabels: ["Performance", "Next.js", "React", "Core Web Vitals"],
   icon: "gauge",
   order: 5,
+  published: true,
   seoBrief: {
     primaryKeyword: "web performance optimization services",
     searchIntent: "Commercial / investigative — teams with slow apps seeking help",
@@ -276,27 +277,74 @@ export const performanceOptimization: Service = {
   ],
   benefits: [
     {
+      kind: "benefit",
       title: "Better user experience",
       description: "Faster interactions reduce frustration and abandonment on critical flows.",
     },
     {
+      kind: "benefit",
+      title: "Data-driven decisions",
+      description: "Measurements replace debates about which framework feature to try next.",
+    },
+    {
+      kind: "benefit",
+      title: "Sustainable performance culture",
+      description: "Regression guards and documentation help teams maintain gains.",
+    },
+    {
+      kind: "outcome",
       title: "Improved search signals",
       description:
         "Core Web Vitals and crawl efficiency support organic visibility where speed is a factor.",
     },
     {
+      kind: "outcome",
       title: "Lower infrastructure waste",
       description: "Fix inefficient code before scaling servers linearly with traffic.",
     },
     {
-      title: "Data-driven decisions",
-      description: "Measurements replace debates about which framework feature to try next.",
-    },
-    {
-      title: "Sustainable performance culture",
-      description: "Regression guards and documentation help teams maintain gains.",
+      kind: "outcome",
+      title: "Higher conversion on key flows",
+      description:
+        "Faster checkout, signup, and dashboard loads directly reduce drop-off on revenue paths.",
     },
   ],
+  whyHire: {
+    roleTitle: "Performance Engineer",
+    intro:
+      "You get measurable improvements backed by data — real profiling across frontend, APIs, and databases, with fixes and regression guards so speed does not slip after the next release.",
+    reasons: [
+      {
+        tag: "Measurement",
+        title: "Baselines before changes",
+        description:
+          "Lighthouse, Web Vitals, API traces, and query plans captured first — so every optimization is tied to evidence, not guesswork.",
+      },
+      {
+        tag: "Impact",
+        title: "Fixes where users feel it",
+        description:
+          "LCP, TTI, and API latency prioritized by business effect — checkout, signup, and dashboard flows before low-traffic admin pages.",
+      },
+      {
+        tag: "Depth",
+        title: "Full-stack bottlenecks",
+        description:
+          "Rendering, bundle size, caching, and database queries addressed together — because slowness rarely lives in only one layer.",
+      },
+      {
+        tag: "Durability",
+        title: "Regression guards",
+        description:
+          "Monitoring and budgets so performance gains survive the next feature ship — not a one-time audit that erodes within a sprint.",
+      },
+    ],
+    highlights: [
+      { label: "Scope", value: "Core Web Vitals · APIs · databases" },
+      { label: "Focus", value: "SaaS dashboards & revenue paths" },
+      { label: "Approach", value: "Measure, fix, guard" },
+    ],
+  },
   caseStudySlugs: ["spendly-personal-expense-tracker", "real-time-chat-application"],
   faqs: [
     {
@@ -332,9 +380,9 @@ export const performanceOptimization: Service = {
   ],
   relatedServiceSlugs: ["frontend-development", "backend-development", "full-stack-development"],
   relatedPosts: [
-    { title: "Core Web Vitals Guide for Developers", slug: "core-web-vitals-guide" },
-    { title: "Next.js Performance Checklist", slug: "nextjs-performance-checklist" },
-    { title: "React Rendering Optimization", slug: "react-rendering-optimization" },
+    "core-web-vitals-guide",
+    "nextjs-performance-checklist",
+    "react-rendering-optimization",
   ],
   seo: {
     title: "Web Performance Optimization Services | Core Web Vitals | Jay Patel",

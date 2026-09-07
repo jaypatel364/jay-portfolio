@@ -17,7 +17,6 @@ export type ServiceCardItem = {
   description: string;
   href?: string;
   icon?: LucideIcon;
-  linkLabel?: string;
 };
 
 interface ServiceItemCardsProps {
@@ -34,7 +33,6 @@ export function ServiceItemCards({ items, className }: ServiceItemCardsProps) {
       {items.map((item, i) => {
         const Icon = item.icon ?? Layout;
         const isActive = hovered === i;
-        const linkLabel = item.linkLabel ?? (item.href ? "View service →" : undefined);
 
         return (
           <motion.li
@@ -53,15 +51,6 @@ export function ServiceItemCards({ items, className }: ServiceItemCardsProps) {
             onBlur={() => setHovered(null)}
           >
             <article className={cn(serviceCardClass, isActive && serviceCardActiveClass)}>
-              {item.href ? (
-                <Link
-                  href={item.href}
-                  className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                >
-                  <span className="sr-only">View {item.title}</span>
-                </Link>
-              ) : null}
-
               <div className="relative flex items-start justify-between gap-3">
                 <span className={cn(serviceIconWrapClass, isActive && serviceIconWrapActiveClass)}>
                   <Icon className="h-5 w-5" strokeWidth={2.1} aria-hidden />
@@ -71,15 +60,21 @@ export function ServiceItemCards({ items, className }: ServiceItemCardsProps) {
                 </span>
               </div>
 
-              <h3 className="font-heading relative mt-5 text-lg font-bold tracking-tight text-foreground">
-                {item.title}
+              <h3 className="font-heading relative mt-5 text-lg font-bold tracking-tight">
+                {item.href ? (
+                  <Link
+                    href={item.href}
+                    className="text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card rounded-sm"
+                  >
+                    {item.title}
+                  </Link>
+                ) : (
+                  <span className="text-foreground">{item.title}</span>
+                )}
               </h3>
               <p className="relative mt-2.5 flex-1 text-sm leading-relaxed text-muted-foreground">
                 {item.description}
               </p>
-              {linkLabel && item.href ? (
-                <p className="relative mt-4 text-sm font-semibold text-primary">{linkLabel}</p>
-              ) : null}
             </article>
           </motion.li>
         );

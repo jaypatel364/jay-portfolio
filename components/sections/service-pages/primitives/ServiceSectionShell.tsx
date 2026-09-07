@@ -43,7 +43,7 @@ export function ServiceSectionShell({
       aria-labelledby={id ? `${id}-heading` : undefined}
       className={cn("scroll-mt-28 py-16 md:py-24", THEME[theme], className)}
     >
-      <div className={cn("relative", inner)}>
+      <div className={cn("relative min-w-0", inner)}>
         <header className={width === "narrow" ? undefined : "max-w-3xl"}>
           <span className="text-sm font-semibold uppercase tracking-widest text-primary">
             {label}
@@ -60,7 +60,7 @@ export function ServiceSectionShell({
             </p>
           ) : null}
         </header>
-        <div className="mt-10">{children}</div>
+        <div className="mt-10 min-w-0">{children}</div>
       </div>
     </section>
   );

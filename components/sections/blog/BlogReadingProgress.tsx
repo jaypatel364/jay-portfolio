@@ -2,26 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { BLOG_ARTICLE_BODY_ID, computeArticleBodyScrollPercent } from "@/lib/scroll-progress";
 
 /** Thin reading progress under the fixed navbar — modern blog UX for long posts. */
-export function BlogReadingProgress({ targetId = "blog-article-body" }: { targetId?: string }) {
+export function BlogReadingProgress({ targetId = BLOG_ARTICLE_BODY_ID }: { targetId?: string }) {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const onScroll = () => {
-      const el = document.getElementById(targetId);
-      if (!el) {
-        setProgress(0);
-        return;
-      }
-      const rect = el.getBoundingClientRect();
-      const total = el.offsetHeight - window.innerHeight;
-      if (total <= 0) {
-        setProgress(rect.bottom <= window.innerHeight ? 100 : 0);
-        return;
-      }
-      const scrolled = Math.min(Math.max(-rect.top, 0), total);
-      setProgress((scrolled / total) * 100);
+      setProgress(computeArticleBodyScrollPercent(targetId));
     };
 
     onScroll();

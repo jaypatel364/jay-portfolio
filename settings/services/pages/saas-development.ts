@@ -15,6 +15,7 @@ export const saasDevelopment: Service = {
   categoryLabels: ["SaaS", "Next.js", "Node.js", "PostgreSQL"],
   icon: "monitor",
   order: 2,
+  published: true,
   seoBrief: {
     primaryKeyword: "SaaS development services",
     searchIntent: "Commercial — evaluating SaaS development partners or freelancers",
@@ -291,30 +292,77 @@ export const saasDevelopment: Service = {
   ],
   benefits: [
     {
+      kind: "benefit",
       title: "Architecture that matches your stage",
       description: "Avoid over-engineering early while keeping a credible path to scale.",
     },
     {
+      kind: "benefit",
       title: "Faster path to paid users",
       description:
         "Billing and onboarding treated as first-class features, not launch-week additions.",
     },
     {
+      kind: "benefit",
+      title: "Better operational visibility",
+      description:
+        "Admin tooling and logging that reduce time-to-diagnose when customers report issues.",
+    },
+    {
+      kind: "outcome",
       title: "Lower data-isolation risk",
       description:
         "Permissions and tenant boundaries designed before sensitive customer data accumulates.",
     },
     {
+      kind: "outcome",
       title: "Easier feature expansion",
       description:
         "Modular codebase where new plans and modules do not require forked deployments.",
     },
     {
-      title: "Better operational visibility",
+      kind: "outcome",
+      title: "Predictable recurring revenue ops",
       description:
-        "Admin tooling and logging that reduce time-to-diagnose when customers report issues.",
+        "Subscription lifecycle, upgrades, and churn handling built into the platform from day one.",
     },
   ],
+  whyHire: {
+    roleTitle: "SaaS Developer",
+    intro:
+      "You get a platform built for recurring revenue — billing, tenant isolation, admin tooling, and the operational visibility SaaS teams need after launch.",
+    reasons: [
+      {
+        tag: "Revenue",
+        title: "Billing built in from the start",
+        description:
+          "Subscriptions, upgrades, downgrades, and access control stay in sync — so you are not patching revenue leaks after customers are already paying.",
+      },
+      {
+        tag: "Tenancy",
+        title: "Data isolation by design",
+        description:
+          "Multi-tenant patterns without per-customer code forks — your platform scales to more accounts without multiplying maintenance burden.",
+      },
+      {
+        tag: "Operations",
+        title: "Admin tools included",
+        description:
+          "Support workflows, impersonation, usage views, and internal dashboards — not an afterthought once customers start asking for help.",
+      },
+      {
+        tag: "Scale",
+        title: "Architecture for growth",
+        description:
+          "Foundations that support more tenants, modules, and integrations without a full rewrite when traction arrives.",
+      },
+    ],
+    highlights: [
+      { label: "Stack", value: "Next.js · Node.js · Stripe · PostgreSQL" },
+      { label: "Focus", value: "B2B workflow & vertical SaaS" },
+      { label: "Approach", value: "Revenue-ready from v1" },
+    ],
+  },
   caseStudySlugs: [
     "pms-hr-management-system",
     "minilist-headless-cms",
@@ -369,22 +417,10 @@ export const saasDevelopment: Service = {
     "performance-optimization",
   ],
   relatedPosts: [
-    {
-      title: "How Much Does It Cost to Build a SaaS Product?",
-      slug: "saas-development-cost",
-    },
-    {
-      title: "SaaS Architecture Best Practices",
-      slug: "saas-architecture-best-practices",
-    },
-    {
-      title: "How to Build a SaaS MVP",
-      slug: "how-to-build-saas-mvp",
-    },
-    {
-      title: "Scaling SaaS Applications",
-      slug: "scaling-saas-applications",
-    },
+    "saas-development-cost",
+    "saas-architecture-best-practices",
+    "how-to-build-saas-mvp",
+    "scaling-saas-applications",
   ],
   seo: {
     title: "SaaS Development Services | Custom SaaS Applications | Jay Patel",

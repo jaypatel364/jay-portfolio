@@ -1,6 +1,7 @@
 "use client";
 
 import type { Service, ServiceSectionKey } from "@/lib/services/types";
+import type { BlogPostCard } from "@/lib/sanity/types";
 import type { Project } from "@/settings/projects";
 import {
   getRelatedServices,
@@ -22,12 +23,14 @@ import {
   ServiceAudiencesSection,
   ServiceDeliverablesSection,
   ServiceBenefitsSection,
+  ServiceWhyHireSection,
   ServiceCaseStudiesSection,
 } from "./sections";
 
 interface ServicePageExperienceProps {
   service: Service;
   caseStudyProjects: Project[];
+  relatedBlogPosts: BlogPostCard[];
 }
 
 /**
@@ -35,7 +38,11 @@ interface ServicePageExperienceProps {
  * Hero first; remaining sections follow DEFAULT_SERVICE_SECTION_ORDER.
  * Global Contact CTA is rendered by SiteChrome — not duplicated here.
  */
-export function ServicePageExperience({ service, caseStudyProjects }: ServicePageExperienceProps) {
+export function ServicePageExperience({
+  service,
+  caseStudyProjects,
+  relatedBlogPosts,
+}: ServicePageExperienceProps) {
   const related = getRelatedServices(service);
   const order = getServiceSectionOrder(service);
 
@@ -64,6 +71,8 @@ export function ServicePageExperience({ service, caseStudyProjects }: ServicePag
         return <ServiceDeliverablesSection key={key} service={service} />;
       case "benefits":
         return <ServiceBenefitsSection key={key} service={service} />;
+      case "whyHire":
+        return <ServiceWhyHireSection key={key} service={service} />;
       case "caseStudies":
         return caseStudyProjects.length ? (
           <ServiceCaseStudiesSection key={key} service={service} projects={caseStudyProjects} />
@@ -75,8 +84,8 @@ export function ServicePageExperience({ service, caseStudyProjects }: ServicePag
           <ServiceRelatedEcosystem key={key} service={service} related={related} />
         ) : null;
       case "relatedPosts":
-        return service.relatedPosts.length ? (
-          <ServiceResourcesRail key={key} service={service} />
+        return relatedBlogPosts.length ? (
+          <ServiceResourcesRail key={key} posts={relatedBlogPosts} />
         ) : null;
       default:
         return null;

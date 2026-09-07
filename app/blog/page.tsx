@@ -76,6 +76,7 @@ export default async function BlogPage({
       />
       <main id="main">
         <InnerPageHero
+          id="blog"
           label={blogPage.hero.label}
           title={blogPage.hero.title}
           description={blogPage.hero.description}

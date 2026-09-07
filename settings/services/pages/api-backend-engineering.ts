@@ -15,6 +15,7 @@ export const apiBackendEngineering: Service = {
   categoryLabels: ["Node.js", "API", "PostgreSQL", "Redis"],
   icon: "server",
   order: 4,
+  published: true,
   seoBrief: {
     primaryKeyword: "backend development services",
     searchIntent: "Commercial — teams needing backend/API engineering",
@@ -265,26 +266,73 @@ export const apiBackendEngineering: Service = {
   ],
   benefits: [
     {
+      kind: "benefit",
       title: "Predictable client integrations",
       description: "Frontends and partners integrate once against stable contracts.",
     },
     {
-      title: "Fewer production incidents",
-      description: "Validation, idempotency, and logging reduce mystery outages.",
-    },
-    {
+      kind: "benefit",
       title: "Easier hiring and onboarding",
       description: "Documented APIs help the next backend hire contribute faster.",
     },
     {
+      kind: "benefit",
+      title: "Security baseline",
+      description: "Auth and input handling addressed systematically, not per endpoint.",
+    },
+    {
+      kind: "outcome",
+      title: "Fewer production incidents",
+      description: "Validation, idempotency, and logging reduce mystery outages.",
+    },
+    {
+      kind: "outcome",
       title: "Performance headroom",
       description: "Indexes and caching applied where measurements justify them.",
     },
     {
-      title: "Security baseline",
-      description: "Auth and input handling addressed systematically, not per endpoint.",
+      kind: "outcome",
+      title: "Faster partner integrations",
+      description:
+        "Consistent API patterns and versioning reduce time-to-ship for new client surfaces.",
     },
   ],
+  whyHire: {
+    roleTitle: "Backend Developer",
+    intro:
+      "You get APIs and data layers that are documented, testable, and built for the integrations your product depends on — with observability so production issues are diagnosable, not mysterious.",
+    reasons: [
+      {
+        tag: "Contracts",
+        title: "APIs teams can trust",
+        description:
+          "Documented endpoints with consistent validation, error shapes, and versioning — so frontend and partner integrations do not depend on tribal knowledge.",
+      },
+      {
+        tag: "Reliability",
+        title: "Production-grade patterns",
+        description:
+          "Auth, idempotency, retries, and webhook handling where revenue and trust depend on systems behaving correctly under failure.",
+      },
+      {
+        tag: "Observability",
+        title: "Diagnosable in production",
+        description:
+          "Structured logging, error tracking, and health checks so the first incident is fixable in hours — not days of blind debugging.",
+      },
+      {
+        tag: "Data",
+        title: "Schema matched to access patterns",
+        description:
+          "PostgreSQL or MongoDB designed for how your product actually queries and reports — not a generic template that breaks under load.",
+      },
+    ],
+    highlights: [
+      { label: "Stack", value: "Node.js · Express · NestJS · PostgreSQL" },
+      { label: "Focus", value: "REST, GraphQL & real-time APIs" },
+      { label: "Approach", value: "Documented contracts, tested paths" },
+    ],
+  },
   caseStudySlugs: [
     "social-media-backend-api",
     "real-time-chat-application",
@@ -329,9 +377,10 @@ export const apiBackendEngineering: Service = {
     "mvp-development",
   ],
   relatedPosts: [
-    { title: "REST API Design Best Practices", slug: "rest-api-design-best-practices" },
-    { title: "Node.js Backend Architecture", slug: "nodejs-backend-architecture" },
-    { title: "Webhook Integration Patterns", slug: "webhook-integration-patterns" },
+    "nestjs-vs-express-js-2026",
+    "rest-api-design-best-practices",
+    "nodejs-backend-architecture",
+    "webhook-integration-patterns",
   ],
   seo: {
     title: "Backend Development Services | Node.js & API Development | Jay Patel",

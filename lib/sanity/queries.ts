@@ -320,7 +320,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
         sameAs,
         avatar ${imageProjection}
       },
-      "relatedPosts": relatedPosts[]->{ ${postCardFields} }
+      "relatedPosts": relatedPosts[]->[${filter}]{ ${postCardFields} }
     }`,
     { slug },
     { next: { revalidate: BLOG_TTL.POST, tags: [BLOG_TAG, blogPostTag(slug)] } },
@@ -420,6 +420,29 @@ export function resolveFeaturedPosts(
   if (fromSettings.length) return fromSettings.slice(0, limit);
 
   return flaggedPosts.slice(0, limit);
+}
+
+/**
+ * Fetches published blog cards for the given slugs, preserving the input order.
+ * Unknown or unpublished slugs are omitted.
+ */
+export async function getBlogPostsBySlugs(slugs: string[]): Promise<BlogPostCard[]> {
+  const orderedSlugs = slugs.map((slug) => slug.trim()).filter(Boolean);
+  if (!orderedSlugs.length) return [];
+
+  const filter = blogListFilter();
+  const posts = await sanityFetch<BlogPostCard[]>(
+    /* groq */ `*[${filter} && slug.current in $slugs]{ ${postCardFields} }`,
+    { slugs: [...new Set(orderedSlugs)] },
+    { next: { revalidate: BLOG_TTL.LISTING, tags: [BLOG_LISTING_TAG, BLOG_TAG] } },
+  );
+
+  if (!posts?.length) return [];
+
+  const bySlug = new Map(posts.map((post) => [post.slug, post]));
+  return orderedSlugs
+    .map((slug) => bySlug.get(slug))
+    .filter((post): post is BlogPostCard => Boolean(post));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
