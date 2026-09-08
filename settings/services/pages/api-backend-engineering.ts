@@ -56,6 +56,12 @@ export const apiBackendEngineering: Service = {
     ],
     conversionIntent: "Discuss backend/API requirements",
   },
+  headingKeywords: {
+    keyword: "Backend Development",
+    keywordVariant: "API & Backend Development",
+    piecesKeyword: "Backend Systems",
+    roleKeyword: "Backend Developer",
+  },
   hero: {
     heading: "Backend Development Services",
     headlineLines: ["APIs your frontend,", "mobile clients, and", "partners can rely on."],

@@ -53,6 +53,12 @@ export const saasDevelopment: Service = {
     ],
     conversionIntent: "Start a SaaS project consultation",
   },
+  headingKeywords: {
+    keyword: "SaaS Development",
+    keywordVariant: "Custom SaaS Development",
+    piecesKeyword: "SaaS Products",
+    roleKeyword: "SaaS Developer",
+  },
   hero: {
     heading: "SaaS Development Services",
     headlineLines: ["Turn subscription products", "into systems", "customers can trust."],

@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { ServiceSectionShell } from "../primitives/ServiceSectionShell";
 
 export function ServiceAudiencesSection({ service }: { service: Service }) {
@@ -11,8 +12,8 @@ export function ServiceAudiencesSection({ service }: { service: Service }) {
     <ServiceSectionShell
       id="audiences"
       label="Fit"
-      title="Who this service is for"
-      description="Recognize yourself in one of these profiles — each maps to a different starting point."
+      title={getServiceSectionHeading(service, "audiences")}
+      description={getServiceSectionSupport(service, "audiences")}
       width="wide"
     >
       <ul className="grid gap-px overflow-hidden rounded-2xl border border-border/70 bg-border/60 md:grid-cols-2">

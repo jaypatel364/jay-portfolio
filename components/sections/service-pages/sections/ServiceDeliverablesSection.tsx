@@ -15,6 +15,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
 const DELIVERABLE_ICONS: LucideIcon[] = [
@@ -103,6 +104,8 @@ function DeliverablesVisual({ count }: { count: number }) {
 export function ServiceDeliverablesSection({ service }: { service: Service }) {
   const reduced = useReducedMotion() ?? false;
   const items = service.deliverables;
+  const deliverablesHeading = getServiceSectionHeading(service, "deliverables");
+  const deliverablesSupport = getServiceSectionSupport(service, "deliverables");
 
   return (
     <section
@@ -127,10 +130,10 @@ export function ServiceDeliverablesSection({ service }: { service: Service }) {
                 id="deliverables-heading"
                 className="font-heading text-3xl font-bold tracking-tight text-balance sm:text-4xl"
               >
-                What Is Included in {service.title}?
+                {deliverablesHeading}
               </h2>
               <p className="max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Concrete outputs from this engagement — not vague promises.
+                {deliverablesSupport}
               </p>
             </motion.div>
 

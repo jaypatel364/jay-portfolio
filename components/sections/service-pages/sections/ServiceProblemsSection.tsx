@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import type { Service } from "@/lib/services/types";
 import { ServiceSectionShell } from "../primitives/ServiceSectionShell";
 
@@ -11,8 +12,8 @@ export function ServiceProblemsSection({ service }: { service: Service }) {
     <ServiceSectionShell
       id="problems"
       label="Problems"
-      title="Problems I solve"
-      description="Common challenges this service addresses — stated plainly, without generic agency filler."
+      title={getServiceSectionHeading(service, "problems")}
+      description={getServiceSectionSupport(service, "problems")}
       width="wide"
     >
       <ul className="grid gap-px overflow-hidden rounded-2xl border border-border/70 bg-border/60 sm:grid-cols-2">

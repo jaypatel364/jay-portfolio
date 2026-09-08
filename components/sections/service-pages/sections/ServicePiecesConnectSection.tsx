@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { ServiceDetailHeroVisual } from "../hero-visuals/ServiceDetailHeroVisual";
 import { ServiceSectionShell } from "../primitives/ServiceSectionShell";
 
@@ -13,8 +14,8 @@ export function ServicePiecesConnectSection({ service }: { service: Service }) {
     <ServiceSectionShell
       id="pieces-connect"
       label="System"
-      title="How the product system comes together"
-      description="These are not isolated deliverables — they work together as one product system."
+      title={getServiceSectionHeading(service, "piecesConnect")}
+      description={getServiceSectionSupport(service, "piecesConnect")}
       theme="contrast"
       width="wide"
     >

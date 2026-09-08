@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { Service, ServiceWhyHireReason } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { cn } from "@/lib/utils";
 import { SERVICE_CONTACT_CTA } from "@/settings/services/shared";
 
@@ -89,7 +90,9 @@ function ReasonCard({
 
 export function ServiceWhyHireSection({ service }: { service: Service }) {
   const reduced = useReducedMotion() ?? false;
-  const { roleTitle, intro, reasons, highlights } = service.whyHire;
+  const { reasons, highlights } = service.whyHire;
+  const whyHireHeading = getServiceSectionHeading(service, "whyHire");
+  const whyHireSupport = getServiceSectionSupport(service, "whyHire");
 
   return (
     <section
@@ -118,9 +121,11 @@ export function ServiceWhyHireSection({ service }: { service: Service }) {
             id="why-hire-heading"
             className="font-heading mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl md:text-[2.75rem]"
           >
-            Why Hire Me as a <span className="gradient-text">{roleTitle}</span>?
+            {whyHireHeading}
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">{intro}</p>
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {whyHireSupport}
+          </p>
         </motion.header>
 
         <ul className="mt-12 grid list-none gap-4 md:mt-14 md:grid-cols-3 md:gap-5">

@@ -102,6 +102,9 @@ Please review and advise on:
 | Concern                 | Location                                                      |
 | ----------------------- | ------------------------------------------------------------- |
 | Canonical section order | `lib/services/types.ts` → `DEFAULT_SERVICE_SECTION_ORDER`     |
+| Master H2 templates     | `lib/services/section-headings.ts` → `SERVICE_H2_TEMPLATES`   |
+| Per-service H2 keywords | `settings/services/pages/*.ts` → `headingKeywords`            |
+| Content structure brief | `settings/services/CONTENT-STRUCTURE.md`                      |
 | Page renderer           | `components/sections/service-pages/ServicePageExperience.tsx` |
 | Per-service content     | `settings/services/pages/*.ts`                                |
 | Hub page                | `/services/` → `settings/services/hub.ts`                     |

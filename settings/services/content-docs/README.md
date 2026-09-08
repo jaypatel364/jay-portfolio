@@ -12,12 +12,12 @@ npm run export:service-content
 
 - `00-services-hub.md` — /services/ hub page
 - `01-full-stack-development.md` — /services/full-stack-development/
-- `02-saas-development.md` — /services/saas-development/
-- `03-mvp-development.md` — /services/mvp-development/
-- `04-backend-development.md` — /services/backend-development/
-- `05-performance-optimization.md` — /services/performance-optimization/
-- `06-frontend-development.md` — /services/frontend-development/
-- `07-mern-stack-development.md` — /services/mern-stack-development/
+- `06-saas-development.md` — /services/saas-development/
+- `05-mvp-development.md` — /services/mvp-development/
+- `02-backend-development.md` — /services/backend-development/
+- `07-performance-optimization.md` — /services/performance-optimization/
+- `03-frontend-development.md` — /services/frontend-development/
+- `04-mern-stack-development.md` — /services/mern-stack-development/
 
 ## Format
 

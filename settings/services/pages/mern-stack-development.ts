@@ -46,6 +46,12 @@ export const mernStackDevelopment: Service = {
     ],
     conversionIntent: "Hire a MERN stack developer for your project",
   },
+  headingKeywords: {
+    keyword: "MERN Stack Development",
+    keywordVariant: "MERN Web Development",
+    piecesKeyword: "MERN Applications",
+    roleKeyword: "MERN Stack Developer",
+  },
   hero: {
     heading: "MERN Stack Development Services",
     headlineLines: ["One stack.", "Four proven layers.", "Shipped end to end."],

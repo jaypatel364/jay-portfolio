@@ -1,7 +1,12 @@
 "use client";
 
 import type { Service } from "@/lib/services/types";
-import { getServiceBySlug, servicePath } from "@/lib/services";
+import {
+  getServiceBySlug,
+  getServiceSectionHeading,
+  getServiceSectionSupport,
+  servicePath,
+} from "@/lib/services";
 import { CAPABILITY_ICON_CYCLE } from "@/components/sections/services/service-icons";
 import {
   ServiceItemCards,
@@ -24,8 +29,8 @@ export function ServiceCapabilitiesSection({ service }: { service: Service }) {
     <ServiceSectionShell
       id="capabilities"
       label="Capabilities"
-      title="Service capabilities"
-      description="What this engagement includes — breadth of work covered under this service."
+      title={getServiceSectionHeading(service, "capabilities")}
+      description={getServiceSectionSupport(service, "capabilities")}
       theme="muted"
       width="wide"
     >

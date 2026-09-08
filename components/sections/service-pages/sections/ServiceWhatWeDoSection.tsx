@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading } from "@/lib/services";
 import { innerPages } from "@/settings/pages";
 import { ServiceWhatWeDoVisual } from "./ServiceWhatWeDoVisual";
 
@@ -24,6 +25,7 @@ export function ServiceWhatWeDoSection({ service }: { service: Service }) {
   const reduced = useReducedMotion() ?? false;
   const intro = service.editorialIntro;
   const highlights = highlightPoints(service);
+  const h2 = getServiceSectionHeading(service, "whatWeDo");
   const paragraphs = service.whatWeDo.paragraphs.slice(0, 2);
   const aboutHref = `${innerPages.about.path}/`;
 
@@ -72,7 +74,7 @@ export function ServiceWhatWeDoSection({ service }: { service: Service }) {
             id="what-we-do-heading"
             className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance text-foreground sm:text-4xl"
           >
-            {service.whatWeDo.heading}
+            {h2}
           </h2>
 
           {intro?.statement ? (
@@ -91,7 +93,7 @@ export function ServiceWhatWeDoSection({ service }: { service: Service }) {
           {highlights.length > 0 ? (
             <div className="mt-8">
               <p className="text-sm font-semibold text-foreground sm:text-[15px]">
-                What sets this {service.title.toLowerCase()} engagement apart?
+                What makes this {service.title.toLowerCase()} service different?
               </p>
               <ul className="mt-4 space-y-3">
                 {highlights.map((point) => (

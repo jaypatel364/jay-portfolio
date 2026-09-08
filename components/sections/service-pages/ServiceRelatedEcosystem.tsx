@@ -4,11 +4,17 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { Service } from "@/lib/services/types";
-import { servicePath } from "@/lib/services";
+import { servicePath, getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { serviceCardClass } from "@/components/sections/services/service-card-styles";
 import { ServiceSectionShell } from "./primitives/ServiceSectionShell";
 
-export function ServiceRelatedEcosystem({ related }: { service: Service; related: Service[] }) {
+export function ServiceRelatedEcosystem({
+  service,
+  related,
+}: {
+  service: Service;
+  related: Service[];
+}) {
   const reduced = useReducedMotion() ?? false;
   if (!related.length) return null;
 
@@ -16,8 +22,8 @@ export function ServiceRelatedEcosystem({ related }: { service: Service; related
     <ServiceSectionShell
       id="related-services"
       label="Connected services"
-      title="You may also need"
-      description="Services that often complement this engagement."
+      title={getServiceSectionHeading(service, "relatedServices")}
+      description={getServiceSectionSupport(service, "relatedServices")}
       theme="muted"
       width="wide"
     >

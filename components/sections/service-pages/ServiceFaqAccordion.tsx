@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { MessageCircleQuestion, Sparkles, ArrowRight } from "lucide-react";
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { FAQCard, FloatingBlobs } from "@/components/sections/faq/FAQParts";
 import { SectionHeading } from "@/components/shared";
 
@@ -13,21 +14,23 @@ export function ServiceFaqAccordion({ service }: { service: Service }) {
   const items = service.faqs;
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
+  const faqHeading = getServiceSectionHeading(service, "faqs");
+  const faqSupport = getServiceSectionSupport(service, "faqs");
+
   return (
     <section id="faq" className="relative scroll-mt-28 py-16 md:py-24">
       <FloatingBlobs />
 
       <div className="relative z-10 mx-auto max-w-3xl">
         <div className="mb-10 text-center">
-          <SectionHeading label="FAQ" title={`${service.title} — questions answered`} />
+          <SectionHeading label="FAQ" title={faqHeading} />
           <motion.p
             initial={reduced ? false : { opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground"
           >
-            Practical answers about scope, timeline, technology, and how I work on{" "}
-            {service.seo.focusKeyword} engagements.
+            {faqSupport}
           </motion.p>
         </div>
 

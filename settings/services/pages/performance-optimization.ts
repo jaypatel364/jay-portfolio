@@ -45,6 +45,12 @@ export const performanceOptimization: Service = {
     ],
     conversionIntent: "Request a performance audit",
   },
+  headingKeywords: {
+    keyword: "Web Performance Optimization",
+    keywordVariant: "Website Performance Optimization",
+    piecesKeyword: "Performance Improvements",
+    roleKeyword: "Performance Engineer",
+  },
   hero: {
     heading: "Web Performance Optimization Services",
     headlineLines: ["Measure first.", "Fix what users", "actually feel."],

@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { cn } from "@/lib/utils";
 import { ServiceSectionShell } from "../primitives/ServiceSectionShell";
 
@@ -14,8 +15,8 @@ export function ServiceTechnologiesSection({ service }: { service: Service }) {
     <ServiceSectionShell
       id="technologies"
       label="Technologies"
-      title="Technologies & tools"
-      description="Stack grouped by layer — chosen for maintainability, not hype."
+      title={getServiceSectionHeading(service, "technologies")}
+      description={getServiceSectionSupport(service, "technologies")}
       width="wide"
     >
       <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/50 p-5 shadow-premium dark:bg-card/30 sm:p-8">

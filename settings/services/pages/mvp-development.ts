@@ -53,6 +53,12 @@ export const mvpDevelopment: Service = {
     ],
     conversionIntent: "Scope an MVP build",
   },
+  headingKeywords: {
+    keyword: "MVP Development",
+    keywordVariant: "Startup MVP Development",
+    piecesKeyword: "MVP Products",
+    roleKeyword: "MVP Developer",
+  },
   hero: {
     heading: "MVP Development Services for Startups",
     headlineLines: ["Validate the idea", "without throwing away", "the codebase."],

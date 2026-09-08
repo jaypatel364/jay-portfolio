@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { ServiceSectionShell } from "../primitives/ServiceSectionShell";
 
 export function ServiceUseCasesSection({ service }: { service: Service }) {
@@ -11,8 +12,8 @@ export function ServiceUseCasesSection({ service }: { service: Service }) {
     <ServiceSectionShell
       id="use-cases"
       label="Use cases"
-      title="Where this service applies"
-      description="Product contexts where this engagement delivers the most value."
+      title={getServiceSectionHeading(service, "useCases")}
+      description={getServiceSectionSupport(service, "useCases")}
       theme="muted"
       width="wide"
     >

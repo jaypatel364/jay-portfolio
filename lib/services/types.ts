@@ -8,6 +8,17 @@ export type ServiceCta = {
   href: string;
 };
 
+export type ServiceHeadingKeywords = {
+  /** Primary keyword — e.g. "Full Stack Development" */
+  keyword: string;
+  /** Variant for capabilities & benefits — e.g. "Full Stack Web Development" */
+  keywordVariant: string;
+  /** Variant for How the Pieces Connect — e.g. "Full Stack Applications" */
+  piecesKeyword: string;
+  /** Role for Why Hire — e.g. "Full Stack Developer" */
+  roleKeyword: string;
+};
+
 export type ServiceSeoBrief = {
   primaryKeyword: string;
   searchIntent: string;
@@ -154,6 +165,28 @@ export type ServiceSectionKey =
 
 export type ServiceSectionVisibility = Partial<Record<ServiceSectionKey, boolean>>;
 
+/** Per-section H2 supporting paragraph (see getServiceSectionSupport). */
+export type ServiceSectionSupport = Partial<
+  Record<
+    | "whatWeDo"
+    | "capabilities"
+    | "problems"
+    | "process"
+    | "technologies"
+    | "piecesConnect"
+    | "useCases"
+    | "audiences"
+    | "deliverables"
+    | "benefits"
+    | "whyHire"
+    | "caseStudies"
+    | "faqs"
+    | "relatedServices"
+    | "relatedPosts",
+    string
+  >
+>;
+
 export type Service = {
   slug: string;
   title: string;
@@ -168,6 +201,10 @@ export type Service = {
   published: boolean;
   /** Internal SEO brief — not rendered on the public page */
   seoBrief: ServiceSeoBrief;
+  /** Drives master H2 templates for all scroll sections (see SERVICE_H2_TEMPLATES). */
+  headingKeywords: ServiceHeadingKeywords;
+  /** H2 supporting paragraph per scroll section (hero & What I Do use hero / editorialIntro). */
+  sectionSupport?: ServiceSectionSupport;
   hero: {
     heading: string;
     /** Optional multi-line hero headline lines for display rhythm. */

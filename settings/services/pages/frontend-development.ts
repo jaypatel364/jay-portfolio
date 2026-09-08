@@ -54,6 +54,12 @@ export const frontendDevelopment: Service = {
     ],
     conversionIntent: "Discuss frontend/UI requirements",
   },
+  headingKeywords: {
+    keyword: "Frontend Development",
+    keywordVariant: "React Frontend Development",
+    piecesKeyword: "Frontend Applications",
+    roleKeyword: "Frontend Developer",
+  },
   hero: {
     heading: "Frontend Development Services",
     headlineLines: ["Interfaces that feel", "intentional, not", "assembled from templates."],

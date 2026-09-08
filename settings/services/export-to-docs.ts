@@ -9,6 +9,8 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Service, ServicesHubSettings } from "@/lib/services/types";
 import { DEFAULT_SERVICE_SECTION_ORDER } from "@/lib/services/types";
+import { getServiceSectionHeadings } from "@/lib/services/section-headings";
+import { getServiceSectionSupport } from "@/lib/services/section-support";
 import { servicesHub } from "./hub";
 import { ALL_SERVICES } from "./pages";
 
@@ -108,13 +110,45 @@ function exportHero(service: Service): string {
   );
 }
 
+function exportHeadingKeywords(service: Service): string {
+  const { headingKeywords } = service;
+  const headings = getServiceSectionHeadings(service);
+  return lines(
+    `## Section H2 headings (from templates)`,
+    ``,
+    block("Primary keyword", headingKeywords.keyword),
+    block("Keyword variant", headingKeywords.keywordVariant),
+    block("Pieces keyword", headingKeywords.piecesKeyword),
+    block("Role keyword", headingKeywords.roleKeyword),
+    ``,
+    `**Rendered H2s:**`,
+    `- What I Do: ${headings.whatWeDo}`,
+    `- Capabilities: ${headings.capabilities}`,
+    `- Problems: ${headings.problems}`,
+    `- Process: ${headings.process}`,
+    `- Technologies: ${headings.technologies}`,
+    `- Pieces Connect: ${headings.piecesConnect}`,
+    `- Use Cases: ${headings.useCases}`,
+    `- Audiences: ${headings.audiences}`,
+    `- Deliverables: ${headings.deliverables}`,
+    `- Benefits: ${headings.benefits}`,
+    `- Why Hire: ${headings.whyHire}`,
+    `- Case Studies: ${headings.caseStudies}`,
+    `- FAQ: ${headings.faqs}`,
+    `- Related Services: ${headings.relatedServices}`,
+    `- Related Articles: ${headings.relatedPosts}`,
+  );
+}
+
 function exportWhatWeDo(service: Service): string {
   const { whatWeDo, overview, editorialIntro } = service;
+  const headings = getServiceSectionHeadings(service);
   const paragraphs = whatWeDo.paragraphs.map((p, i) => block(`Paragraph ${i + 1}`, p)).join("\n");
   return lines(
     `## What I Do`,
     ``,
-    block("Heading (H2)", whatWeDo.heading),
+    block("Heading (H2)", headings.whatWeDo),
+    block("Body subheading (legacy)", whatWeDo.heading),
     block("Overview", overview),
     editorialIntro ? block("Editorial statement", editorialIntro.statement) : "",
     editorialIntro ? block("Editorial supporting", editorialIntro.supporting) : "",
@@ -124,7 +158,16 @@ function exportWhatWeDo(service: Service): string {
   );
 }
 
+function supportBlock(
+  service: Service,
+  key: keyof ReturnType<typeof getServiceSectionHeadings>,
+): string {
+  const support = getServiceSectionSupport(service, key);
+  return support ? block("H2 supporting paragraph", support) : "";
+}
+
 function exportCapabilities(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   const items = service.capabilities
     .map((cap) =>
       lines(
@@ -138,44 +181,63 @@ function exportCapabilities(service: Service): string {
   return lines(
     `## Service Capabilities`,
     ``,
-    block("Section heading (H2)", "Service Capabilities"),
+    block("Heading (H2)", headings.capabilities),
+    supportBlock(service, "capabilities"),
     items,
   );
 }
 
 function exportProblems(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   const items = service.problems
     .map((p) => lines(`### ${p.title}`, ``, block("Description", p.description)))
     .join("\n");
-  return lines(`## Problems I Solve`, ``, block("Section heading (H2)", "Problems I Solve"), items);
+  return lines(
+    `## Problems I Solve`,
+    ``,
+    block("Heading (H2)", headings.problems),
+    supportBlock(service, "problems"),
+    items,
+  );
 }
 
 function exportProcess(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   const steps = service.process
     .map((step, i) =>
       lines(`### Step ${i + 1}: ${step.title}`, ``, block("Description", step.description)),
     )
     .join("\n");
-  return lines(`## My Process`, ``, block("Section heading (H2)", "My Process"), steps);
+  return lines(
+    `## My Process`,
+    ``,
+    block("Heading (H2)", headings.process),
+    supportBlock(service, "process"),
+    steps,
+  );
 }
 
 function exportTechnologies(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   const groups = service.technologies
     .map((group) => lines(`### ${group.category}`, ``, listBlock("Tools", group.items)))
     .join("\n");
   return lines(
     `## Technologies & Tools`,
     ``,
-    block("Section heading (H2)", "Technologies & Tools"),
+    block("Heading (H2)", headings.technologies),
+    supportBlock(service, "technologies"),
     groups,
   );
 }
 
 function exportPiecesConnect(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   return lines(
     `## How the Pieces Connect`,
     ``,
-    block("Section heading (H2)", "How the Pieces Connect"),
+    block("Heading (H2)", headings.piecesConnect),
+    supportBlock(service, "piecesConnect"),
     block("Overview / system story", service.overview),
     listBlock("Industries", service.industries),
     listBlock("What we build", service.whatWeBuild),
@@ -183,32 +245,49 @@ function exportPiecesConnect(service: Service): string {
 }
 
 function exportUseCases(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   const items = service.useCases
     .map((uc) => lines(`### ${uc.title}`, ``, block("Description", uc.description)))
     .join("\n");
-  return lines(`## Use Cases`, ``, block("Section heading (H2)", "Use Cases"), items);
+  return lines(
+    `## Use Cases`,
+    ``,
+    block("Heading (H2)", headings.useCases),
+    supportBlock(service, "useCases"),
+    items,
+  );
 }
 
 function exportAudiences(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   const items = service.audiences
     .map((a) => lines(`### ${a.title}`, ``, block("Description", a.description)))
     .join("\n");
   return lines(
     `## Who This Service Is For`,
     ``,
-    block("Section heading (H2)", "Who This Service Is For"),
+    block("Heading (H2)", headings.audiences),
+    supportBlock(service, "audiences"),
     items,
   );
 }
 
 function exportDeliverables(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   const items = service.deliverables
     .map((d) => lines(`### ${d.title}`, ``, block("Description", d.description)))
     .join("\n");
-  return lines(`## Deliverables`, ``, block("Section heading (H2)", "Deliverables"), items);
+  return lines(
+    `## Deliverables`,
+    ``,
+    block("Heading (H2)", headings.deliverables),
+    supportBlock(service, "deliverables"),
+    items,
+  );
 }
 
 function exportBenefits(service: Service): string {
+  const headings = getServiceSectionHeadings(service);
   const items = service.benefits
     .map((b) =>
       lines(
@@ -222,13 +301,15 @@ function exportBenefits(service: Service): string {
   return lines(
     `## Benefits & Outcomes`,
     ``,
-    block("Section heading (H2)", "Benefits & Outcomes"),
+    block("Heading (H2)", headings.benefits),
+    supportBlock(service, "benefits"),
     items,
   );
 }
 
 function exportWhyHire(service: Service): string {
   const { whyHire } = service;
+  const headings = getServiceSectionHeadings(service);
   const reasons = whyHire.reasons
     .map((r) =>
       lines(`### ${r.title}`, ``, block("Tag", r.tag), block("Description", r.description)),
@@ -238,8 +319,9 @@ function exportWhyHire(service: Service): string {
   return lines(
     `## Why Hire Me`,
     ``,
-    block("Section heading (H2)", `Why Hire Me as a ${whyHire.roleTitle}?`),
-    block("Intro", whyHire.intro),
+    block("Heading (H2)", headings.whyHire),
+    supportBlock(service, "whyHire"),
+    block("Intro (legacy field)", whyHire.intro),
     reasons,
     highlights ? `**Highlights:**\n${highlights}\n` : "",
   );
@@ -247,10 +329,12 @@ function exportWhyHire(service: Service): string {
 
 function exportCaseStudies(service: Service): string {
   if (!service.caseStudySlugs?.length) return "";
+  const headings = getServiceSectionHeadings(service);
   return lines(
     `## Case Studies / Work Examples`,
     ``,
-    block("Section heading (H2)", "Case Studies / Work Examples"),
+    block("Heading (H2)", headings.caseStudies),
+    supportBlock(service, "caseStudies"),
     listBlock("Project slugs", service.caseStudySlugs),
     `_Card titles and excerpts are pulled from project settings at render time._`,
   );
@@ -258,28 +342,39 @@ function exportCaseStudies(service: Service): string {
 
 function exportFaqs(service: Service): string {
   if (!service.faqs.length) return "";
+  const headings = getServiceSectionHeadings(service);
   const items = service.faqs
     .map((faq) => lines(`### ${faq.question}`, ``, block("Answer", faq.answer)))
     .join("\n");
-  return lines(`## FAQ`, ``, block("Section heading (H2)", "FAQ"), items);
+  return lines(
+    `## FAQ`,
+    ``,
+    block("Heading (H2)", headings.faqs),
+    supportBlock(service, "faqs"),
+    items,
+  );
 }
 
 function exportRelatedServices(service: Service): string {
   if (!service.relatedServiceSlugs.length) return "";
+  const headings = getServiceSectionHeadings(service);
   return lines(
     `## You May Also Need`,
     ``,
-    block("Section heading (H2)", "You May Also Need"),
+    block("Heading (H2)", headings.relatedServices),
+    supportBlock(service, "relatedServices"),
     listBlock("Related service slugs", service.relatedServiceSlugs),
   );
 }
 
 function exportRelatedPosts(service: Service): string {
   if (!service.relatedPosts.length) return "";
+  const headings = getServiceSectionHeadings(service);
   return lines(
     `## Related Articles & Guides`,
     ``,
-    block("Section heading (H2)", "Related Articles & Guides"),
+    block("Heading (H2)", headings.relatedPosts),
+    supportBlock(service, "relatedPosts"),
     listBlock("Blog post slugs", service.relatedPosts),
     `_Card titles and excerpts are pulled from Sanity at render time._`,
   );
@@ -333,6 +428,8 @@ function exportService(service: Service): string {
     exportSeoMeta(service),
     divider().trim(),
     exportSeoBrief(service),
+    divider().trim(),
+    exportHeadingKeywords(service),
     divider().trim(),
     exportHero(service),
     divider().trim(),

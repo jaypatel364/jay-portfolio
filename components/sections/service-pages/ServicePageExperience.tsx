@@ -85,7 +85,7 @@ export function ServicePageExperience({
         ) : null;
       case "relatedPosts":
         return relatedBlogPosts.length ? (
-          <ServiceResourcesRail key={key} posts={relatedBlogPosts} />
+          <ServiceResourcesRail key={key} service={service} posts={relatedBlogPosts} />
         ) : null;
       default:
         return null;

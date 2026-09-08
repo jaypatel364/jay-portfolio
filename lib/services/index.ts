@@ -2,8 +2,22 @@ import { servicesHub } from "@/settings/services/hub";
 import { ALL_SERVICES } from "@/settings/services/pages";
 import { DEFAULT_SERVICE_SECTION_ORDER, type Service, type ServiceSectionKey } from "./types";
 
-export type { Service, ServicesHubSettings, ServiceSectionKey } from "./types";
+export type {
+  Service,
+  ServicesHubSettings,
+  ServiceSectionKey,
+  ServiceHeadingKeywords,
+  ServiceSectionSupport,
+} from "./types";
 export { DEFAULT_SERVICE_SECTION_ORDER } from "./types";
+export {
+  SERVICE_H2_TEMPLATES,
+  getServiceSectionHeading,
+  getServiceSectionHeadings,
+  SECTION_KEY_TO_HEADING,
+} from "./section-headings";
+export type { ServiceSectionHeadings } from "./section-headings";
+export { getServiceSectionSupport } from "./section-support";
 
 export function getServicesHub() {
   return servicesHub;

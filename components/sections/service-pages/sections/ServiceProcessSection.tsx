@@ -1,6 +1,7 @@
 "use client";
 
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { ProcessInteractive } from "@/components/sections/process/ProcessInteractive";
 import { ServiceSectionShell } from "../primitives/ServiceSectionShell";
 
@@ -10,8 +11,8 @@ export function ServiceProcessSection({ service }: { service: Service }) {
     <ServiceSectionShell
       id="process"
       label="Process"
-      title="My process"
-      description="How I approach this service from discovery through delivery."
+      title={getServiceSectionHeading(service, "process")}
+      description={getServiceSectionSupport(service, "process")}
       theme="muted"
       width="wide"
     >

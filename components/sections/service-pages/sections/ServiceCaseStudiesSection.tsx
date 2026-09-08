@@ -6,6 +6,7 @@ import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import type { Project } from "@/settings/projects";
 import { projectHref } from "@/settings/projects";
 import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { serviceCardClass } from "@/components/sections/services/service-card-styles";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,8 @@ export function ServiceCaseStudiesSection({
   if (!projects.length) return null;
 
   const showcase = projects.slice(0, 2);
+  const caseStudiesHeading = getServiceSectionHeading(service, "caseStudies");
+  const caseStudiesSupport = getServiceSectionSupport(service, "caseStudies");
 
   return (
     <section
@@ -38,10 +41,10 @@ export function ServiceCaseStudiesSection({
             id="case-studies-heading"
             className="font-heading mt-2 text-3xl font-bold tracking-tight sm:text-4xl"
           >
-            Case studies & examples
+            {caseStudiesHeading}
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Real projects connected to {service.title.toLowerCase()}.
+            {caseStudiesSupport}
           </p>
         </header>
 

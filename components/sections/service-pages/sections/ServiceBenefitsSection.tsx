@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { Service, ServiceBenefit } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { SERVICE_CONTACT_CTA } from "@/settings/services/shared";
 import { cn } from "@/lib/utils";
 
@@ -98,6 +99,8 @@ function BenefitOutcomeCard({
 export function ServiceBenefitsSection({ service }: { service: Service }) {
   const reduced = useReducedMotion() ?? false;
   const contactHref = SERVICE_CONTACT_CTA.href;
+  const benefitsHeading = getServiceSectionHeading(service, "benefits");
+  const benefitsSupport = getServiceSectionSupport(service, "benefits");
 
   return (
     <section
@@ -120,11 +123,10 @@ export function ServiceBenefitsSection({ service }: { service: Service }) {
             id="benefits-heading"
             className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl"
           >
-            Benefits & outcomes
+            {benefitsHeading}
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            What you gain from the engagement, and what improves in your product after delivery —
-            not vanity metrics.
+            {benefitsSupport}
           </p>
           <p className="mt-3 text-base leading-relaxed text-muted-foreground sm:text-lg">
             If you want clarity on scope and trade-offs before committing,{" "}

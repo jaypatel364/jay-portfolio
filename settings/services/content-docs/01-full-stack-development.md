@@ -12,13 +12,13 @@
 Full Stack Development
 
 **Short description:**
-Full stack development services for custom web applications, React, Next.js, and Node.js built end to end by one full stack developer.
+Frontend, backend, and database come together here, built for scalable web application development that actually holds up.
 
 **Card capabilities:**
 
-- Full Stack Web Development
 - React & Node.js
-- Production Web Applications
+- Database Development
+- API Development
 
 **Category labels:**
 
@@ -124,6 +124,40 @@ Book a consultation to scope a full product build
 
 ---
 
+## Section H2 headings (from templates)
+
+**Primary keyword:**
+Full Stack Development
+
+**Keyword variant:**
+Full Stack Web Development
+
+**Pieces keyword:**
+Full Stack Applications
+
+**Role keyword:**
+Full Stack Developer
+
+**Rendered H2s:**
+
+- What I Do: What My Full Stack Development Services Include
+- Capabilities: Full Stack Web Development Capabilities
+- Problems: Common Full Stack Development Challenges I Solve
+- Process: My Full Stack Development Process
+- Technologies: Full Stack Development Technologies I Use
+- Pieces Connect: How Full Stack Applications Come Together
+- Use Cases: Where Full Stack Development Applies
+- Audiences: Who My Full Stack Development Services Are For
+- Deliverables: What's Included in My Full Stack Development Services
+- Benefits: Benefits of Full Stack Web Development
+- Why Hire: Why Hire Me as a Full Stack Developer?
+- Case Studies: Full Stack Development Projects & Examples
+- FAQ: Full Stack Development Services FAQs
+- Related Services: Related Full Stack Development Services
+- Related Articles: Full Stack Development Guides & Resources
+
+---
+
 ## Hero Banner
 
 **H1:**
@@ -162,6 +196,9 @@ Get a technical consultation → /contact/
 ## What I Do
 
 **Heading (H2):**
+What My Full Stack Development Services Include
+
+**Body subheading (legacy):**
 Full stack web development services with React and Node.js
 
 **Overview:**
@@ -200,8 +237,8 @@ You might need a full stack developer for hire when you lack in-house capacity, 
 
 ## Service Capabilities
 
-**Section heading (H2):**
-Service Capabilities
+**Heading (H2):**
+Full Stack Web Development Capabilities
 
 ### Frontend development
 
@@ -264,8 +301,8 @@ Error tracking, health checks, and deployment runbooks so the first production i
 
 ## Problems I Solve
 
-**Section heading (H2):**
-Problems I Solve
+**Heading (H2):**
+Common Full Stack Development Challenges I Solve
 
 ### Fragmented vendors or handoffs
 
@@ -301,8 +338,8 @@ Teams stuck choosing stacks or architecture patterns. I help pick approaches tha
 
 ## My Process
 
-**Section heading (H2):**
-My Process
+**Heading (H2):**
+My Full Stack Development Process
 
 ### Step 1: Discovery & requirements
 
@@ -348,8 +385,8 @@ Production deploy, documentation, and walkthrough so your team understands how t
 
 ## Technologies & Tools
 
-**Section heading (H2):**
-Technologies & Tools
+**Heading (H2):**
+Full Stack Development Technologies I Use
 
 ### Frontend
 
@@ -393,8 +430,8 @@ Technologies & Tools
 
 ## How the Pieces Connect
 
-**Section heading (H2):**
-How the Pieces Connect
+**Heading (H2):**
+How Full Stack Applications Come Together
 
 **Overview / system story:**
 I provide full stack development for startups and product teams that need one builder across every layer. My full stack web development services cover React, Node.js, and databases, so you get custom web applications and production web applications without fragile handoffs between frontend and backend development.
@@ -421,8 +458,8 @@ I provide full stack development for startups and product teams that need one bu
 
 ## Use Cases
 
-**Section heading (H2):**
-Use Cases
+**Heading (H2):**
+Where Full Stack Development Applies
 
 ### SaaS products
 
@@ -458,8 +495,8 @@ Admin dashboards and workflow systems that replace spreadsheets with role-aware,
 
 ## Who This Service Is For
 
-**Section heading (H2):**
-Who This Service Is For
+**Heading (H2):**
+Who My Full Stack Development Services Are For
 
 ### Startups
 
@@ -485,8 +522,8 @@ Incremental migration from monoliths or outdated stacks toward API-first, compon
 
 ## Deliverables
 
-**Section heading (H2):**
-Deliverables
+**Heading (H2):**
+What's Included in My Full Stack Development Services
 
 ### Technical architecture
 
@@ -532,8 +569,8 @@ Error tracking and basic health checks.
 
 ## Benefits & Outcomes
 
-**Section heading (H2):**
-Benefits & Outcomes
+**Heading (H2):**
+Benefits of Full Stack Web Development
 
 ### Faster time to market
 
@@ -587,7 +624,7 @@ Shared ownership across the stack means fewer handoff delays when shipping featu
 
 ## Why Hire Me
 
-**Section heading (H2):**
+**Heading (H2):**
 Why Hire Me as a Full Stack Developer?
 
 **Intro:**
@@ -635,8 +672,8 @@ Readable TypeScript, consistent patterns, and handoff documentation so your team
 
 ## Case Studies / Work Examples
 
-**Section heading (H2):**
-Case Studies / Work Examples
+**Heading (H2):**
+Full Stack Development Projects & Examples
 
 **Project slugs:**
 
@@ -649,8 +686,8 @@ Case Studies / Work Examples
 
 ## FAQ
 
-**Section heading (H2):**
-FAQ
+**Heading (H2):**
+Full Stack Development Services FAQs
 
 ### What is full stack development?
 
@@ -691,8 +728,8 @@ Yes. Next.js full stack development is common for products that need SEO, server
 
 ## You May Also Need
 
-**Section heading (H2):**
-You May Also Need
+**Heading (H2):**
+Related Full Stack Development Services
 
 **Related service slugs:**
 
