@@ -5,12 +5,8 @@ export const fullStackProductDevelopment: Service = {
   slug: "full-stack-development",
   title: "Full Stack Development",
   shortDescription:
-    "Full stack development services for custom web applications, React, Next.js, and Node.js built end to end by one full stack developer.",
-  cardCapabilities: [
-    "Full Stack Web Development",
-    "React & Node.js",
-    "Production Web Applications",
-  ],
+    "Frontend, backend, and database come together here, built for scalable web application development that actually holds up.",
+  cardCapabilities: ["React & Node.js", "Database Development", "API Development"],
   categoryLabels: ["React", "Next.js", "Node.js", "TypeScript"],
   icon: "layout",
   order: 1,

@@ -14,7 +14,7 @@ export const performanceOptimization: Service = {
   ],
   categoryLabels: ["Performance", "Next.js", "React", "Core Web Vitals"],
   icon: "gauge",
-  order: 5,
+  order: 7,
   published: false,
   seoBrief: {
     primaryKeyword: "web performance optimization services",

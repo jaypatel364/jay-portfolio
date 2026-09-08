@@ -5,15 +5,11 @@ export const frontendDevelopment: Service = {
   slug: "frontend-development",
   title: "Frontend Development",
   shortDescription:
-    "Frontend development services with React development, TypeScript development, and responsive web development for modern product teams.",
-  cardCapabilities: [
-    "React Development Services",
-    "Responsive Frontend Development",
-    "Custom React Development",
-  ],
+    "Modern frontend development using React development, Next.js development and TypeScript development for smooth user experiences.",
+  cardCapabilities: ["React Development", "Next.js Development", "Responsive Web Development"],
   categoryLabels: ["React", "Next.js", "TypeScript", "Frontend"],
   icon: "monitor",
-  order: 6,
+  order: 3,
   published: true,
   seoBrief: {
     primaryKeyword: "frontend development",

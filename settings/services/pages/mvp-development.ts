@@ -5,11 +5,11 @@ export const mvpDevelopment: Service = {
   slug: "mvp-development",
   title: "MVP Development",
   shortDescription:
-    "MVP development services for startups, build MVP fast with focused scope, deployed software, and architecture ready for your next release.",
+    "Fast MVP development for startups needing custom web application development without unnecessary complexity, or delays.",
   cardCapabilities: ["Startup MVP Development", "SaaS MVP Development", "Rapid MVP Development"],
-  categoryLabels: ["MVP", "Next.js", "Node.js", "Startup"],
+  categoryLabels: ["Rapid Prototyping", "Startup MVP Builds", "Scalable Architecture"],
   icon: "rocket",
-  order: 3,
+  order: 5,
   published: true,
   seoBrief: {
     primaryKeyword: "MVP development",

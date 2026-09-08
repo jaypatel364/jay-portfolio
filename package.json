@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
+    "export:service-content": "npx tsx settings/services/export-to-docs.ts",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "lint-staged:eslint": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint --fix",

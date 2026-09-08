@@ -5,11 +5,11 @@ export const apiBackendEngineering: Service = {
   slug: "backend-development",
   title: "Backend Development",
   shortDescription:
-    "Backend development services with Node.js development, REST API development, and scalable backend development for web and mobile products.",
-  cardCapabilities: ["Node.js Development", "REST API Development", "Scalable Backend Development"],
+    "Behind every secure system sits solid Node.js development, REST API development, and GraphQL development doing the heavy lifting.",
+  cardCapabilities: ["Node.js Development", "REST API Development", "GraphQL Development"],
   categoryLabels: ["Node.js", "API", "PostgreSQL", "Redis"],
   icon: "server",
-  order: 4,
+  order: 2,
   published: true,
   seoBrief: {
     primaryKeyword: "backend development",

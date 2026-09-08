@@ -5,15 +5,11 @@ export const saasDevelopment: Service = {
   slug: "saas-development",
   title: "SaaS Development",
   shortDescription:
-    "SaaS development services for subscription products, custom SaaS development with billing, accounts, and scalable SaaS platform development.",
-  cardCapabilities: [
-    "Custom SaaS Development",
-    "SaaS MVP Development",
-    "Stripe Billing Integration",
-  ],
+    "Custom SaaS development built on modern web development practices and ideal for growing software development services needs.",
+  cardCapabilities: ["Multi-Tenant SaaS", "Subscription Billing", "Cloud Deployment"],
   categoryLabels: ["SaaS", "Next.js", "Node.js", "PostgreSQL"],
-  icon: "monitor",
-  order: 2,
+  icon: "credit-card",
+  order: 6,
   published: true,
   seoBrief: {
     primaryKeyword: "SaaS development",

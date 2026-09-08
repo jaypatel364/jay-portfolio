@@ -5,11 +5,11 @@ export const mernStackDevelopment: Service = {
   slug: "mern-stack-development",
   title: "MERN Stack Development",
   shortDescription:
-    "Custom MERN stack development for MongoDB, Express.js, React, and Node.js web applications built to scale.",
-  cardCapabilities: ["MongoDB & Express APIs", "React Frontends", "Node.js Backends"],
+    "Full MERN stack development delivered by an experienced full stack web developer for real-time application development.",
+  cardCapabilities: ["MongoDB & Express", "React & Node.js", "End-to-End MERN Apps"],
   categoryLabels: ["MERN", "MongoDB", "React", "Node.js"],
   icon: "layers",
-  order: 7,
+  order: 4,
   published: true,
   seoBrief: {
     primaryKeyword: "MERN stack development",
