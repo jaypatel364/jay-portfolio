@@ -60,7 +60,7 @@ export function ServiceSectionShell({
             </p>
           ) : null}
         </header>
-        <div className="mt-10 min-w-0">{children}</div>
+        <div className="mt-6 min-w-0 md:mt-7">{children}</div>
       </div>
     </section>
   );

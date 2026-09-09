@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   BookOpen,
@@ -14,7 +15,7 @@ import {
   Shield,
   type LucideIcon,
 } from "lucide-react";
-import type { Service } from "@/lib/services/types";
+import type { Service, ServiceVisual } from "@/lib/services/types";
 import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
 import { cn } from "@/lib/utils";
 
@@ -100,12 +101,31 @@ function DeliverablesVisual({ count }: { count: number }) {
   );
 }
 
+function DeliverablesImage({ visual }: { visual: ServiceVisual }) {
+  if (!visual.image) return null;
+
+  const alt = visual.alt ?? "Deliverables overview";
+
+  return (
+    <Image
+      src={visual.image}
+      alt={alt}
+      title={visual.title ?? alt}
+      width={1024}
+      height={1024}
+      sizes="(max-width: 1024px) 100vw, 480px"
+      className="h-auto w-full"
+    />
+  );
+}
+
 /** Deliverables — reuses About / Why Choose icon-row language. */
 export function ServiceDeliverablesSection({ service }: { service: Service }) {
   const reduced = useReducedMotion() ?? false;
   const items = service.deliverables;
   const deliverablesHeading = getServiceSectionHeading(service, "deliverables");
   const deliverablesSupport = getServiceSectionSupport(service, "deliverables");
+  const visual = service.deliverablesVisual;
 
   return (
     <section
@@ -189,7 +209,11 @@ export function ServiceDeliverablesSection({ service }: { service: Service }) {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.5, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
             >
-              <DeliverablesVisual count={items.length} />
+              {visual?.image ? (
+                <DeliverablesImage visual={visual} />
+              ) : (
+                <DeliverablesVisual count={items.length} />
+              )}
             </motion.div>
           </div>
         </div>

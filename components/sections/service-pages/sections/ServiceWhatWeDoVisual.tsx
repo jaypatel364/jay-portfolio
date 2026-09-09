@@ -1,129 +1,95 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { Check, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ServiceWhatWeDoVisualProps {
   serviceTitle: string;
   stackItems: string[];
   className?: string;
-  /** Optional service illustration — when set, replaces the CSS placeholder. */
-  imageSrc?: string;
-  imageAlt?: string;
 }
 
-/** Single rounded editorial visual for What I Do — theme-aware, no stock photo. */
+/** Vertical scope panel for What I Do — all covered layers shown equally, no sequencing. */
 export function ServiceWhatWeDoVisual({
   serviceTitle,
   stackItems,
   className,
-  imageSrc,
-  imageAlt,
 }: ServiceWhatWeDoVisualProps) {
   const reduced = useReducedMotion() ?? false;
-  const chips = stackItems.slice(0, 4);
-  const alt = imageAlt ?? `Visual for ${serviceTitle}`;
+  const layers = stackItems.slice(0, 5);
 
   return (
     <motion.div
       initial={reduced ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className={cn(
-        "relative overflow-hidden rounded-[1.5rem] border border-border/70 bg-card shadow-premium sm:rounded-[1.75rem]",
-        className,
-      )}
-      role={imageSrc ? undefined : "img"}
-      aria-label={imageSrc ? undefined : alt}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className={cn("relative w-full", className)}
     >
-      <div className="relative aspect-[16/11] w-full sm:aspect-[5/3]">
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={alt}
-            fill
-            sizes="(max-width: 1024px) 100vw, 40vw"
-            className="bg-background object-contain object-center"
-          />
-        ) : (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-br from-muted via-background to-muted/80 dark:from-muted/40 dark:via-background dark:to-card" />
-            <div className="absolute inset-0 bg-grid opacity-40" aria-hidden />
-
-            {/* Soft tech overlays */}
-            <svg
-              className="pointer-events-none absolute inset-0 h-full w-full text-primary/25"
-              viewBox="0 0 640 400"
-              fill="none"
-              aria-hidden
-            >
-              <path d="M40 320 H220 L260 260 H400" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M480 80 L560 80 L560 160" stroke="currentColor" strokeWidth="1.5" />
-              <circle cx="220" cy="320" r="4" fill="currentColor" />
-              <circle cx="400" cy="260" r="4" fill="currentColor" />
-              <circle cx="560" cy="160" r="4" fill="currentColor" />
-              <path
-                d="M80 60 L140 60 L140 120"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeDasharray="4 4"
-              />
-            </svg>
-
-            <div
-              className="pointer-events-none absolute -left-10 top-8 h-40 w-40 rounded-full bg-primary/15 blur-3xl dark:bg-primary/20"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute -right-8 bottom-4 h-36 w-36 rounded-full bg-primary/10 blur-3xl"
-              aria-hidden
-            />
-
-            {/* Dual workstation panels */}
-            <div className="absolute inset-x-5 top-[14%] bottom-[22%] flex gap-3 sm:inset-x-7 sm:gap-4">
-              <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-border/70 bg-background/90 shadow-inner dark:bg-background/55">
-                <div className="flex items-center gap-1.5 border-b border-border/50 px-2.5 py-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-red-400/70" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400/70" />
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
-                </div>
-                <div className="grid flex-1 grid-rows-3 gap-1.5 p-2.5">
-                  <div className="rounded-md bg-primary/15" />
-                  <div className="rounded-md bg-muted-foreground/10" />
-                  <div className="rounded-md bg-muted-foreground/10" />
-                </div>
-              </div>
-              <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-border/70 bg-background/80 shadow-inner dark:bg-background/45">
-                <div className="flex items-center gap-1.5 border-b border-border/50 px-2.5 py-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-primary/60" />
-                  <span className="h-1.5 flex-1 rounded-full bg-muted-foreground/15" />
-                </div>
-                <div className="flex flex-1 flex-col gap-1.5 p-2.5">
-                  <div className="h-[45%] rounded-md bg-primary/10" />
-                  <div className="grid flex-1 grid-cols-2 gap-1.5">
-                    <div className="rounded-md bg-muted-foreground/10" />
-                    <div className="rounded-md bg-muted-foreground/10" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {chips.length > 0 ? (
-              <div className="absolute inset-x-5 bottom-4 flex flex-wrap gap-1.5 sm:inset-x-7">
-                {chips.map((chip) => (
-                  <span
-                    key={chip}
-                    className="rounded-full border border-border/70 bg-card/90 px-2.5 py-1 text-[10px] font-semibold text-foreground backdrop-blur-sm dark:bg-card/70"
-                  >
-                    {chip}
-                  </span>
-                ))}
-              </div>
-            ) : null}
-          </>
+      <div
+        className={cn(
+          "relative overflow-hidden rounded-[1.5rem] border border-border/70 bg-card shadow-premium",
+          "sm:rounded-[1.75rem]",
         )}
+      >
+        <div className="pointer-events-none absolute inset-0 bg-grid opacity-30" aria-hidden />
+        <div
+          className="pointer-events-none absolute -left-16 top-8 h-40 w-40 rounded-full bg-primary/15 blur-3xl"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -right-12 bottom-10 h-36 w-36 rounded-full bg-primary/10 blur-3xl"
+          aria-hidden
+        />
+
+        <div className="relative space-y-5 p-5 sm:p-6">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-primary">
+                In scope
+              </p>
+              <p className="font-heading mt-1.5 text-base font-bold tracking-tight text-foreground sm:text-lg">
+                {serviceTitle}
+              </p>
+            </div>
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
+              <Layers className="h-4 w-4" aria-hidden />
+            </span>
+          </div>
+
+          {layers.length > 0 ? (
+            <ul className="relative space-y-1" aria-label={`${serviceTitle} covered areas`}>
+              <div
+                className="pointer-events-none absolute bottom-3.5 left-0 top-3.5 w-7"
+                aria-hidden
+              >
+                <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-primary/35" />
+              </div>
+
+              {layers.map((layer, i) => (
+                <li
+                  key={layer}
+                  className="grid grid-cols-[1.75rem_minmax(0,1fr)] items-center gap-3 py-2.5 pr-1"
+                >
+                  <span className="relative z-[1] flex h-7 w-7 items-center justify-center rounded-full border border-primary bg-primary text-primary-foreground shadow-glow">
+                    <Check className="h-3.5 w-3.5" strokeWidth={2.75} aria-hidden />
+                    <span className="sr-only">{String(i + 1).padStart(2, "0")} covered</span>
+                  </span>
+                  <span className="min-w-0 text-sm font-semibold leading-snug text-foreground">
+                    {layer}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
+          {layers.length > 0 ? (
+            <p className="border-t border-border/60 pt-4 font-mono text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+              {layers.length} areas covered
+            </p>
+          ) : null}
+        </div>
       </div>
     </motion.div>
   );

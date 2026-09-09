@@ -9,9 +9,13 @@ import { innerPages } from "@/settings/pages";
 import { ServiceWhatWeDoVisual } from "./ServiceWhatWeDoVisual";
 
 function stackItems(service: Service): string[] {
+  const fromCaps = service.capabilities.slice(0, 5).map((c) => c.title);
+  if (fromCaps.length >= 3) return fromCaps;
   const fromHero = service.hero.technologies ?? [];
   const fromLabels = service.categoryLabels;
-  return [...fromLabels, ...fromHero.filter((t) => !fromLabels.includes(t))].slice(0, 4);
+  return [...fromCaps, ...fromLabels, ...fromHero]
+    .filter((item, i, arr) => arr.indexOf(item) === i)
+    .slice(0, 5);
 }
 
 function highlightPoints(service: Service): string[] {
@@ -55,8 +59,6 @@ export function ServiceWhatWeDoSection({ service }: { service: Service }) {
           <ServiceWhatWeDoVisual
             serviceTitle={service.title}
             stackItems={stackItems(service)}
-            imageSrc={service.whatWeDo.visual?.image}
-            imageAlt={service.whatWeDo.visual?.alt}
             className="mt-6"
           />
         </motion.div>

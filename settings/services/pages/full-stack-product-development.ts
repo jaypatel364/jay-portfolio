@@ -123,17 +123,20 @@ export const fullStackProductDevelopment: Service = {
     paragraphs: [
       "The frontend never touches the database directly. Every request from the browser goes through the API layer first, which checks who's asking, decides what they're allowed to see and only then reads from or writes to the database on their behalf. This separation is what keeps a full stack application stable: the interface can be redesigned without touching how data is stored and the database can be restructured or optimized without breaking anything a user sees on screen.",
       "Underneath that sits the infrastructure that keeps the whole thing running. AWS provides the servers, Docker keeps each part of the system behaving the same way in every environment, and CI/CD pipelines push updates out automatically instead of relying on someone remembering the right commands. None of these three pieces make decisions about your product. They exist so the application stays available, recovers on its own when something fails, and can absorb more users without needing to be rebuilt.",
+      "There's also a feedback loop running underneath the request and response you don't see on screen. Logging and monitoring run across the frontend, backend, and database at the same time, so if the API starts responding slowly or the database gets an unusual spike in traffic, that shows up in a dashboard before a user ever notices something's wrong.",
     ],
-    visual: {
-      type: "illustration",
-      image: "/images/services/full-stack/what-my-full-stack-development-services-include.png",
-      alt: "What my full stack development services include — web, frontend, backend, clean code, and beyond coding",
-    },
   },
   piecesConnectVisual: {
     type: "diagram",
     image: "/images/services/full-stack/full_stack_architecture_diagram.png",
+    title: "Full Stack Architecture Diagram | Frontend, API, Database & Cloud",
     alt: "Full stack architecture diagram showing a user request flowing through the frontend, backend/API, and database layers on AWS, Docker, and CI/CD",
+  },
+  deliverablesVisual: {
+    type: "illustration",
+    image: "/images/services/full-stack/what-you-get-with-every-full-stack-project.png",
+    title: "What You Get With Every Full Stack Project | Deliverables",
+    alt: "What you get with every full-stack project — eight deliverables from the complete application through post-launch support",
   },
   capabilities: [
     {

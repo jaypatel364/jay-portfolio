@@ -92,6 +92,9 @@ export type ServiceVisual = {
   type?: "diagram" | "screenshot" | "illustration" | "photo";
   image?: string;
   mobileImage?: string;
+  /** Image title attribute — SEO / tooltip when `image` is set. */
+  title?: string;
+  /** Image alt text — accessibility + SEO when `image` is set. */
   alt?: string;
   caption?: string;
   position?: "left" | "right" | "full";
@@ -225,8 +228,6 @@ export type Service = {
   whatWeDo: {
     heading: string;
     paragraphs: string[];
-    /** Optional illustration for the What I Do section visual. */
-    visual?: ServiceVisual;
   };
   capabilities: ServiceCapability[];
   problems: ServiceProblem[];
@@ -237,6 +238,8 @@ export type Service = {
   useCases: ServiceUseCase[];
   audiences: ServiceAudience[];
   deliverables: ServiceDeliverable[];
+  /** Optional Deliverables section diagram or illustration. */
+  deliverablesVisual?: ServiceVisual;
   benefits: ServiceBenefit[];
   whyHire: ServiceWhyHire;
   /** Public project slugs from settings/projects.ts */

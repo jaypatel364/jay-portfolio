@@ -14,6 +14,8 @@ interface ServiceDetailHeroVisualProps {
   instant?: boolean;
   /** Optional diagram/illustration — when set, replaces the generated flow SVG. */
   visual?: ServiceVisual;
+  /** Extra classes for the rendered image (sizing / fit only). */
+  imageClassName?: string;
 }
 
 type Node = { id: string; label: string; x: number; y: number; accent?: boolean };
@@ -257,7 +259,19 @@ const DIAGRAMS: Record<string, { label: string; nodes: Node[]; edges: [string, s
   },
 };
 
-function ImageDiagram({ src, alt, instant }: { src: string; alt: string; instant?: boolean }) {
+function ImageDiagram({
+  src,
+  alt,
+  title,
+  instant,
+  className,
+}: {
+  src: string;
+  alt: string;
+  title?: string;
+  instant?: boolean;
+  className?: string;
+}) {
   const reduced = useReducedMotion() ?? false;
   const animate = !instant && !reduced;
 
@@ -271,10 +285,11 @@ function ImageDiagram({ src, alt, instant }: { src: string; alt: string; instant
       <Image
         src={src}
         alt={alt}
+        title={title ?? alt}
         width={2720}
         height={1840}
         sizes="(max-width: 1024px) 100vw, 440px"
-        className="h-auto w-full"
+        className={cn("h-auto w-full", className)}
         priority={instant}
       />
     </motion.div>
@@ -287,14 +302,22 @@ export function ServiceDetailHeroVisual({
   large,
   instant,
   visual,
+  imageClassName,
 }: ServiceDetailHeroVisualProps) {
   const imageSrc = visual?.image;
   const imageAlt = visual?.alt ?? `${title} architecture visualization`;
+  const imageTitle = visual?.title ?? imageAlt;
 
   return (
     <div className="relative h-full">
       {imageSrc ? (
-        <ImageDiagram src={imageSrc} alt={imageAlt} instant={instant} />
+        <ImageDiagram
+          src={imageSrc}
+          alt={imageAlt}
+          title={imageTitle}
+          instant={instant}
+          className={imageClassName}
+        />
       ) : (
         <FlowDiagram
           {...(DIAGRAMS[slug] ?? DIAGRAMS["full-stack-development"])}

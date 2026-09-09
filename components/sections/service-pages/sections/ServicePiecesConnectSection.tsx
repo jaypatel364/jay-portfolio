@@ -19,7 +19,7 @@ export function ServicePiecesConnectSection({ service }: { service: Service }) {
       theme="contrast"
       width="wide"
     >
-      <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
         <motion.div
           initial={reduced ? false : { opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -27,7 +27,7 @@ export function ServicePiecesConnectSection({ service }: { service: Service }) {
           transition={{ duration: 0.45 }}
           className="space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base"
         >
-          {service.whatWeDo.paragraphs.slice(0, 2).map((p) => (
+          {service.whatWeDo.paragraphs.slice(0, 3).map((p) => (
             <p key={p.slice(0, 48)}>{p}</p>
           ))}
           {service.industries?.length ? (
@@ -55,6 +55,7 @@ export function ServicePiecesConnectSection({ service }: { service: Service }) {
             title={`${service.title} system architecture`}
             visual={service.piecesConnectVisual}
             large
+            imageClassName="h-auto w-full object-contain"
           />
         </div>
       </div>
