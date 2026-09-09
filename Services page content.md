@@ -57,20 +57,20 @@ I work across the modern JavaScript ecosystem, including MERN stack development,
 
 Full stack web development capabilities cover every layer of a modern application, from the interface your users click through to the server logic and database working behind the scenes, so nothing is left for another team to figure out later.
 
-1. **Frontend Development**: I build interfaces using React development, React.js development, and Next.js development, with TypeScript development for type safety and JavaScript development for the parts that need flexibility. Every screen is built with responsive web development in mind. See how I approach this on the [React development skills page](http:///skills/react-development/).  
+1. **Frontend Development**: I build interfaces using React development, React.js development, and Next.js development, with TypeScript development for type safety and JavaScript development for the parts that need flexibility. Every screen is built with responsive web development in mind. See how I approach this on the [React development skills page](http:///skills/react-development/).
 
 2. **Backend Development**: Server-side logic is built with Node.js development, and Express.js development, structured for backend development services that scale as traffic grows. Read more about my Node.js development work.
 
 3. **API Development & Integration**: I build REST API development and GraphQL development endpoints, plus API integration services that connect your application to payment providers, CRMs, and other third-party tools. Details are on the API development services page
 4. **Database Design & Development**: Data is modeled properly from the start using PostgreSQL development, MongoDB development, or MySQL development, depending on the shape of your data. See the database development services page
 
-5. **Cloud & DevOps Setup**: Applications ship using AWS development, Docker development and CI/CD development, so deployment isn't an afterthought. This is talked about more on the page for cloud and DevOps services.  
+5. **Cloud & DevOps Setup**: Applications ship using AWS development, Docker development and CI/CD development, so deployment isn't an afterthought. This is talked about more on the page for cloud and DevOps services.
 
-6. **SaaS & Product Development**: For SaaS application development, and MVP development services, I focus on shipping the core value first, then layering in complexity. Learn more on the SaaS product development page.  
+6. **SaaS & Product Development**: For SaaS application development, and MVP development services, I focus on shipping the core value first, then layering in complexity. Learn more on the SaaS product development page.
 
-7. **eCommerce & Marketplace Development**: Storefronts and multi-vendor platforms are built for eCommerce application development, and marketplace development, with checkout and inventory flows that hold up under real traffic.  
+7. **eCommerce & Marketplace Development**: Storefronts and multi-vendor platforms are built for eCommerce application development, and marketplace development, with checkout and inventory flows that hold up under real traffic.
 
-8. **Dashboard & Customer Portal Development**: Internal tools and client-facing portals are common requests, covering both dashboard development, and customer portal development, built around the data your team actually uses daily.  
+8. **Dashboard & Customer Portal Development**: Internal tools and client-facing portals are common requests, covering both dashboard development, and customer portal development, built around the data your team actually uses daily.
 
 9. **Enterprise Application Development**: Larger organizations get enterprise application development and enterprise full stack development built with permissions, audit trails, and integration points already in mind.
 

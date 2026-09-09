@@ -232,6 +232,8 @@ export type Service = {
   problems: ServiceProblem[];
   process: ServiceProcessStep[];
   technologies: ServiceTechGroup[];
+  /** Optional System / pieces-connect section diagram or illustration. */
+  piecesConnectVisual?: ServiceVisual;
   useCases: ServiceUseCase[];
   audiences: ServiceAudience[];
   deliverables: ServiceDeliverable[];

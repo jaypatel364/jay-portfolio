@@ -49,10 +49,11 @@ export function ServicePiecesConnectSection({ service }: { service: Service }) {
           ) : null}
         </motion.div>
 
-        <div className="relative min-h-[320px] lg:min-h-[380px]">
+        <div className="relative w-full">
           <ServiceDetailHeroVisual
             slug={service.slug}
             title={`${service.title} system architecture`}
+            visual={service.piecesConnectVisual}
             large
           />
         </div>

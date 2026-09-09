@@ -85,7 +85,7 @@ export const fullStackProductDevelopment: Service = {
     technologies:
       "I build using a modern, well-supported stack rather than tools only I understand. Below are the frontend, backend, database and cloud technologies I use most often, along with common combinations like MERN stack development and React Node.js development.",
     piecesConnect:
-      "A full stack application only works well when every layer is designed to work together. Here's how the frontend, backend, database and cloud pieces connect into one system that's easier to maintain and easier to scale.",
+      "A full stack application isn't three separate systems that happen to talk to each other. It's one system where every layer depends on how the others are built. Here's how the pieces actually interact once the application is live, not the steps used to build it.",
     useCases:
       "Full stack development applies anywhere a business needs a complete, working application rather than a single feature. Here are the most common use cases I build for, from SaaS products to internal dashboards and customer-facing platforms.",
     audiences:
@@ -108,8 +108,7 @@ export const fullStackProductDevelopment: Service = {
   editorialIntro: {
     statement:
       "Full stack software development means one person handles the entire application, not just one layer of it.",
-    supporting:
-      "Whether you call it web full stack or dev full stack, the idea is the same: a single developer designs the interface, writes the server logic, models the database, and ships it to the cloud, so nothing gets lost in translation between teams.",
+    supporting: "",
   },
   whatWeBuild: [
     "End-to-end full stack development",
@@ -122,15 +121,19 @@ export const fullStackProductDevelopment: Service = {
   whatWeDo: {
     heading: "What my full stack development services include",
     paragraphs: [
-      "Most software projects fail at the handoff. The designer builds something the frontend developer can't ship. The frontend developer builds a UI the backend can't support. The backend team builds an API the database wasn't designed for. My full stack web development services remove that friction by keeping one person accountable for how every piece fits together, from the first wireframe to the deployed application.",
-      "That means when you hire me for custom full stack development, you're not managing three vendors and three timelines. You get one developer who understands your product end to end, can explain trade-offs in plain language, and can move fast because there's no context to re-explain at every stage. This is what end-to-end full stack development looks like in practice: fewer meetings, fewer miscommunications, and a working product sooner. It's also why founders search for a full stack software engineer instead of splitting the work across separate frontend and backend hires from day one.",
-      "I work across the modern JavaScript ecosystem, including MERN stack development, so your application uses well-documented, widely-supported technology rather than a stack that only I understand. Projects range from small internal tools to full stack development services for companies preparing to scale.",
+      "The frontend never touches the database directly. Every request from the browser goes through the API layer first, which checks who's asking, decides what they're allowed to see and only then reads from or writes to the database on their behalf. This separation is what keeps a full stack application stable: the interface can be redesigned without touching how data is stored and the database can be restructured or optimized without breaking anything a user sees on screen.",
+      "Underneath that sits the infrastructure that keeps the whole thing running. AWS provides the servers, Docker keeps each part of the system behaving the same way in every environment, and CI/CD pipelines push updates out automatically instead of relying on someone remembering the right commands. None of these three pieces make decisions about your product. They exist so the application stays available, recovers on its own when something fails, and can absorb more users without needing to be rebuilt.",
     ],
     visual: {
       type: "illustration",
       image: "/images/services/full-stack/what-my-full-stack-development-services-include.png",
       alt: "What my full stack development services include — web, frontend, backend, clean code, and beyond coding",
     },
+  },
+  piecesConnectVisual: {
+    type: "diagram",
+    image: "/images/services/full-stack/full_stack_architecture_diagram.png",
+    alt: "Full stack architecture diagram showing a user request flowing through the frontend, backend/API, and database layers on AWS, Docker, and CI/CD",
   },
   capabilities: [
     {
@@ -239,7 +242,7 @@ export const fullStackProductDevelopment: Service = {
     {
       title: "Database Design & Integration",
       description:
-        "Schemas are designed for the data you actually have, with database development ,and database integration handled before real data gets loaded in.",
+        "Schemas are designed for the data you actually have, with database development, and database integration handled before real data gets loaded in.",
     },
     {
       title: "Cloud Setup & Deployment",

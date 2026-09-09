@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { HeroVisualFrame } from "@/components/layout/hero-visuals/HeroVisualFrame";
+import type { ServiceVisual } from "@/lib/services/types";
 
 interface ServiceDetailHeroVisualProps {
   slug: string;
@@ -10,6 +12,8 @@ interface ServiceDetailHeroVisualProps {
   large?: boolean;
   /** Skip entrance animations — used in the page hero for instant paint. */
   instant?: boolean;
+  /** Optional diagram/illustration — when set, replaces the generated flow SVG. */
+  visual?: ServiceVisual;
 }
 
 type Node = { id: string; label: string; x: number; y: number; accent?: boolean };
@@ -253,17 +257,51 @@ const DIAGRAMS: Record<string, { label: string; nodes: Node[]; edges: [string, s
   },
 };
 
+function ImageDiagram({ src, alt, instant }: { src: string; alt: string; instant?: boolean }) {
+  const reduced = useReducedMotion() ?? false;
+  const animate = !instant && !reduced;
+
+  return (
+    <motion.div
+      className="relative h-full w-full"
+      initial={animate ? { opacity: 0 } : false}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.45 }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        width={2720}
+        height={1840}
+        sizes="(max-width: 1024px) 100vw, 440px"
+        className="h-auto w-full"
+        priority={instant}
+      />
+    </motion.div>
+  );
+}
+
 export function ServiceDetailHeroVisual({
   slug,
   title,
   large,
   instant,
+  visual,
 }: ServiceDetailHeroVisualProps) {
-  const diagram = DIAGRAMS[slug] ?? DIAGRAMS["full-stack-development"];
+  const imageSrc = visual?.image;
+  const imageAlt = visual?.alt ?? `${title} architecture visualization`;
 
   return (
     <div className="relative h-full">
-      <FlowDiagram {...diagram} large={large} instant={instant} />
+      {imageSrc ? (
+        <ImageDiagram src={imageSrc} alt={imageAlt} instant={instant} />
+      ) : (
+        <FlowDiagram
+          {...(DIAGRAMS[slug] ?? DIAGRAMS["full-stack-development"])}
+          large={large}
+          instant={instant}
+        />
+      )}
       <p className="sr-only">{title} architecture visualization</p>
     </div>
   );
