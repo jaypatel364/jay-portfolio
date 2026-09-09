@@ -55,6 +55,8 @@ export function ServiceWhatWeDoSection({ service }: { service: Service }) {
           <ServiceWhatWeDoVisual
             serviceTitle={service.title}
             stackItems={stackItems(service)}
+            imageSrc={service.whatWeDo.visual?.image}
+            imageAlt={service.whatWeDo.visual?.alt}
             className="mt-6"
           />
         </motion.div>

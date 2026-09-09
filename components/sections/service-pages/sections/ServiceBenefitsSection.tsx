@@ -128,16 +128,6 @@ export function ServiceBenefitsSection({ service }: { service: Service }) {
           <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
             {benefitsSupport}
           </p>
-          <p className="mt-3 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            If you want clarity on scope and trade-offs before committing,{" "}
-            <Link
-              href={contactHref}
-              className="font-semibold text-primary underline-offset-4 transition-colors hover:underline"
-            >
-              discuss your project
-            </Link>{" "}
-            and we will map what matters for {service.title.toLowerCase()}.
-          </p>
         </motion.header>
 
         <ul className="mt-10 grid list-none gap-4 sm:grid-cols-2 sm:gap-5 lg:mt-12">

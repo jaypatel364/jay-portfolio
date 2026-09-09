@@ -225,6 +225,8 @@ export type Service = {
   whatWeDo: {
     heading: string;
     paragraphs: string[];
+    /** Optional illustration for the What I Do section visual. */
+    visual?: ServiceVisual;
   };
   capabilities: ServiceCapability[];
   problems: ServiceProblem[];
