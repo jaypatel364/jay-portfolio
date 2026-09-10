@@ -97,7 +97,8 @@ export function BlogPostCard({ post, variant = "default", className }: BlogPostC
   return (
     <article
       className={cn(
-        "group relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-border/70 bg-card/40 transition-colors hover:border-primary/35",
+        "group relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-border/70 bg-card/40",
+        "shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/35 hover:shadow-md",
         className,
       )}
     >

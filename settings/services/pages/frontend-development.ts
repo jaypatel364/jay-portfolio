@@ -69,7 +69,7 @@ export const frontendDevelopment: Service = {
   },
   sectionSupport: {
     capabilities:
-      "Frontend development capabilities span the full interface layer. From the first component to the styling system, each piece is built to hold up in real use, not just in a demo.",
+      "Front-end development can work on the whole interface layer. From the first component to the styling system, each piece is built to hold up in real use, not just in a demo.",
     problems:
       "Most frontend problems come from one of two things. The interface grew faster than its structure. Or the team needs extra hands without a full-time hire. Here are the challenges I see most, and how I fix each one.",
     process:
@@ -97,14 +97,14 @@ export const frontendDevelopment: Service = {
   hero: {
     heading: "Frontend Development Services",
     description:
-      "I provide frontend development services to startups, SaaS teams, and product companies. You get one developer who owns the interface. This covers everything from the first component to launch. I focus on React development, Next.js development, and TypeScript development. Every interface must stay fast once real users show up. It should not just look good in a file. Need custom frontend development for a new product? Want to hire frontend developers to support your team? My frontend development services cover both.",
+      "I provide frontend development services to product companies, SaaS teams, and startups. I have expertise in the development of Next.js and React. Are you in search of frontend development for a new product? Or would you like to expand your team by employing front-end developers? Both of these are included in my frotend development services.",
     primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
     technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
   },
   editorialIntro: {
     statement:
-      "Frontend development services cover more than a design turned into HTML. My frontend web development services include component architecture, state, API work, and speed. The goal is simple. The interface should stay easy to change as the product grows. I treat frontend application development as its own craft. It is not an afterthought bolted onto backend work. Frontend application development services here always plan for growth past the first release.",
+      "Frontend development services cover more than a design turned into HTML. My frontend web development services include component architecture, state, API work, and speed. The goal is simple. The interface should stay easy to change as the product grows. I treat frontend application development as its own craft. Frontend application development services here always plan for growth past the first release.",
     supporting:
       "Every project starts with one question. What must this interface do in six months? That question shapes my custom frontend development services. It applies to marketing sites, dashboards, and full web frontend development builds for SaaS products. Modern frontend development means the code stays easy to extend. My frontend engineering services always include clear notes. They also include a component setup another developer can follow.",
   },
@@ -230,7 +230,7 @@ export const frontendDevelopment: Service = {
     {
       title: "Responsive & Cross-Browser Testing",
       description:
-        "Responsive & Cross Browser Testing Testing cross-browser and multi-screen responsive frontend development before going live.",
+        "Cross Browser Testing and multi-screen responsive frontend development before going live.",
     },
     {
       title: "Performance & Accessibility Review",

@@ -101,14 +101,17 @@ export function BlogTableOfContents({
   const mobile = (
     <details
       className={cn(
-        "group mb-8 overflow-hidden rounded-2xl border border-border/70 bg-card/60 open:bg-card/90",
+        "group relative mb-8 overflow-hidden rounded-2xl border border-border/70",
+        "bg-gradient-to-br from-card/85 via-card/60 to-primary/[0.05] shadow-sm backdrop-blur-sm open:shadow-md",
         className,
       )}
     >
       <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3.5 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
-        <ListTree className="h-4 w-4 text-primary" aria-hidden />
+        <span className="flex h-8 w-8 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
+          <ListTree className="h-4 w-4" aria-hidden />
+        </span>
         On this page
-        <span className="ml-auto rounded-full bg-muted/80 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+        <span className="ml-auto rounded-full border border-border/60 bg-background/50 px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
           {headings.length}
         </span>
       </summary>
@@ -119,16 +122,21 @@ export function BlogTableOfContents({
   const desktop = (
     <div
       className={cn(
-        "flex flex-col rounded-2xl border border-border/70 bg-card/50 p-4 backdrop-blur-sm",
+        "relative flex flex-col overflow-hidden rounded-2xl border border-border/70",
+        "bg-gradient-to-br from-card/85 via-card/55 to-primary/[0.05] p-4 shadow-sm backdrop-blur-sm",
         className,
       )}
     >
-      <p className="mb-3 flex shrink-0 items-center gap-2 text-[11px] font-semibold uppercase tracking-widest text-primary">
+      <div
+        className="pointer-events-none absolute -right-8 -top-10 h-24 w-24 rounded-full bg-primary/12 blur-2xl"
+        aria-hidden
+      />
+      <p className="relative mb-3 flex shrink-0 items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
         <ListTree className="h-3.5 w-3.5" aria-hidden />
         On this page
       </p>
       <div
-        className="min-h-0 max-h-82 overflow-y-auto overscroll-contain pr-1"
+        className="relative min-h-0 max-h-82 overflow-y-auto overscroll-contain pr-1"
         style={{ scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
       >
         {list}

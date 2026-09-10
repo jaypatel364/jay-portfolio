@@ -24,11 +24,19 @@ export function BlogReadingProgress({ targetId = BLOG_ARTICLE_BODY_ID }: { targe
 
   return (
     <div
-      className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-0.5 bg-transparent"
-      aria-hidden
+      className="pointer-events-none fixed inset-x-0 top-0 z-[60] h-1 bg-transparent"
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(progress)}
+      aria-label="Reading progress"
     >
       <div
-        className={cn("h-full origin-left bg-primary transition-[width] duration-150 ease-out")}
+        className={cn(
+          "h-full origin-left rounded-r-full transition-[width] duration-150 ease-out",
+          "bg-gradient-to-r from-primary via-primary to-glow",
+          "shadow-[0_0_12px_color-mix(in_oklch,var(--primary)_55%,transparent)]",
+        )}
         style={{ width: `${progress}%` }}
       />
     </div>
