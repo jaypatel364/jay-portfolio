@@ -27,8 +27,8 @@ Set keywords once per page; H2s update automatically.
 | Why Hire Me             | Why Hire Me as a [Role Keyword]?         | Why Hire Me as a Full Stack Developer?                |
 | Case Studies            | [Keyword] Projects & Examples            | Full Stack Development Projects & Examples            |
 | FAQ                     | [Keyword] Services FAQs                  | Full Stack Development Services FAQs                  |
-| You May Also Need       | Related [Keyword] Services               | Related Full Stack Development Services               |
-| Related Articles        | [Keyword] Guides & Resources             | Full Stack Development Guides & Resources             |
+| Connected services      | Related [Keyword] Services               | Related Full Stack Development Services               |
+| Insights                | [Keyword] Insights & Practical Guides    | Full Stack Development Insights & Practical Guides    |
 
 ### `headingKeywords` fields (per service)
 
@@ -81,6 +81,8 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 | Deliverables         | **8** items (fixed)                        |
 | Why Hire Me          | **4 or 6** reason points                   |
 | FAQ                  | **8** Q&A pairs (fixed)                    |
+| Connected services   | Related service cards + H2 support para    |
+| Insights             | Related post links + H2 support para       |
 
 ---
 
@@ -293,3 +295,35 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 | Answer   | `faqs[].answer`   | 50–80 words      | Direct, helpful             |
 
 **Tip:** Pull questions from `seoBrief.longTailQuestions` first.
+
+---
+
+## Section 14 — Connected services
+
+**UI label:** Connected services  
+**UI H2:** Related [Keyword] Services  
+**UI supporting:** `sectionSupport.relatedServices` — **~30–40 words** (required)  
+**Section key:** `relatedServices`  
+**Always shown:** When related services are configured
+
+| Element              | TS key                           | Suggested length | Notes                                          |
+| -------------------- | -------------------------------- | ---------------- | ---------------------------------------------- |
+| **H2**               | _(from template)_                | —                | `getServiceSectionHeadings(…).relatedServices` |
+| Supporting paragraph | `sectionSupport.relatedServices` | **30–40 words**  | Under H2; required on every service            |
+| Related cards        | _(from service graph / links)_   | 2–4 services     | Complementary engagements                      |
+
+---
+
+## Section 15 — Insights
+
+**UI label:** Insights  
+**UI H2:** [Keyword] Insights & Practical Guides  
+**UI supporting:** `sectionSupport.relatedPosts` — **~30–40 words** (required)  
+**Section key:** `relatedPosts`  
+**Always shown:** When `relatedPosts` has items
+
+| Element              | TS key                        | Suggested length | Notes                                       |
+| -------------------- | ----------------------------- | ---------------- | ------------------------------------------- |
+| **H2**               | _(from template)_             | —                | `getServiceSectionHeadings(…).relatedPosts` |
+| Supporting paragraph | `sectionSupport.relatedPosts` | **30–40 words**  | Under H2; required on every service         |
+| Post slugs           | `relatedPosts[]`              | 2–4 slugs        | Blog posts tied to this service topic       |

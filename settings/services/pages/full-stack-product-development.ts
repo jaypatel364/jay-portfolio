@@ -95,7 +95,7 @@ export const fullStackProductDevelopment: Service = {
     benefits:
       "Choosing full stack web development over separate frontend, and backend hires comes with real, practical advantages. Here are the benefits I see most often, along with the outcomes they lead to once your application is live.",
     whyHire:
-      "Jay Patel Dev full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend, and backend depth to every project, unlike a general web stack developer who's strong in one layer, and weaker in the other.",
+      "Jay Patel full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend, and backend depth to every project, unlike a general web stack developer who's strong in one layer, and weaker in the other.",
     caseStudies:
       "Reading about a process is different from seeing it applied. Here are a few full stack development projects that show how these layers come together in practice, from early planning through to a live, working application.",
     relatedServices:
@@ -421,7 +421,7 @@ export const fullStackProductDevelopment: Service = {
   whyHire: {
     roleTitle: "Full Stack Developer",
     intro:
-      "Jay Patel Dev full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend, and backend depth to every project, unlike a general web stack developer who's strong in one layer, and weaker in the other.",
+      "Jay Patel full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend, and backend depth to every project, unlike a general web stack developer who's strong in one layer, and weaker in the other.",
     reasons: [
       {
         tag: "Speed",
@@ -436,13 +436,13 @@ export const fullStackProductDevelopment: Service = {
           "As a full stack software engineer, I catch issues that only show up when frontend and backend decisions are made by the same person who understands both sides.",
       },
       {
-        tag: "Full Ownership",
+        tag: "Ownership",
         title: "Full Ownership",
         description:
           "When you need dedicated full stack development, you get one point of contact accountable for the entire full stack development team's worth of output.",
       },
       {
-        tag: "Clear Communication",
+        tag: "Communication",
         title: "Clear Communication",
         description:
           "I act as a full stack development partner, not just a contractor, explaining decisions in plain terms so you always know where the project stands.",
@@ -454,7 +454,7 @@ export const fullStackProductDevelopment: Service = {
           "Whether you need a freelance full stack developer for a short project or want to hire full stack developer support long term, the engagement scales to match your actual need, not a fixed contract.",
       },
       {
-        tag: "Long-Term Support",
+        tag: "Support",
         title: "Long-Term Support",
         description:
           "After launch, you're not left to figure out the next update alone. The same full stack software developer who built your application is the one maintaining it, so nothing gets lost when a project changes hands.",
