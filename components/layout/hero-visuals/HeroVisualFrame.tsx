@@ -10,7 +10,7 @@ interface HeroVisualFrameProps {
   overflowVisible?: boolean;
 }
 
-/** Shared canvas for inner-page hero art — matches the site card language. */
+/** Shared canvas for inner-page hero art — quiet surface so the content can lead. */
 export function HeroVisualFrame({
   children,
   className,
@@ -21,7 +21,7 @@ export function HeroVisualFrame({
     <div
       aria-label={label}
       className={cn(
-        "relative isolate min-h-[280px] w-full overflow-hidden rounded-[1.75rem] border border-primary/20 bg-card shadow-premium",
+        "relative isolate min-h-[280px] w-full overflow-hidden rounded-[1.75rem] border border-border/80 bg-card shadow-premium",
         overflowVisible && "overflow-visible",
         className,
       )}
@@ -29,12 +29,8 @@ export function HeroVisualFrame({
       <div className={cn("hero-visual-canvas", overflowVisible && "overflow-hidden")} aria-hidden>
         <div className="hero-visual-canvas__wash" />
         <div className="hero-visual-canvas__grid" />
-        <div className="hero-visual-canvas__spotlight" />
         <div className="hero-visual-canvas__glow-primary" />
-        <div className="hero-visual-canvas__glow-accent" />
         <div className="hero-visual-canvas__vignette" />
-        <div className="hero-visual-canvas__grain" />
-        <div className="hero-visual-canvas__shine" />
         <div className="hero-visual-canvas__ring" />
       </div>
       <div className="relative z-10 h-full min-h-[280px]">{children}</div>

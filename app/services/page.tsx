@@ -34,7 +34,7 @@ export default function ServicesPage() {
           title={hub.hero.title}
           description={hub.hero.description}
           chips={[...hub.hero.chips]}
-          visual={<ServicesHeroVisual />}
+          visual={<ServicesHeroVisual services={services.map((s) => ({ title: s.title }))} />}
         />
         <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
           <ServicesHubSection

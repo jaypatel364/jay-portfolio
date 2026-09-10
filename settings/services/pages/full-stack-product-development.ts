@@ -96,6 +96,12 @@ export const fullStackProductDevelopment: Service = {
       "Choosing full stack web development over separate frontend, and backend hires comes with real, practical advantages. Here are the benefits I see most often, along with the outcomes they lead to once your application is live.",
     whyHire:
       "Jay Patel Dev full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend, and backend depth to every project, unlike a general web stack developer who's strong in one layer, and weaker in the other.",
+    caseStudies:
+      "Reading about a process is different from seeing it applied. Here are a few full stack development projects that show how these layers come together in practice, from early planning through to a live, working application.",
+    relatedServices:
+      "Full stack development rarely happens in isolation. These related services cover the pieces that often come up alongside it, from frontend and backend work to database design and cloud deployment, in case you need to go deeper on one layer.",
+    relatedPosts:
+      "These insights and practical guides go deeper into the decisions that come up during full stack development, like choosing between stacks or knowing when to bring in outside help, for anyone who wants more context before starting a project.",
   },
   hero: {
     heading: "Full Stack Development Services",
@@ -521,6 +527,8 @@ export const fullStackProductDevelopment: Service = {
   ],
   relatedPosts: [
     "mern-vs-mean-stack",
+    "nestjs-vs-express-js-2026",
+    "rest-vs-graphql",
     "how-to-hire-a-full-stack-developer",
     "nextjs-vs-react-when-to-use-what",
   ],

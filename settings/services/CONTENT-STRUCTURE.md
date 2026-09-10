@@ -19,7 +19,7 @@ Set keywords once per page; H2s update automatically.
 | Problems I Solve        | Common [Keyword] Challenges I Solve      | Common Full Stack Development Challenges I Solve      |
 | My Process              | My [Keyword] Process                     | My Full Stack Development Process                     |
 | Technologies & Tools    | [Keyword] Technologies I Use             | Full Stack Development Technologies I Use             |
-| How the Pieces Connect  | How [Keyword Variant] Come Together      | How Full Stack Applications Come Together             |
+| How I Build (System)    | How I Build [Pieces Keyword]             | How I Build Full Stack Applications                   |
 | Use Cases               | Where [Keyword] Applies                  | Where Full Stack Development Applies                  |
 | Who This Service Is For | Who My [Keyword] Services Are For        | Who My Full Stack Development Services Are For        |
 | Deliverables            | What's Included in My [Keyword] Services | What's Included in My Full Stack Development Services |
@@ -36,7 +36,7 @@ Set keywords once per page; H2s update automatically.
 | --------------- | ---------------- | -------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | Primary keyword | `keyword`        | Full Stack Development     | What I Do, Problems, Process, Technologies, Use Cases, Audiences, Deliverables, Case Studies, FAQ, Related |
 | Keyword variant | `keywordVariant` | Full Stack Web Development | Capabilities, Benefits                                                                                     |
-| Pieces keyword  | `piecesKeyword`  | Full Stack Applications    | How the Pieces Connect                                                                                     |
+| Pieces keyword  | `piecesKeyword`  | Full Stack Applications    | How I Build (System)                                                                                       |
 | Role keyword    | `roleKeyword`    | Full Stack Developer       | Why Hire Me                                                                                                |
 
 ```typescript
@@ -52,7 +52,7 @@ headingKeywords: {
 
 ### H2 supporting paragraphs
 
-Each scroll section (except hero and What I Do) can set a service-specific paragraph under the H2 via `sectionSupport` in the service `.ts` file. Components read it through `getServiceSectionSupport(service, key)`. Pages without `sectionSupport` fall back to sensible defaults.
+**Rule:** Every scroll section with an H2 gets **one supporting paragraph** (~30–40 words) under the H2 via `sectionSupport` in the service `.ts` file. Components read it through `getServiceSectionSupport(service, key)`. Pages without `sectionSupport` fall back to sensible defaults.
 
 ```typescript
 sectionSupport: {
@@ -65,6 +65,22 @@ sectionSupport: {
 ```
 
 Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragraphs`. Why Hire falls back to `whyHire.intro` when `sectionSupport.whyHire` is omitted.
+
+---
+
+## Locked counts (quick reference)
+
+| Section              | Count rule                                 |
+| -------------------- | ------------------------------------------ |
+| Capabilities         | **9** items (fixed)                        |
+| Problems             | **6** cards (fixed)                        |
+| Process              | **6 or 8** steps                           |
+| System (How I Build) | **1** support para + **3** body paragraphs |
+| Use cases            | **6** items (fixed)                        |
+| Fit (audiences)      | **4** cards (fixed)                        |
+| Deliverables         | **8** items (fixed)                        |
+| Why Hire Me          | **4 or 6** reason points                   |
+| FAQ                  | **8** Q&A pairs (fixed)                    |
 
 ---
 
@@ -110,14 +126,15 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 ## Section 3 — Service capabilities
 
 **UI H2:** `[Keyword Variant] Capabilities` (from template)  
-**UI supporting (dynamic):** "30-40 words approx"
+**UI supporting:** `sectionSupport.capabilities` — **~30–40 words** (required)  
 **Section key:** `capabilities`  
-**Always shown:** Yes
+**Always shown:** Yes  
+**Count:** **9 items** (fixed)
 
 | Element              | TS key                                      | Suggested length   | Notes                                        |
 | -------------------- | ------------------------------------------- | ------------------ | -------------------------------------------- |
 | **H2**               | `headingKeywords.keywordVariant` + template | —                  | e.g. Full Stack Web Development Capabilities |
-| Supporting line      | _(fixed in UI)_                             | ~20 words          | Same on all pages                            |
+| Supporting paragraph | `sectionSupport.capabilities`               | **30–40 words**    | Under H2; required on every service          |
 | Capability cards     | `capabilities[]`                            | **9 items**        | Grid of service areas                        |
 | Card title           | `capabilities[].title`                      | **H3** — 3–6 words | Keyword-friendly                             |
 | Card description     | `capabilities[].description`                | **15–20 words**    | One sentence each                            |
@@ -127,10 +144,10 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ## Section 4 — Problems I solve
 
-**UI H2 (fixed):** Common [Keyword] Challenges I Solve  
-**UI supporting (dynamic):** "30-40 words approx"
+**UI H2:** Common [Keyword] Challenges I Solve  
+**UI supporting:** `sectionSupport.problems` — **~30–40 words** (required)  
 **Section key:** `problems`  
-**Count:** **6 cards** (2-column grid)
+**Count:** **6 cards** (fixed, 2-column grid)
 
 | Element             | TS key                   | Suggested length |
 | ------------------- | ------------------------ | ---------------- |
@@ -141,10 +158,10 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ## Section 5 — My process
 
-**UI H2 (fixed):** My [Keyword] Process
-**UI supporting (dynamic):** "30-40 words approx"
+**UI H2:** My [Keyword] Process  
+**UI supporting:** `sectionSupport.process` — **~30–40 words** (required)  
 **Section key:** `process`  
-**Count:** **8 steps** (locked)
+**Count:** **6 or 8 steps**
 
 | Element          | TS key                  | Suggested length |
 | ---------------- | ----------------------- | ---------------- |
@@ -155,8 +172,8 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ## Section 6 — Technologies & tools
 
-**UI H2 (fixed):** [Keyword] Technologies I Use
-**UI supporting (dynamic):** "30-40 words approx"
+**UI H2:** [Keyword] Technologies I Use  
+**UI supporting:** `sectionSupport.technologies` — **~30–40 words** (required)  
 **Section key:** `technologies`  
 **Count:** 4–5 groups
 
@@ -167,27 +184,31 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ---
 
-## Section 7 — How the pieces connect (System)
+## Section 7 — How I Build (System / infrastructure)
 
-**UI H2 (fixed):** How [Keyword Variant] Come Together
-**UI supporting (dynamic):** "30-40 words approx"
-**Section key:** `piecesConnect` (uses `whatWeDo.paragraphs` + `industries`)  
+**UI H2:** How I Build [Pieces Keyword]  
+**Example:** How I Build Full Stack Applications  
+**UI supporting:** `sectionSupport.piecesConnect` — **1 support paragraph** (~30–40 words) under the H2 (required)  
+**Section key:** `piecesConnect`  
 **Always shown:** Yes
 
-| Element          | TS key                      | Suggested length          | Notes                  |
-| ---------------- | --------------------------- | ------------------------- | ---------------------- |
-| Body copy        | `whatWeDo.paragraphs` (1–2) | Reuses first 2 paragraphs | Same text as What I Do |
-| Industries label | _(fixed)_                   | "Where this shows up"     |                        |
-| Industry chips   | `industries`                | **4 items** × 2–4 words   | e.g. SaaS, E-commerce  |
+**Copy goal:** Explain how the **application infrastructure** fits together — frontend, backend, data, APIs, hosting/deployment — not a generic “pieces come together” blurb.
+
+| Element              | TS key                                         | Suggested length        | Notes                                                         |
+| -------------------- | ---------------------------------------------- | ----------------------- | ------------------------------------------------------------- |
+| Supporting paragraph | `sectionSupport.piecesConnect`                 | **~30–40 words**        | 1 para under H2; frames the infrastructure story              |
+| Body paragraphs      | `whatWeDo.paragraphs` or dedicated system copy | **3 paragraphs**        | Infrastructure explanation — how layers connect in production |
+| Industries label     | _(fixed)_                                      | "Where this shows up"   |                                                               |
+| Industry chips       | `industries`                                   | **4 items** × 2–4 words | e.g. SaaS, E-commerce                                         |
 
 ---
 
 ## Section 8 — Use cases
 
-**UI H2 (fixed):** Where [Keyword] Applies
-**UI supporting (dynamic):** "30-40 words approx"
+**UI H2:** Where [Keyword] Applies  
+**UI supporting:** `sectionSupport.useCases` — **~30–40 words** (required)  
 **Section key:** `useCases`  
-**Count:** **6 items** (locked)
+**Count:** **6 items** (fixed)
 
 | Element     | TS key                   | Suggested length |
 | ----------- | ------------------------ | ---------------- |
@@ -196,12 +217,12 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ---
 
-## Section 9 — Who this service is for
+## Section 9 — Who this service is for (Fit)
 
-**UI H2 (fixed):** Who My [Keyword] Services Are For  
-**UI supporting (dynamic):** "30-40 words approx"
+**UI H2:** Who My [Keyword] Services Are For  
+**UI supporting:** `sectionSupport.audiences` — **~30–40 words** (required)  
 **Section key:** `audiences`  
-**Count:** **4 cards**
+**Count:** **4 cards** (fixed)
 
 | Element     | TS key                    | Suggested length |
 | ----------- | ------------------------- | ---------------- |
@@ -212,10 +233,10 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ## Section 10 — Deliverables
 
-**UI H2 (dynamic):** What's Included in My [Keyword] Services  
-**UI supporting (dynamic):** "30-40 words approx"
+**UI H2:** What's Included in My [Keyword] Services  
+**UI supporting:** `sectionSupport.deliverables` — **~30–40 words** (required)  
 **Section key:** `deliverables`  
-**Count:** 6–8 items
+**Count:** **8 items** (fixed)
 
 | Element     | TS key                       | Suggested length |
 | ----------- | ---------------------------- | ---------------- |
@@ -226,8 +247,8 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ## Section 11 — Benefits & outcomes
 
-**UI H2 (fixed):** Benefits of [Keyword Variant]
-**UI supporting (dynamic):** "30-40 words approx"
+**UI H2:** Benefits of [Keyword Variant]  
+**UI supporting:** `sectionSupport.benefits` — **~30–40 words** (required)  
 **Section key:** `benefits`  
 **Count:** **6 items** — 3 `benefit` + 3 `outcome`
 
@@ -243,29 +264,30 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ## Section 12 — Why hire me
 
-**UI H2 (fix):** Why Hire Me as a [Role Keyword]?
-**UI supporting (dynamic):** "30-40 words approx"  
+**UI H2:** Why Hire Me as a [Role Keyword]?  
+**UI supporting:** `sectionSupport.whyHire` — **~30–40 words** (required; falls back to `whyHire.intro`)  
 **Section key:** `whyHire`  
-**Count:** 4 reason cards + 3 highlights
+**Count:** **4 or 6** reason points (+ optional highlight strip)
 
-| Element            | TS key                          | Suggested length        |
+| Element            | TS key                          | Suggested length        | Notes                     |
 | ------------------ | ------------------------------- | ----------------------- | ------------------------- |
 | Role title         | `whyHire.roleTitle`             | 2–4 words               | e.g. "Frontend Developer" |
-| Intro              | `whyHire.intro`                 | 35–45 words             |
+| Intro              | `whyHire.intro`                 | 35–45 words             | Fallback for support para |
 | Reason tag         | `whyHire.reasons[].tag`         | 1 word                  | e.g. Speed, Precision     |
-| Reason title       | `whyHire.reasons[].title`       | 4–7 words               |
-| Reason description | `whyHire.reasons[].description` | 30–40 words             |
-| Highlight strip    | `whyHire.highlights`            | 3 × label + short value |
+| Reason title       | `whyHire.reasons[].title`       | 4–7 words               |                           |
+| Reason description | `whyHire.reasons[].description` | 30–40 words             |                           |
+| Highlight strip    | `whyHire.highlights`            | 3 × label + short value | Optional                  |
 
 ---
 
 ## Section 13 — FAQ
 
-**UI H2 (fix):** [Keyword] Services FAQs
+**UI H2:** [Keyword] Services FAQs  
+**UI supporting:** `sectionSupport.faqs` — **~30–40 words** (required)  
 **Section key:** `faqs`  
-**Count:** 6–8 Q&A pairs
+**Count:** **8** Q&A pairs (fixed)
 
-| Element  | TS key            | Suggested length |
+| Element  | TS key            | Suggested length | Notes                       |
 | -------- | ----------------- | ---------------- | --------------------------- |
 | Question | `faqs[].question` | 6–12 words       | Long-tail, natural language |
 | Answer   | `faqs[].answer`   | 50–80 words      | Direct, helpful             |

@@ -35,7 +35,7 @@ export const SERVICE_H2_TEMPLATES = {
   caseStudies: (k: ServiceHeadingKeywords) => `${k.keyword} Projects & Examples`,
   faqs: (k: ServiceHeadingKeywords) => `${k.keyword} Services FAQs`,
   relatedServices: (k: ServiceHeadingKeywords) => `Related ${k.keyword} Services`,
-  relatedPosts: (k: ServiceHeadingKeywords) => `${k.keyword} Guides & Resources`,
+  relatedPosts: (k: ServiceHeadingKeywords) => `${k.keyword} Insights & Practical Guides`,
 } as const satisfies Record<keyof ServiceSectionHeadings, (k: ServiceHeadingKeywords) => string>;
 
 /** Build all section H2s from a service's keyword set. */
