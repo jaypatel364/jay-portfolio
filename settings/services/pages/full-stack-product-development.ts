@@ -81,15 +81,15 @@ export const fullStackProductDevelopment: Service = {
     problems:
       "Most full stack development problems come from disconnected systems, outdated architecture, or missing ownership over the whole application. Here are the challenges I run into most often, and how the right approach solves each one early.",
     process:
-      "My full stack development process moves through eight clear stages, from discovery and architecture planning to backend development, database design, cloud deployment, and ongoing support after launch, so you always know what's happening and why.",
+      "I have eight clear stages in my full stack development process, from discovery and architecture planning, to backend development, database design, cloud deployment, and ongoing support after launch, so you always know what’s happening and why.",
     technologies:
       "I build using a modern, well-supported stack rather than tools only I understand. Below are the frontend, backend, database and cloud technologies I use most often, along with common combinations like MERN stack development and React Node.js development.",
     piecesConnect:
       "A full stack application isn't three separate systems that happen to talk to each other. It's one system where every layer depends on how the others are built. Here's how the pieces actually interact once the application is live, not the steps used to build it.",
     useCases:
-      "Full stack development applies anywhere a business needs a complete, working application rather than a single feature. Here are the most common use cases I build for, from SaaS products to internal dashboards and customer-facing platforms.",
+      "Full stack development is used in any business that needs a full working application and not just a single feature. These are the common use cases I build for SaaS products, internal dashboards and customer-facing platforms.",
     audiences:
-      "My full stack development services fit a range of businesses, not just one type of company. Here's who I typically work with, from early-stage startups validating an idea to enterprises that need a system built to last.",
+      "I provide full stack development for any kind of organization. They fit all kinds of businesses. Here’s who I usually work with, from early stage companies validating an idea to organisations who need a system built to survive.",
     deliverables:
       "Every full stack development project ends with more than just code. Here's exactly what you get when the project is complete, from the working application itself to documentation, testing reports, and support after launch.",
     benefits:
@@ -148,51 +148,51 @@ export const fullStackProductDevelopment: Service = {
     {
       title: "Frontend Development",
       description:
-        "I build interfaces using React development, React.js development, and Next.js development, with TypeScript development for type safety and JavaScript development for the parts that need flexibility. Every screen is built with responsive web development in mind.",
+        "I create high performance, user-friendly and responsive websites and web applications with React.js and Next.js. When I need more flexibility, I use Javascript, but I also use typescript when I need a more type-safe project. Responsive web design has been used to develop all interfaces which work well on desktop, tablet and mobile devices.",
       relatedServiceSlug: "frontend-development",
     },
     {
       title: "Backend Development",
       description:
-        "Server-side logic is built with Node.js development, and Express.js development, structured for backend development services that scale as traffic grows.",
+        "I build scalable server-side applications using Node.js and Express.js. My backend development services are focused on clean code, secure APIs and a structure that scales as your application grows. If you need a new backend, or an existing one improved, I build it with long term maintainability and performance in mind.",
       relatedServiceSlug: "backend-development",
     },
     {
       title: "API Development & Integration",
       description:
-        "I build REST API development and GraphQL development endpoints, plus API integration services that connect your application to payment providers, CRMs, and other third-party tools.",
+        "I develop and combine APIs that allow various systems and services to talk to each other. I have experience in API development (REST API, GraphQL development, API integration to connect websites and applications to payment gateways, CRMs, business tools and other third party platforms. My work is to make integrations reliable, secure and easy to maintain.",
       relatedServiceSlug: "backend-development",
     },
     {
       title: "Database Design & Development",
       description:
-        "Data is modeled properly from the start using PostgreSQL development, MongoDB development, or MySQL development, depending on the shape of your data.",
+        "A well designed database is the foundation of a good application. I have worked with PostgreSQL, MongoDB and MySQL depending on the project needs. Database development is my thing, structure, relationships, queries and performance, ensuring your application can store and access data efficiently as it grows.",
     },
     {
       title: "Cloud & DevOps Setup",
       description:
-        "Applications ship using AWS development, Docker development and CI/CD development, so deployment isn't an afterthought.",
+        "I move apps from development to production with a solid cloud and deployment infrastructure. I work with AWS, Docker and CI/CD for automated testing, and deployments. The idea is simple: make your application easier to deploy, monitor, update and scale without the constant headache of deployment.",
     },
     {
-      title: "SaaS Product Development",
+      title: "SaaS & Product Development",
       description:
-        "For SaaS application development, and MVP development services, I focus on shipping the core value first, then layering in complexity. Learn more on the SaaS product development page.",
+        "I build SaaS applications and MVPs to turn ideas into working digital products. My focus is on building the most important features, getting the product to users and iterating on it with real feedback. Whether you're launching a new SaaS product, or optimising an existing one, I can help build the technical foundation behind it.",
       relatedServiceSlug: "saas-development",
     },
     {
       title: "eCommerce & Marketplace Development",
       description:
-        "Storefronts and multi-vendor platforms are built for eCommerce application development, and marketplace development, with checkout and inventory flows that hold up under real traffic.",
+        "I develop real-world multi-vendor platforms and online stores. I do eCommerce application development and marketplace development work that covers product listings, checkout, payments, inventory, user accounts and vendor management. I work on a great buying experience and making sure the platform can support more traffic and more products.",
     },
     {
-      title: "Dashboard & Customer Portal Development",
+      title: "AI & Automation Development",
       description:
-        "Internal tools and client-facing portals are common requests, covering both dashboard development, and customer portal development, built around the data your team actually uses daily.",
+        "I build actual AI features & automation solutions that save organisations time and enhance their products. I develop AI applications, I incorporate LLMs, I develop chatbots, I automate procedures using AI. I can connect AI solutions to existing APIs, databases, CRMs and business tools to automate boring operations or add useful AI capabilities to an application.",
     },
     {
       title: "Enterprise Application Development",
       description:
-        "Larger organizations get enterprise application development and enterprise full stack development built with permissions, audit trails, and integration points already in mind.",
+        "I develop software for bigger companies that need strong security, well defined user rights and reliable integrations. I build enterprise apps (front, back, api, db, internal business tools). I build with things like role-based access, audit trails, integrations and scalability in mind from the outset so that the application can grow with the organization.",
     },
   ],
   problems: [
@@ -231,7 +231,7 @@ export const fullStackProductDevelopment: Service = {
     {
       title: "Discovery & Requirements",
       description:
-        "Every project starts with understanding the actual business problem, not just the feature list, which shapes every custom software development decision that follows.",
+        "The real business problem, not just the feature list, is the basis of any project and any subsequent custom software development decision.",
     },
     {
       title: "Architecture & Planning",
@@ -272,7 +272,7 @@ export const fullStackProductDevelopment: Service = {
   technologies: [
     {
       category: "Frontend",
-      items: ["React", "React.js", "Next.js", "TypeScript", "JavaScript"],
+      items: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
     },
     {
       category: "Backend",
@@ -280,11 +280,11 @@ export const fullStackProductDevelopment: Service = {
     },
     {
       category: "Databases",
-      items: ["PostgreSQL", "MongoDB", "MySQL", "SQL"],
+      items: ["PostgreSQL", "MongoDB", "MySQL", "Prisma"],
     },
     {
       category: "Cloud & DevOps",
-      items: ["AWS", "Docker", "CI/CD pipelines"],
+      items: ["AWS", "Docker", "CI/CD", "Git", "GitHub Actions"],
     },
   ],
   useCases: [
@@ -415,7 +415,7 @@ export const fullStackProductDevelopment: Service = {
       kind: "outcome",
       title: "Fewer Outages, More Uptime",
       description:
-        "High-performance web applications that stay stable under real-world traffic, not just in testing.",
+        "High-performance web apps that remain stable under real-world traffic, not just in testing.",
     },
   ],
   whyHire: {

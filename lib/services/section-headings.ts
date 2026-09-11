@@ -22,9 +22,9 @@ export type ServiceSectionHeadings = Record<
 /** Master H2 templates — same pattern on every service detail page. */
 export const SERVICE_H2_TEMPLATES = {
   whatWeDo: (k: ServiceHeadingKeywords) => `What ${k.keyword} Include`,
-  capabilities: (k: ServiceHeadingKeywords) => `${k.keywordVariant} Services`,
+  capabilities: (k: ServiceHeadingKeywords) => `Leverage End-to-End ${k.keywordVariant} Services`,
   problems: (k: ServiceHeadingKeywords) => `Common ${k.keyword} Challenges I Solve`,
-  process: (k: ServiceHeadingKeywords) => `My ${k.keyword} Process`,
+  process: (k: ServiceHeadingKeywords) => `How I Approach ${k.keyword}`,
   technologies: (k: ServiceHeadingKeywords) => `Technologies Used for ${k.keyword}`,
   piecesConnect: (k: ServiceHeadingKeywords) => `How I Build ${k.piecesKeyword}`,
   useCases: (k: ServiceHeadingKeywords) => `${k.keyword} Use Cases`,
