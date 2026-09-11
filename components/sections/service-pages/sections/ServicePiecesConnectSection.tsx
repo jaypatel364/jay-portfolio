@@ -27,7 +27,10 @@ export function ServicePiecesConnectSection({ service }: { service: Service }) {
           transition={{ duration: 0.45 }}
           className="space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base"
         >
-          {service.whatWeDo.paragraphs.slice(-3).map((p) => (
+          {(service.whatWeDo.paragraphs.length > 3
+            ? service.whatWeDo.paragraphs.slice(2)
+            : service.whatWeDo.paragraphs.slice(-3)
+          ).map((p) => (
             <p key={p.slice(0, 48)}>{p}</p>
           ))}
           {service.industries?.length ? (
