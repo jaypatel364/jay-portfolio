@@ -1,0 +1,67 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+import type { Service } from "@/lib/services/types";
+import { getServiceSectionHeading, getServiceSectionSupport } from "@/lib/services";
+import { ServiceDetailHeroVisual } from "../hero-visuals/ServiceDetailHeroVisual";
+import { ServiceSectionShell } from "../primitives/ServiceSectionShell";
+
+/** How technical layers connect — theme-aware diagram, service-specific flows. */
+export function ServicePiecesConnectSection({ service }: { service: Service }) {
+  const reduced = useReducedMotion() ?? false;
+
+  return (
+    <ServiceSectionShell
+      id="pieces-connect"
+      label="System"
+      title={getServiceSectionHeading(service, "piecesConnect")}
+      description={getServiceSectionSupport(service, "piecesConnect")}
+      theme="contrast"
+      width="wide"
+    >
+      <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
+        <motion.div
+          initial={reduced ? false : { opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45 }}
+          className="space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base"
+        >
+          {(service.whatWeDo.paragraphs.length > 3
+            ? service.whatWeDo.paragraphs.slice(2)
+            : service.whatWeDo.paragraphs.slice(-3)
+          ).map((p) => (
+            <p key={p.slice(0, 48)}>{p}</p>
+          ))}
+          {service.industries?.length ? (
+            <div className="pt-2">
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-widest text-primary">
+                Where this shows up
+              </p>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {service.industries.map((ind) => (
+                  <li
+                    key={ind}
+                    className="rounded-md border border-border/70 bg-background/80 px-2.5 py-1 text-xs font-medium text-foreground dark:bg-background/40"
+                  >
+                    {ind}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </motion.div>
+
+        <div className="relative w-full">
+          <ServiceDetailHeroVisual
+            slug={service.slug}
+            title={`${service.title} system architecture`}
+            visual={service.piecesConnectVisual}
+            large
+            imageClassName="h-auto w-full object-contain"
+          />
+        </div>
+      </div>
+    </ServiceSectionShell>
+  );
+}

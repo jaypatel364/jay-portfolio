@@ -36,6 +36,18 @@ export const PRIMARY_NAV: NavItem[] = [
     isRoute: true,
   },
   {
+    id: innerPages.services.navId,
+    label: innerPages.services.label,
+    href: `${innerPages.services.path}/`,
+    isRoute: true,
+  },
+  {
+    id: innerPages.blog.navId,
+    label: innerPages.blog.label,
+    href: `${innerPages.blog.path}/`,
+    isRoute: true,
+  },
+  {
     id: innerPages.contact.navId,
     label: innerPages.contact.label,
     href: `${innerPages.contact.path}/`,
@@ -77,6 +89,8 @@ export const PATH_TO_NAV_ID: Record<string, string> = {
   [`${innerPages.about.path}/`]: innerPages.about.navId,
   [`${innerPages.skills.path}/`]: innerPages.skills.navId,
   [`${innerPages.work.path}/`]: innerPages.work.navId,
+  [`${innerPages.services.path}/`]: innerPages.services.navId,
+  [`${innerPages.blog.path}/`]: innerPages.blog.navId,
   [`${innerPages.contact.path}/`]: innerPages.contact.navId,
 };
 
@@ -89,6 +103,20 @@ export function resolveNavId(pathname: string): string {
     pathname.length > innerPages.work.path.length + 1
   ) {
     return innerPages.work.navId;
+  }
+
+  if (
+    pathname.startsWith(`${innerPages.services.path}/`) &&
+    pathname.length > innerPages.services.path.length + 1
+  ) {
+    return innerPages.services.navId;
+  }
+
+  if (
+    pathname.startsWith(`${innerPages.blog.path}/`) &&
+    pathname.length > innerPages.blog.path.length + 1
+  ) {
+    return innerPages.blog.navId;
   }
 
   return "home";

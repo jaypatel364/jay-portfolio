@@ -62,7 +62,8 @@ function FAQCard({
 }: {
   question: string;
   answer: string;
-  category: FAQCategory;
+  /** Homepage FAQ categories. Omit on service pages where tags add no value. */
+  category?: FAQCategory;
   index: number;
   isOpen: boolean;
   onToggle: () => void;
@@ -73,8 +74,9 @@ function FAQCard({
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 48);
-  const meta = CATEGORY_META[category];
+  const meta = category ? CATEGORY_META[category] : CATEGORY_META.all;
   const num = String(index + 1).padStart(2, "0");
+  const showCategory = Boolean(category);
 
   return (
     <motion.div
@@ -146,16 +148,18 @@ function FAQCard({
           className="pointer-events-none relative z-10 mt-5 flex shrink-0 items-center gap-2.5"
           aria-hidden
         >
-          <span
-            className="hidden rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest sm:inline-flex"
-            style={{
-              color: meta.color,
-              borderColor: `${meta.color}35`,
-              background: `${meta.color}0e`,
-            }}
-          >
-            {meta.label}
-          </span>
+          {showCategory ? (
+            <span
+              className="hidden rounded-full border px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest sm:inline-flex"
+              style={{
+                color: meta.color,
+                borderColor: `${meta.color}35`,
+                background: `${meta.color}0e`,
+              }}
+            >
+              {meta.label}
+            </span>
+          ) : null}
           <motion.span
             animate={{ rotate: isOpen ? 90 : 0 }}
             transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 28 }}
