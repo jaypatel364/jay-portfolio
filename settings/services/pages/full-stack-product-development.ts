@@ -77,7 +77,7 @@ export const fullStackProductDevelopment: Service = {
   },
   sectionSupport: {
     capabilities:
-      "Full stack web development capabilities cover every layer of a modern application, from the interface your users click through to the server logic and database working behind the scenes, so nothing is left for another team to figure out later.",
+      "Full stack web development services cover every layer of a modern application, from the interface your users click through to the server logic and database working behind the scenes, so nothing is left for another team to figure out later.",
     problems:
       "Most full stack development problems come from disconnected systems, outdated architecture, or missing ownership over the whole application. Here are the challenges I run into most often, and how the right approach solves each one early.",
     process:
@@ -93,7 +93,7 @@ export const fullStackProductDevelopment: Service = {
     deliverables:
       "Every full stack development project ends with more than just code. Here's exactly what you get when the project is complete, from the working application itself to documentation, testing reports, and support after launch.",
     benefits:
-      "Choosing full stack web development over separate frontend, and backend hires comes with real, practical advantages. Here are the benefits I see most often, along with the outcomes they lead to once your application is live.",
+      "Choosing full stack development over separate frontend, and backend hires comes with real, practical advantages. Here are the benefits I see most often, along with the outcomes they lead to once your application is live.",
     whyHire:
       "Jay Patel full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend, and backend depth to every project, unlike a general web stack developer who's strong in one layer, and weaker in the other.",
     caseStudies:
@@ -106,7 +106,7 @@ export const fullStackProductDevelopment: Service = {
   hero: {
     heading: "Full Stack Development Services",
     description:
-      "I provide full-stack development services to businesses, and founders who require a single developer to oversee the frontend, backend and database without the necessity of transferring work between different teams. As a full stack web developer and full stack engineer, I build complete, production-ready applications from a single codebase to launch.",
+      "I provide full-stack development services for businesses, start-ups and individuals who want one developer to take care of frontend, backend, database and deployment without having to interface with separate teams. I build scalable, production-ready web applications from scratch, who understand the whole product from architecture to launch.",
     primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
     technologies: ["React", "Node.js", "Next.js", "TypeScript", "PostgreSQL", "AWS"],
@@ -174,7 +174,7 @@ export const fullStackProductDevelopment: Service = {
         "Applications ship using AWS development, Docker development and CI/CD development, so deployment isn't an afterthought.",
     },
     {
-      title: "SaaS & Product Development",
+      title: "SaaS Product Development",
       description:
         "For SaaS application development, and MVP development services, I focus on shipping the core value first, then layering in complexity. Learn more on the SaaS product development page.",
       relatedServiceSlug: "saas-development",

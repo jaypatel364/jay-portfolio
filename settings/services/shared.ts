@@ -11,6 +11,6 @@ export const SERVICE_CONSULTATION_CTA: ServiceCta = {
 };
 
 export const SERVICE_WORK_CTA: ServiceCta = {
-  label: "View selected work",
+  label: "View my work",
   href: "/work/",
 };

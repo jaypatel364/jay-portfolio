@@ -101,10 +101,7 @@ export function ServicesHubSection({
                   {service.shortDescription}
                 </p>
 
-                <ul
-                  className="relative mt-4 space-y-2"
-                  aria-label={`${service.title} capabilities`}
-                >
+                <ul className="relative mt-4 space-y-2" aria-label={`${service.title} Services`}>
                   {service.cardCapabilities.slice(0, 3).map((cap, capIndex) => (
                     <motion.li
                       key={cap}

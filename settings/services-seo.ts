@@ -8,6 +8,7 @@ import { siteConfig } from "@/settings";
 import type { Service } from "@/lib/services/types";
 import { getServicesHub } from "@/lib/services";
 import type { ServicesHubSettings } from "@/lib/services/types";
+import { getServiceSectionHeading } from "@/lib/services/section-headings";
 
 export const servicesPagePath = "/services";
 
@@ -20,6 +21,20 @@ function absoluteUrl(pathOrUrl: string | null | undefined): string | undefined {
 
 function serviceCanonical(service: Service): string {
   return absoluteUrl(service.seo.canonicalPath) ?? pageUrl(`services/${service.slug}`);
+}
+
+function socialSameAs(): string[] {
+  return [
+    ...new Set(
+      [
+        siteConfig.github,
+        siteConfig.linkedin,
+        siteConfig.twitter,
+        siteConfig.instagram,
+        ...siteConfig.profileLinks.map((p) => p.href),
+      ].filter((href): href is string => Boolean(href)),
+    ),
+  ];
 }
 
 export function servicesHubMetadata(hub: ServicesHubSettings = getServicesHub()): Metadata {
@@ -95,6 +110,8 @@ export function servicesHubJsonLd(serviceCount: number) {
 }
 
 export function servicePageJsonLd(service: Service) {
+  const sameAs = socialSameAs();
+
   return {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -105,12 +122,10 @@ export function servicePageJsonLd(service: Service) {
       "@type": "Person",
       name: siteConfig.fullName,
       url: `${BASE_URL}/`,
+      ...(sameAs.length ? { sameAs } : {}),
     },
-    areaServed: {
-      "@type": "Country",
-      name: "India",
-    },
-    serviceType: service.seo.focusKeyword,
+    areaServed: "Worldwide",
+    serviceType: getServiceSectionHeading(service, "capabilities"),
   };
 }
 

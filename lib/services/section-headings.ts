@@ -21,16 +21,16 @@ export type ServiceSectionHeadings = Record<
 
 /** Master H2 templates — same pattern on every service detail page. */
 export const SERVICE_H2_TEMPLATES = {
-  whatWeDo: (k: ServiceHeadingKeywords) => `What My ${k.keyword} Services Include`,
-  capabilities: (k: ServiceHeadingKeywords) => `${k.keywordVariant} Capabilities`,
+  whatWeDo: (k: ServiceHeadingKeywords) => `What ${k.keyword} Include`,
+  capabilities: (k: ServiceHeadingKeywords) => `${k.keywordVariant} Services`,
   problems: (k: ServiceHeadingKeywords) => `Common ${k.keyword} Challenges I Solve`,
   process: (k: ServiceHeadingKeywords) => `My ${k.keyword} Process`,
-  technologies: (k: ServiceHeadingKeywords) => `${k.keyword} Technologies I Use`,
+  technologies: (k: ServiceHeadingKeywords) => `Technologies Used for ${k.keyword}`,
   piecesConnect: (k: ServiceHeadingKeywords) => `How I Build ${k.piecesKeyword}`,
-  useCases: (k: ServiceHeadingKeywords) => `Where ${k.keyword} Applies`,
+  useCases: (k: ServiceHeadingKeywords) => `${k.keyword} Use Cases`,
   audiences: (k: ServiceHeadingKeywords) => `Who My ${k.keyword} Services Are For`,
   deliverables: (k: ServiceHeadingKeywords) => `What's Included in My ${k.keyword} Services`,
-  benefits: (k: ServiceHeadingKeywords) => `Benefits of ${k.keywordVariant}`,
+  benefits: (k: ServiceHeadingKeywords) => `Benefits of ${k.keyword}`,
   whyHire: (k: ServiceHeadingKeywords) => `Why Hire Me as a ${k.roleKeyword}?`,
   caseStudies: (k: ServiceHeadingKeywords) => `${k.keyword} Projects & Examples`,
   faqs: (k: ServiceHeadingKeywords) => `${k.keyword} Services FAQs`,
