@@ -82,32 +82,39 @@ export function BlogHeroVisual() {
                 transition={{ type: "spring", stiffness: 260, damping: 26 }}
               >
                 <div className="rounded-xl border border-border/80 bg-background/92 p-4 shadow-premium backdrop-blur-sm">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-                    {note.category}
-                  </p>
-                  <p className="font-heading mt-2 text-sm font-bold leading-snug text-foreground">
-                    {note.title}
-                  </p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">{note.meta}</p>
-
                   {offset === 0 ? (
-                    <div className="mt-3 space-y-1.5" aria-hidden>
-                      {[0, 1, 2].map((row) => (
-                        <motion.div
-                          key={row}
-                          initial={false}
-                          animate={{
-                            width: line > row ? `${72 - row * 14}%` : "12%",
-                            opacity: line > row ? 1 : 0.25,
-                          }}
-                          className="h-1.5 rounded-full bg-primary/25"
-                        />
-                      ))}
-                    </div>
+                    <>
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
+                        {note.category}
+                      </p>
+                      <p className="font-heading mt-2 text-sm font-bold leading-snug text-foreground">
+                        {note.title}
+                      </p>
+                      <p className="mt-1 text-[11px] text-muted-foreground">{note.meta}</p>
+                      <div className="mt-3 space-y-1.5" aria-hidden>
+                        {[0, 1, 2].map((row) => (
+                          <motion.div
+                            key={row}
+                            initial={false}
+                            animate={{
+                              width: line > row ? `${72 - row * 14}%` : "12%",
+                              opacity: line > row ? 1 : 0.25,
+                            }}
+                            className="h-1.5 rounded-full bg-primary/25"
+                          />
+                        ))}
+                      </div>
+                    </>
                   ) : (
-                    <div className="mt-3 space-y-1.5" aria-hidden>
-                      <div className="h-1.5 w-[80%] rounded-full bg-muted" />
-                      <div className="h-1.5 w-[60%] rounded-full bg-muted" />
+                    /* Back cards: skeleton only — no readable text showing through */
+                    <div aria-hidden>
+                      <div className="h-2 w-14 rounded-full bg-primary/20" />
+                      <div className="mt-2 h-3.5 w-[85%] rounded-full bg-muted/70" />
+                      <div className="mt-1 h-2.5 w-[60%] rounded-full bg-muted/50" />
+                      <div className="mt-3 space-y-1.5">
+                        <div className="h-1.5 w-[80%] rounded-full bg-muted/60" />
+                        <div className="h-1.5 w-[60%] rounded-full bg-muted/40" />
+                      </div>
                     </div>
                   )}
                 </div>

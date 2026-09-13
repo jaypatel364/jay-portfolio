@@ -266,7 +266,7 @@ function ImageDiagram({
   alt,
   title,
   instant,
-  plain ,
+  plain,
   className,
 }: {
   src: string;

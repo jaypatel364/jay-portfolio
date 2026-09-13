@@ -44,7 +44,7 @@ export function BlogArticleSidebar({
                 alt={nextPost.coverImage?.alt || nextPost.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                sizes="280px"
+                sizes="260px"
               />
             ) : (
               <div className="flex h-full items-center justify-center bg-gradient-to-br from-primary/20 via-transparent to-glow/25" />

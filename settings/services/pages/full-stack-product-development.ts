@@ -106,7 +106,7 @@ export const fullStackProductDevelopment: Service = {
   hero: {
     heading: "Full Stack Development Services",
     description:
-      "I provide full-stack development services for businesses, start-ups and individuals who want one developer to take care of frontend, backend, database, and deployment without having to interface with separate teams. I build scalable, production-ready web applications from scratch, who understand the whole product from architecture to launch.",
+      "I provide full-stack development services for businesses, start-ups and individuals who want one developer to take care of frontend, backend, database, and deployment without having to interface with separate teams. I build scalable, production-ready web applications from scratch, who understand the product end to end.",
     primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
     technologies: ["React", "Node.js", "Next.js", "TypeScript", "PostgreSQL", "AWS"],
@@ -132,7 +132,7 @@ export const fullStackProductDevelopment: Service = {
       "I work across the modern JavaScript ecosystem, including MERN stack development, so your application uses well-documented, widely-supported technology rather than a stack that only I understand. Projects range from small internal tools to full stack development services for companies preparing to scale.",
       "The frontend never touches the database directly. Every request from the browser goes through the API layer first, which checks who's asking, decides what they're allowed to see and only then reads from or writes to the database on their behalf. This separation is what keeps a full stack application stable: the interface can be redesigned without touching how data is stored and the database can be restructured or optimized without breaking anything a user sees on screen.",
       "Underneath that sits the infrastructure that keeps the whole thing running. AWS provides the servers, Docker keeps each part of the system behaving the same way in every environment, and CI/CD pipelines push updates out automatically instead of relying on someone remembering the right commands. None of these three pieces make decisions about your product. The application remains available, self-recovers from failures, and accommodates more users without requiring a rebuild.",
-    "There's also a feedback loop running underneath the request and response you don't see on screen. Logging and monitoring run across the frontend, backend, and database at the same time, so if the API starts responding slowly or the database gets an unusual spike in traffic, that shows up in a dashboard before a user ever notices something's wrong.",
+      "There's also a feedback loop running underneath the request and response you don't see on screen. Logging and monitoring run across the frontend, backend, and database at the same time, so if the API starts responding slowly or the database gets an unusual spike in traffic, that shows up in a dashboard before a user ever notices something's wrong.",
     ],
   },
   piecesConnectVisual: {
@@ -169,7 +169,7 @@ export const fullStackProductDevelopment: Service = {
     {
       title: "Database Design & Development",
       description:
-        "A well-designed database is the foundation of a successful application. I have worked with PostgreSQL, MongoDB and MySQL depending on the project needs. Database development is my thing: structure, relationships, queries, and performance, ensuring your application can store and access data efficiently as it grows.",
+        "A well-designed database is the foundation of a successful application. I have worked with PostgreSQL, MongoDB and MySQL depending on the project needs. I design database structure, relationships, queries, and performance, ensuring your application can store and access data efficiently as it grows.",
     },
     {
       title: "Cloud & DevOps Setup",
@@ -185,17 +185,17 @@ export const fullStackProductDevelopment: Service = {
     {
       title: "eCommerce & Marketplace Development",
       description:
-        "I develop real-world multi-vendor platforms and online stores. I do eCommerce application development and marketplace development work that covers product listings, checkout, payments, inventory, user accounts and vendor management. I focus on creating a wonderful buying experience and ensuring that the platform can handle increased traffic, and a larger number of products.",
+        "I develop real-world multi-vendor platforms and online stores. I do eCommerce application development and marketplace development work that covers product listings, checkout, payments, inventory, user accounts and vendor management. I focus on creating a smooth buying experience and ensuring that the platform can handle increased traffic, and a larger number of products.",
     },
     {
       title: "AI & Automation Development",
       description:
-        "I build actual AI features & automation solutions that save organizations time and enhance their products. I develop AI applications, I incorporate LLMs, I develop chatbots, I automate procedures using AI. I can connect AI solutions to existing APIs, databases, CRMs and business tools to automate boring operations or add useful AI capabilities to an application. The emphasis is on building useful, reliable and maintainable artificial intelligence systems.",
+        "I build AI-powered features & automation solutions that save organizations time and enhance their products. I develop AI applications, I incorporate LLMs, I develop chatbots, I automate procedures using AI. I can connect AI solutions to existing APIs, databases, CRMs and business tools to automate boring operations or add useful AI capabilities to an application. The emphasis is on building useful, reliable and maintainable artificial intelligence systems.",
     },
     {
       title: "Enterprise Application Development",
       description:
-        "I develop software for bigger companies that need strong security, well-defined user rights and reliable integrations. I build enterprise apps (front, back, API, DB and internal business tools). I build with things like role-based access, audit trails, integrations and scalability in mind from the outset so that the application can grow with the organization",
+        "I develop software for larger companies that need strong security, well-defined user rights and reliable integrations. I build enterprise apps (front, back, API, DB and internal business tools). I build with things like role-based access, audit trails, integrations and scalability in mind from the outset so that the application can grow with the organization",
     },
   ],
   problems: [
@@ -457,13 +457,13 @@ export const fullStackProductDevelopment: Service = {
         title: "Flexible Development Support",
         description:
           "Whether you need a freelance full stack developer for a short project or want to hire full stack developer support long term, the engagement scales to match your actual need, not a fixed contract.",
-        },
-        {
+      },
+      {
         tag: "Support",
         title: "Reliable Long-Term Support",
         description:
           "After launch, you're not left to figure out the next update alone. The same full stack software developer who built your application is the one maintaining it, so nothing gets lost when a project changes hands.",
-        },
+      },
     ],
     highlights: [
       { label: "Experience", value: "Years building production applications" },

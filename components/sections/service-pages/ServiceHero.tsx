@@ -67,7 +67,13 @@ export function ServiceHero({ service }: ServiceHeroProps) {
         </div>
 
         <div className="mx-auto w-full min-w-0 lg:mx-0">
-          <ServiceDetailHeroVisual slug={service.slug} title={service.title} visual={service.hero.visual} large instant />
+          <ServiceDetailHeroVisual
+            slug={service.slug}
+            title={service.title}
+            visual={service.hero.visual}
+            large
+            instant
+          />
         </div>
       </div>
     </header>

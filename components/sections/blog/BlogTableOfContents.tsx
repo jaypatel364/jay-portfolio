@@ -136,7 +136,7 @@ export function BlogTableOfContents({
         On this page
       </p>
       <div
-        className="relative min-h-0 max-h-82 overflow-y-auto overscroll-contain pr-1"
+        className="relative min-h-0 max-h-80 overflow-y-auto overscroll-contain pr-1"
         style={{ scrollbarWidth: "thin", scrollbarColor: "var(--border) transparent" }}
       >
         {list}

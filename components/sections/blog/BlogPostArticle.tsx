@@ -135,16 +135,16 @@ export function BlogPostArticle({
         </header>
 
         <div className="relative mx-auto mt-12 w-full min-w-0 max-w-6xl px-4 sm:px-6 lg:mt-16">
-          <div className="lg:hidden">
+          <div className="xl:hidden">
             {hasToc ? <BlogTableOfContents headings={headings} variant="mobile" /> : null}
           </div>
 
-          <div className="grid min-w-0 items-stretch gap-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-12 xl:gap-14">
+          <div className="grid min-w-0 items-stretch gap-10 lg:gap-12 xl:grid-cols-[minmax(0,1fr)_260px] xl:gap-14">
             <div className="min-w-0">
               <ArticleBody post={post} shareUrl={shareUrl} authors={authors} />
             </div>
 
-            <aside className="relative hidden min-w-0 lg:block">
+            <aside className="relative hidden min-w-0 xl:block">
               <BlogStickyRail>
                 {hasToc ? <BlogTableOfContents headings={headings} variant="desktop" /> : null}
                 <BlogArticleSidebar title={post.title} shareUrl={shareUrl} nextPost={nextPost} />

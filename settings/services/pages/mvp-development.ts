@@ -85,7 +85,8 @@ export const mvpDevelopment: Service = {
   hero: {
     heading: "MVP Development Services",
     description:
-      "I provide MVP development services to startups, SaaS teams, and early-stage founders who need a working product fast. You get one developer who owns the build, not a shifting group of freelancers. This covers everything from the first idea to a live release. My mvp dev process focuses on minimum viable product development that is lean, functional, and ready for real users.",  primaryCta: SERVICE_CONTACT_CTA,
+      "I provide MVP development services to startups, SaaS teams, and early-stage founders who need a working product fast. You get one developer who owns the build, not a shifting group of freelancers. This covers everything from the first idea to a live release. My mvp dev process focuses on minimum viable product development that is lean, functional, and ready for real users.",
+    primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
     technologies: ["React", "Next.js", "React Native", "Node.js", "PostgreSQL", "MongoDB"],
     visual: {

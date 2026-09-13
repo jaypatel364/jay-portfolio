@@ -29,7 +29,7 @@ export function InnerPageHero({
     <section
       id={id}
       className={cn(
-        "relative overflow-hidden border-b border-border/60 px-4 pb-14 pt-28 sm:px-6 md:pb-20 md:pt-32",
+        "relative overflow-hidden border-b border-border/60 pb-14 pt-28 md:pb-20 md:pt-32",
         className,
       )}
     >
@@ -43,7 +43,7 @@ export function InnerPageHero({
         style={{ animation: "aurora-2 16s ease-in-out infinite" }}
       />
 
-      <div className="relative mx-auto w-full min-w-0 max-w-6xl">
+      <div className="relative mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         <div
           className={cn(
             visual &&
