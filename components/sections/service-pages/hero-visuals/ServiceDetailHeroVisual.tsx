@@ -16,6 +16,8 @@ interface ServiceDetailHeroVisualProps {
   visual?: ServiceVisual;
   /** Extra classes for the rendered image (sizing / fit only). */
   imageClassName?: string;
+  /** When true, renders image with no card styling — transparent, no border, no hover effects. */
+  plain?: boolean;
 }
 
 type Node = { id: string; label: string; x: number; y: number; accent?: boolean };
@@ -264,34 +266,89 @@ function ImageDiagram({
   alt,
   title,
   instant,
+  plain ,
   className,
 }: {
   src: string;
   alt: string;
   title?: string;
   instant?: boolean;
+  /** When true, renders the image with no card styling — fully transparent, no border, no hover effects. */
+  plain?: boolean;
   className?: string;
 }) {
   const reduced = useReducedMotion() ?? false;
   const animate = !instant && !reduced;
 
+  if (plain) {
+    return (
+      <motion.div
+        className="relative h-full w-full"
+        initial={animate ? { opacity: 0 } : false}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.45 }}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          title={title ?? alt}
+          width={2720}
+          height={1840}
+          sizes="(max-width: 1024px) 100vw, 440px"
+          className={cn("h-auto w-full", className)}
+          priority={instant}
+        />
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
-      className="relative h-full w-full"
-      initial={animate ? { opacity: 0 } : false}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.45 }}
+      className="group relative h-full w-full"
+      initial={animate ? { opacity: 0, y: 16 } : false}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     >
-      <Image
-        src={src}
-        alt={alt}
-        title={title ?? alt}
-        width={2720}
-        height={1840}
-        sizes="(max-width: 1024px) 100vw, 440px"
-        className={cn("h-auto w-full", className)}
-        priority={instant}
+      {/* Glow halo — bleeds outside the card on hover */}
+      <div
+        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(ellipse at 60% 40%, color-mix(in oklch, var(--primary) 28%, transparent) 0%, transparent 70%)",
+          filter: "blur(18px)",
+          zIndex: -1,
+        }}
+        aria-hidden
       />
+
+      {/* Card shell */}
+      <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/40 shadow-xl backdrop-blur-sm transition-all duration-500 group-hover:border-primary/35 group-hover:shadow-[0_8px_40px_-8px_color-mix(in_oklch,var(--primary)_30%,transparent)]">
+        <div className="overflow-hidden rounded-2xl">
+          <Image
+            src={src}
+            alt={alt}
+            title={title ?? alt}
+            width={2720}
+            height={1840}
+            sizes="(max-width: 1024px) 100vw, 440px"
+            className={cn(
+              "h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]",
+              className,
+            )}
+            priority={instant}
+          />
+        </div>
+
+        {/* Bottom fade overlay */}
+        <div
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 rounded-b-2xl"
+          style={{
+            background:
+              "linear-gradient(to top, color-mix(in oklch, var(--background) 55%, transparent), transparent)",
+          }}
+          aria-hidden
+        />
+      </div>
     </motion.div>
   );
 }
@@ -303,6 +360,7 @@ export function ServiceDetailHeroVisual({
   instant,
   visual,
   imageClassName,
+  plain,
 }: ServiceDetailHeroVisualProps) {
   const imageSrc = visual?.image;
   const imageAlt = visual?.alt ?? `${title} architecture visualization`;
@@ -316,6 +374,7 @@ export function ServiceDetailHeroVisual({
           alt={imageAlt}
           title={imageTitle}
           instant={instant}
+          plain={plain}
           className={imageClassName}
         />
       ) : (

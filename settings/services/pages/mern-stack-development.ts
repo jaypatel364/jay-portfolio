@@ -115,6 +115,18 @@ export const mernStackDevelopment: Service = {
       "Underneath that sits the infrastructure that keeps the whole thing running. AWS provides the servers, Docker keeps each part behaving the same way across environments, and CI/CD pipelines push updates out automatically. None of these three pieces make decisions about your product. They exist so a scalable mern stack development build stays available, recovers on its own when something fails, and absorbs more users without needing a rebuild.",
     ],
   },
+  piecesConnectVisual: {
+    type: "diagram",
+    image: "/images/services/mern-stack/mern_stack_architecture_diagram.png",
+    title: "MERN Stack Architecture Diagram | React, Node.js, Express & MongoDB",
+    alt: "MERN stack architecture diagram showing a user request flowing through the React frontend, Express.js API, Node.js runtime, and MongoDB database",
+  },
+  deliverablesVisual: {
+    type: "illustration",
+    image: "/images/services/mern-stack/what-you-get-with-every-mern-stack-project.png",
+    title: "What You Get With Every MERN Stack Project | Deliverables",
+    alt: "What you get with every MERN stack project — deliverables from the complete application through post-launch support",
+  },
   capabilities: [
     {
       title: "React Development",

@@ -30,7 +30,7 @@ export async function generateMetadata({
 function resolveCaseStudyProjects(service: Service) {
   return (service.caseStudySlugs ?? [])
     .map((projectSlug) => getProjectBySlug(projectSlug))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p && !p.nda));
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
 }
 
 export default async function ServiceDetailPage({ params }: { params: Promise<{ slug: string }> }) {

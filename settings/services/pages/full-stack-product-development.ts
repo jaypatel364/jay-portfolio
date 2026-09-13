@@ -83,7 +83,7 @@ export const fullStackProductDevelopment: Service = {
     process:
       "I have eight clear stages in my full stack development process, from discovery and architecture planning to backend development, database design, cloud deployment, and ongoing support after launch, so you always know what’s happening and why.",
     technologies:
-      "I build using a modern, well-supported stack rather than tools only I understand. Below are the frontend, backend, database and cloud technologies I use most often, along with common combinations like MERN stack development and React Node.js development. Common stack combinations I work in include MERN stack development services, MEAN stack development, React Node.js development, Node.js PostgreSQL development, and React TypeScript development. For projects that need everything under one roof, full stack JavaScript development, and JavaScript full stack development, let the frontend and backend share the same language, which cuts down on handoff errors, and speeds up delivery. See recent examples of this combination in action on the Next.js, and Node.js project page.",
+      "I build using a modern, well-supported stack rather than tools only I understand. Below are the frontend, backend, database and cloud technologies I use most often, along with common combinations like MERN stack development and React Node.js development.",
     piecesConnect:
       "A full stack application isn't three separate systems that happen to talk to each other. It's one system where every layer depends on how the others are built. Here's how the pieces actually interact once the application is live, not the steps used to build it.",
     useCases:
@@ -95,7 +95,7 @@ export const fullStackProductDevelopment: Service = {
     benefits:
       "Choosing full stack web development over separate frontend, and backend hires comes with real, practical advantages. Here are the benefits I see most often, along with the outcomes they lead to once your application is live.",
     whyHire:
-      "Jay Patel Dev full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend and backend depth to every project, unlike a general web stack developer who's strong in one layer and weaker in the other.",
+      "Jay Patel full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend and backend depth to every project, unlike a general web stack developer who's strong in one layer and weaker in the other.",
     caseStudies:
       "Reading about a process is different from seeing it applied. Here are a few full stack development projects that show how these layers come together in practice, from early planning through to a live, working application.",
     relatedServices:
@@ -132,6 +132,7 @@ export const fullStackProductDevelopment: Service = {
       "I work across the modern JavaScript ecosystem, including MERN stack development, so your application uses well-documented, widely-supported technology rather than a stack that only I understand. Projects range from small internal tools to full stack development services for companies preparing to scale.",
       "The frontend never touches the database directly. Every request from the browser goes through the API layer first, which checks who's asking, decides what they're allowed to see and only then reads from or writes to the database on their behalf. This separation is what keeps a full stack application stable: the interface can be redesigned without touching how data is stored and the database can be restructured or optimized without breaking anything a user sees on screen.",
       "Underneath that sits the infrastructure that keeps the whole thing running. AWS provides the servers, Docker keeps each part of the system behaving the same way in every environment, and CI/CD pipelines push updates out automatically instead of relying on someone remembering the right commands. None of these three pieces make decisions about your product. The application remains available, self-recovers from failures, and accommodates more users without requiring a rebuild.",
+    "There's also a feedback loop running underneath the request and response you don't see on screen. Logging and monitoring run across the frontend, backend, and database at the same time, so if the API starts responding slowly or the database gets an unusual spike in traffic, that shows up in a dashboard before a user ever notices something's wrong.",
     ],
   },
   piecesConnectVisual: {
@@ -425,32 +426,44 @@ export const fullStackProductDevelopment: Service = {
   whyHire: {
     roleTitle: "Full Stack Developer",
     intro:
-      "Jay Patel Dev full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend and backend depth to every project, unlike a general web stack developer who's strong in one layer and weaker in the other.",
+      "Jay Patel full stack development services are built around one principle: you should trust the person building your application to understand the whole picture. As a certified full stack developer with hands-on MERN stack experience, I bring both frontend and backend depth to every project, unlike a general web stack developer who's strong in one layer and weaker in the other.",
     reasons: [
       {
         tag: "Speed",
-        title: "Speed",
+        title: "Faster Full Stack Development",
         description:
           "Working as a single full stack engineer means fewer meetings and faster decisions, because there's no team to sync with before moving forward.",
       },
       {
         tag: "Precision",
-        title: "Precision",
+        title: "Seamless Frontend & Backend Integration",
         description:
           "As a full stack software engineer, I catch issues that only show up when frontend and backend decisions are made by the same person who understands both sides.",
       },
       {
         tag: "Ownership",
-        title: "Full Ownership",
+        title: "End-to-End Project Ownership",
         description:
           "When you need dedicated full stack development, you get one point of contact accountable for the entire full stack development team's worth of output.",
       },
       {
         tag: "Communication",
-        title: "Clear Communication",
+        title: "Clear & Direct Communication",
         description:
           "I act as a full stack development partner, not just a contractor, explaining decisions in plain terms so you always know where the project stands.",
       },
+      {
+        tag: "Flexibility",
+        title: "Flexible Development Support",
+        description:
+          "Whether you need a freelance full stack developer for a short project or want to hire full stack developer support long term, the engagement scales to match your actual need, not a fixed contract.",
+        },
+        {
+        tag: "Support",
+        title: "Reliable Long-Term Support",
+        description:
+          "After launch, you're not left to figure out the next update alone. The same full stack software developer who built your application is the one maintaining it, so nothing gets lost when a project changes hands.",
+        },
     ],
     highlights: [
       { label: "Experience", value: "Years building production applications" },

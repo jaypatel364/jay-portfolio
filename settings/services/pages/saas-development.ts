@@ -122,6 +122,18 @@ export const saasDevelopment: Service = {
       "My SaaS development solutions are not one size fits all. A B2B SaaS development project needs different tenancy choices than a B2C SaaS development consumer app. Custom SaaS platform development decisions, like database sharding and cloud application design, get made around the real product. Some platforms need usage-based billing or live dashboards. For those, SaaS product engineering becomes the core of the build, not a feature bolted on later.",
     ],
   },
+  piecesConnectVisual: {
+    type: "diagram",
+    image: "/images/services/saas/saas_architecture_diagram.png",
+    title: "SaaS Architecture Diagram | Multi-Tenant, Billing, API & Cloud",
+    alt: "SaaS architecture diagram showing multi-tenant data isolation, subscription billing, API layer, and cloud infrastructure working as one system",
+  },
+  deliverablesVisual: {
+    type: "illustration",
+    image: "/images/services/saas/what-you-get-with-every-saas-project.png",
+    title: "What You Get With Every SaaS Project | Deliverables",
+    alt: "What you get with every SaaS project — deliverables from the complete multi-tenant platform through post-launch support",
+  },
   capabilities: [
     {
       title: "Custom SaaS Product Engineering",

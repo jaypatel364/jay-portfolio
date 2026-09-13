@@ -90,7 +90,7 @@ export const apiBackendEngineering: Service = {
     benefits:
       "Choosing backend web development built around your product, instead of a generic template, comes with real, practical advantages once it is live.",
     whyHire:
-      "Jay Patel Dev backend development services are built around one idea: the person writing your backend API development should understand the whole system, not just one endpoint. As a Jay Patel backend developer, I bring hands-on experience with Node.js backend development, REST API development, and database design to every project. Jay Patel Dev Node.js development and Jay Patel Dev Node.js backend development cover the runtime and API layer, while Jay Patel Dev API development and Jay Patel Dev backend API development cover everything a client-facing product needs to talk to. For teams evaluating a Jay Patel web development engagement more broadly, or Jay Patel Dev web development support across the full stack, backend work is where most of the hands-on experience sits, alongside Jay Patel Dev backend development and Jay Patel Dev backend development services delivered directly, without a layer of account managers in between. Jay Patel Dev Python development is also available for teams that need a script or data pipeline outside the usual Node.js stack.",
+      "Jay Patel backend development services are built around one idea: the person writing your backend API development should understand the whole system, not just one endpoint. As a Jay Patel backend developer, I bring hands-on experience with Node.js backend development, REST API development, and database design to every project. Jay Patel Node.js development and Jay Patel Dev Node.js backend development cover the runtime and API layer, while Jay Patel Dev API development and Jay Patel Dev backend API development cover everything a client-facing product needs to talk to. For teams evaluating a Jay Patel web development engagement more broadly, or Jay Patel Dev web development support across the full stack, backend work is where most of the hands-on experience sits, alongside Jay Patel Dev backend development and Jay Patel Dev backend development services delivered directly, without a layer of account managers in between. Jay Patel Dev Python development is also available for teams that need a script or data pipeline outside the usual Node.js stack.",
     caseStudies:
       "Reading about backend architecture is different from seeing it running in production. Here are a few backend development projects that show the approach applied, from API design through deployment.",
     faqs: "Practical answers about scope, cost, and how backend development services engagements typically work.",
@@ -102,9 +102,14 @@ export const apiBackendEngineering: Service = {
   hero: {
     heading: "Backend Development Services",
     description:
-      "I provide backend development services to startups, SaaS teams, and businesses that need reliable server-side logic, secure APIs, and databases built to handle real traffic. As a backend developer focused on backend development and backend web development, I use Node.js development and Express.js development to handle backend application development and backend app development from planning through deployment, so the server side of your product never becomes the reason it breaks.",
+      "I provide backend development services to startups, SaaS teams, and businesses that need reliable server-side logic, secure APIs, and databases built to handle real traffic. As a backend developer focused on backend development and backend web development.",
     primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
+    visual: {
+      type: "illustration",
+      image: "/images/services/backend/hero-banner.png",
+      alt: "MVP Development hero illustration",
+    },
     technologies: ["Node.js", "Express.js", "NestJS", "PostgreSQL", "MongoDB", "Redis"],
   },
   editorialIntro: {
@@ -128,6 +133,18 @@ export const apiBackendEngineering: Service = {
       "Application backend work is not just business logic either. Web server development and backend infrastructure decisions, like caching, queues, and load balancing, are what keep server-side applications responsive once real users arrive, and what most backend development services quietly depend on.",
       "Logging and monitoring run across every layer at once, so if a database performance optimization issue starts building, it shows up on a dashboard before users notice anything is wrong.",
     ],
+  },
+  piecesConnectVisual: {
+    type: "diagram",
+    image: "/images/services/backend/backend_architecture_diagram.png",
+    title: "Backend Architecture Diagram | Node.js, API, Database & Cloud",
+    alt: "Backend architecture diagram showing a request flowing through the Node.js API layer, business logic, database, and cloud infrastructure",
+  },
+  deliverablesVisual: {
+    type: "illustration",
+    image: "/images/services/backend/what-you-get-with-every-backend-project.png",
+    title: "What You Get With Every Backend Project | Deliverables",
+    alt: "What you get with every backend project — deliverables from the complete backend system through post-launch support",
   },
   capabilities: [
     {

@@ -47,7 +47,7 @@ export const frontendDevelopment: Service = {
       "Can you improve an existing frontend instead of rebuilding it?",
       "Do you handle responsive and cross-browser testing?",
       "Is outsourcing frontend development a good option for a small team?",
-      "What frontend technologies do you specialize in?",
+      "What frontend technologies dopiecesConnectVisual you specialize in?",
     ],
     relatedEntities: [
       "React",
@@ -126,6 +126,18 @@ export const frontendDevelopment: Service = {
     paragraphs: [
       "My frontend development solutions are not one size fits all. A marketing site needs different things than a busy dashboard. Custom web frontend development choices, like rendering and state, get made around the actual product. Some products need live updates or drag and drop screens. For those, interactive web development becomes the core of the build, not a feature added later.",
     ],
+  },
+  piecesConnectVisual: {
+    type: "diagram",
+    image: "/images/services/frontend/frontend_architecture_diagram.png",
+    title: "Full Stack Architecture Diagram | Frontend, API, Database & Cloud",
+    alt: "Full stack architecture diagram showing a user request flowing through the frontend, backend/API, and database layers on AWS, Docker, and CI/CD",
+  },
+  deliverablesVisual: {
+    type: "illustration",
+    image: "/images/services/frontend/what-you-get-with-every-frontend-project.png",
+    title: "What You Get With Every Frontend Project | Deliverables",
+    alt: "What you get with every Frontend project — eight deliverables from the complete application through post-launch support",
   },
   capabilities: [
     {

@@ -24,7 +24,7 @@ export function ServiceCaseStudiesSection({
   const reduced = useReducedMotion() ?? false;
   if (!projects.length) return null;
 
-  const showcase = projects.slice(0, 2);
+  const showcase = projects.slice(0, 4);
   const caseStudiesHeading = getServiceSectionHeading(service, "caseStudies");
   const caseStudiesSupport = getServiceSectionSupport(service, "caseStudies");
 

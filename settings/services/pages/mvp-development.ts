@@ -85,10 +85,14 @@ export const mvpDevelopment: Service = {
   hero: {
     heading: "MVP Development Services",
     description:
-      "I provide MVP development services to startups, SaaS teams, and early-stage founders who need a working product fast. You get one developer who owns the build, not a shifting group of freelancers. This covers everything from the first idea to a live release. My mvp dev process focuses on minimum viable product development that is lean, functional, and ready for real users. Need custom MVP development for a new idea? Want to hire MVP developers to support an in-house team? My MVP development services cover both, whether the goal is rapid MVP development or a slower, end-to-end MVP development build. From startup MVP development to SaaS MVP development, every engagement starts with a clear MVP development team structure so nothing gets lost between design and code.",
-    primaryCta: SERVICE_CONTACT_CTA,
+      "I provide MVP development services to startups, SaaS teams, and early-stage founders who need a working product fast. You get one developer who owns the build, not a shifting group of freelancers. This covers everything from the first idea to a live release. My mvp dev process focuses on minimum viable product development that is lean, functional, and ready for real users.",  primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
     technologies: ["React", "Next.js", "React Native", "Node.js", "PostgreSQL", "MongoDB"],
+    visual: {
+      type: "illustration",
+      image: "/images/services/mvp/hero-banner.png",
+      alt: "MVP Development hero illustration",
+    },
   },
   editorialIntro: {
     statement:
@@ -105,6 +109,18 @@ export const mvpDevelopment: Service = {
     paragraphs: [
       "MVP development services for startups need to move fast without turning into a rebuild six months later. My MVP web development and MVP web development services cover browser-based products end to end, from login screens to billing. Whether the plan is a lean test or a fuller launch, MVP development stays focused on getting real feedback from real users, quickly.",
     ],
+  },
+  piecesConnectVisual: {
+    type: "diagram",
+    image: "/images/services/mvp/mvp_architecture_diagram.png",
+    title: "MVP Architecture Diagram | Idea Validation, Build & Launch",
+    alt: "MVP development diagram showing the flow from idea validation through feature scoping, full stack build, and launch-ready product",
+  },
+  deliverablesVisual: {
+    type: "illustration",
+    image: "/images/services/mvp/what-you-get-with-every-mvp-project.png",
+    title: "What You Get With Every MVP Project | Deliverables",
+    alt: "What you get with every MVP project — deliverables from the working launch-ready product through post-launch support",
   },
   capabilities: [
     {
