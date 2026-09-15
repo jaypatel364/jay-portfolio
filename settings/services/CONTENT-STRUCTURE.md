@@ -14,7 +14,7 @@ Set keywords once per page; H2s update automatically.
 
 | Section                 | Master H2 template                       | Full stack development example                        |
 | ----------------------- | ---------------------------------------- | ----------------------------------------------------- |
-| What I Do               | What My [Keyword] Services Include       | What My Full Stack Development Services Include       |
+| What I Do               | cd [Keyword] Services Include            | What My Full Stack Development Services Include       |
 | Service Capabilities    | [Keyword Variant] Capabilities           | Full Stack Web Development Capabilities               |
 | Problems I Solve        | Common [Keyword] Challenges I Solve      | Common Full Stack Development Challenges I Solve      |
 | My Process              | My [Keyword] Process                     | My Full Stack Development Process                     |
@@ -70,19 +70,19 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 ## Locked counts (quick reference)
 
-| Section              | Count rule                                 |
-| -------------------- | ------------------------------------------ |
-| Capabilities         | **9** items (fixed)                        |
-| Problems             | **6** cards (fixed)                        |
-| Process              | **6 or 8** steps                           |
-| System (How I Build) | **1** support para + **3** body paragraphs |
-| Use cases            | **6** items (fixed)                        |
-| Fit (audiences)      | **4** cards (fixed)                        |
-| Deliverables         | **8** items (fixed)                        |
-| Why Hire Me          | **4 or 6** reason points                   |
-| FAQ                  | **8** Q&A pairs (fixed)                    |
-| Connected services   | Related service cards + H2 support para    |
-| Insights             | Related post links + H2 support para       |
+| Section              | Count rule                                   |
+| -------------------- | -------------------------------------------- |
+| Capabilities         | **9** items (fixed)                          |
+| Problems             | **6** cards (fixed)                          |
+| Process              | **6 or 8** steps                             |
+| System (How I Build) | **1** support para + **3–4** body paragraphs |
+| Use cases            | **6** items (fixed)                          |
+| Fit (audiences)      | **4** cards (fixed)                          |
+| Deliverables         | **8** items (fixed)                          |
+| Why Hire Me          | **4 or 6** reason points                     |
+| FAQ                  | **8** Q&A pairs (fixed)                      |
+| Connected services   | Related service cards + H2 support para      |
+| Insights             | Related post links + H2 support para         |
 
 ---
 
@@ -113,15 +113,15 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 **Section key:** `whatWeDo` + `editorialIntro` + `whatWeBuild`  
 **Always shown:** Yes
 
-| Element              | TS key                                                  | Suggested length               | Notes                                          |
-| -------------------- | ------------------------------------------------------- | ------------------------------ | ---------------------------------------------- |
-| **H2**               | _(from template)_                                       | —                              | `getServiceSectionHeadings(service).whatWeDo`  |
-| Editorial statement  | `editorialIntro.statement`                              | 15–25 words                    | Bold lead line                                 |
-| Editorial supporting | `editorialIntro.supporting`                             | 30–40 words                    | One paragraph                                  |
-| Body paragraphs      | `whatWeDo.paragraphs`                                   | **3 × ~50 words** (~150 total) | **Page shows paragraphs 1–2 only**             |
-| Overview             | `overview`                                              | 35–45 words                    | Used in meta/context; keep aligned with H2     |
-| Highlight question   | _(fixed UI copy)_                                       | —                              | "What makes this [service] service different?" |
-| Highlight list       | `Highlight question -> how service different` (first 3) | **3 × 4–6 words**              | Checklist with icons                           |
+| Element              | TS key                                                  | Suggested length    | Notes                                                |
+| -------------------- | ------------------------------------------------------- | ------------------- | ---------------------------------------------------- |
+| **H2**               | _(from template)_                                       | —                   | `getServiceSectionHeadings(service).whatWeDo`        |
+| Editorial statement  | `editorialIntro.statement`                              | 15–25 words         | Bold lead line                                       |
+| Editorial supporting | `editorialIntro.supporting`                             | 30–40 words         | One paragraph                                        |
+| Body paragraphs      | `whatWeDo.paragraphs`                                   | **3–4 × ~50 words** | **What I Do shows paragraphs 1–2; System shows all** |
+| Overview             | `overview`                                              | 35–45 words         | Used in meta/context; keep aligned with H2           |
+| Highlight question   | _(fixed UI copy)_                                       | —                   | "What makes this [service] service different?"       |
+| Highlight list       | `Highlight question -> how service different` (first 3) | **3 × 4–6 words**   | Checklist with icons                                 |
 
 ---
 
@@ -196,12 +196,12 @@ Hero uses `hero.description`. What I Do uses `editorialIntro` + `whatWeDo.paragr
 
 **Copy goal:** Explain how the **application infrastructure** fits together — frontend, backend, data, APIs, hosting/deployment — not a generic “pieces come together” blurb.
 
-| Element              | TS key                                         | Suggested length        | Notes                                                         |
-| -------------------- | ---------------------------------------------- | ----------------------- | ------------------------------------------------------------- |
-| Supporting paragraph | `sectionSupport.piecesConnect`                 | **~30–40 words**        | 1 para under H2; frames the infrastructure story              |
-| Body paragraphs      | `whatWeDo.paragraphs` or dedicated system copy | **3 paragraphs**        | Infrastructure explanation — how layers connect in production |
-| Industries label     | _(fixed)_                                      | "Where this shows up"   |                                                               |
-| Industry chips       | `industries`                                   | **4 items** × 2–4 words | e.g. SaaS, E-commerce                                         |
+| Element              | TS key                                         | Suggested length        | Notes                                                                                     |
+| -------------------- | ---------------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------- |
+| Supporting paragraph | `sectionSupport.piecesConnect`                 | **~30–40 words**        | 1 para under H2; frames the infrastructure story                                          |
+| Body paragraphs      | `whatWeDo.paragraphs` or dedicated system copy | **3–4 paragraphs**      | Infrastructure explanation — how layers connect in production; System section renders all |
+| Industries label     | _(fixed)_                                      | "Where this shows up"   |                                                                                           |
+| Industry chips       | `industries`                                   | **4 items** × 2–4 words | e.g. SaaS, E-commerce                                                                     |
 
 ---
 

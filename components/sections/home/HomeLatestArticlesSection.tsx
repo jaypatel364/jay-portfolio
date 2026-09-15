@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getFeaturedBlogPosts, getBlogPostsPage } from "@/lib/sanity";
 import { BlogPostCard } from "@/components/sections/blog/BlogPostCard";
+import { SectionHeading } from "@/components/shared";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { innerPages } from "@/settings/pages";
 
 /** Latest 3 articles pulled from Sanity — shown on the home page. */
@@ -27,38 +29,35 @@ export async function HomeLatestArticlesSection() {
         aria-hidden
       />
 
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-        {/* Section header */}
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <span className="text-sm font-semibold uppercase tracking-widest text-primary">
-              From the blog
-            </span>
-            <h2
-              id="latest-articles-heading"
-              className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl"
-            >
-              Latest Articles
-            </h2>
-            <p className="mt-3 max-w-xl text-base leading-relaxed text-muted-foreground">
-              Practical guides and deep dives on React, Next.js, Node.js, and modern web
-              architecture.
-            </p>
-          </div>
-          <Link
-            href={`${innerPages.blog.path}/`}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border/70 bg-card/50 px-4 py-2 text-sm font-semibold text-primary transition-all hover:border-primary/40 hover:bg-primary/[0.07]"
-          >
-            {innerPages.blog.homeCta}
-            <ArrowUpRight className="h-4 w-4" aria-hidden />
-          </Link>
-        </div>
+      <div className={PAGE_CONTAINER}>
+        <SectionHeading
+          label="From the blog"
+          title="Latest Articles"
+          titleId="latest-articles-heading"
+        />
+        <p className="mx-auto mt-3 max-w-xl text-center text-base leading-relaxed text-muted-foreground">
+          Practical guides and deep dives on React, Next.js, Node.js, and modern web architecture.
+        </p>
 
         {/* Cards */}
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <BlogPostCard key={post._id} post={post} />
           ))}
+        </div>
+
+        {/* View all CTA */}
+        <div className="mt-10 flex justify-center">
+          <Link
+            href={`${innerPages.blog.path}/`}
+            className="btn-shine group inline-flex items-center justify-center gap-2 rounded-full gradient-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            View all articles
+            <ArrowUpRight
+              className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden
+            />
+          </Link>
         </div>
       </div>
     </section>

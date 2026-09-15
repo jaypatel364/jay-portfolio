@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 import { RESUME_OPEN_EVENT } from "@/components/features/resume/open-resume";
 import { Brand } from "@/components/shared";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 
 /** cmdk / accent / resume stay out of the initial bundle until opened or idle. */
 const AccentPicker = dynamic(() =>
@@ -272,7 +273,7 @@ export function Navbar() {
         Skip to content
       </a>
       <nav
-        className="mx-auto flex w-full min-w-0 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6"
+        className={cn(PAGE_CONTAINER, "flex items-center justify-between gap-2")}
         aria-label="Primary"
       >
         <Link

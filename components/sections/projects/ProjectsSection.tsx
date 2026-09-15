@@ -96,8 +96,8 @@ export function ProjectsSection() {
   const preview = PROJECTS.slice(0, HOME_PROJECT_COUNT);
 
   return (
-    <section id="work" className="px-6 py-14 md:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section id="work" className="py-14 md:py-28">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         <SectionHeading label="Work" title="Featured Full Stack Projects" />
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">

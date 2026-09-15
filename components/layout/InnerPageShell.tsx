@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
+import { cn } from "@/lib/utils";
 
 interface PageBackLinkProps {
   href?: string;
@@ -45,7 +47,7 @@ interface InnerPageShellProps {
 /** Standard padding + back link wrapper for inner routes inside SiteChrome. */
 export function InnerPageShell({ children }: InnerPageShellProps) {
   return (
-    <main id="main" className="mx-auto max-w-6xl px-6 pb-24 pt-28">
+    <main id="main" className={cn(PAGE_CONTAINER, "pb-24 pt-28")}>
       <PageBackLink />
       <div className="mt-8">{children}</div>
     </main>

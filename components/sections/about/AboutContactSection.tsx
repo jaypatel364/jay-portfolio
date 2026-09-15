@@ -12,10 +12,10 @@ export function AboutContactSection() {
   const copy = innerPages.about.contactSection;
 
   return (
-    <section id="about-contact" className="relative px-6 py-14 md:py-28">
+    <section id="about-contact" className="relative py-14 md:py-28">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

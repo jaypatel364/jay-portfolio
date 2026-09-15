@@ -1,4 +1,5 @@
 import { SiteChrome, InnerPageHero, SkillsHeroVisual } from "@/components/layout";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { ServicesSection } from "@/components/sections/services";
 import { ProcessSection } from "@/components/sections/process";
 import { SkillsWorkStripSection } from "@/components/sections/projects";
@@ -11,6 +12,7 @@ import {
   skillsPageJsonLd,
 } from "@/settings/seo";
 import { innerPages } from "@/settings/pages";
+import { cn } from "@/lib/utils";
 
 export const metadata = skillsPageMetadata;
 
@@ -54,7 +56,7 @@ export default function SkillsPage() {
           chips={page.hero.chips}
           visual={<SkillsHeroVisual />}
         />
-        <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+        <div className={cn(PAGE_CONTAINER, "pb-24")}>
           <SkillsCatalogSection />
           <ServicesSection />
           <SkillsWorkStripSection />

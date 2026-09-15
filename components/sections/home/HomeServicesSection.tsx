@@ -16,6 +16,8 @@ import {
   serviceCardClass,
   serviceIconWrapClass,
 } from "@/components/sections/services/service-card-styles";
+import { SectionHeading } from "@/components/shared";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { innerPages } from "@/settings/pages";
 import { cn } from "@/lib/utils";
 
@@ -44,32 +46,12 @@ export function HomeServicesSection() {
         aria-hidden
       />
 
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-        {/* Section header */}
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <span className="text-sm font-semibold uppercase tracking-widest text-primary">
-              What I build
-            </span>
-            <h2
-              id="services-preview-heading"
-              className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl"
-            >
-              Services
-            </h2>
-            <p className="mt-3 max-w-xl text-base leading-relaxed text-muted-foreground">
-              Full-stack product development, SaaS builds, MVPs, and API engineering for startups
-              and product teams.
-            </p>
-          </div>
-          <Link
-            href={`${innerPages.services.path}/`}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border/70 bg-card/50 px-4 py-2 text-sm font-semibold text-primary transition-all hover:border-primary/40 hover:bg-primary/[0.07]"
-          >
-            {innerPages.services.homeCta}
-            <ArrowUpRight className="h-4 w-4" aria-hidden />
-          </Link>
-        </div>
+      <div className={PAGE_CONTAINER}>
+        <SectionHeading label="What I build" title="Services" titleId="services-preview-heading" />
+        <p className="mx-auto mt-3 max-w-xl text-center text-base leading-relaxed text-muted-foreground">
+          Full-stack product development, SaaS builds, MVPs, and API engineering for startups and
+          product teams.
+        </p>
 
         {/* Top-3 service cards */}
         <ul className="mt-10 grid list-none gap-5 sm:grid-cols-2 lg:grid-cols-3">

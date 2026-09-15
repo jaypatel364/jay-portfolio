@@ -1,4 +1,5 @@
 import { SiteChrome, InnerPageHero, ServicesHeroVisual } from "@/components/layout";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { ServicesHubSection } from "@/components/sections/service-pages";
 import { getAllServices, getServicesHub } from "@/lib/services";
 import {
@@ -6,6 +7,7 @@ import {
   servicesHubJsonLd,
   servicesHubMetadata,
 } from "@/settings/services-seo";
+import { cn } from "@/lib/utils";
 
 export const metadata = servicesHubMetadata();
 
@@ -36,7 +38,7 @@ export default function ServicesPage() {
           chips={[...hub.hero.chips]}
           visual={<ServicesHeroVisual services={services.map((s) => ({ title: s.title }))} />}
         />
-        <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+        <div className={cn(PAGE_CONTAINER, "pb-24")}>
           <ServicesHubSection
             services={services}
             primaryCta={hub.hero.primaryCta}

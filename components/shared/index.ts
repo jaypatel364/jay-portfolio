@@ -6,3 +6,4 @@ export { ConfettiCanvas } from "./ConfettiCanvas";
 export { Brand } from "./Brand";
 export { ProfileImage } from "./ProfileImage";
 export { SiteButton } from "./SiteButton";
+export { PAGE_CONTAINER, PAGE_CONTAINER_BARE, pageContainer } from "./page-container";

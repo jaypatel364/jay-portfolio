@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SiteChrome, InnerPageHero, BlogHeroVisual } from "@/components/layout";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { BlogIndexSection } from "@/components/sections/blog";
 import {
   getBlogPostsCount,
@@ -15,6 +16,7 @@ import {
   blogIndexMetadata,
   blogPage,
 } from "@/settings/blog";
+import { cn } from "@/lib/utils";
 
 const DEFAULT_POSTS_PER_PAGE = 12;
 
@@ -83,7 +85,7 @@ export default async function BlogPage({
           chips={[...blogPage.hero.chips]}
           visual={<BlogHeroVisual />}
         />
-        <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6 pt-4 md:pt-6">
+        <div className={cn(PAGE_CONTAINER, "pb-24 pt-4 md:pt-6")}>
           <BlogIndexSection
             settings={settings}
             posts={postsPage.posts}

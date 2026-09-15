@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { siteConfig } from "@/lib/site-config";
 import { getExperienceLabel, cn } from "@/lib/utils";
 
@@ -13,14 +14,10 @@ export function WhoAmISection() {
   const expLabel = getExperienceLabel(siteConfig.careerStartDate);
 
   return (
-    <section
-      id="who-am-i"
-      aria-labelledby="who-am-i-heading"
-      className="relative px-4 py-14 sm:px-6 md:py-24"
-    >
+    <section id="who-am-i" aria-labelledby="who-am-i-heading" className="relative py-14 md:py-24">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-      <div className="mx-auto w-full min-w-0 max-w-6xl">
+      <div className={PAGE_CONTAINER}>
         <div className="grid min-w-0 items-start gap-12 lg:grid-cols-12 lg:gap-16">
           {/* ── Editorial column ── */}
           <motion.div

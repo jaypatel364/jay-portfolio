@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import type { Service } from "@/lib/services/types";
+import { cn } from "@/lib/utils";
 import { ServiceBreadcrumbs } from "./ServiceBreadcrumbs";
 import { ServiceDetailHeroVisual } from "./hero-visuals/ServiceDetailHeroVisual";
 
@@ -23,7 +25,12 @@ export function ServiceHero({ service }: ServiceHeroProps) {
         style={{ animation: "aurora-2 16s ease-in-out infinite" }}
       />
 
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-4 pb-20 pt-28 sm:px-6 md:pb-28 md:pt-32 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,440px)] lg:gap-16">
+      <div
+        className={cn(
+          PAGE_CONTAINER,
+          "relative grid items-center gap-12 pb-20 pt-28 md:pb-28 md:pt-32 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,440px)] lg:gap-16",
+        )}
+      >
         <div className="min-w-0">
           <ServiceBreadcrumbs
             items={[

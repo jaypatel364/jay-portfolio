@@ -11,9 +11,9 @@ export function ContactTrustStrip() {
   return (
     <section
       aria-labelledby="contact-trust-heading"
-      className="border-t border-border/60 px-6 py-10 md:py-14"
+      className="border-t border-border/60 py-10 md:py-14"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}

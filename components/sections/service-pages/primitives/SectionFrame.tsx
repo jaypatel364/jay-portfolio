@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 
 export type SectionTheme = "default" | "muted" | "dark" | "accent";
 
@@ -42,13 +43,8 @@ export function SectionFrame({
           aria-hidden
         />
       ) : null}
-      <div
-        className={cn(
-          "relative",
-          fullBleed ? "mx-auto max-w-6xl px-4 sm:px-6" : "mx-auto max-w-3xl",
-        )}
-      >
-        <header className={fullBleed ? "max-w-3xl" : undefined}>
+      <div className={cn("relative", PAGE_CONTAINER)}>
+        <header className="max-w-3xl">
           <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
             {label}
           </span>
@@ -64,7 +60,7 @@ export function SectionFrame({
             </p>
           ) : null}
         </header>
-        <div className={cn("mt-10", fullBleed && "max-w-none")}>{children}</div>
+        <div className={cn("mt-10", fullBleed ? "max-w-none" : "max-w-3xl")}>{children}</div>
       </div>
     </section>
   );

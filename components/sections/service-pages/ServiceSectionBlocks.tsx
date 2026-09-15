@@ -24,26 +24,26 @@ function SectionShell({
   className?: string;
   wide?: boolean;
 }) {
-  const containerClass = wide ? "mx-auto max-w-6xl px-4 sm:px-6" : "mx-auto max-w-3xl";
-
   return (
     <section
       id={id}
       aria-labelledby={`${id}-heading`}
       className={cn("scroll-mt-28 py-12 md:py-16", className)}
     >
-      <div className={containerClass}>
-        <span className="text-sm font-semibold uppercase tracking-widest text-primary">
-          {label}
-        </span>
-        <h2
-          id={`${id}-heading`}
-          className="font-heading mt-2 text-2xl font-bold tracking-tight sm:text-3xl"
-        >
-          {title}
-        </h2>
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
+        <div className={cn(!wide && "max-w-3xl")}>
+          <span className="text-sm font-semibold uppercase tracking-widest text-primary">
+            {label}
+          </span>
+          <h2
+            id={`${id}-heading`}
+            className="font-heading mt-2 text-2xl font-bold tracking-tight sm:text-3xl"
+          >
+            {title}
+          </h2>
+          <div className="mt-8">{children}</div>
+        </div>
       </div>
-      <div className={cn(containerClass, "mt-8")}>{children}</div>
     </section>
   );
 }

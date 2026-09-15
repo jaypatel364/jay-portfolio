@@ -5,9 +5,11 @@ import { motion } from "framer-motion";
 interface Props {
   label: string;
   title: string;
+  /** Optional id for the h2 — use with section aria-labelledby. */
+  titleId?: string;
 }
 
-export function SectionHeading({ label, title }: Props) {
+export function SectionHeading({ label, title, titleId }: Props) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -17,7 +19,9 @@ export function SectionHeading({ label, title }: Props) {
       className="text-center"
     >
       <span className="text-sm font-semibold uppercase tracking-widest text-primary">{label}</span>
-      <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
+      <h2 id={titleId} className="font-heading mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+        {title}
+      </h2>
     </motion.div>
   );
 }

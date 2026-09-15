@@ -6,10 +6,12 @@ import { Mail, Zap } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { CopyEmail } from "@/components/shared";
 import { Brand } from "@/components/shared";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { FOOTER_NAV } from "@/lib/nav";
 import { navigateToNavItem } from "@/lib/navigate";
 import { getAllServices, servicePath } from "@/lib/services";
 import { innerPages } from "@/settings/pages";
+import { cn } from "@/lib/utils";
 
 // Custom SVG icons for brand consistency
 const GithubIcon = ({ className }: { className?: string }) => (
@@ -48,7 +50,7 @@ export function Footer() {
 
   return (
     <footer className="relative border-t border-border bg-card/50">
-      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6 pt-12 pb-8">
+      <div className={cn(PAGE_CONTAINER, "pt-12 pb-8")}>
         {/*
          * 5-column layout:
          *  mobile  → 2 cols (brand spans full, then 2-up links)

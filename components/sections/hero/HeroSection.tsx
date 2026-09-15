@@ -12,11 +12,11 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative isolate flex min-h-[100svh] items-start justify-center overflow-hidden px-4 pb-20 pt-24 sm:px-6 sm:pt-28"
+      className="relative isolate flex min-h-[100svh] items-start justify-center overflow-hidden pb-20 pt-24 sm:pt-28"
     >
       <HeroBackground />
 
-      <div className="relative z-10 mx-auto w-full max-w-5xl text-center">
+      <div className="relative z-10 mx-auto w-full min-w-0 max-w-6xl px-4 text-center sm:px-6">
         {siteConfig.showHeroAvailability && (
           <a
             href={siteConfig.bookingUrl}

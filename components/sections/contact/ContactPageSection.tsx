@@ -14,11 +14,8 @@ export function ContactPageSection({ className }: ContactPageSectionProps) {
   const copy = siteConfig.contactPage;
 
   return (
-    <section
-      id="contact-form"
-      className={cn("px-4 pb-10 pt-10 sm:px-6 md:pb-14 md:pt-14", className)}
-    >
-      <div className="mx-auto w-full min-w-0 max-w-6xl">
+    <section id="contact-form" className={cn("pb-10 pt-10 md:pb-14 md:pt-14", className)}>
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         <div className="grid min-w-0 items-start gap-10 lg:grid-cols-5 lg:gap-14">
           <ContactQuickPanel
             variant="full"

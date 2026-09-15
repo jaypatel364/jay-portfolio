@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { cn } from "@/lib/utils";
 
 export interface InnerPageHeroProps {
@@ -43,7 +44,7 @@ export function InnerPageHero({
         style={{ animation: "aurora-2 16s ease-in-out infinite" }}
       />
 
-      <div className="relative mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
+      <div className={cn("relative", PAGE_CONTAINER)}>
         <div
           className={cn(
             visual &&

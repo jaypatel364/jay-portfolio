@@ -169,9 +169,9 @@ export function GlobalCta() {
     <section
       id="contact"
       aria-labelledby="global-cta-heading"
-      className="relative scroll-mt-24 px-4 pb-4 pt-16 sm:px-6 md:pb-6 md:pt-24"
+      className="relative scroll-mt-24 pb-4 pt-16 md:pb-6 md:pt-24"
     >
-      <div className="mx-auto w-full min-w-0 max-w-6xl">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         <motion.div
           ref={cardRef}
           onPointerMove={handlePointerMove}

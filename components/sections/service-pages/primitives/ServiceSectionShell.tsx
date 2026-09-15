@@ -1,3 +1,4 @@
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { cn } from "@/lib/utils";
 
 export type ServiceSectionTheme = "default" | "muted" | "contrast";
@@ -30,12 +31,8 @@ export function ServiceSectionShell({
   className,
   children,
 }: ServiceSectionShellProps) {
-  const inner =
-    width === "full"
-      ? "w-full px-4 sm:px-6"
-      : width === "wide"
-        ? "mx-auto max-w-6xl px-4 sm:px-6"
-        : "mx-auto max-w-3xl px-4 sm:px-6";
+  const inner = width === "full" ? "w-full px-4 sm:px-6" : PAGE_CONTAINER;
+  const headerNarrow = width === "narrow";
 
   return (
     <section
@@ -44,7 +41,7 @@ export function ServiceSectionShell({
       className={cn("scroll-mt-28 py-16 md:py-24", THEME[theme], className)}
     >
       <div className={cn("relative min-w-0", inner)}>
-        <header className={width === "narrow" ? undefined : "max-w-3xl"}>
+        <header className="max-w-3xl">
           <span className="text-sm font-semibold uppercase tracking-widest text-primary">
             {label}
           </span>
@@ -60,7 +57,7 @@ export function ServiceSectionShell({
             </p>
           ) : null}
         </header>
-        <div className="mt-6 min-w-0 md:mt-7">{children}</div>
+        <div className={cn("mt-6 min-w-0 md:mt-7", headerNarrow && "max-w-3xl")}>{children}</div>
       </div>
     </section>
   );
