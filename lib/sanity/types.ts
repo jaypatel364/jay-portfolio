@@ -3,6 +3,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 export type SanityImageAsset = {
   _id?: string;
   url?: string;
+  originalFilename?: string | null;
   metadata?: {
     lqip?: string;
     dimensions?: { width: number; height: number; aspectRatio?: number };

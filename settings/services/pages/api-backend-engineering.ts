@@ -536,7 +536,7 @@ export const apiBackendEngineering: Service = {
     "mvp-development",
     "frontend-development",
   ],
-  relatedPosts: ["nestjs-vs-express-js-2026", "rest-vs-graphql"],
+  relatedPosts: ["nestjs-vs-express-js-2026"],
   readTimeMinutes: 11,
   coverImage: {
     title: "Backend Development Services | Node.js & API Development",

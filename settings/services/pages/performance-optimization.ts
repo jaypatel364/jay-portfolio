@@ -385,11 +385,7 @@ export const performanceOptimization: Service = {
     },
   ],
   relatedServiceSlugs: ["frontend-development", "backend-development", "full-stack-development"],
-  relatedPosts: [
-    "core-web-vitals-guide",
-    "nextjs-performance-checklist",
-    "react-rendering-optimization",
-  ],
+  relatedPosts: [],
   seo: {
     title: "Web Performance Optimization Services | Core Web Vitals | Jay Patel",
     description:

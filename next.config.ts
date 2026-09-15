@@ -93,6 +93,28 @@ const nextConfig: NextConfig = {
       { source: "/projects/", destination: "/work/", permanent: true },
       { source: "/projects/:slug", destination: "/work/:slug/", permanent: true },
       { source: "/projects/:slug/", destination: "/work/:slug/", permanent: true },
+      // Legacy service slugs (pre–SEO rename) → canonical paths.
+      // Without these, old URLs 404 and protected previews can bounce bots to Vercel SSO.
+      {
+        source: "/services/full-stack-product-development",
+        destination: "/services/full-stack-development/",
+        permanent: true,
+      },
+      {
+        source: "/services/full-stack-product-development/",
+        destination: "/services/full-stack-development/",
+        permanent: true,
+      },
+      {
+        source: "/services/api-backend-engineering",
+        destination: "/services/backend-development/",
+        permanent: true,
+      },
+      {
+        source: "/services/api-backend-engineering/",
+        destination: "/services/backend-development/",
+        permanent: true,
+      },
       { source: "/manifest.json", destination: "/manifest.webmanifest", permanent: true },
       ...hosts.flatMap((host) => [
         {

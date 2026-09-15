@@ -17,6 +17,7 @@ const imageProjection = /* groq */ `{
   asset->{
     _id,
     url,
+    originalFilename,
     metadata { lqip, dimensions }
   },
   hotspot,
