@@ -5,7 +5,7 @@ export const apiBackendEngineering: Service = {
   slug: "backend-development",
   title: "Backend Development",
   shortDescription:
-    "Backend development services using Node.js, Express.js, and REST APIs. Scalable, secure backend systems built for SaaS, eCommerce, and enterprise products.",
+    "Node.js backend development with REST APIs. I design secure systems for SaaS platforms, online stores and larger products that need to remain reliable.",
   cardCapabilities: [
     "Custom backend development built around your actual product, not a template",
     "Secure backend development with authentication and validation handled from day one",
@@ -280,20 +280,20 @@ export const apiBackendEngineering: Service = {
   ],
   technologies: [
     {
-      category: "Runtime & Framework",
+      category: "Runtime & Frameworks",
       items: ["Node.js", "Express.js", "NestJS"],
     },
     {
-      category: "APIs",
-      items: ["REST", "GraphQL"],
+      category: "APIs & Communication",
+      items: ["REST APIs", "GraphQL", "WebSockets"],
     },
     {
-      category: "Databases",
+      category: "Databases & Caching",
       items: ["PostgreSQL", "MongoDB", "MySQL", "Redis"],
     },
     {
       category: "Cloud & DevOps",
-      items: ["AWS", "Docker", "CI/CD pipelines"],
+      items: ["AWS", "Docker", "CI/CD"],
     },
   ],
   useCases: [
@@ -437,36 +437,36 @@ export const apiBackendEngineering: Service = {
     reasons: [
       {
         tag: "Speed",
-        title: "Speed",
+        title: "Fast & Efficient Backend Development",
         description:
           "I move fast without skipping the parts that matter, so timelines stay realistic instead of stretching for months.",
       },
       {
         tag: "Precision",
-        title: "Precision",
+        title: "Precise API & Database Development",
         description:
           "Details get attention, from how an API responds to how a database index is structured.",
       },
       {
         tag: "Full",
-        title: "Full Ownership",
+        title: "End-to-End Backend Ownership",
         description:
           "I own what I build. There's no passing blame to \"the last developer\" because there isn't one.",
       },
       {
         tag: "Clear",
-        title: "Clear Communication",
+        title: "Clear & Direct Communication",
         description:
           "Updates come in plain language. You'll never need a glossary to understand what I'm telling you.",
       },
       {
         tag: "Flexibility",
-        title: "Flexibility",
+        title: "Flexible Backend Development",
         description: "I work around your existing tools and team, not the other way around.",
       },
       {
         tag: "Long-Term",
-        title: "Long-Term Support",
+        title: "Long-Term Backend Support",
         description:
           "I don't disappear after launch. If something needs fixing six months later, I'm still reachable.",
       },

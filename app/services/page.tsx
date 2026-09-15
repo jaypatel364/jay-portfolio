@@ -43,6 +43,7 @@ export default function ServicesPage() {
             services={services}
             primaryCta={hub.hero.primaryCta}
             secondaryCta={hub.hero.secondaryCta}
+            overview={hub.overview}
           />
         </div>
       </main>

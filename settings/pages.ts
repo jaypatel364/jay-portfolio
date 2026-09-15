@@ -51,17 +51,16 @@ export const innerPages = {
     path: "/work",
     navId: "work",
     label: "Work",
-    title: "Work & Projects | Jay Patel Full Stack Portfolio",
+    title: "Full Stack Projects & Production Work | Jay Patel",
     description:
-      "Selected projects by Jay Patel — real-time chat, headless CMS, social APIs, and production " +
-      "MERN apps. Case studies and NDA-friendly summaries from shipped work.",
+      "Real full stack projects built end to end, from real-time chat and social APIs to HR systems, NGO platforms, and KYC verification.",
     homeCta: "Browse Featured Projects",
     placeholder: null,
     hero: {
       label: "Work",
       title: "Full Stack Projects and Production Work",
       description:
-        "A selection of applications and systems I have built across real-time communication, APIs, content management, HR workflows, NGO platforms, and identity verification.",
+        "A look at real applications I have built, covering real-time chat, backend APIs, content systems, HR workflows, NGO tools, and identity verification.",
       chips: [
         "Full-stack applications",
         "Production Ready · Live Demos Available",
@@ -73,18 +72,16 @@ export const innerPages = {
     path: "/services",
     navId: "services",
     label: "Services",
-    title: "Software Development Services | Full-Stack, SaaS & MVP | Jay Patel",
+    title: "Full Stack Web Development Services | Jay Patel",
     description:
-      "Full-stack product development, MERN stack development, SaaS development, MVP builds, API engineering, " +
-      "frontend development, and performance optimization for startups and product teams.",
+      "Hire a full stack developer for web development, backend, frontend, MERN stack, MVP, and SaaS development services built to scale.",
     homeCta: "See all services",
     placeholder: null,
     hero: {
       label: "Services",
       title: "Full Stack Web Development Services",
       description:
-        "I help startups, SaaS companies, and product teams design, build, and improve production web applications — " +
-        "from MVPs and full-stack products to backend APIs, frontend experiences, and performance work.",
+        "Looking to hire a full stack developer who delivers real results? I build clean, fast web apps for real businesses, not just demos.\n\nEvery project is built to scale. Custom design or a full build, you get reliable, honest work shaped around your product, not a generic package off a shelf.",
       chips: ["Custom software", "Web development", "Full-stack development"],
     },
   },

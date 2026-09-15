@@ -5,7 +5,7 @@ export const frontendDevelopment: Service = {
   slug: "frontend-development",
   title: "Frontend Development",
   shortDescription:
-    "I provide frontend development services to startups, SaaS teams, and product companies. You get one developer who owns the interface. This covers everything from the first component to launch.",
+    "I build frontends for startups, SaaS teams, and product companies. You work with one developer who owns the whole interface, from the first screen through to launch.",
   cardCapabilities: [
     "End-to-end frontend development, from component to production",
     "Responsive web development built in from day one",
@@ -278,22 +278,15 @@ export const frontendDevelopment: Service = {
     },
     {
       category: "Languages",
-      items: ["JavaScript", "TypeScript", "HTML5", "CSS3"],
+      items: ["TypeScript", "JavaScript", "HTML5", "CSS3"],
     },
     {
-      category: "Styling",
-      items: [
-        "Tailwind CSS",
-        "Custom CSS",
-        "Responsive CSS",
-        "Shadcn UI",
-        "Material UI",
-        "Bootstrap",
-      ],
+      category: "UI & Styling",
+      items: ["Tailwind CSS", "Shadcn UI", "Material UI", "Bootstrap", "Custom CSS"],
     },
     {
-      category: "Component Patterns",
-      items: ["Component-based development", "Reusable UI components"],
+      category: "Development Approach",
+      items: ["Component-Based Development", "Reusable UI Components", "Responsive Design"],
     },
   ],
   useCases: [
@@ -446,36 +439,36 @@ export const frontendDevelopment: Service = {
     reasons: [
       {
         tag: "Speed",
-        title: "Speed",
+        title: "Fast & Responsive Frontend Development",
         description:
           "I move fast without skipping the parts that matter. Your timeline stays realistic instead of dragging on for months.",
       },
       {
         tag: "Precision",
-        title: "Precision",
+        title: "Precise UI & Frontend Implementation",
         description:
           "Details get real attention. From how a button responds to how a layout holds up on a smaller screen.",
       },
       {
         tag: "Full",
-        title: "Full Ownership",
+        title: "End-to-End Frontend Ownership",
         description:
           "I own what I build. There's no blaming \"the last developer,\" because there isn't one on this project.",
       },
       {
         tag: "Clear",
-        title: "Clear Communication",
+        title: "Clear & Direct Communication",
         description:
           "Updates come in plain language. You won't need a glossary to understand what's happening with your build.",
       },
       {
         tag: "Flexibility",
-        title: "Flexibility",
+        title: "Flexible Frontend Development",
         description: "I work around your existing tools and team. Not the other way around.",
       },
       {
         tag: "Long-Term",
-        title: "Long-Term Support",
+        title: "Long-Term Frontend Support",
         description:
           "I don't disappear after launch. If something needs fixing six months later, I'm still around and I still remember the system.",
       },
@@ -496,6 +489,7 @@ export const frontendDevelopment: Service = {
     "spendly-personal-expense-tracker",
     "minilist-headless-cms",
     "real-time-chat-application",
+    "philantro-ai-ngo-management-platform",
   ],
   faqs: [
     {
@@ -551,15 +545,11 @@ export const frontendDevelopment: Service = {
   ],
   relatedServiceSlugs: [
     "full-stack-development",
-    "performance-optimization",
+    "mern-stack-development",
     "mvp-development",
     "saas-development",
   ],
-  relatedPosts: [
-    "react-vs-nextjs-product-teams",
-    "accessible-react-components",
-    "nextjs-seo-fundamentals",
-  ],
+  relatedPosts: [],
   readTimeMinutes: 10,
   coverImage: {
     title: "Frontend Development Services | React & Next.js Developer",

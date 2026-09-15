@@ -621,7 +621,7 @@ export const content = {
       label: "Selected work",
       title: "Projects I've Built",
       intro:
-        "A selection of full-stack applications, backend systems, and production work. Filter by full-stack, frontend, or backend to explore the projects in more detail.",
+        "Real full-stack apps, backend systems, and production work, built end to end and shipped, not left half-finished. Filter by full stack, frontend, or backend to browse by type.",
     },
     stackLinks: {
       label: "Tech stack",

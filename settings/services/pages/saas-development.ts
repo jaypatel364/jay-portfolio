@@ -5,7 +5,7 @@ export const saasDevelopment: Service = {
   slug: "saas-development",
   title: "SaaS Development",
   shortDescription:
-    "Hire a dedicated developer for SaaS development services, including custom SaaS development, multi-tenant architecture, SaaS API integration, and billing.",
+    "Hire a developer for SaaS work. I build billing, user accounts, and the tools your platform needs, made for real, paying users.",
   cardCapabilities: [
     "End-to-end SaaS development, from first schema to production",
     "Scalable SaaS development built in from day one",
@@ -272,20 +272,24 @@ export const saasDevelopment: Service = {
   ],
   technologies: [
     {
-      category: "Frameworks",
-      items: ["React", "Next.js", "React Native"],
+      category: "Frontend",
+      items: ["React", "Next.js", "TypeScript"],
     },
     {
-      category: "Backend",
-      items: ["Node.js"],
+      category: "Backend & APIs",
+      items: ["Node.js", "Express.js", "NestJS", "REST APIs", "GraphQL"],
     },
     {
-      category: "Languages",
-      items: ["TypeScript", "JavaScript "],
+      category: "Databases & Caching",
+      items: ["PostgreSQL", "MongoDB", "Redis"],
     },
     {
-      category: "Databases",
-      items: ["PostgreSQL ", "MongoDB "],
+      category: "Cloud & DevOps",
+      items: ["AWS", "Docker", "CI/CD"],
+    },
+    {
+      category: "Authentication & Integrations",
+      items: ["OAuth", "JWT", "Third-Party APIs", "Webhooks"],
     },
   ],
   useCases: [
@@ -429,36 +433,36 @@ export const saasDevelopment: Service = {
     reasons: [
       {
         tag: "Speed",
-        title: "Speed",
+        title: "Fast & Scalable SaaS Development",
         description:
           "I move fast without skipping the parts that matter. Your timeline stays realistic instead of dragging on for months.",
       },
       {
         tag: "Precision",
-        title: "Precision",
+        title: "Precise SaaS Architecture & Development",
         description:
           "Details get real attention. From how an API responds to how tenant data gets separated at the schema level.",
       },
       {
         tag: "Full",
-        title: "Full Ownership",
+        title: "End-to-End Ownership",
         description:
           "I own what I build. There's no blaming \"the last developer,\" because there isn't one on this project.",
       },
       {
         tag: "Clear",
-        title: "Clear Communication",
+        title: "Clear & Direct Communication",
         description:
           "Updates come in plain language. You won't need a glossary to understand what's happening with your build.",
       },
       {
         tag: "Flexibility",
-        title: "Flexibility",
+        title: "Flexible SaaS Development",
         description: "I work around your existing tools and team. Not the other way around.",
       },
       {
         tag: "Long-Term",
-        title: "Long-Term Support",
+        title: "Long-Term SaaS Product Support",
         description:
           "I don't disappear after launch. If something needs fixing six months later, I'm still around and I still remember the system.",
       },
@@ -466,8 +470,9 @@ export const saasDevelopment: Service = {
   },
   caseStudySlugs: [
     "pms-hr-management-system",
-    "minilist-headless-cms",
     "spendly-personal-expense-tracker",
+    "philantro-ai-ngo-management-platform",
+    "verify-360-kyc-platform",
   ],
   faqs: [
     {
@@ -522,12 +527,7 @@ export const saasDevelopment: Service = {
     },
   ],
   relatedServiceSlugs: ["full-stack-development", "frontend-development", "mvp-development"],
-  relatedPosts: [
-    "saas-development-cost",
-    "saas-architecture-best-practices",
-    "how-to-build-saas-mvp",
-    "scaling-saas-applications",
-  ],
+  relatedPosts: [],
   readTimeMinutes: 11,
   coverImage: {
     title: "SaaS Development Services | Custom SaaS Developer",

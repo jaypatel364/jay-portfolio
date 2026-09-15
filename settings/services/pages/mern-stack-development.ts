@@ -5,7 +5,7 @@ export const mernStackDevelopment: Service = {
   slug: "mern-stack-development",
   title: "MERN Stack Development",
   shortDescription:
-    "MERN stack development services from a dedicated full stack developer. React, Node.js, Express.js and MongoDB used to build fast, scalable, production-ready applications.",
+    "MERN stack development from a dedicated full stack developer. I build with React, Node, Express, and MongoDB, one language across the whole stack.",
   cardCapabilities: [
     "End-to-end full-stack MERN development, from component to production",
     "Scalable MERN stack development built in from day one",
@@ -256,19 +256,19 @@ export const mernStackDevelopment: Service = {
   technologies: [
     {
       category: "Frontend",
-      items: ["React", "React.js", "JavaScript", "TypeScript"],
+      items: ["React", "JavaScript", "TypeScript"],
     },
     {
-      category: "Backend",
+      category: "Backend & APIs",
       items: ["Node.js", "Express.js", "REST APIs"],
     },
     {
       category: "Database",
-      items: ["MongoDB", "NoSQL data modeling"],
+      items: ["MongoDB", "Mongoose", "NoSQL Data Modeling"],
     },
     {
-      category: "Supporting Tools",
-      items: ["AWS", "Docker", "CI/CD pipelines"],
+      category: "Cloud & DevOps",
+      items: ["AWS", "Docker", "CI/CD"],
     },
   ],
   useCases: [
@@ -412,36 +412,36 @@ export const mernStackDevelopment: Service = {
     reasons: [
       {
         tag: "Speed",
-        title: "Speed",
+        title: "Fast & Scalable MERN Development",
         description:
           "I build fast across the full stack, since I'm not waiting on handoffs between separate teams.",
       },
       {
         tag: "Precision",
-        title: "Precision",
+        title: "Precise React & MongoDB Development",
         description:
           "Every layer gets the same care, from React components down to MongoDB indexes.",
       },
       {
         tag: "Full",
-        title: "Full Ownership",
+        title: "End-to-End Ownership",
         description:
           "I own the entire app that I built. No confusion about who is responsible for what.",
       },
       {
         tag: "Clear",
-        title: "Clear Communication",
+        title: "Clear & Direct Communication",
         description:
           "You get plain updates throughout, without jargon getting in the way of the actual answer.",
       },
       {
         tag: "Flexibility",
-        title: "Flexibility",
+        title: "Flexible MERN Stack Development",
         description: "I fit around your existing tools and timeline, not the other way around.",
       },
       {
         tag: "Long-Term",
-        title: "Long-Term Support",
+        title: "Long-Term MERN Stack Support",
         description:
           "I stick around after launch, so you're not left stuck once the project wraps.",
       },
@@ -522,12 +522,7 @@ export const mernStackDevelopment: Service = {
     "saas-development",
     "backend-development",
   ],
-  relatedPosts: [
-    "nodejs-backend-architecture",
-    "rest-api-design-best-practices",
-    "mvp-development-process",
-    "react-vs-nextjs-product-teams",
-  ],
+  relatedPosts: [],
   readTimeMinutes: 10,
   coverImage: {
     title: "MERN Stack Development Services | Hire MERN Developers",

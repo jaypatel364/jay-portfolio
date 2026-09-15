@@ -269,6 +269,11 @@ export type ServicesHubSettings = {
     secondaryCta?: ServiceCta;
     chips: string[];
   };
+  overview: {
+    label: string;
+    title: string;
+    description: string;
+  };
   seo: ServiceSeo;
 };
 

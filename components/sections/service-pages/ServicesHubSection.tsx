@@ -34,6 +34,11 @@ interface ServicesHubSectionProps {
   services: Service[];
   primaryCta: ServiceCta;
   secondaryCta?: ServiceCta;
+  overview: {
+    label: string;
+    title: string;
+    description: string;
+  };
 }
 
 /** Hub grid — evolved from Skills page ServicesSection card language. */
@@ -41,22 +46,22 @@ export function ServicesHubSection({
   services,
   primaryCta,
   secondaryCta,
+  overview,
 }: ServicesHubSectionProps) {
   return (
     <section aria-labelledby="services-hub-heading" className="py-4 md:py-8">
       <div className="mx-auto max-w-3xl text-center">
         <span className="text-sm font-semibold uppercase tracking-widest text-primary">
-          Overview
+          {overview.label}
         </span>
         <h2
           id="services-hub-heading"
           className="font-heading mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl"
         >
-          End-to-End Web Development for Modern Products{" "}
+          {overview.title}
         </h2>
         <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-          I am a full stack developer and I do full stack development, custom software development
-          and web app development for you to make your product launch faster & better working.
+          {overview.description}
         </p>
       </div>
 

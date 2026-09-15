@@ -355,8 +355,8 @@ export const skillsPageMetadata = innerPageMetadata(
 
 export const workPageMetadata = innerPageMetadata(
   "work",
-  `Work & Projects | Jay Patel Full Stack Portfolio`,
-  "Explore Jay Patel's Full Stack development work, including Third-Party APIs, SaaS platforms, and production web applications built with React, Next.js, Node.js, and TypeScript.",
+  `Full Stack Projects & Production Work | Jay Patel`,
+  "Real full stack projects built end to end, from real-time chat and social APIs to HR systems, NGO platforms, and KYC verification.",
   ["Jay Patel portfolio", "full stack developer projects", "Next.js case studies", ...SEO_KEYWORDS],
 );
 

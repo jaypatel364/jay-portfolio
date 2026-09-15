@@ -5,7 +5,7 @@ export const fullStackProductDevelopment: Service = {
   slug: "full-stack-development",
   title: "Full Stack Development",
   shortDescription:
-    "Full stack development services from a dedicated full stack developer. React, Node.js, PostgreSQL, and AWS used to build scalable web applications.",
+    "Full stack work from a dedicated developer. I build web apps with React, Node and AWS that work under real traffic, not just a demo.",
   cardCapabilities: [
     "End-to-end full stack development",
     "Scalable web application development",
@@ -278,19 +278,19 @@ export const fullStackProductDevelopment: Service = {
   technologies: [
     {
       category: "Frontend",
-      items: ["React", "React.js", "Next.js", "TypeScript", "JavaScript"],
+      items: ["React", "Next.js", "TypeScript", "JavaScript"],
     },
     {
-      category: "Backend",
-      items: ["Node.js", "Express.js", "REST APIs", "GraphQL"],
+      category: "Backend & APIs",
+      items: ["Node.js", "Express.js", "NestJS", "REST APIs", "GraphQL"],
     },
     {
-      category: "Databases",
-      items: ["PostgreSQL", "MongoDB", "MySQL", "SQL"],
+      category: "Databases & Caching",
+      items: ["PostgreSQL", "MongoDB", "MySQL", "Redis"],
     },
     {
       category: "Cloud & DevOps",
-      items: ["AWS", "Docker", "CI/CD pipelines"],
+      items: ["AWS", "Docker", "CI/CD"],
     },
   ],
   useCases: [
@@ -518,16 +518,9 @@ export const fullStackProductDevelopment: Service = {
     "frontend-development",
     "backend-development",
     "saas-development",
-    "mern-stack-development",
     "mvp-development",
   ],
-  relatedPosts: [
-    "mern-vs-mean-stack",
-    "nestjs-vs-express-js-2026",
-    "rest-vs-graphql",
-    "how-to-hire-a-full-stack-developer",
-    "nextjs-vs-react-when-to-use-what",
-  ],
+  relatedPosts: [],
   readTimeMinutes: 11,
   coverImage: {
     title: "Full Stack Development Services | Jay Patel",

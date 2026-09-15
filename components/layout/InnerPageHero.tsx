@@ -58,9 +58,11 @@ export function InnerPageHero({
             <h1 className="font-heading mt-3 break-words text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
               {title}
             </h1>
-            <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-              {description}
-            </p>
+            <div className="mt-5 space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {description.split(/\n\n+/).map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
 
             {chips.length > 0 && (
               <div className="mt-6 flex flex-wrap gap-2">
