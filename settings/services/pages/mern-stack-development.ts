@@ -93,6 +93,12 @@ export const mernStackDevelopment: Service = {
       "I provide MERN stack development services to startups, founders, and product teams that want one developer across the frontend, backend, and database, not three separate hires. As a MERN developer and MERN full-stack developer, I build complete, production-ready apps with React, Node.js, Express.js, and MongoDB, from the first line of code to launch.",
     primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
+    visual: {
+      type: "illustration",
+      image: "/images/services/mern-stack/mern-stack-development-services-hero-banner.png",
+      title: "MERN Stack Development Services | React, Node.js, Express & MongoDB",
+      alt: "MERN stack development services hero illustration showing React, Node.js, Express.js, MongoDB, REST API, Authentication, Database, and Cloud Deployment",
+    },
     technologies: ["React", "Node.js", "Express.js", "MongoDB"],
   },
   editorialIntro: {
@@ -122,13 +128,13 @@ export const mernStackDevelopment: Service = {
     type: "diagram",
     image: "/images/services/mern-stack/mern_stack_architecture_diagram.png",
     title: "MERN Stack Architecture Diagram | React, Node.js, Express & MongoDB",
-    alt: "MERN stack architecture diagram showing a user request flowing through the React frontend, Express.js API, Node.js runtime, and MongoDB database",
+    alt: "MERN stack architecture diagram for MERN stack development services showing a user request flowing through the React frontend, Express.js API, Node.js runtime, and MongoDB database",
   },
   deliverablesVisual: {
     type: "illustration",
     image: "/images/services/mern-stack/what-you-get-with-every-mern-stack-project.png",
-    title: "What You Get With Every MERN Stack Project | Deliverables",
-    alt: "What you get with every MERN stack project — deliverables from the complete application through post-launch support",
+    title: "What You Get With Every MERN Stack Development Project | Deliverables",
+    alt: "MERN stack development project deliverables — complete application, API integration, MongoDB design, scalable architecture, cloud deployment, security, and post-launch support",
   },
   capabilities: [
     {
@@ -525,7 +531,7 @@ export const mernStackDevelopment: Service = {
   readTimeMinutes: 10,
   coverImage: {
     title: "MERN Stack Development Services | Hire MERN Developers",
-    alt: "MERN stack development diagram showing React frontend connected to Express.js API, Node.js runtime, and MongoDB database",
+    alt: "MERN stack development services illustration showing React, Node.js, Express.js, MongoDB, REST API, Authentication, Database, and Cloud Deployment",
   },
   seo: {
     title: "MERN Stack Development Services | Hire MERN Developers",

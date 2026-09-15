@@ -42,6 +42,12 @@ export const PRIMARY_NAV: NavItem[] = [
     isRoute: true,
   },
   {
+    id: innerPages.blog.navId,
+    label: innerPages.blog.label,
+    href: `${innerPages.blog.path}/`,
+    isRoute: true,
+  },
+  {
     id: innerPages.contact.navId,
     label: innerPages.contact.label,
     href: `${innerPages.contact.path}/`,

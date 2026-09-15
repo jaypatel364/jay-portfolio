@@ -109,6 +109,12 @@ export const fullStackProductDevelopment: Service = {
       "I provide full-stack development services for businesses, start-ups and individuals who want one developer to take care of frontend, backend, database, and deployment without having to interface with separate teams. I build scalable, production-ready web applications from scratch, who understand the whole product from architecture to launch.",
     primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
+    visual: {
+      type: "illustration",
+      image: "/images/services/full-stack/full-stack-development-services-hero-banner.png",
+      title: "Full Stack Development Services | Frontend, Backend & Cloud",
+      alt: "Full stack development services hero illustration showing Frontend, Backend, APIs, Database, Authentication, Responsive UI, DevOps, and Cloud Infrastructure connected as one system",
+    },
     technologies: ["React", "Node.js", "Next.js", "TypeScript", "PostgreSQL", "AWS"],
   },
   editorialIntro: {
@@ -138,13 +144,13 @@ export const fullStackProductDevelopment: Service = {
     type: "diagram",
     image: "/images/services/full-stack/full_stack_architecture_diagram.png",
     title: "Full Stack Architecture Diagram | Frontend, API, Database & Cloud",
-    alt: "Full stack architecture diagram showing a user request flowing through the frontend, backend/API, and database layers on AWS, Docker, and CI/CD",
+    alt: "Full stack architecture diagram for full stack development services showing a user request flowing through the frontend, backend/API, and database layers on AWS, Docker, and CI/CD",
   },
   deliverablesVisual: {
     type: "illustration",
     image: "/images/services/full-stack/what-you-get-with-every-full-stack-project.png",
-    title: "What You Get With Every Full Stack Project | Deliverables",
-    alt: "What you get with every full-stack project — eight deliverables from the complete application through post-launch support",
+    title: "What You Get With Every Full Stack Development Project | Deliverables",
+    alt: "Full stack development project deliverables — complete application, frontend, backend, database, API integration, cloud deployment, testing, and post-launch support",
   },
   capabilities: [
     {
@@ -525,7 +531,7 @@ export const fullStackProductDevelopment: Service = {
   readTimeMinutes: 11,
   coverImage: {
     title: "Full Stack Development Services | Jay Patel",
-    alt: "Full stack development diagram showing React frontend, Node.js API layer, PostgreSQL database, and AWS cloud connected in one web application architecture",
+    alt: "Full stack development services illustration showing Frontend, Backend, APIs, Database, Authentication, Responsive UI, DevOps, and Cloud Infrastructure",
   },
   seo: {
     title: "Full Stack Development Services | Jay Patel",

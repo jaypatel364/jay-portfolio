@@ -95,8 +95,9 @@ export const mvpDevelopment: Service = {
     technologies: ["React", "Next.js", "React Native", "Node.js", "PostgreSQL", "MongoDB"],
     visual: {
       type: "illustration",
-      image: "/images/services/mvp/hero-banner.png",
-      alt: "MVP Development hero illustration",
+      image: "/images/services/mvp/mvp-development-services-hero-banner.png",
+      title: "MVP Development Services | Idea Validation to Launch",
+      alt: "MVP development services hero illustration showing idea validation, UI/UX design, rapid prototyping, frontend, backend & APIs, database, core features, and cloud deployment",
     },
   },
   editorialIntro: {
@@ -122,13 +123,13 @@ export const mvpDevelopment: Service = {
     type: "diagram",
     image: "/images/services/mvp/mvp_architecture_diagram.png",
     title: "MVP Architecture Diagram | Idea Validation, Build & Launch",
-    alt: "MVP development diagram showing the flow from idea validation through feature scoping, full stack build, and launch-ready product",
+    alt: "MVP architecture diagram for MVP development services showing the flow from idea validation through feature scoping, full stack build, and launch-ready product",
   },
   deliverablesVisual: {
     type: "illustration",
     image: "/images/services/mvp/what-you-get-with-every-mvp-project.png",
-    title: "What You Get With Every MVP Project | Deliverables",
-    alt: "What you get with every MVP project — deliverables from the working launch-ready product through post-launch support",
+    title: "What You Get With Every MVP Development Project | Deliverables",
+    alt: "MVP development project deliverables — launch-ready product, UI/UX prototyping, core features, scalable architecture, cloud deployment, testing, and post-launch support",
   },
   capabilities: [
     {
@@ -504,11 +505,11 @@ export const mvpDevelopment: Service = {
   ],
   readTimeMinutes: 9,
   coverImage: {
-    title: "MVP Development Services | Custom MVP Developer for Startups",
-    alt: "MVP development roadmap illustration showing startup idea validation, build phase, and launch for a minimum viable product",
+    title: "MVP Development Services | Custom MVP Developer for Startups - Jay Patel",
+    alt: "MVP development services illustration showing idea validation, UI/UX design, rapid prototyping, frontend, backend & APIs, database, core features, and cloud deployment",
   },
   seo: {
-    title: "MVP Development Services | Custom MVP Developer for Startups",
+    title: "MVP Development Services | Custom MVP Developer for Startups - Jay Patel",
     description:
       "MVP development services for startups and SaaS teams. Hire a dedicated MVP developer for rapid, scalable, end-to-end MVP development from idea to launch.",
     focusKeyword: "mvp development services",
@@ -526,7 +527,7 @@ export const mvpDevelopment: Service = {
       "end-to-end MVP development",
       "scalable MVP development",
     ],
-    ogTitle: "MVP Development Services | Custom MVP Developer for Startups",
+    ogTitle: "MVP Development Services | Custom MVP Developer for Startups - Jay Patel",
     ogDescription:
       "MVP development services for startups and SaaS teams. Hire a dedicated MVP developer for rapid, scalable, end-to-end MVP development from idea to launch.",
   },

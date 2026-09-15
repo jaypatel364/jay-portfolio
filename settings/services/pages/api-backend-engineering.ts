@@ -109,8 +109,9 @@ export const apiBackendEngineering: Service = {
     secondaryCta: SERVICE_WORK_CTA,
     visual: {
       type: "illustration",
-      image: "/images/services/backend/hero-banner.png",
-      alt: "MVP Development hero illustration",
+      image: "/images/services/backend/backend-development-services-hero-banner.png",
+      title: "Backend Development Services | Node.js, API Gateway & Cloud",
+      alt: "Backend development services hero illustration showing a Backend Core connected to API Gateway, Authentication, Cloud Infrastructure, Docker, Redis, PostgreSQL, and MongoDB",
     },
     technologies: ["Node.js", "Express.js", "NestJS", "PostgreSQL", "MongoDB", "Redis"],
   },
@@ -145,14 +146,14 @@ export const apiBackendEngineering: Service = {
   piecesConnectVisual: {
     type: "diagram",
     image: "/images/services/backend/backend_architecture_diagram.png",
-    title: "Backend Architecture Diagram | Node.js, API, Database & Cloud",
-    alt: "Backend architecture diagram showing a request flowing through the Node.js API layer, business logic, database, and cloud infrastructure",
+    title: "Backend Architecture Diagram | Node.js API, Database & Cloud",
+    alt: "Backend architecture diagram for backend development services showing a request flowing through the Node.js API layer, business logic, database, and cloud infrastructure",
   },
   deliverablesVisual: {
     type: "illustration",
     image: "/images/services/backend/what-you-get-with-every-backend-project.png",
-    title: "What You Get With Every Backend Project | Deliverables",
-    alt: "What you get with every backend project — deliverables from the complete backend system through post-launch support",
+    title: "What You Get With Every Backend Development Project | Deliverables",
+    alt: "Backend development project deliverables — complete backend system, API integration, database design, cloud deployment, security, and post-launch support",
   },
   capabilities: [
     {
@@ -539,7 +540,7 @@ export const apiBackendEngineering: Service = {
   readTimeMinutes: 11,
   coverImage: {
     title: "Backend Development Services | Node.js & API Development",
-    alt: "Backend development diagram showing Node.js API gateway connected to PostgreSQL database and external integrations",
+    alt: "Backend development services illustration showing a Backend Core connected to API Gateway, Authentication, Cloud Infrastructure, Docker, Redis, PostgreSQL, and MongoDB",
   },
   seo: {
     title: "Backend Development Services | Node.js & API Development",

@@ -103,6 +103,12 @@ export const frontendDevelopment: Service = {
       "I provide frontend development services to product companies, SaaS teams, and startups. I have expertise in the development of Next.js and React. Are you in search of frontend development for a new product? Or would you like to expand your team by employing front-end developers? Both of these are included in my frontend development services.",
     primaryCta: SERVICE_CONTACT_CTA,
     secondaryCta: SERVICE_WORK_CTA,
+    visual: {
+      type: "illustration",
+      image: "/images/services/frontend/frontend-development-services-hero-banner.png",
+      title: "Frontend Development Services | React, Next.js & TypeScript",
+      alt: "Frontend development services hero illustration showing React, Next.js, JavaScript/TypeScript, UI development, component architecture, responsive design, and performance",
+    },
     technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
   },
   editorialIntro: {
@@ -135,14 +141,14 @@ export const frontendDevelopment: Service = {
   piecesConnectVisual: {
     type: "diagram",
     image: "/images/services/frontend/frontend_architecture_diagram.png",
-    title: "Full Stack Architecture Diagram | Frontend, API, Database & Cloud",
-    alt: "Full stack architecture diagram showing a user request flowing through the frontend, backend/API, and database layers on AWS, Docker, and CI/CD",
+    title: "Frontend Architecture Diagram | React, Components & Responsive UI",
+    alt: "Frontend architecture diagram for frontend development services showing React components, responsive layout, API integration, and performance across devices",
   },
   deliverablesVisual: {
     type: "illustration",
     image: "/images/services/frontend/what-you-get-with-every-frontend-project.png",
-    title: "What You Get With Every Frontend Project | Deliverables",
-    alt: "What you get with every Frontend project — eight deliverables from the complete application through post-launch support",
+    title: "What You Get With Every Frontend Development Project | Deliverables",
+    alt: "Frontend development project deliverables — complete frontend application, UI components, responsive design, performance optimization, API integration, testing, and post-launch support",
   },
   capabilities: [
     {
@@ -272,7 +278,7 @@ export const frontendDevelopment: Service = {
     },
     {
       category: "Languages",
-      items: ["JavaScript", "TypeScript", "HTML5 development", "CSS3 development"],
+      items: ["JavaScript", "TypeScript", "HTML5", "CSS3"],
     },
     {
       category: "Styling",
@@ -287,11 +293,7 @@ export const frontendDevelopment: Service = {
     },
     {
       category: "Component Patterns",
-      items: [
-        "Frontend component development",
-        "component-based development",
-        "reusable UI components",
-      ],
+      items: ["Component-based development", "Reusable UI components"],
     },
   ],
   useCases: [
@@ -351,6 +353,11 @@ export const frontendDevelopment: Service = {
       title: "Agencies Needing a Frontend Specialist",
       description:
         "Some agencies need an extra frontend developer for a single client project, without adding someone to their permanent team. I plug in as that specialist for as long as the project needs.",
+    },
+    {
+      title: "SaaS Companies Needing Dedicated Frontend Support",
+      description:
+        "SaaS teams often need one developer focused just on the interface, while the rest of the team handles backend and product work. I step in for SaaS frontend development without adding a full-time seat to your team.",
     },
   ],
   deliverables: [
@@ -555,8 +562,8 @@ export const frontendDevelopment: Service = {
   ],
   readTimeMinutes: 10,
   coverImage: {
-    title: "Frontend Development Services | React and TypeScript UI",
-    alt: "Frontend development illustration showing React components, responsive layout, and TypeScript code for a modern web application interface",
+    title: "Frontend Development Services | React & Next.js Developer",
+    alt: "Frontend development services illustration showing React, Next.js, TypeScript, UI development, component architecture, responsive design, and performance",
   },
   seo: {
     title: "Frontend Development Services | React & Next.js Developer",

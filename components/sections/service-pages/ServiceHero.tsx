@@ -28,7 +28,7 @@ export function ServiceHero({ service }: ServiceHeroProps) {
       <div
         className={cn(
           PAGE_CONTAINER,
-          "relative grid items-center gap-12 pb-20 pt-28 md:pb-28 md:pt-32 lg:grid-cols-[minmax(0,1.05fr)_minmax(300px,440px)] lg:gap-16",
+          "relative grid items-center gap-6 pb-20 pt-28 md:pb-28 md:pt-32 lg:grid-cols-2 lg:gap-12",
         )}
       >
         <div className="min-w-0">
@@ -80,6 +80,8 @@ export function ServiceHero({ service }: ServiceHeroProps) {
             visual={service.hero.visual}
             large
             instant
+            plain
+            imageClassName="h-auto w-full object-contain"
           />
         </div>
       </div>
