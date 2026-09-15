@@ -75,93 +75,60 @@ export const content = {
       category: "tech" as const,
       question: "What does Jay Patel specialize in as a Full Stack Developer?",
       answer:
-        "Jay Patel specializes in full-stack web development using React, Next.js, Node.js, " +
-        "TypeScript and the MERN stack. His experience includes building scalable web applications, " +
-        "REST and GraphQL APIs, real-time features, enterprise systems, SaaS platforms, complex " +
-        "forms and backend services using technologies such as MongoDB and PostgreSQL.",
+        "I am a full stack web developper, mostly working with React, Next.js, Node.js and Typescript. The MERN stack is where I'm most comfortable. Lately a lot of my work has been SaaS platforms, REST and GraphQL APIs and real-time features, plus backend systems running on MongoDB or PostgreSQL depending on what the project needs.",
     },
     {
       category: "tech" as const,
       question: "What technologies does Jay Patel use for full-stack development?",
       answer:
-        "Jay Patel works primarily with React, Next.js, JavaScript, TypeScript, Node.js, " +
-        "Express.js, NestJS, MongoDB and PostgreSQL. His broader toolkit also includes REST APIs, " +
-        "GraphQL, Prisma, WebSockets, Docker, AWS, Git and modern testing tools such as Jest and Vitest.",
+        "For the frontend I like React and Next.js and for the backend Node.js with Express or NestJS. I use TypeScript on almost everything at this point. For data, that's usually MongoDB or PostgreSQL. Rounding things out: REST APIs, GraphQL, Prisma, WebSockets, Docker, AWS, Git, and Jest or Vitest when I'm writing tests.",
     },
     {
       category: "tech" as const,
       question: "Does Jay Patel work with the MERN stack?",
       answer:
-        "Yes, Jay Patel specializes in MERN stack development using MongoDB, Express.js, React " +
-        "and Node.js to build modern full-stack web applications. He also works with TypeScript, " +
-        "Next.js, PostgreSQL and other technologies when a project's architecture or requirements " +
-        "call for them.",
+        "Definitely. MERN, meaning MongoDB, Express, React and Node.js, is one of the stacks I know best. I'll bring in TypeScript, Next.js, or PostgreSQL too, depending on what actually fits the project.",
     },
     {
       category: "work" as const,
       question: "Can Jay Patel build a full-stack web application from scratch?",
       answer:
-        "Yes, Jay Patel can work across the full application lifecycle, from frontend development " +
-        "and backend architecture to APIs, databases and deployment. His portfolio demonstrates " +
-        "experience building complete applications with React, Next.js, Node.js, TypeScript, " +
-        "MongoDB, PostgreSQL and related technologies.",
+        "Yep, start to finish. Frontend, backend, APIs, database, deployment, all handled by me. A lot of my past projects are full builds like that, usually React or Next.js on top, Node.js underneath, and either MongoDB or PostgreSQL for storage.",
     },
     {
       category: "work" as const,
       question: "What types of web applications has Jay Patel built?",
       answer:
-        "Jay Patel has worked on real-time chat applications, social media backend systems, " +
-        "headless CMS platforms, HR and business management systems, configurable form systems " +
-        "and identity-verification solutions. His projects cover frontend applications, backend " +
-        "APIs, real-time functionality, data management and integrations with external services.",
+        "Quite a mix, honestly. Real-time chat apps, backends for social platforms, CMS tools, HR systems, custom form builders, identity verification features. Different projects, but the same pattern underneath: frontend, backend, real-time pieces, and outside integrations all working together.",
     },
     {
       category: "tech" as const,
       question: "Can Jay Patel build real-time web applications?",
       answer:
-        "Yes, Jay Patel has experience building real-time web applications using WebSockets and " +
-        "Node.js. His portfolio includes a real-time group chat application with instant messaging, " +
-        "chat rooms, typing indicators and seen status, demonstrating practical experience with " +
-        "real-time communication rather than only conventional request-and-response applications.",
+        "Yes, real-time is something I like to build. I use WebSockets with Node.js for that. One project I built is a group chat app with instant messaging, chat rooms, typing indicators, and seen status. So actual live communication, not the usual request-response back and forth.",
     },
     {
       category: "process" as const,
       question: "How does Jay Patel approach a new full-stack development project?",
       answer:
-        "Jay Patel approaches a new project by first understanding the product requirements, " +
-        "technical goals and expected user experience, then translating them into an appropriate " +
-        "application architecture and development plan. His work spans frontend, backend, APIs, " +
-        "databases and deployment, allowing him to consider the complete system rather than only " +
-        "one layer.",
+        "First, I try to understand what the product is actually trying to do, and what the end user needs from it. Once that's clear, I plan around the whole system rather than one piece of it. Frontend, backend, API, database, deployment, they all get considered together from the start.",
     },
     {
       category: "tech" as const,
       question: "Can Jay Patel develop scalable APIs and backend systems?",
       answer:
-        "Yes, Jay Patel has professional experience developing backend systems and APIs with " +
-        "Node.js, Express.js and NestJS, including REST and GraphQL APIs. His portfolio also " +
-        "includes MongoDB, PostgreSQL, Prisma and authentication-related work, giving him " +
-        "experience across application logic, data management and backend architecture.",
+        "Yes. I've built plenty of backend systems and APIs using Node.js, Express, and NestJS, both REST and GraphQL. That work usually touches MongoDB or PostgreSQL, sometimes Prisma, and authentication logic too. It's given me a decent range across logic, data, and system design.",
     },
     {
       category: "work" as const,
       question: "What experience does Jay Patel have as a Full Stack Developer?",
-      answer:
-        `Jay Patel has ${expLabel} years of professional experience in web development, working ` +
-        "across frontend and backend systems. His experience includes React and Node.js " +
-        "development, API integrations, enterprise applications, configurable forms, mentoring " +
-        "developers and performance improvements, alongside independent projects involving " +
-        "Next.js, TypeScript, WebSockets and modern backend technologies.",
+      answer: `I have ${expLabel} years experience in professional webdesign industry with both front end and backend. This includes React and Node.js work, API integrations, enterprise apps, configurable forms, some mentoring, and performance tuning. Beyond client work I have also built independent projects with Next.js, TypeScript and WebSockets.`,
     },
     {
       category: "work" as const,
       question: "Can I hire Jay Patel for freelance full-stack development?",
       answer:
-        "Yes, Jay Patel is available for freelance projects and collaboration. He can contribute " +
-        "to new web applications, MVPs, feature development and existing codebases, with " +
-        "experience across React, Next.js, Node.js, TypeScript and the MERN stack. Visitors can " +
-        "use the contact page to discuss their project requirements and determine whether the " +
-        "collaboration is a good fit.",
+        "Yes, I take on freelance work. New builds, MVPs, feature additions, jumping into an existing codebase, all of it. My main stack is React, Next.js, Node.js, TypeScript, and MERN. If you've got a project in mind, the contact page is the best way to reach me and figure out if it's a good fit.",
     },
   ] as FAQItem[],
 
