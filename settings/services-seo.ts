@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { BASE_URL, OG_IMAGE, TWITTER_HANDLE, TWITTER_IMAGE, pageUrl } from "@/settings/seo";
 import { siteConfig } from "@/settings";
 import type { Service } from "@/lib/services/types";
-import { getServicesHub } from "@/lib/services";
+import { getServiceBySlug, getServicesHub } from "@/lib/services";
 import type { ServicesHubSettings } from "@/lib/services/types";
 import { getServiceSectionHeading } from "@/lib/services/section-headings";
 
@@ -21,6 +21,14 @@ function absoluteUrl(pathOrUrl: string | null | undefined): string | undefined {
 
 function serviceCanonical(service: Service): string {
   return absoluteUrl(service.seo.canonicalPath) ?? pageUrl(`services/${service.slug}`);
+}
+
+function capabilityFragment(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 64);
 }
 
 function socialSameAs(): string[] {
@@ -111,21 +119,54 @@ export function servicesHubJsonLd(serviceCount: number) {
 
 export function servicePageJsonLd(service: Service) {
   const sameAs = socialSameAs();
+  const pageUrlCanonical = serviceCanonical(service);
+  const capabilitiesHeading = getServiceSectionHeading(service, "capabilities");
+  const provider = {
+    "@type": "Person" as const,
+    name: siteConfig.fullName,
+    url: `${BASE_URL}/`,
+    ...(sameAs.length ? { sameAs } : {}),
+  };
 
   return {
     "@context": "https://schema.org",
     "@type": "Service",
     name: service.title,
     description: service.seo.description,
-    url: serviceCanonical(service),
-    provider: {
-      "@type": "Person",
-      name: siteConfig.fullName,
-      url: `${BASE_URL}/`,
-      ...(sameAs.length ? { sameAs } : {}),
-    },
+    url: pageUrlCanonical,
+    provider,
     areaServed: "Worldwide",
-    serviceType: getServiceSectionHeading(service, "capabilities"),
+    serviceType: service.headingKeywords.keywordVariant,
+    // Capabilities H2 = catalog name; each capability card H3 = nested Service
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: capabilitiesHeading,
+      numberOfItems: service.capabilities.length,
+      itemListElement: service.capabilities.map((cap, i) => {
+        const related = cap.relatedServiceSlug
+          ? getServiceBySlug(cap.relatedServiceSlug)
+          : undefined;
+        const itemUrl = related
+          ? serviceCanonical(related)
+          : `${pageUrlCanonical}#capability-${capabilityFragment(cap.title)}`;
+        return {
+          "@type": "Offer",
+          "@id": itemUrl,
+          position: i + 1,
+          name: cap.title,
+          description: cap.description,
+          url: itemUrl,
+          itemOffered: {
+            "@type": "Service",
+            name: cap.title,
+            description: cap.description,
+            url: itemUrl,
+            provider,
+            areaServed: "Worldwide",
+          },
+        };
+      }),
+    },
   };
 }
 
