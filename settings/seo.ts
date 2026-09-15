@@ -65,7 +65,7 @@ export function pageUrl(path: string): string {
 }
 
 /** Real content date — fallback when a route is missing from `sitemap-urls.json`. */
-export const LAST_UPDATED = "2026-08-31";
+export const LAST_UPDATED = "2026-09-15";
 
 /** ISO-8601 DateTime for schema.org `dateModified` (date-only fails validators). */
 export const LAST_UPDATED_ISO = `${LAST_UPDATED}T00:00:00+05:30`;
