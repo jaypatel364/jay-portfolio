@@ -13,6 +13,8 @@ import { GlobalFloatingUI } from "@/components/layout/GlobalFloatingUI";
 import { HomeOverlays } from "@/components/layout/HomeOverlays";
 import { SectionErrorBoundary } from "@/components/shared";
 import { HeroSection } from "@/components/sections/hero";
+import { HomeServicesSection } from "@/components/sections/home/HomeServicesSection";
+import { HomeLatestArticlesSection } from "@/components/sections/home/HomeLatestArticlesSection";
 
 /**
  * Below-fold sections — code-split for smaller JS chunks but SSR kept for SEO
@@ -75,6 +77,14 @@ export default function Home() {
                 </SectionErrorBoundary>
                 <SectionErrorBoundary section="Projects">
                   <ProjectsSection />
+                </SectionErrorBoundary>
+                <SectionErrorBoundary section="Services Preview">
+                  <HomeServicesSection />
+                </SectionErrorBoundary>
+                <SectionErrorBoundary section="Latest Articles">
+                  <Suspense fallback={<div className="min-h-[32vh]" aria-hidden="true" />}>
+                    <HomeLatestArticlesSection />
+                  </Suspense>
                 </SectionErrorBoundary>
                 {siteConfig.showFAQ && (
                   <SectionErrorBoundary section="FAQ">

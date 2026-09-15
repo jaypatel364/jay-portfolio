@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 import { RESUME_OPEN_EVENT } from "@/components/features/resume/open-resume";
 import { Brand } from "@/components/shared";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 
 /** cmdk / accent / resume stay out of the initial bundle until opened or idle. */
 const AccentPicker = dynamic(() =>
@@ -272,7 +273,7 @@ export function Navbar() {
         Skip to content
       </a>
       <nav
-        className="mx-auto flex w-full min-w-0 max-w-6xl items-center justify-between gap-2 px-4 sm:px-6"
+        className={cn(PAGE_CONTAINER, "flex items-center justify-between gap-2")}
         aria-label="Primary"
       >
         <Link
@@ -315,8 +316,9 @@ export function Navbar() {
         {/* Scroll progress badge — appears after scrolling past hero */}
         {pastHero ? (
           <div
-            className="hidden animate-in fade-in zoom-in-95 items-center gap-2 rounded-full border border-border bg-card/80 px-3 py-1 text-xs text-muted-foreground backdrop-blur-sm duration-200 lg:flex"
+            className="hidden min-w-0 max-w-[min(12rem,22vw)] animate-in fade-in zoom-in-95 items-center gap-2 overflow-hidden rounded-full border border-border bg-card/80 px-3 py-1 text-xs whitespace-nowrap text-muted-foreground backdrop-blur-sm duration-200 lg:flex"
             aria-label={`Reading ${readingSection} — ${percent}% through page`}
+            title={`${readingSection} — ${percent}%`}
           >
             {/* Mini arc progress ring */}
             <svg
@@ -349,9 +351,9 @@ export function Navbar() {
                 style={{ color: "var(--primary)" }}
               />
             </svg>
-            <span className="font-medium">{readingSection}</span>
-            <span className="opacity-60">·</span>
-            <span className="tabular-nums">{percent}%</span>
+            <span className="min-w-0 truncate font-medium">{readingSection}</span>
+            <span className="shrink-0 opacity-60">·</span>
+            <span className="shrink-0 tabular-nums">{percent}%</span>
           </div>
         ) : null}
 

@@ -1,0 +1,90 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
+import type { Service } from "@/lib/services/types";
+import { cn } from "@/lib/utils";
+import { ServiceBreadcrumbs } from "./ServiceBreadcrumbs";
+import { ServiceDetailHeroVisual } from "./hero-visuals/ServiceDetailHeroVisual";
+
+interface ServiceHeroProps {
+  service: Service;
+}
+
+export function ServiceHero({ service }: ServiceHeroProps) {
+  return (
+    <header className="relative w-full overflow-hidden border-b border-border/60">
+      <div className="pointer-events-none absolute inset-0 bg-grid opacity-25" aria-hidden />
+      <div
+        className="aurora-blob pointer-events-none absolute -left-32 top-0 h-72 w-72 bg-primary opacity-30"
+        style={{ animation: "aurora-1 14s ease-in-out infinite" }}
+      />
+      <div
+        className="aurora-blob pointer-events-none absolute -right-24 bottom-0 h-56 w-56 bg-glow opacity-25"
+        style={{ animation: "aurora-2 16s ease-in-out infinite" }}
+      />
+
+      <div
+        className={cn(
+          PAGE_CONTAINER,
+          "relative grid items-center gap-6 pb-20 pt-28 md:pb-28 md:pt-32 lg:grid-cols-2 lg:gap-12",
+        )}
+      >
+        <div className="min-w-0">
+          <ServiceBreadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Services", href: "/services/" },
+              { label: service.title },
+            ]}
+            className="mb-8"
+          />
+
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">
+            {service.title}
+          </p>
+
+          <h1 className="font-heading mt-5 text-[clamp(2.25rem,5vw,3.75rem)] font-bold leading-[1.05] tracking-tight text-balance">
+            {service.hero.heading}
+          </h1>
+
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {service.hero.description}
+          </p>
+
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link
+              href={service.hero.primaryCta.href}
+              className="btn-shine group inline-flex items-center justify-center gap-2 rounded-full gradient-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            >
+              {service.hero.primaryCta.label}
+              <ArrowUpRight
+                className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden
+              />
+            </Link>
+            <Link
+              href="/work/"
+              className="inline-flex items-center justify-center rounded-full border border-border bg-card/70 px-7 py-3.5 text-sm font-semibold text-foreground backdrop-blur-sm transition-colors hover:border-primary/35 hover:bg-primary/5"
+            >
+              Explore work
+            </Link>
+          </div>
+        </div>
+
+        <div className="mx-auto w-full min-w-0 lg:mx-0">
+          <ServiceDetailHeroVisual
+            slug={service.slug}
+            title={service.title}
+            visual={service.hero.visual}
+            large
+            instant
+            plain
+            imageClassName="h-auto w-full object-contain"
+          />
+        </div>
+      </div>
+    </header>
+  );
+}

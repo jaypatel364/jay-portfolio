@@ -85,11 +85,16 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
               {project.tagline}
             </p>
             <h1 className="font-heading mt-2 text-4xl font-bold tracking-tight text-balance sm:text-5xl">
-              {project.title}
+              {detail.heading ?? project.title}
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-              {detail.intro}
-            </p>
+            <div className="mt-4 space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {detail.intro
+                .split(/\n\n+/)
+                .filter(Boolean)
+                .map((paragraph) => (
+                  <p key={paragraph.slice(0, 48)}>{paragraph}</p>
+                ))}
+            </div>
 
             <div className="mt-5 flex flex-wrap items-center gap-2">
               <span className="rounded-full border border-border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -184,6 +189,26 @@ export function ProjectDetailPage({ project }: ProjectDetailPageProps) {
           {detail.learned && detail.learned.length > 0 && (
             <DetailSection id="learned" title="What I Learned">
               <BulletList items={detail.learned} />
+            </DetailSection>
+          )}
+
+          {detail.faqs && detail.faqs.length > 0 && (
+            <DetailSection id="faq" title="Frequently Asked Questions">
+              <ul className="space-y-4">
+                {detail.faqs.map((faq) => (
+                  <li
+                    key={faq.question}
+                    className="rounded-2xl border border-border/70 bg-card/50 p-5 sm:p-6"
+                  >
+                    <h3 className="font-heading text-base font-semibold text-foreground">
+                      {faq.question}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {faq.answer}
+                    </p>
+                  </li>
+                ))}
+              </ul>
             </DetailSection>
           )}
 

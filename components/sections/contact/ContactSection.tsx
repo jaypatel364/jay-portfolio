@@ -18,8 +18,8 @@ export function ContactSection({
   className,
 }: ContactSectionProps) {
   return (
-    <section id="contact" className={cn("px-6 py-14 md:py-28", className)}>
-      <div className="mx-auto max-w-6xl">
+    <section id="contact" className={cn("py-14 md:py-28", className)}>
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         {showHeading ? <SectionHeading label="Contact" title="Work with Jay" /> : null}
 
         <div className={cn("grid gap-12 lg:grid-cols-5", showHeading ? "mt-16" : "mt-0")}>

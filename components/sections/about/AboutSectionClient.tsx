@@ -50,8 +50,8 @@ export function AboutSectionClient({
   const withTerminal = siteConfig.showTerminal;
 
   return (
-    <section id="about" className="px-6 py-14 md:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section id="about" className="py-14 md:py-28">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         <SectionHeading label="About" title="About Jay Patel" />
 
         {/* ── Story + terminal — one aligned composition ── */}

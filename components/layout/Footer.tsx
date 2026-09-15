@@ -6,8 +6,12 @@ import { Mail, Zap } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { CopyEmail } from "@/components/shared";
 import { Brand } from "@/components/shared";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { FOOTER_NAV } from "@/lib/nav";
 import { navigateToNavItem } from "@/lib/navigate";
+import { getAllServices, servicePath } from "@/lib/services";
+import { innerPages } from "@/settings/pages";
+import { cn } from "@/lib/utils";
 
 // Custom SVG icons for brand consistency
 const GithubIcon = ({ className }: { className?: string }) => (
@@ -28,17 +32,35 @@ const SOCIALS = [
   { icon: Mail, href: `mailto:${siteConfig.email}`, label: "Email" },
 ];
 
+/** Blog quick-links shown in footer */
+const BLOG_LINKS = [
+  { label: "All Articles", href: `${innerPages.blog.path}/` },
+  { label: "Frontend", href: `${innerPages.blog.path}/?category=frontend` },
+  { label: "Backend", href: `${innerPages.blog.path}/?category=backend` },
+  { label: "Architecture", href: `${innerPages.blog.path}/?category=architecture` },
+  { label: "DevOps", href: `${innerPages.blog.path}/?category=devops` },
+  { label: "Case Study", href: `${innerPages.blog.path}/?category=case-study` },
+];
+
 export function Footer() {
   const year = new Date().getFullYear();
   const pathname = usePathname();
   const router = useRouter();
+  const services = getAllServices();
 
   return (
     <footer className="relative border-t border-border bg-card/50">
-      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6 pt-12 pb-8">
-        <div className="grid gap-10 sm:grid-cols-3">
-          {/* Brand */}
-          <div className="space-y-3">
+      <div className={cn(PAGE_CONTAINER, "pt-12 pb-8")}>
+        {/*
+         * 5-column layout:
+         *  mobile  → 2 cols (brand spans full, then 2-up links)
+         *  sm      → 2 cols
+         *  md      → 3 cols
+         *  lg      → 5 cols (brand | quick links | services | blog | connect)
+         */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.6fr_1fr_1.4fr_1fr_1.2fr] lg:gap-x-8">
+          {/* Brand — full-width on mobile */}
+          <div className="col-span-2 space-y-3 sm:col-span-2 md:col-span-3 lg:col-span-1">
             <p className="font-heading text-xl font-bold">
               <Brand />
             </p>
@@ -59,6 +81,38 @@ export function Footer() {
                     e.preventDefault();
                     navigateToNavItem(link, { pathname, router });
                   }}
+                  className="w-fit text-sm text-muted-foreground transition-colors hover:text-primary"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Services */}
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-foreground">Services</p>
+            <nav className="flex flex-col gap-2" aria-label="Footer services">
+              {services.map((service) => (
+                <Link
+                  key={service.slug}
+                  href={servicePath(service.slug)}
+                  className="w-fit text-sm text-muted-foreground transition-colors hover:text-primary"
+                >
+                  {service.title}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Blog */}
+          <div className="space-y-3">
+            <p className="text-sm font-semibold text-foreground">Blog</p>
+            <nav className="flex flex-col gap-2" aria-label="Footer blog links">
+              {BLOG_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
                   className="w-fit text-sm text-muted-foreground transition-colors hover:text-primary"
                 >
                   {link.label}

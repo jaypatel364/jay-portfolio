@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { PAGE_CONTAINER } from "@/components/shared/page-container";
 import { cn } from "@/lib/utils";
 
 export interface InnerPageHeroProps {
@@ -9,6 +10,8 @@ export interface InnerPageHeroProps {
   backHref?: string;
   backLabel?: string;
   className?: string;
+  /** Optional anchor id for scroll tracking (e.g. navbar reading badge). */
+  id?: string;
   /** Page-specific art for the right column (desktop) / below copy (mobile). */
   visual?: ReactNode;
 }
@@ -20,12 +23,14 @@ export function InnerPageHero({
   description,
   chips = [],
   className,
+  id,
   visual,
 }: InnerPageHeroProps) {
   return (
     <section
+      id={id}
       className={cn(
-        "relative overflow-hidden border-b border-border/60 px-4 pb-14 pt-28 sm:px-6 md:pb-20 md:pt-32",
+        "relative overflow-hidden border-b border-border/60 pb-14 pt-28 md:pb-20 md:pt-32",
         className,
       )}
     >
@@ -39,7 +44,7 @@ export function InnerPageHero({
         style={{ animation: "aurora-2 16s ease-in-out infinite" }}
       />
 
-      <div className="relative mx-auto w-full min-w-0 max-w-6xl">
+      <div className={cn("relative", PAGE_CONTAINER)}>
         <div
           className={cn(
             visual &&
@@ -53,9 +58,11 @@ export function InnerPageHero({
             <h1 className="font-heading mt-3 break-words text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
               {title}
             </h1>
-            <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-              {description}
-            </p>
+            <div className="mt-5 space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {description.split(/\n\n+/).map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
 
             {chips.length > 0 && (
               <div className="mt-6 flex flex-wrap gap-2">

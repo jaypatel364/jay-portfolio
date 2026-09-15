@@ -2,10 +2,11 @@ import type { ProjectDetail } from "./types";
 
 export const socialMediaBackendApiDetail: ProjectDetail = {
   slug: "social-media-backend-api",
+  heading: "Social Media Backend API",
   intro:
-    "This is a social media backend API: the layer that stores posts, tracks who follows whom, and decides what lands in a feed. There is no frontend here at all. It is a GraphQL API built on NestJS, Prisma, and PostgreSQL. The feed does not lead with the newest post either. It ranks by a hotScore that weighs how popular a post is against how old it is.",
+    "No frontend ships with this project on purpose. It's a social media backend API, the part that stores posts, tracks who follows whom, and works out what actually lands in someone's feed. Built on NestJS, Prisma, and PostgreSQL, it exposes everything through GraphQL rather than REST. And the feed itself doesn't just show the newest post first. It ranks content with a hotScore that weighs popularity against age.\n\nYou can check the live demo or look through the source code directly. This sits alongside other backend work in the project portfolio, and it's a solid example of what a NestJS GraphQL API looks like once real social features get layered on top.",
   overview:
-    "The API covers what you would expect from an Instagram-style product: posts, likes, follows, notifications, and sign-in. Everything goes out through GraphQL. A client asks for the exact fields it needs, so nobody is stuck with a fixed REST response shape.\n\nThe feed took the most thought. Sorting by newest is the easy build and the weak result, because a post from one minute ago will outrank something far more popular from this morning. So hotScore blends engagement with recency. Posts people actually reacted to stay up for a while, then decay.\n\nThe codebase is a modular monolith: one module per feature, one deployable app.",
+    "This social media API includes the pieces you'd expect from an Instagram-style backend: posts, likes, follows, notifications, and authentication. Everything runs through a single GraphQL endpoint, so a client asks for exactly the fields it needs instead of getting stuck with whatever shape a REST endpoint happens to return.\n\nThe feed is where most of the actual thought went. Sorting purely by newest post is the obvious approach, and it's also the weakest one, since a post from sixty seconds ago would outrank something genuinely popular from earlier that day. hotScore blends engagement with how recently something was posted instead, so posts people actually reacted to stay visible for a while before naturally fading as newer content takes over.\n\nUnder the hood, this is a modular monolith: separate modules for separate features, shipped as one deployable app rather than a scattering of microservices.",
   role: [
     "Designed the GraphQL schema: types, queries, and mutations",
     "Modeled the database in Prisma and PostgreSQL, including the follow relationships",
@@ -15,99 +16,121 @@ export const socialMediaBackendApiDetail: ProjectDetail = {
     "Deployed the API with a public GraphQL endpoint",
   ],
   problem:
-    "Social features look simple from the outside. The data behind them is not. A follow is a link from one user to another inside the same table. A feed has to gather posts from everyone a user follows, then put them in a sensible order. Likes and notifications pile on more connections. So the real work was modeling those relationships in PostgreSQL, keeping the feed query manageable, and holding the code together as features stacked up.",
+    "A follow is just a link from one user to another, sitting inside the same table. Simple enough on paper. But a feed then has to gather posts from everyone a given user follows and put them into some sensible order, and likes and notifications stack even more relationships on top of that.\n\nSo the actual engineering challenge in this social network backend wasn't any single feature. It was modeling those relationships correctly in PostgreSQL, keeping the feed query fast even as data grew, and keeping the codebase from turning into a tangle as features kept getting added.",
   build:
-    "I picked NestJS because its module system matches how this kind of product grows. Posts, likes, follows, notifications, and auth each get their own module, with their own resolvers and services. A change to notifications never reaches into post logic.\n\nPrisma sits between those modules and PostgreSQL. The schema defines users, posts, likes, follows, and notifications, plus the relations tying them together. Prisma generates a typed client from it, so asking for a field that does not exist breaks the build.\n\nGraphQL is the only interface. Each module adds its own resolvers, and those merge into a single schema. Auth runs on JWT: signing in returns a token, and protected resolvers check that token before they do anything.\n\nThe feed query pulls posts from the accounts a user follows, then orders them by hotScore instead of creation time.",
+    "NestJS made sense here because its module system tends to match how a social product actually grows over time. Posts, likes, follows, notifications, and auth each get their own module, complete with their own resolvers and services, so a change to how notifications work never accidentally touches post logic.\n\nPrisma sits between those modules and PostgreSQL. Its schema defines users, posts, likes, follows, and notifications along with every relation connecting them, and it generates a fully typed client from that definition. Ask for a field that doesn't exist, and the build fails immediately rather than surfacing as a bug later in production.\n\nGraphQL is the only way in. Each module contributes its own resolvers, and NestJS merges them into a single schema. Authentication runs on JWT: signing in hands back a token, and any resolver touching private data checks that token before doing anything else.\n\nThe feed query itself pulls posts from everyone a user follows, then sorts by hotScore rather than creation date. For more on how I approach this kind of relational, API-heavy backend work, take a look at my backend development skills and NestJS and Node.js skills.",
   features: [
     {
-      title: "Posts and Likes",
+      title: "Posts and likes",
       description:
-        "Users create posts and like them. Like counts then feed into the ranking, so engagement shapes what surfaces. A like is more than a number sitting on the post.",
+        "Users post and like content, and like counts feed straight into ranking. A like isn't just a number sitting on a post here; it actually shapes what other people see.",
     },
     {
-      title: "Follow Relationships",
+      title: "Follow relationships",
       description:
-        "Accounts follow each other, and those links decide whose posts appear in a feed. In the database it is a self-referencing link from users back to users, one of the trickier things to model well.",
+        "Accounts follow each other, and those links decide whose posts show up in a feed. In the database, this is a self-referencing relationship from the users table back to itself, which was one of the trickier parts to get right.",
     },
     {
-      title: "Ranked Feed",
+      title: "Ranked feed with hotScore",
       description:
-        "The feed uses a hotScore that weighs engagement against how recent a post is. A popular post stays up longer. A brand new post with no likes does not sail past everything else.",
+        "Engagement and recency get weighed together, so a popular post stays visible for longer while a brand-new post with zero likes doesn't immediately vanish under everything else.",
     },
     {
       title: "Notifications",
       description:
-        "A like or a new follower writes a notification record for the user it affects. The client reads that one list to show activity, with no polling across every other table.",
+        "A like or a new follower writes one notification record for the affected user. The client reads that single list to show recent activity, no polling across a dozen other tables required.",
     },
     {
-      title: "JWT Authentication",
+      title: "JWT authentication",
       description:
-        "Signing in returns a token, and the client sends it with every later request. Resolvers that touch a user's own data check that token first.",
+        "Signing in returns a token, and it travels with every subsequent request. Resolvers touching private data check it first.",
     },
     {
-      title: "GraphQL Schema",
+      title: "GraphQL schema",
       description:
-        "Clients ask for exactly the fields they need in one call. That matters for a social feed. Posts, their authors, and their like counts arrive in a single query, where REST would need several round trips.",
+        "One query pulls posts, their authors, and their like counts together. A REST API would typically need several round trips to assemble the same response.",
     },
   ],
   architecture: {
     layers: [
-      "GraphQL Client",
-      "NestJS GraphQL Layer",
-      "Feature Modules (Posts, Likes, Follows, Notifications, Auth)",
-      "Prisma ORM",
+      "GraphQL client",
+      "NestJS GraphQL layer",
+      "Feature modules for posts, likes, follows, notifications, and auth",
+      "Prisma",
       "PostgreSQL",
     ],
     explanation:
-      "A client sends a GraphQL query to the NestJS app. NestJS routes it to the resolver in the right feature module, and that resolver calls its service for the actual logic. Services reach PostgreSQL through Prisma. It all ships as one deployable app. The boundaries between features are real, but they live in the code, so there is no bill for running several servers.",
+      "A GraphQL query arrives at the NestJS app, gets routed to the resolver inside the right feature module, and that resolver calls its service for the real logic. Services reach PostgreSQL through Prisma. It all deploys as a single app.\n\nThe boundaries between features are real and enforced, but they live inside the code rather than across separate servers, so there's no added infrastructure cost from running several services at once.",
   },
   decisions: [
     {
-      title: "A modular monolith, not microservices",
-      why: "These features are closely related. A single like touches posts, users, and notifications. Split those into separate services and you add network calls between things that belong together. NestJS modules draw clear lines inside one app and skip all of that.",
+      title: "Modular monolith instead of microservices",
+      why: "Going with a modular monolith instead of microservices came down to how tightly these features actually depend on each other. A single like touches posts, users, and notifications all at once, and splitting those into separate services would mean adding network calls between things that genuinely belong together. NestJS modules give clear internal boundaries without that overhead,",
       tradeoff:
-        "Everything deploys together, so one small change means redeploying the whole API. At this size that costs far less than running and coordinating several services.",
+        "though the cost is that everything deploys together; even a small change means redeploying the whole API. At this size, that's a far smaller price than coordinating several separate services would be.",
     },
     {
       title: "GraphQL over REST",
-      why: "Social data is deeply connected. A feed needs posts, their authors, and their like counts. REST gives you two options there: several endpoints, or one fat endpoint returning more than the client asked for. GraphQL lets the client describe the shape it wants.",
+      why: "GraphQL won out over REST largely because social data is so interconnected. A feed needs posts, authors, and like counts all at once, and REST usually forces a choice between several thin endpoints or one bloated one returning more than a client asked for. GraphQL lets the client describe exactly what it wants.",
       tradeoff:
-        "GraphQL brings its own problems. Query cost is harder to predict, and nested queries can trigger repeated database lookups if resolvers fetch data carelessly.",
+        "The trade-off shows up in query cost, which becomes harder to predict, and in nested queries, which can trigger repeated database lookups if resolvers aren't careful about how they fetch related data.",
     },
     {
-      title: "hotScore ranking over a reverse-chronological feed",
-      why: "A plain timeline is the simplest feed to build and the least rewarding to read. Blending engagement with recency keeps good posts visible while new content still gets its chance to surface.",
+      title: "hotScore over reverse-chronological feed",
+      why: "Choosing hotScore over a plain reverse-chronological feed came from a simple observation: a timeline is the easiest feed to build and the least interesting one to actually scroll through. Blending engagement with recency keeps good content visible longer while still giving new posts a fair shot at surfacing.",
       tradeoff:
-        "A ranked feed is harder to reason about than a timeline. When a post shows up in an odd place, you have to work out its score, not just read its timestamp.",
+        "It does make the feed harder to reason about, though. When a post lands somewhere unexpected, you have to actually calculate its score rather than glance at a timestamp.",
     },
     {
       title: "Prisma as the database layer",
-      why: "The schema is the one definition of the data model, and the client it generates is typed. With relations this tangled, a compiler that catches a wrong field name earns its keep.",
+      why: "Prisma earned its spot as the database layer because the schema acts as a single source of truth, and the generated client is fully typed. With relationships as tangled as follows and likes, catching a typo'd field name at compile time saves real debugging time later.",
       tradeoff:
-        "Complex queries still drop to raw SQL now and then. You also give up some control over exactly what SQL runs.",
+        "The downside is that genuinely complex queries occasionally still need raw SQL, which means giving up some fine control over exactly what runs against the database.",
     },
   ],
   tradeoffs: [
-    "Modeling follows meant a link from users back to users. Getting it right early mattered, because the feed query leans on it and a later change would have touched everything.",
-    "Nested GraphQL queries can fire repeated database calls for related records. The problem only shows up once the data grows, and the fix belongs at the query layer, not in the resolvers.",
-    "The hotScore formula is a judgment call, not a fact. It behaves sensibly, though any ranking like this needs tuning once you can watch real content move through it.",
+    "Modeling the follow relationship as a self-reference back to the users table took real care early on, since the entire feed query depends on getting that right. A structural fix later would have rippled through nearly everything downstream.",
+    "Nested GraphQL queries can fire off repeated database calls for related records, and that problem only becomes visible once the dataset actually grows. The fix belongs in the query layer itself, not scattered across individual resolvers trying to patch around it.",
+    "The hotScore formula, to be honest, is a judgment call more than a settled fact. It behaves reasonably in testing, but any ranking system like this needs ongoing tuning once real content starts moving through it and real usage patterns emerge.",
   ],
   stack: [
     { group: "API", items: ["NestJS", "GraphQL", "TypeScript"] },
     { group: "Data", items: ["Prisma", "PostgreSQL"] },
-    { group: "Authentication", items: ["JWT"] },
+    { group: "Auth", items: ["JWT"] },
     { group: "Deployment", items: ["Render"] },
   ],
   outcome: [
-    "A working GraphQL API covering posts, likes, follows, notifications, and authentication",
-    "A feed ordered by hotScore instead of a plain reverse-chronological list",
-    "A relational PostgreSQL schema that handles follow relationships and engagement",
-    "A public GraphQL endpoint where the schema can be explored directly",
+    "A working GraphQL API covering posts, likes, follows, notifications, and authentication.",
+    "A feed ordered by hotScore instead of a plain chronological list.",
+    "A relational PostgreSQL schema that actually handles follow relationships and engagement data cleanly.",
+    "And a public GraphQL endpoint where you can explore the schema yourself.",
   ],
   learned: [
-    "Database modeling comes before API design, not alongside it. The follow relationship shaped every query written after it.",
-    "Module boundaries are worth setting up early. Once posts, likes, and notifications each had their own module, new features stopped touching unrelated code.",
-    "GraphQL solves over-fetching and hands you a query-cost problem in exchange. That one needs active management.",
+    "Database modeling has to come before API design, not run alongside it as an afterthought. The follow relationship shaped nearly every query I wrote after it, which is worth knowing before you start planning a social media database from scratch.",
+    "Setting up module boundaries early paid off repeatedly. Once posts, likes, and notifications each had their own space, new features stopped bleeding into code they had no business touching.",
+    "GraphQL trades over-fetching for a query-cost problem. That's not a one-time fix; it needs continuous attention as the schema and usage patterns evolve.",
+  ],
+  faqs: [
+    {
+      question: "What's this social media backend API actually built with?",
+      answer:
+        "NestJS, GraphQL, Prisma, and PostgreSQL, with JWT handling authentication. It exposes a single GraphQL endpoint covering posts, likes, follows, and notifications, rather than separate REST routes for each.",
+    },
+    {
+      question: "How does the ranking algorithm decide what shows up in the feed?",
+      answer:
+        "A hotScore blends engagement with how recently something was posted, so a popular post stays visible longer while brand-new content still gets a real chance to surface, instead of everything sorting purely by timestamp.",
+    },
+    {
+      question: "Why GraphQL instead of REST for a social platform?",
+      answer:
+        "GraphQL lets a client ask for exactly the fields it needs in one request. For a feed, that means posts, authors, and like counts can arrive together in a single query, where REST would typically need several separate calls to build the same response.",
+    },
+    {
+      question: "Is this built as microservices or a monolith?",
+      answer:
+        "It's a modular monolith. Posts, likes, follows, notifications, and auth each live in their own NestJS module, but the whole thing ships and deploys as one application rather than as separate independently-deployed services.",
+    },
   ],
   imageAlt:
     "Social media backend API built with NestJS and GraphQL, showing the GraphQL schema explorer",
@@ -115,23 +138,28 @@ export const socialMediaBackendApiDetail: ProjectDetail = {
   internalLinks: [
     {
       sentence:
-        "API work makes up a large share of what I do, across NestJS, GraphQL, Prisma, and PostgreSQL.",
-      anchor: "Look through my backend skill set",
+        "API work like this, spanning NestJS, GraphQL, Prisma, and PostgreSQL, makes up a large share of what I build. Look through my",
+      anchor: "backend development skills",
       href: "/skills/",
     },
     {
-      sentence: "There are more APIs and server-side builds in the wider portfolio.",
-      anchor: "See every project I have shipped",
+      sentence: "There's more backend and full-stack work in the wider portfolio.",
+      anchor: "See every project I've shipped",
       href: "/work/",
+    },
+    {
+      sentence: "Or check the",
+      anchor: "backend API development services",
+      href: "/services/backend-development/",
     },
   ],
   seo: {
-    title: "Social Media Backend API | NestJS & GraphQL | Jay Patel",
+    title: "Social Media Backend API: NestJS, GraphQL & Prisma Project",
     description:
-      "A social media backend built with NestJS, GraphQL, Prisma and PostgreSQL, covering posts, likes, follows, notifications, JWT auth and a hotScore ranked feed.",
-    ogTitle: "Social Media Backend API | NestJS, GraphQL & PostgreSQL",
+      "A social media backend API with posts, follows, and notifications, built on NestJS, GraphQL, Prisma, and PostgreSQL, with a ranked feed algorithm.",
+    ogTitle: "Social Media Backend API: NestJS, GraphQL & Prisma Project",
     ogDescription:
-      "A modular NestJS GraphQL backend with posts, likes, follows, notifications, JWT authentication and a feed ranked by hotScore instead of timestamp.",
+      "A social media backend API with posts, follows, and notifications, built on NestJS, GraphQL, Prisma, and PostgreSQL, with a ranked feed algorithm.",
     primaryTopic: "NestJS GraphQL Backend API",
     secondaryTopics: [
       "GraphQL API",

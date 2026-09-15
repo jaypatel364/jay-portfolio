@@ -42,10 +42,10 @@ export function WhyChooseSection({ showBottomCta = true }: { showBottomCta?: boo
   const contactHref = `${innerPages.contact.path}`;
 
   return (
-    <section id="why-choose" className="relative px-4 py-14 sm:px-6 md:py-28">
+    <section id="why-choose" className="relative py-14 md:py-28">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
-      <div className="mx-auto w-full min-w-0 max-w-6xl">
+      <div className="mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         {/*
           Page scroll + sticky right (no nested overflow).
           Left grows naturally; right stays pinned while you scroll past.

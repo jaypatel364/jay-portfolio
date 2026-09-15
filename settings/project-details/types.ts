@@ -39,9 +39,16 @@ export interface ProjectDetailSeo {
   secondaryTopics: string[];
 }
 
+export interface ProjectFaq {
+  question: string;
+  answer: string;
+}
+
 export interface ProjectDetail {
   slug: string;
-  /** 50–100 words directly under the H1. */
+  /** Optional case-study H1; falls back to `project.title` from settings/projects. */
+  heading?: string;
+  /** 50–100 words directly under the H1. Blank-line separated paragraphs allowed. */
   intro: string;
   /** 100–150 words — Project Overview section. */
   overview: string;
@@ -63,6 +70,8 @@ export interface ProjectDetail {
   outcome: string[];
   /** What I Learned — only when there is a genuine engineering lesson. */
   learned?: string[];
+  /** FAQ accordion at the end of the case study. */
+  faqs?: ProjectFaq[];
   /** Shown instead of code/demo links when the work is confidential. */
   ndaNotice?: string;
   /** Descriptive alt text for the cover screenshot. Falls back to project title. */

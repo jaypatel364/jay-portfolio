@@ -56,12 +56,12 @@ export function SkillsSection() {
     activeFilter === "all" ? SKILL_GROUPS.flatMap((g) => g.skills) : (activeGroup?.skills ?? []);
 
   return (
-    <section id="skills" className="relative overflow-hidden px-6 py-14 md:py-28">
+    <section id="skills" className="relative overflow-hidden py-14 md:py-28">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute top-1/3 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/5 blur-3xl" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl">
+      <div className="relative z-10 mx-auto w-full min-w-0 max-w-6xl px-4 sm:px-6">
         <SectionHeading label="Skills" title="Full Stack Development Skills" />
 
         {/* Stats bar */}
